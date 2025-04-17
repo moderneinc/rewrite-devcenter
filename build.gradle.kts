@@ -3,7 +3,7 @@ plugins {
     id("org.openrewrite.build.moderne-source-available-license") version "latest.release"
 }
 
-group = "io.moderne"
+group = "io.moderne.recipe"
 description = "Rewrite DevCenter integration."
 
 val rewriteVersion = rewriteRecipe.rewriteVersion.get()

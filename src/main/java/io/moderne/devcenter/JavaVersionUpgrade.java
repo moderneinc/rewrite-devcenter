@@ -64,9 +64,9 @@ public class JavaVersionUpgrade extends Recipe {
                         } else if (actualVersion >= 11) {
                             measure = Measure.Java11Plus;
                         } else {
-                            // To keep compatibility with the current visualization,
-                            // though the project's version may actually be on a version
-                            // less than 8.
+                            // TODO To keep compatibility with the current visualization,
+                            //  though the project's version may actually be on a version
+                            //  less than 8.
                             measure = Measure.Java8Plus;
                         }
                     }

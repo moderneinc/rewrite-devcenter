@@ -15,8 +15,8 @@
 #
 
 type: specs.openrewrite.org/v1beta/recipe
-name: io.moderne.devcenter.DefaultDevCenter
-displayName: Default DevCenter
+name: io.moderne.devcenter.DevCenterStarter
+displayName: Starter DevCenter
 description: >-
   This is a default DevCenter configuration that can be used as a starting point for your own DevCenter configuration.
   It includes a combination of upgrades, migrations, and security fixes.
@@ -95,5 +95,5 @@ recipeList:
   - org.openrewrite.java.security.ZipSlip
   - org.openrewrite.java.security.SecureTempFileCreation
   # Changes made by recipes above this one in the recipe list are reported as occurrences
-  # in the security DevCenter card.
+  # in the Security DevCenter card.
   - io.moderne.devcenter.ReportAsSecurityIssues

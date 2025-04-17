@@ -42,9 +42,9 @@ public class JUnitUpgrade extends Recipe {
             @Override
             public J preVisit(J tree, ExecutionContext ctx) {
                 stopAfterPreVisit();
+
                 J j2 = (J) new FindAnnotations("@org.junit.Test", true)
                         .getVisitor().visitNonNull(tree, ctx);
-
                 if (tree != j2) {
                     upgradesAndMigrations.insertRow(ctx, new UpgradesAndMigrations.Row(
                             "Move to JUnit 5",
