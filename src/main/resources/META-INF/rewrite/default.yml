@@ -1,0 +1,41 @@
+type: specs.openrewrite.org/v1beta/recipe
+name: io.moderne.devcenter.DefaultDevCenter
+displayName: Default DevCenter
+description: >
+  This is a default DevCenter configuration that can be used as a starting point for your own DevCenter configuration.
+  It includes a combination of upgrades, migrations, and security fixes.
+  You can customize this configuration to suit your needs.
+  For more information on how to customize your DevCenter configuration, see the [DevCenter documentation](https://docs.moderne.io/user-documentation/moderne-platform/getting-started/dev-center/).
+recipeList:
+  - io.moderne.devcenter.LibraryUpgrade:
+      cardName: Move to Spring Boot 3.4.1
+      groupId: org.springframework.boot
+      artifactId: *
+      version: 3.4.1
+  #  - io.moderne.devcenter.LibraryUpgrade:
+  #      cardName: Move to JUnit 5
+  #      groupId: '*junit*'
+  #      artifactId: junit*
+  #      version: 5.12.2
+  - io.moderne.devcenter.JUnitUpgrade
+  - io.moderne.devcenter.OwaspIssues
+---
+type: specs.openrewrite.org/v1beta/recipe
+name: io.moderne.devcenter.OwaspIssues
+displayName: OWASP issues
+description: >
+  This recipe is used to fix OWASP issues in your code.
+  You can customize this configuration to suit your needs.
+  For more information on how to customize your DevCenter configuration, see the [DevCenter documentation](https://docs.moderne.io/user-documentation/moderne-platform/getting-started/dev-center/).
+recipeList:
+  - org.openrewrite.java.security.OwaspA01
+  - org.openrewrite.java.security.OwaspA02
+  - org.openrewrite.java.security.OwaspA03
+  - org.openrewrite.java.security.OwaspA05
+  - org.openrewrite.java.security.OwaspA06
+  - org.openrewrite.java.security.OwaspA08
+  - org.openrewrite.java.security.RegularExpressionDenialOfService
+  - org.openrewrite.java.security.secrets.FindSecrets
+  - org.openrewrite.java.security.ZipSlip
+  - org.openrewrite.java.security.SecureTempFileCreation
+  - io.moderne.devcenter.ReportAsSecurityIssues
