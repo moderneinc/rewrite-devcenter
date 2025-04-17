@@ -11,8 +11,8 @@ import org.openrewrite.Recipe;
 import java.util.List;
 import java.util.Map;
 
-import static io.moderne.devcenter.LibraryUpgrade.Measures.Major;
-import static io.moderne.devcenter.LibraryUpgrade.Measures.Minor;
+import static io.moderne.devcenter.LibraryUpgrade.Measure.Major;
+import static io.moderne.devcenter.LibraryUpgrade.Measure.Minor;
 import static java.util.Collections.emptyMap;
 import static org.assertj.core.api.Assertions.assertThat;
 
@@ -49,7 +49,7 @@ public class UpgradesAndMigrationsTest {
           "org.openrewrite.dataTables", emptyMap()).get(um);
     }
 
-    private static UpgradesAndMigrations.Row row(LibraryUpgrade.Measures measure, String version) {
+    private static UpgradesAndMigrations.Row row(LibraryUpgrade.Measure measure, String version) {
         return new UpgradesAndMigrations.Row(
           "cardName",
           measure.ordinal(),

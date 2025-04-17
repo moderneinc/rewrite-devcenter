@@ -26,13 +26,14 @@ public class JUnitUpgrade extends Recipe {
         return new JavaIsoVisitor<ExecutionContext>() {
             @Override
             public J preVisit(J tree, ExecutionContext ctx) {
+                stopAfterPreVisit();
                 J j2 = (J) new FindAnnotations("@org.junit.Test", true)
                         .getVisitor().visitNonNull(tree, ctx);
 
                 if (tree != j2) {
                     upgradesAndMigrations.insertRow(ctx, new UpgradesAndMigrations.Row(
                             "Move to JUnit 5",
-                            Measures.JUnit4.ordinal(),
+                            Measure.JUnit4.ordinal(),
                             "JUnit 4",
                             "JUnit 4"
                     ));
@@ -43,7 +44,7 @@ public class JUnitUpgrade extends Recipe {
                 if (tree != j3) {
                     upgradesAndMigrations.insertRow(ctx, new UpgradesAndMigrations.Row(
                             "Move to JUnit 5",
-                            Measures.Completed.ordinal(),
+                            Measure.Completed.ordinal(),
                             "Completed",
                             "JUnit 5"
                     ));
@@ -54,7 +55,7 @@ public class JUnitUpgrade extends Recipe {
         };
     }
 
-    public enum Measures {
+    public enum Measure {
         JUnit4,
         Completed
     }

@@ -75,7 +75,7 @@ public class LibraryUpgrade extends Recipe {
         });
     }
 
-    public enum Measures {
+    public enum Measure {
         Major,
         Minor,
         Patch,
@@ -120,23 +120,23 @@ public class LibraryUpgrade extends Recipe {
             VersionComparator majorComparator = requireNonNull(Semver.validate(
                     0 + "-" + (major - 1) + ".999", null).getValue());
             if (majorComparator.isValid(null, v)) {
-                return new UpgradesAndMigrations.Row(cardName, Measures.Major.ordinal(), Measures.Major.toString(), v);
+                return new UpgradesAndMigrations.Row(cardName, Measure.Major.ordinal(), Measure.Major.toString(), v);
             }
 
             VersionComparator minorComparator = requireNonNull(Semver.validate(
                     major + "-" + major + "." + (minor - 1) + ".999", null).getValue());
             if (minorComparator.isValid(null, v)) {
-                return new UpgradesAndMigrations.Row(cardName, Measures.Minor.ordinal(), Measures.Minor.toString(), v);
+                return new UpgradesAndMigrations.Row(cardName, Measure.Minor.ordinal(), Measure.Minor.toString(), v);
             }
 
             VersionComparator patchComparator = requireNonNull(Semver.validate(
                     (major + "." + minor + ".0") + "-" + (major + "." + minor + "." + (patch - 1)),
                     null).getValue());
             if (patchComparator.isValid(null, v)) {
-                return new UpgradesAndMigrations.Row(cardName, Measures.Patch.ordinal(), Measures.Patch.toString(), v);
+                return new UpgradesAndMigrations.Row(cardName, Measure.Patch.ordinal(), Measure.Patch.toString(), v);
             }
 
-            return new UpgradesAndMigrations.Row(cardName, Measures.Completed.ordinal(), Measures.Completed.toString(), v);
+            return new UpgradesAndMigrations.Row(cardName, Measure.Completed.ordinal(), Measure.Completed.toString(), v);
         }
     }
 }

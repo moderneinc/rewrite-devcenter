@@ -5,7 +5,7 @@ import org.junit.jupiter.api.Test;
 import org.openrewrite.test.RecipeSpec;
 import org.openrewrite.test.RewriteTest;
 
-import static io.moderne.devcenter.LibraryUpgrade.Measures.Minor;
+import static io.moderne.devcenter.LibraryUpgrade.Measure.Minor;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.openrewrite.maven.Assertions.pomXml;
 
