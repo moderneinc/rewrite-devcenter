@@ -3,15 +3,12 @@ plugins {
     id("org.openrewrite.build.moderne-source-available-license") version "latest.release"
 }
 
-// Set as appropriate for your organization
-group = "org.openrewrite.recipe"
+group = "io.moderne"
 description = "Rewrite DevCenter integration."
 
 val rewriteVersion = rewriteRecipe.rewriteVersion.get()
 dependencies {
-    // The bom version can also be set to a specific version
-    // https://github.com/openrewrite/rewrite-recipe-bom/releases
-    implementation(platform("org.openrewrite.recipe:rewrite-recipe-bom:latest.release"))
+    implementation(platform("io.moderne.recipe:moderne-recipe-bom:latest.release"))
 
     implementation("org.openrewrite:rewrite-java")
     implementation("org.openrewrite.recipe:rewrite-java-dependencies")
