@@ -38,7 +38,7 @@ public class DataTableRowWatcher<Row> {
 
     public List<Row> stop() {
         List<Row> rows = getRows();
-        return rows.subList(0, rows.size());
+        return rows.subList(startingRowCount, rows.size());
     }
 
     private List<Row> getRows() {
