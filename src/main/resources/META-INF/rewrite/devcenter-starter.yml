@@ -16,7 +16,7 @@
 
 type: specs.openrewrite.org/v1beta/recipe
 name: io.moderne.devcenter.DevCenterStarter
-displayName: Starter DevCenter
+displayName: DevCenter
 description: >-
   This is a default DevCenter configuration that can be used as a starting point for your own DevCenter configuration.
   It includes a combination of upgrades, migrations, and security fixes.
