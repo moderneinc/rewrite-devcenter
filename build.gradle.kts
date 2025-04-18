@@ -22,3 +22,10 @@ dependencies {
     testImplementation("org.openrewrite:rewrite-test")
     testRuntimeOnly("junit:junit:4.+")
 }
+
+nexusPublishing {
+    repositories.getByName("sonatype") {
+        nexusUrl.set(uri("https://s01.oss.sonatype.org/service/local/"))
+        snapshotRepositoryUrl.set(uri("https://s01.oss.sonatype.org/content/repositories/snapshots/"))
+    }
+}

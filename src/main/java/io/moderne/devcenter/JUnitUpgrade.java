@@ -58,7 +58,7 @@ public class JUnitUpgrade extends Recipe {
                         .getVisitor().visitNonNull(j2, ctx);
                 if (tree != j3) {
                     upgradesAndMigrations.insertRow(ctx, new UpgradesAndMigrations.Row(
-                            "Move to JUnit 5",
+                            getInstanceName(),
                             Measure.Completed.ordinal(),
                             "Completed",
                             "JUnit 5"

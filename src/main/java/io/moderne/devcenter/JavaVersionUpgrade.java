@@ -43,6 +43,11 @@ public class JavaVersionUpgrade extends Recipe {
     }
 
     @Override
+    public String getInstanceName() {
+        return "Move to Java " + majorVersion;
+    }
+
+    @Override
     public String getDescription() {
         return "Determine the current state of a repository relative to a desired Java version upgrade.";
     }
@@ -72,7 +77,7 @@ public class JavaVersionUpgrade extends Recipe {
                     }
 
                     upgradesAndMigrations.insertRow(ctx, new UpgradesAndMigrations.Row(
-                            "Move to Java " + majorVersion,
+                            getInstanceName(),
                             measure.ordinal(),
                             measure.name(),
                             javaVersion.getSourceCompatibility()

@@ -62,6 +62,11 @@ public class LibraryUpgrade extends Recipe {
     }
 
     @Override
+    public String getInstanceName() {
+        return getCardName();
+    }
+
+    @Override
     public String getDescription() {
         return "Determine the current state of a repository relative to a desired library upgrade.";
     }
