@@ -44,14 +44,16 @@ public class DevCenter {
             validationErrors.add("Only one security recipe can be included.");
         }
         for (UpgradeOrMigration upgradesAndMigration : upgradesAndMigrations) {
-            //noinspection ConstantValue
-            if (upgradesAndMigration.getFixRecipeId() == null) {
-                validationErrors.add("Recipe " + upgradesAndMigration.getRecipeName() +
-                                     " is missing a fix recipe. Please add a tag `DevCenter:fix:<RECIPE_ID>` to the recipe.");
+            if (upgradesAndMigration.getRecipesContributingMeasures().isEmpty()) {
+                validationErrors.add("Recipe `" + upgradesAndMigration.getRecipeId() + "` " +
+                                     "with a `DevCenter:fix:<RECIPE_ID>` tag should either directly or have " +
+                                     "a subrecipe contributing rows to the `UpgradesAndMigrations` data table.");
             }
         }
 
-        throw new DevCenterValidationException(validationErrors);
+        if (!validationErrors.isEmpty()) {
+            throw new DevCenterValidationException(validationErrors);
+        }
     }
 
     public List<UpgradeOrMigration> getUpgradesAndMigrations() {
@@ -67,19 +69,30 @@ public class DevCenter {
     private List<UpgradeOrMigration> getUpgradesAndMigrationsRecursive(RecipeDescriptor recipeDescriptor,
                                                                        List<UpgradeOrMigration> upgradesAndMigrations) {
         for (RecipeDescriptor recipe : recipeDescriptor.getRecipeList()) {
-            for (DataTableDescriptor dataTable : recipe.getDataTables()) {
-                if (dataTable.getName().equals(new UpgradesAndMigrations(Recipe.noop()).getDisplayName())) {
-                    //noinspection DataFlowIssue
-                    upgradesAndMigrations.add(new UpgradeOrMigration(
-                            recipe.getInstanceName(), recipe.getName(), fixRecipe(recipeDescriptor)
-                    ));
-                }
+            String fixRecipe = fixRecipe(recipe);
+            if (fixRecipe != null) {
+                upgradesAndMigrations.add(new UpgradeOrMigration(recipe.getDisplayName(),
+                        recipe.getName(),
+                        fixRecipe,
+                        getRecipesContributingMeasures(recipe, new ArrayList<>())));
             }
             for (RecipeDescriptor subRecipe : recipe.getRecipeList()) {
                 getUpgradesAndMigrationsRecursive(subRecipe, upgradesAndMigrations);
             }
         }
         return upgradesAndMigrations;
+    }
+
+    private List<RecipeDescriptor> getRecipesContributingMeasures(RecipeDescriptor recipe, List<RecipeDescriptor> contributors) {
+        for (DataTableDescriptor dataTable : recipe.getDataTables()) {
+            if (dataTable.getName().equals(new UpgradesAndMigrations(Recipe.noop()).getName())) {
+                contributors.add(recipe);
+            }
+        }
+        for (RecipeDescriptor subRecipe : recipe.getRecipeList()) {
+            getRecipesContributingMeasures(subRecipe, contributors);
+        }
+        return contributors;
     }
 
     @Nullable
@@ -109,8 +122,10 @@ public class DevCenter {
     @Value
     public static class UpgradeOrMigration {
         String displayName;
-        String recipeName;
+        String recipeId;
         String fixRecipeId;
+
+        List<RecipeDescriptor> recipesContributingMeasures;
     }
 
     @Value

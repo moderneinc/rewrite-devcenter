@@ -15,5 +15,38 @@
  */
 package io.moderne.devcenter;
 
+import org.junit.jupiter.api.Test;
+import org.openrewrite.Recipe;
+import org.openrewrite.config.Environment;
+
+import static org.assertj.core.api.Assertions.assertThat;
+import static org.assertj.core.api.Assertions.assertThatThrownBy;
+
 public class DevCenterTest {
+
+    @SuppressWarnings("DataFlowIssue")
+    @Test
+    void valid() throws DevCenterValidationException {
+        Recipe starterDevCenter = Environment.builder()
+          .scanRuntimeClasspath("org.openrewrite")
+          .scanYamlResources()
+          .build()
+          .activateRecipes("io.moderne.devcenter.DevCenterStarter");
+
+        DevCenter devCenter = new DevCenter(starterDevCenter.getDescriptor());
+        devCenter.validate();
+        assertThat(devCenter.getUpgradesAndMigrations()).hasSize(3);
+        assertThat(devCenter.getSecurity()).isNotNull();
+    }
+
+    @Test
+    void noCards() {
+        DevCenter devCenter = new DevCenter(Recipe.builder("No cards", "A DevCenter with no cards.")
+          .build("io.moderne.devcenter.DevCenterNoCards")
+          .getDescriptor());
+
+        assertThatThrownBy(devCenter::validate)
+          .isInstanceOf(DevCenterValidationException.class)
+          .hasMessageContaining("No recipes included that provide upgrades and migrations or security advice.");
+    }
 }

@@ -53,10 +53,17 @@ public class ReportAsSecurityIssues extends Recipe {
                 tree.getMarkers().findFirst(RecipesThatMadeChanges.class).ifPresent(changes -> {
                     for (List<Recipe> recipeStack : changes.getRecipes()) {
                         for (int i = 0; i < recipeStack.size(); i++) {
-                            if (recipeStack.get(i).getTags().contains("DevCenter:security")) {
-                                securityIssues.insertRow(ctx, new SecurityIssues.Row(
-                                        recipeStack.get(i + 1).getInstanceName()
-                                ));
+                            Recipe recipe = recipeStack.get(i);
+                            if (recipe.getTags().contains("DevCenter:security")) {
+                                Recipe measure = recipeStack.get(i + 1);
+                                List<Recipe> recipeList = recipe.getRecipeList();
+                                for (int j = 0; j < recipeList.size(); j++) {
+                                    if (recipeList.get(j).getName().equals(measure.getName())) {
+                                        securityIssues.insertRow(ctx, new SecurityIssues.Row(
+                                                j, measure.getInstanceName()));
+                                        break;
+                                    }
+                                }
                             }
                         }
                     }

@@ -23,14 +23,17 @@ import org.openrewrite.Recipe;
 public class SecurityIssues extends DataTable<SecurityIssues.Row> {
 
     public SecurityIssues(Recipe recipe) {
-        super(recipe,
-                "Security issues",
-                "Security issues in the repository."
-        );
+        super(recipe, "Security issues", "Security issues in the repository.");
     }
 
     @Value
     public static class Row {
+        @Column(
+                displayName = "Ordinal",
+                description = "The ordinal position of this issue relative to other issues."
+        )
+        int ordinal;
+
         @Column(
                 displayName = "Issue name",
                 description = "The name of the security issue."

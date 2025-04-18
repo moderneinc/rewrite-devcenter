@@ -40,7 +40,7 @@ tags:
   - DevCenter:fix:org.openrewrite.java.migrate.UpgradeToJava21
 recipeList:
   - io.moderne.devcenter.JavaVersionUpgrade:
-      targetVersion: 21
+      majorVersion: 21
 ---
 type: specs.openrewrite.org/v1beta/recipe
 name: io.moderne.devcenter.SpringBootUpgradeStarter

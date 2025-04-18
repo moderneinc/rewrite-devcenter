@@ -40,7 +40,7 @@ public class ReportAsSecurityIssuesTest implements RewriteTest {
     void reportSecret() {
         rewriteRun(spec -> spec.dataTable(SecurityIssues.Row.class, rows ->
             assertThat(rows).containsExactly(
-              new SecurityIssues.Row("Find secrets")
+              new SecurityIssues.Row(7, "Find secrets")
             )),
           //language=java
           java(
