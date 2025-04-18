@@ -32,8 +32,8 @@ public class ReportAsSecurityIssuesTest implements RewriteTest {
           .scanRuntimeClasspath("org.openrewrite")
           .scanYamlResources()
           .build()
-          // In src/main/resources/devcenter-starter.yml
-          .activateRecipes("io.moderne.devcenter.SecurityStarter"));
+          // In src/main/resources/original-security.yml
+          .activateRecipes("io.moderne.devcenter.SecurityOriginalStarter"));
     }
 
     @Test
