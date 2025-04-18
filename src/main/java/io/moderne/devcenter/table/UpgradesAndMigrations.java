@@ -24,6 +24,7 @@ import org.openrewrite.semver.LatestRelease;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 
 import static org.openrewrite.ExecutionContext.CURRENT_CYCLE;
@@ -40,30 +41,44 @@ public class UpgradesAndMigrations extends DataTable<UpgradesAndMigrations.Row> 
     @Override
     public void insertRow(ExecutionContext ctx, Row row) {
         if (ctx.getMessage(CURRENT_CYCLE) == null || this.allowWritingInThisCycle(ctx)) {
-            ctx.computeMessage("org.openrewrite.dataTables", row, ConcurrentHashMap::new, (extract, allDataTables) -> {
-                //noinspection rawtypes,unchecked
-                List<Row> dataTablesOfType = (List) allDataTables.computeIfAbsent(this, (c) -> new ArrayList());
-                int minOrdinal = dataTablesOfType.stream()
+            ctx.computeMessage("org.openrewrite.dataTables", row, ConcurrentHashMap<DataTable<?>, List<?>>::new, (extract, allDataTables) -> {
+                List<Row> rows = getRows(allDataTables);
+                int minOrdinal = rows.stream()
+                        .filter(r -> r.getCard().equals(row.getCard()))
                         .mapToInt(Row::getOrdinal)
                         .min()
                         .orElse(Integer.MAX_VALUE);
                 if (row.getOrdinal() <= minOrdinal) {
-                    String currentMinVersion = dataTablesOfType.stream().map(Row::getCurrentMinimumVersion).findFirst()
+                    String currentMinVersion = rows.stream().map(Row::getCurrentMinimumVersion).findFirst()
                             .orElse(null);
                     if (row.getOrdinal() == minOrdinal && !row.getCurrentMinimumVersion().equals(currentMinVersion) &&
                         new LatestRelease(null).compare(null,
                                 currentMinVersion == null ? "999" : currentMinVersion,
                                 row.getCurrentMinimumVersion()) > 0) {
-                        dataTablesOfType.clear(); // There can only be one!
-                        dataTablesOfType.add(row);
+                        rows.removeIf(r -> row.getCard().equals(r.getCard())); // There can only be one!
+                        rows.add(row);
                     } else if (row.getOrdinal() != minOrdinal) {
-                        dataTablesOfType.clear(); // There can only be one!
-                        dataTablesOfType.add(row);
+                        rows.removeIf(r -> row.getCard().equals(r.getCard())); // There can only be one!
+                        rows.add(row);
                     }
                 }
                 return allDataTables;
             });
         }
+    }
+
+    // TODO We have some design challenges with DataTable where two DataTable of the same
+    //  type show up as two different entries. I think only one ultimately is downloadable.
+    private List<Row> getRows(Map<DataTable<?>, List<?>> dataTables) {
+        for (Map.Entry<DataTable<?>, List<?>> dataTableEntry : dataTables.entrySet()) {
+            if (dataTableEntry.getKey().getClass().equals(UpgradesAndMigrations.class)) {
+                //noinspection unchecked
+                return (List<Row>) dataTableEntry.getValue();
+            }
+        }
+        //noinspection unchecked
+        return (List<Row>) dataTables.computeIfAbsent(this,
+                (c) -> new ArrayList<>());
     }
 
     @Value

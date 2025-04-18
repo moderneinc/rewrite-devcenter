@@ -55,8 +55,8 @@ tags:
 recipeList:
   - io.moderne.devcenter.LibraryUpgrade:
       cardName: Move to Spring Boot 3.4.1
-      groupId: org.springframework.boot
-      artifactId: '*'
+      groupIdPattern: org.springframework.boot
+      artifactIdPattern: '*'
       version: 3.4.1
 ---
 type: specs.openrewrite.org/v1beta/recipe

@@ -15,14 +15,20 @@
  */
 package io.moderne.devcenter;
 
+import io.moderne.devcenter.table.UpgradesAndMigrations;
 import org.junit.jupiter.api.Test;
 import org.openrewrite.Recipe;
 import org.openrewrite.config.Environment;
+import org.openrewrite.test.RewriteTest;
 
+import static io.moderne.devcenter.JUnitUpgrade.Measure.JUnit4;
+import static io.moderne.devcenter.JavaVersionUpgrade.Measure.Java8Plus;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
+import static org.openrewrite.java.Assertions.java;
+import static org.openrewrite.java.Assertions.version;
 
-public class DevCenterTest {
+public class DevCenterTest implements RewriteTest {
 
     @SuppressWarnings("DataFlowIssue")
     @Test
@@ -48,5 +54,43 @@ public class DevCenterTest {
         assertThatThrownBy(devCenter::validate)
           .isInstanceOf(DevCenterValidationException.class)
           .hasMessageContaining("No recipes included that provide upgrades and migrations or security advice.");
+    }
+
+    @Test
+    void twoUpgradeCardsFromOneRepository() {
+        rewriteRun(
+          spec -> spec
+            .recipe(Environment.builder()
+              .scanRuntimeClasspath("org.openrewrite")
+              .scanYamlResources()
+              .build()
+              // In src/main/resources/devcenter-starter.yml
+              .activateRecipes("io.moderne.devcenter.DevCenterStarter"))
+            .dataTable(UpgradesAndMigrations.Row.class, rows ->
+              assertThat(rows).containsExactlyInAnyOrder(
+                new UpgradesAndMigrations.Row(
+                  "Move to Java 21", Java8Plus.ordinal(), Java8Plus.getDisplayName(), "8"),
+                new UpgradesAndMigrations.Row("Move to JUnit 5",
+                  JUnit4.ordinal(), "JUnit 4", "JUnit 4")
+              )),
+          version(
+            //language=java
+            java(
+              """
+                public class MyTest {
+                    @org.junit.Test
+                    public void mine() {}
+                }
+                """,
+              """
+                public class MyTest {
+                    /*~~>*/@org.junit.Test
+                    public void mine() {}
+                }
+                """
+            ),
+            8
+          )
+        );
     }
 }

@@ -10,12 +10,12 @@ val rewriteVersion = rewriteRecipe.rewriteVersion.get()
 dependencies {
     implementation(platform("io.moderne.recipe:moderne-recipe-bom:latest.release"))
 
-    implementation("org.openrewrite:rewrite-java")
-    implementation("org.openrewrite.recipe:rewrite-java-dependencies")
-    implementation("org.openrewrite.recipe:rewrite-java-security")
-    implementation("org.openrewrite:rewrite-maven")
-    implementation("org.openrewrite:rewrite-gradle")
-    runtimeOnly("org.openrewrite:rewrite-java-17")
+    implementation("org.openrewrite:rewrite-java:${rewriteVersion}")
+    implementation("org.openrewrite.recipe:rewrite-java-dependencies:${rewriteVersion}")
+    implementation("org.openrewrite.recipe:rewrite-java-security:${rewriteVersion}")
+    implementation("org.openrewrite:rewrite-maven:${rewriteVersion}")
+    implementation("org.openrewrite:rewrite-gradle:${rewriteVersion}")
+    runtimeOnly("org.openrewrite:rewrite-java-17:${rewriteVersion}")
 
     implementation("org.slf4j:slf4j-api:1.7.+")
 

@@ -17,6 +17,7 @@ package io.moderne.devcenter;
 
 import io.moderne.devcenter.table.UpgradesAndMigrations;
 import lombok.EqualsAndHashCode;
+import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 import lombok.Value;
 import org.openrewrite.ExecutionContext;
@@ -79,7 +80,7 @@ public class JavaVersionUpgrade extends Recipe {
                     upgradesAndMigrations.insertRow(ctx, new UpgradesAndMigrations.Row(
                             getInstanceName(),
                             measure.ordinal(),
-                            measure.name(),
+                            measure.displayName,
                             javaVersion.getSourceCompatibility()
                     ));
                 });
@@ -88,6 +89,7 @@ public class JavaVersionUpgrade extends Recipe {
         };
     }
 
+    @Getter
     @RequiredArgsConstructor
     public enum Measure {
         Java8Plus("Java 8+"),
@@ -96,6 +98,6 @@ public class JavaVersionUpgrade extends Recipe {
         Java21Plus("Java 21+"),
         Completed("Completed");
 
-        private final String name;
+        private final String displayName;
     }
 }
