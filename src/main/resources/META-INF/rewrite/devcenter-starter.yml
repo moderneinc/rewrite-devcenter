@@ -54,10 +54,10 @@ tags:
   - DevCenter:fix:io.moderne.java.spring.boot3.UpgradeSpringBoot_3_4
 recipeList:
   - io.moderne.devcenter.LibraryUpgrade:
-      cardName: Move to Spring Boot 3.4.1
+      cardName: Move to Spring Boot 3.4.4
       groupIdPattern: org.springframework.boot
       artifactIdPattern: '*'
-      version: 3.4.1
+      version: 3.4.4
 ---
 type: specs.openrewrite.org/v1beta/recipe
 name: io.moderne.devcenter.JUnitUpgradeStarter

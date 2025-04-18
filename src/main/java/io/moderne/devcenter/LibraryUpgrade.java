@@ -126,7 +126,7 @@ public class LibraryUpgrade extends Recipe {
                         break;
                     case 1:
                         this.minor = part.intValue();
-                        return;
+                        break;
                     case 2:
                         this.patch = part.intValue();
                         return;

@@ -16,30 +16,42 @@
 package io.moderne.devcenter;
 
 import io.moderne.devcenter.table.UpgradesAndMigrations;
-import org.junit.jupiter.api.Test;
-import org.openrewrite.test.RecipeSpec;
+import org.junit.jupiter.params.ParameterizedTest;
+import org.junit.jupiter.params.provider.Arguments;
+import org.junit.jupiter.params.provider.MethodSource;
 import org.openrewrite.test.RewriteTest;
 
-import static io.moderne.devcenter.LibraryUpgrade.Measure.Minor;
+import java.util.stream.Stream;
+
+import static io.moderne.devcenter.LibraryUpgrade.Measure.*;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.openrewrite.maven.Assertions.pomXml;
 
 public class LibraryUpgradeTest implements RewriteTest {
 
-    @Override
-    public void defaults(RecipeSpec spec) {
-        spec.recipe(new LibraryUpgrade("Move to latest Jackson",
-          "com.fasterxml*", "*", "2.16.0"));
+    private static Stream<Arguments> jacksonVersions() {
+        return Stream.of(
+          Arguments.of("3.0", "2.12.3", Major),
+          Arguments.of("2.16.0", "2.12.3", Minor),
+          Arguments.of("2.12.4", "2.12.3", Patch),
+          Arguments.of("2.12.4", "2.12.4", Completed),
+          Arguments.of("2.12.4", "2.16.0", Completed)
+        );
     }
 
-    @Test
-    void libraryUpgrade() {
+    @ParameterizedTest
+    @MethodSource("jacksonVersions")
+    void minorUpgrade(String targetVersion, String currentVersion, LibraryUpgrade.Measure measure) {
         rewriteRun(
-          spec -> spec.dataTable(UpgradesAndMigrations.Row.class, rows ->
-            assertThat(rows).containsExactly(
-              new UpgradesAndMigrations.Row("Move to latest Jackson",
-                Minor.ordinal(), Minor.toString(), "2.12.3")
-            )),
+          spec ->
+            spec
+              .recipe(new LibraryUpgrade("Move Jackson",
+                "com.fasterxml*", "*", targetVersion))
+              .dataTable(UpgradesAndMigrations.Row.class, rows ->
+                assertThat(rows).containsExactly(
+                  new UpgradesAndMigrations.Row("Move Jackson",
+                    measure.ordinal(), measure.name(), currentVersion)
+                )),
           //language=xml
           pomXml(
             """
@@ -51,11 +63,11 @@ public class LibraryUpgradeTest implements RewriteTest {
                     <dependency>
                         <groupId>com.fasterxml.jackson.module</groupId>
                         <artifactId>jackson-module-parameter-names</artifactId>
-                        <version>2.12.3</version>
+                        <version>%s</version>
                     </dependency>
                 </dependencies>
               </project>
-              """,
+              """.formatted(currentVersion),
             """
               <project>
                 <groupId>com.example</groupId>
@@ -65,11 +77,11 @@ public class LibraryUpgradeTest implements RewriteTest {
                     <!--~~>--><dependency>
                         <groupId>com.fasterxml.jackson.module</groupId>
                         <artifactId>jackson-module-parameter-names</artifactId>
-                        <version>2.12.3</version>
+                        <version>%s</version>
                     </dependency>
                 </dependencies>
               </project>
-              """
+              """.formatted(currentVersion)
           )
         );
     }
