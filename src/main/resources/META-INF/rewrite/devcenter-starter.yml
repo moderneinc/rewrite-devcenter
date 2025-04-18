@@ -84,6 +84,7 @@ tags:
   # dimensions of the security DevCenter card.
   - DevCenter:security
 recipeList:
+  - org.openrewrite.java.security.secrets.FindSecrets
   - org.openrewrite.java.security.OwaspA01
   - org.openrewrite.java.security.OwaspA02
   - org.openrewrite.java.security.OwaspA03
@@ -92,7 +93,6 @@ recipeList:
   - org.openrewrite.java.security.OwaspA06
   - org.openrewrite.java.security.OwaspA08
   - org.openrewrite.java.security.RegularExpressionDenialOfService
-  - org.openrewrite.java.security.secrets.FindSecrets
   - org.openrewrite.java.security.ZipSlip
   - org.openrewrite.java.security.SecureTempFileCreation
   # Changes made by recipes above this one in the recipe list are reported as occurrences
