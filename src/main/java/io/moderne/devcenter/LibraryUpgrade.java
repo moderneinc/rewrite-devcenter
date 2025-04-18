@@ -29,6 +29,8 @@ import org.openrewrite.maven.table.DependenciesInUse;
 import org.openrewrite.semver.Semver;
 import org.openrewrite.semver.VersionComparator;
 
+import java.util.List;
+
 import static java.util.Objects.requireNonNull;
 
 @Value
@@ -85,7 +87,8 @@ public class LibraryUpgrade extends Recipe {
                 UpgradeRowBuilder rowBuilder = new UpgradeRowBuilder(cardName, version);
                 Tree t = dependencyInsight.getVisitor().visitNonNull(tree, ctx);
 
-                for (DependenciesInUse.Row dependencyInUse : dataTableWatcher.stop()) {
+                List<DependenciesInUse.Row> dependenciesInUse = dataTableWatcher.stop();
+                for (DependenciesInUse.Row dependencyInUse : dependenciesInUse) {
                     UpgradesAndMigrations.Row row = rowBuilder.getRow(dependencyInUse.getVersion());
                     upgradesAndMigrations.insertRow(ctx, row);
                 }

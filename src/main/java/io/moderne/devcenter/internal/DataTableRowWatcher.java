@@ -19,10 +19,10 @@ import lombok.RequiredArgsConstructor;
 import org.openrewrite.DataTable;
 import org.openrewrite.ExecutionContext;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
-import static java.util.Collections.emptyList;
 import static java.util.Collections.emptyMap;
 
 @RequiredArgsConstructor
@@ -43,12 +43,14 @@ public class DataTableRowWatcher<Row> {
 
     private List<Row> getRows() {
         Map<DataTable<?>, List<?>> dataTables = ctx.getMessage("org.openrewrite.dataTables", emptyMap());
+        // TODO because two DataTable of the same type can be created
+        List<Row> rows = new ArrayList<>();
         for (Map.Entry<DataTable<?>, List<?>> dataTableEntry : dataTables.entrySet()) {
             if (dataTableEntry.getKey().getClass().equals(dataTable.getClass())) {
                 //noinspection unchecked
-                return (List<Row>) dataTableEntry.getValue();
+                rows.addAll((List<Row>) dataTableEntry.getValue());
             }
         }
-        return emptyList();
+        return rows;
     }
 }
