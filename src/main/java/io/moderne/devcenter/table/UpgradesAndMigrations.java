@@ -40,6 +40,7 @@ public class UpgradesAndMigrations extends DataTable<UpgradesAndMigrations.Row> 
 
     @Override
     public void insertRow(ExecutionContext ctx, Row row) {
+        // TODO CURRENT_CYCLE value is null in the context of a RewriteTest.
         if (ctx.getMessage(CURRENT_CYCLE) == null || this.allowWritingInThisCycle(ctx)) {
             ctx.computeMessage("org.openrewrite.dataTables", row, ConcurrentHashMap<DataTable<?>, List<?>>::new, (extract, allDataTables) -> {
                 List<Row> rows = getRows(allDataTables);
