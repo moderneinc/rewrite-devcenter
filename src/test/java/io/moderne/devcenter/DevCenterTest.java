@@ -16,10 +16,13 @@
 package io.moderne.devcenter;
 
 import io.moderne.devcenter.table.UpgradesAndMigrations;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.openrewrite.Recipe;
 import org.openrewrite.config.Environment;
 import org.openrewrite.test.RewriteTest;
+
+import java.util.List;
 
 import static io.moderne.devcenter.JUnitUpgrade.Measure.JUnit4;
 import static io.moderne.devcenter.JavaVersionUpgrade.Measure.Java8Plus;
@@ -29,27 +32,37 @@ import static org.openrewrite.java.Assertions.java;
 import static org.openrewrite.java.Assertions.version;
 
 public class DevCenterTest implements RewriteTest {
+    Recipe starterDevCenter;
 
-    @SuppressWarnings("DataFlowIssue")
-    @Test
-    void valid() throws DevCenterValidationException {
-        Recipe starterDevCenter = Environment.builder()
+    @BeforeEach
+    void before() {
+        starterDevCenter = Environment.builder()
           .scanRuntimeClasspath("org.openrewrite")
           .scanYamlResources()
           .build()
           .activateRecipes("io.moderne.devcenter.DevCenterStarter");
+    }
 
-        DevCenter devCenter = new DevCenter(starterDevCenter.getDescriptor());
+    @SuppressWarnings("DataFlowIssue")
+    @Test
+    void valid() throws DevCenterValidationException {
+        DevCenter devCenter = new DevCenter(starterDevCenter);
         devCenter.validate();
+
         assertThat(devCenter.getUpgradesAndMigrations()).hasSize(3);
+        assertThat(devCenter.getUpgradesAndMigrations().stream()
+          .map(u -> u.getCard().getMeasures()))
+          .contains(List.of("Major", "Minor", "Patch", "Completed"));
+
         assertThat(devCenter.getSecurity()).isNotNull();
+        assertThat(devCenter.getSecurity().getMeasures())
+          .contains("Zip slip");
     }
 
     @Test
     void noCards() {
         DevCenter devCenter = new DevCenter(Recipe.builder("No cards", "A DevCenter with no cards.")
-          .build("io.moderne.devcenter.DevCenterNoCards")
-          .getDescriptor());
+          .build("io.moderne.devcenter.DevCenterNoCards"));
 
         assertThatThrownBy(devCenter::validate)
           .isInstanceOf(DevCenterValidationException.class)
@@ -59,13 +72,7 @@ public class DevCenterTest implements RewriteTest {
     @Test
     void twoUpgradeCardsFromOneRepository() {
         rewriteRun(
-          spec -> spec
-            .recipe(Environment.builder()
-              .scanRuntimeClasspath("org.openrewrite")
-              .scanYamlResources()
-              .build()
-              // In src/main/resources/devcenter-starter.yml
-              .activateRecipes("io.moderne.devcenter.DevCenterStarter"))
+          spec -> spec.recipe(starterDevCenter)
             .dataTable(UpgradesAndMigrations.Row.class, rows ->
               assertThat(rows).containsExactlyInAnyOrder(
                 new UpgradesAndMigrations.Row(

@@ -84,18 +84,9 @@ tags:
   # dimensions of the security DevCenter card.
   - DevCenter:security
 recipeList:
-  # The most expensive recipe in the original DevCenter set
-  # - org.openrewrite.java.security.secrets.FindSecrets
-
   - org.openrewrite.java.security.OwaspA01
   - org.openrewrite.java.security.OwaspA02
   - org.openrewrite.java.security.OwaspA03
-  # TODO TraitErrors thrown by VarAccessBase bug
-  #  - org.openrewrite.java.security.OwaspA05
-
-  # Includes dependency vulnerability upgrade attempts which are expensive
-  #- org.openrewrite.java.security.OwaspA06
-
   - org.openrewrite.java.security.OwaspA08
   - org.openrewrite.java.security.RegularExpressionDenialOfService
   - org.openrewrite.java.security.ZipSlip

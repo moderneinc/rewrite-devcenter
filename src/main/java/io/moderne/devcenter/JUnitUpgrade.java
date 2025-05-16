@@ -23,7 +23,7 @@ import org.openrewrite.java.JavaIsoVisitor;
 import org.openrewrite.java.search.FindAnnotations;
 import org.openrewrite.java.tree.J;
 
-public class JUnitUpgrade extends Recipe {
+public class JUnitUpgrade extends Recipe implements DevCenterMeasurer<JUnitUpgrade.Measure> {
     private final transient UpgradesAndMigrations upgradesAndMigrations = new UpgradesAndMigrations(this);
 
     @Override
@@ -70,8 +70,13 @@ public class JUnitUpgrade extends Recipe {
         };
     }
 
-    public enum Measure {
+    public enum Measure implements DevCenterMeasure {
         JUnit4,
-        Completed
+        Completed;
+
+        @Override
+        public String getDisplayName() {
+            return name();
+        }
     }
 }

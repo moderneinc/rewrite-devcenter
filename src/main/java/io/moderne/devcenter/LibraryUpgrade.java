@@ -35,7 +35,7 @@ import static java.util.Objects.requireNonNull;
 
 @Value
 @EqualsAndHashCode(callSuper = false)
-public class LibraryUpgrade extends Recipe {
+public class LibraryUpgrade extends Recipe implements DevCenterMeasurer<LibraryUpgrade.Measure> {
     transient UpgradesAndMigrations upgradesAndMigrations = new UpgradesAndMigrations(this);
 
     @Option(displayName = "Card name",
@@ -98,11 +98,16 @@ public class LibraryUpgrade extends Recipe {
         });
     }
 
-    public enum Measure {
+    public enum Measure implements DevCenterMeasure {
         Major,
         Minor,
         Patch,
-        Completed
+        Completed;
+
+        @Override
+        public String getDisplayName() {
+            return name();
+        }
     }
 
     private static class UpgradeRowBuilder {

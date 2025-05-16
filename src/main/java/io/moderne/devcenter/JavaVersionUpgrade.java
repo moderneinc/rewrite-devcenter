@@ -30,7 +30,7 @@ import org.openrewrite.java.tree.J;
 
 @Value
 @EqualsAndHashCode(callSuper = false)
-public class JavaVersionUpgrade extends Recipe {
+public class JavaVersionUpgrade extends Recipe implements DevCenterMeasurer<JavaVersionUpgrade.Measure> {
     transient UpgradesAndMigrations upgradesAndMigrations = new UpgradesAndMigrations(this);
 
     @Option(displayName = "Major version",
@@ -91,7 +91,7 @@ public class JavaVersionUpgrade extends Recipe {
 
     @Getter
     @RequiredArgsConstructor
-    public enum Measure {
+    public enum Measure implements DevCenterMeasure {
         Java8Plus("Java 8+"),
         Java11Plus("Java 11+"),
         Java17Plus("Java 17+"),

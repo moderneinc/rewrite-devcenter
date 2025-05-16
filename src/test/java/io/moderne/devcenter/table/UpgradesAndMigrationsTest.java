@@ -21,7 +21,6 @@ import org.junit.jupiter.api.Test;
 import org.openrewrite.DataTable;
 import org.openrewrite.ExecutionContext;
 import org.openrewrite.InMemoryExecutionContext;
-import org.openrewrite.Recipe;
 
 import java.util.List;
 import java.util.Map;
@@ -37,7 +36,8 @@ public class UpgradesAndMigrationsTest {
 
     @BeforeEach
     void before() {
-        um = new UpgradesAndMigrations(Recipe.noop());
+        //noinspection DataFlowIssue
+        um = new UpgradesAndMigrations(null);
         ctx = new InMemoryExecutionContext();
     }
 

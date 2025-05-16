@@ -15,7 +15,9 @@
  */
 package io.moderne.devcenter.table;
 
+import io.moderne.devcenter.DevCenterMeasurer;
 import lombok.Value;
+import org.intellij.lang.annotations.Language;
 import org.openrewrite.Column;
 import org.openrewrite.DataTable;
 import org.openrewrite.ExecutionContext;
@@ -30,12 +32,11 @@ import java.util.concurrent.ConcurrentHashMap;
 import static org.openrewrite.ExecutionContext.CURRENT_CYCLE;
 
 public class UpgradesAndMigrations extends DataTable<UpgradesAndMigrations.Row> {
+    @Language("markdown")
+    public final static String DISPLAY_NAME = "Upgrades and migrations";
 
-    public UpgradesAndMigrations(Recipe recipe) {
-        super(recipe,
-                "Upgrades and migrations",
-                "Progress towards organizational objectives on library or language migrations and upgrades."
-        );
+    public <T extends Recipe & DevCenterMeasurer<?>> UpgradesAndMigrations(T recipe) {
+        super(recipe, DISPLAY_NAME, "Progress towards organizational objectives on library or language migrations and upgrades.");
     }
 
     @Override
