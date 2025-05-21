@@ -16,14 +16,19 @@
 package io.moderne.devcenter;
 
 import io.moderne.devcenter.table.UpgradesAndMigrations;
+import lombok.Getter;
+import lombok.RequiredArgsConstructor;
 import org.openrewrite.ExecutionContext;
-import org.openrewrite.Recipe;
 import org.openrewrite.TreeVisitor;
 import org.openrewrite.java.JavaIsoVisitor;
 import org.openrewrite.java.search.FindAnnotations;
 import org.openrewrite.java.tree.J;
 
-public class JUnitUpgrade extends Recipe {
+import java.util.Arrays;
+import java.util.List;
+import java.util.stream.Collectors;
+
+public class JUnitUpgrade extends UpgradeRecipe {
     private final transient UpgradesAndMigrations upgradesAndMigrations = new UpgradesAndMigrations(this);
 
     @Override
@@ -47,10 +52,10 @@ public class JUnitUpgrade extends Recipe {
                         .getVisitor().visitNonNull(tree, ctx);
                 if (tree != j2) {
                     upgradesAndMigrations.insertRow(ctx, new UpgradesAndMigrations.Row(
-                            "Move to JUnit 5",
+                            getInstanceName(),
                             Measure.JUnit4.ordinal(),
-                            "JUnit 4",
-                            "JUnit 4"
+                            Measure.JUnit4.getDisplayName(),
+                            Measure.JUnit4.getMinimumVersionName()
                     ));
                 }
 
@@ -60,8 +65,8 @@ public class JUnitUpgrade extends Recipe {
                     upgradesAndMigrations.insertRow(ctx, new UpgradesAndMigrations.Row(
                             getInstanceName(),
                             Measure.Completed.ordinal(),
-                            "Completed",
-                            "JUnit 5"
+                            Measure.Completed.getDisplayName(),
+                            Measure.Completed.getMinimumVersionName()
                     ));
                 }
 
@@ -70,8 +75,19 @@ public class JUnitUpgrade extends Recipe {
         };
     }
 
+    @Override
+    public List<String> measureNames() {
+        return Arrays.stream(Measure.values())
+                .map(Measure::getDisplayName)
+                .collect(Collectors.toList());
+    }
+
+    @RequiredArgsConstructor
+    @Getter
     public enum Measure {
-        JUnit4,
-        Completed
+        JUnit4("JUnit 4", "JUnit 4"),
+        Completed("Completed", "JUnit 5");
+        final String displayName;
+        final String minimumVersionName;
     }
 }

@@ -29,13 +29,16 @@ import org.openrewrite.maven.table.DependenciesInUse;
 import org.openrewrite.semver.Semver;
 import org.openrewrite.semver.VersionComparator;
 
+import java.util.Arrays;
 import java.util.List;
+import java.util.Objects;
+import java.util.stream.Collectors;
 
 import static java.util.Objects.requireNonNull;
 
 @Value
 @EqualsAndHashCode(callSuper = false)
-public class LibraryUpgrade extends Recipe {
+public class LibraryUpgrade extends UpgradeRecipe {
     transient UpgradesAndMigrations upgradesAndMigrations = new UpgradesAndMigrations(this);
 
     @Option(displayName = "Card name",
@@ -98,11 +101,18 @@ public class LibraryUpgrade extends Recipe {
         });
     }
 
+    @Override
+    public List<String> measureNames() {
+        return Arrays.stream(Measure.values())
+                .map(Measure::toString)
+                .collect(Collectors.toList());
+    }
+
     public enum Measure {
         Major,
         Minor,
         Patch,
-        Completed
+        Completed;
     }
 
     private static class UpgradeRowBuilder {

@@ -22,15 +22,18 @@ import lombok.RequiredArgsConstructor;
 import lombok.Value;
 import org.openrewrite.ExecutionContext;
 import org.openrewrite.Option;
-import org.openrewrite.Recipe;
 import org.openrewrite.TreeVisitor;
 import org.openrewrite.java.JavaIsoVisitor;
 import org.openrewrite.java.marker.JavaVersion;
 import org.openrewrite.java.tree.J;
 
+import java.util.Arrays;
+import java.util.List;
+import java.util.stream.Collectors;
+
 @Value
 @EqualsAndHashCode(callSuper = false)
-public class JavaVersionUpgrade extends Recipe {
+public class JavaVersionUpgrade extends UpgradeRecipe {
     transient UpgradesAndMigrations upgradesAndMigrations = new UpgradesAndMigrations(this);
 
     @Option(displayName = "Major version",
@@ -87,6 +90,13 @@ public class JavaVersionUpgrade extends Recipe {
                 return tree;
             }
         };
+    }
+
+    @Override
+    public List<String> measureNames() {
+        return Arrays.stream(Measure.values())
+                .map(Measure::getDisplayName)
+                .collect(Collectors.toList());
     }
 
     @Getter
