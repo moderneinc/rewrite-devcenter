@@ -23,7 +23,11 @@ import org.openrewrite.java.JavaIsoVisitor;
 import org.openrewrite.java.search.FindAnnotations;
 import org.openrewrite.java.tree.J;
 
-public class JUnitUpgrade extends Recipe implements DevCenterMeasurer<JUnitUpgrade.Measure> {
+import java.util.List;
+import java.util.stream.Collectors;
+import java.util.stream.Stream;
+
+public class JUnitUpgrade extends Recipe implements DevCenterMeasurer {
     private final transient UpgradesAndMigrations upgradesAndMigrations = new UpgradesAndMigrations(this);
 
     @Override
@@ -68,6 +72,11 @@ public class JUnitUpgrade extends Recipe implements DevCenterMeasurer<JUnitUpgra
                 return j3;
             }
         };
+    }
+
+    @Override
+    public List<String> getMeasures() {
+        return Stream.of(Measure.values()).map(Measure::name).collect(Collectors.toList());
     }
 
     public enum Measure implements DevCenterMeasure {

@@ -61,7 +61,7 @@ public class DevCenter {
         for (Recipe subRecipe : recipe.getRecipeList()) {
             String fixRecipe = fixRecipe(subRecipe.getDescriptor());
             if (fixRecipe != null) {
-                DevCenterMeasurer<?> devCenterMeasurer = findDevCenterCardRecursive(subRecipe);
+                DevCenterMeasurer devCenterMeasurer = findDevCenterCardRecursive(subRecipe);
                 if (devCenterMeasurer != null) {
                     upgradesAndMigrations.add(new UpgradeOrMigration(
                             recipe.getDisplayName(),
@@ -76,12 +76,12 @@ public class DevCenter {
         return upgradesAndMigrations;
     }
 
-    private @Nullable DevCenterMeasurer<?> findDevCenterCardRecursive(Recipe recipe) {
+    private @Nullable DevCenterMeasurer findDevCenterCardRecursive(Recipe recipe) {
         for (Recipe subRecipe : recipe.getRecipeList()) {
             if (subRecipe instanceof DevCenterMeasurer) {
-                return (DevCenterMeasurer<?>) subRecipe;
+                return (DevCenterMeasurer) subRecipe;
             }
-            DevCenterMeasurer<?> devCenterMeasurer = findDevCenterCardRecursive(subRecipe);
+            DevCenterMeasurer devCenterMeasurer = findDevCenterCardRecursive(subRecipe);
             if (devCenterMeasurer != null) {
                 return devCenterMeasurer;
             }
@@ -121,7 +121,7 @@ public class DevCenter {
         String displayName;
         String recipeId;
         String fixRecipeId;
-        DevCenterMeasurer<?> card;
+        DevCenterMeasurer card;
     }
 
     @Value

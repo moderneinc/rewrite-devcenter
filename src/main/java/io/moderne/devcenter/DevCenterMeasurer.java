@@ -15,34 +15,8 @@
  */
 package io.moderne.devcenter;
 
-import java.lang.reflect.ParameterizedType;
-import java.lang.reflect.Type;
-import java.util.ArrayList;
-import java.util.Collections;
 import java.util.List;
 
-public interface DevCenterMeasurer<Measures extends Enum<?> & DevCenterMeasure> {
-    default List<String> getMeasures() {
-        Measures[] values = null;
-        for (Type generic : getClass().getGenericInterfaces()) {
-            if (generic instanceof ParameterizedType) {
-                ParameterizedType pt = (ParameterizedType) generic;
-                if (pt.getRawType().equals(DevCenterMeasurer.class)) {
-                    Type actualTypeArgument = pt.getActualTypeArguments()[0];
-                    //noinspection unchecked
-                    values = (Measures[]) ((Class<Enum<?>>) actualTypeArgument).getEnumConstants();
-                }
-            }
-        }
-        if (values == null) {
-            return Collections.emptyList();
-        }
-
-        List<String> names = new ArrayList<>();
-        for (Measures value : values) {
-            names.add(value.getDisplayName());
-        }
-
-        return names;
-    }
+public interface DevCenterMeasurer {
+    List<String> getMeasures();
 }

@@ -35,7 +35,7 @@ public class UpgradesAndMigrations extends DataTable<UpgradesAndMigrations.Row> 
     @Language("markdown")
     public final static String DISPLAY_NAME = "Upgrades and migrations";
 
-    public <T extends Recipe & DevCenterMeasurer<?>> UpgradesAndMigrations(T recipe) {
+    public <T extends Recipe & DevCenterMeasurer> UpgradesAndMigrations(T recipe) {
         super(recipe, DISPLAY_NAME, "Progress towards organizational objectives on library or language migrations and upgrades.");
     }
 

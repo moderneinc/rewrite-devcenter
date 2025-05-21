@@ -28,9 +28,13 @@ import org.openrewrite.java.JavaIsoVisitor;
 import org.openrewrite.java.marker.JavaVersion;
 import org.openrewrite.java.tree.J;
 
+import java.util.List;
+import java.util.stream.Collectors;
+import java.util.stream.Stream;
+
 @Value
 @EqualsAndHashCode(callSuper = false)
-public class JavaVersionUpgrade extends Recipe implements DevCenterMeasurer<JavaVersionUpgrade.Measure> {
+public class JavaVersionUpgrade extends Recipe implements DevCenterMeasurer {
     transient UpgradesAndMigrations upgradesAndMigrations = new UpgradesAndMigrations(this);
 
     @Option(displayName = "Major version",
@@ -87,6 +91,11 @@ public class JavaVersionUpgrade extends Recipe implements DevCenterMeasurer<Java
                 return tree;
             }
         };
+    }
+
+    @Override
+    public List<String> getMeasures() {
+        return Stream.of(Measure.values()).map(Measure::getDisplayName).collect(Collectors.toList());
     }
 
     @Getter
