@@ -30,12 +30,14 @@ import org.openrewrite.semver.Semver;
 import org.openrewrite.semver.VersionComparator;
 
 import java.util.List;
+import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 import static java.util.Objects.requireNonNull;
 
 @Value
 @EqualsAndHashCode(callSuper = false)
-public class LibraryUpgrade extends Recipe implements DevCenterMeasurer<LibraryUpgrade.Measure> {
+public class LibraryUpgrade extends Recipe implements DevCenterMeasurer {
     transient UpgradesAndMigrations upgradesAndMigrations = new UpgradesAndMigrations(this);
 
     @Option(displayName = "Card name",
@@ -96,6 +98,11 @@ public class LibraryUpgrade extends Recipe implements DevCenterMeasurer<LibraryU
                 return t;
             }
         });
+    }
+
+    @Override
+    public List<String> getMeasures() {
+        return Stream.of(Measure.values()).map(Measure::name).collect(Collectors.toList());
     }
 
     public enum Measure implements DevCenterMeasure {
