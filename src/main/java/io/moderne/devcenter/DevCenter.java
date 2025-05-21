@@ -64,10 +64,10 @@ public class DevCenter {
                 DevCenterMeasurer devCenterMeasurer = findDevCenterCardRecursive(subRecipe);
                 if (devCenterMeasurer != null) {
                     upgradesAndMigrations.add(new UpgradeOrMigration(
-                            recipe.getDisplayName(),
+                            devCenterMeasurer.getInstanceName(),
                             recipe.getName(),
                             fixRecipe,
-                            devCenterMeasurer
+                            devCenterMeasurer.getMeasures()
                     ));
                 }
             }
@@ -121,7 +121,7 @@ public class DevCenter {
         String displayName;
         String recipeId;
         String fixRecipeId;
-        DevCenterMeasurer card;
+        List<String> measures;
     }
 
     @Value

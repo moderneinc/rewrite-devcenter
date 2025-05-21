@@ -51,7 +51,7 @@ public class DevCenterTest implements RewriteTest {
 
         assertThat(devCenter.getUpgradesAndMigrations()).hasSize(3);
         assertThat(devCenter.getUpgradesAndMigrations().stream()
-          .map(u -> u.getCard().getMeasures()))
+          .map(DevCenter.UpgradeOrMigration::getMeasures))
           .contains(List.of("Major", "Minor", "Patch", "Completed"));
 
         assertThat(devCenter.getSecurity()).isNotNull();
