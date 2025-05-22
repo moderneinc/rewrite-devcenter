@@ -20,6 +20,7 @@ dependencies {
     implementation("org.slf4j:slf4j-api:1.7.+")
 
     testImplementation("org.openrewrite:rewrite-test")
+    testImplementation("org.openrewrite:rewrite-java-21:${rewriteVersion}")
     testRuntimeOnly("junit:junit:4.+")
 }
 
