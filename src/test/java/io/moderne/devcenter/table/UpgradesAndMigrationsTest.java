@@ -15,7 +15,7 @@
  */
 package io.moderne.devcenter.table;
 
-import io.moderne.devcenter.LibraryUpgrade;
+import io.moderne.devcenter.GavMeasure;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.openrewrite.DataTable;
@@ -25,8 +25,8 @@ import org.openrewrite.InMemoryExecutionContext;
 import java.util.List;
 import java.util.Map;
 
-import static io.moderne.devcenter.LibraryUpgrade.Measure.Major;
-import static io.moderne.devcenter.LibraryUpgrade.Measure.Minor;
+import static io.moderne.devcenter.GavMeasure.Major;
+import static io.moderne.devcenter.GavMeasure.Minor;
 import static java.util.Collections.emptyMap;
 import static org.assertj.core.api.Assertions.assertThat;
 
@@ -64,11 +64,11 @@ public class UpgradesAndMigrationsTest {
           "org.openrewrite.dataTables", emptyMap()).get(um);
     }
 
-    private static UpgradesAndMigrations.Row row(LibraryUpgrade.Measure measure, String version) {
+    private static UpgradesAndMigrations.Row row(GavMeasure measureeasure, String version) {
         return new UpgradesAndMigrations.Row(
           "cardName",
-          measure.ordinal(),
-          measure.toString(),
+          measureeasure.ordinal(),
+          measureeasure.toString(),
           version
         );
     }

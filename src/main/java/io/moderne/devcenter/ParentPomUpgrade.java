@@ -21,9 +21,9 @@ import lombok.EqualsAndHashCode;
 import lombok.Value;
 import org.openrewrite.*;
 import org.openrewrite.gradle.IsBuildGradle;
-import org.openrewrite.java.dependencies.DependencyInsight;
 import org.openrewrite.maven.search.FindMavenProject;
-import org.openrewrite.maven.table.DependenciesInUse;
+import org.openrewrite.maven.search.ParentPomInsight;
+import org.openrewrite.maven.table.ParentPomsInUse;
 
 import java.util.List;
 import java.util.stream.Collectors;
@@ -31,32 +31,32 @@ import java.util.stream.Stream;
 
 @Value
 @EqualsAndHashCode(callSuper = false)
-public class LibraryUpgrade extends Recipe implements DevCenterMeasurer {
+public class ParentPomUpgrade  extends Recipe implements DevCenterMeasurer {
     transient UpgradesAndMigrations upgradesAndMigrations = new UpgradesAndMigrations(this);
 
     @Option(displayName = "Card name",
             description = "The display name of the DevCenter card")
     String cardName;
 
-    @Option(displayName = "Group pattern",
-            description = "Group glob pattern used to match dependencies.",
-            example = "com.fasterxml.jackson.module")
+    @Option(displayName = "Group identifier",
+            description = "Group identifier used to match POM parents.",
+            example = "org.springframework.boot")
     String groupIdPattern;
 
-    @Option(displayName = "Artifact pattern",
-            description = "Artifact glob pattern used to match dependencies.",
-            example = "jackson-module-*")
+    @Option(displayName = "Artifact identifier",
+            description = "Artifact identifier used to match POM parents.",
+            example = "spring-boot-parent")
     String artifactIdPattern;
 
     @Option(displayName = "Target version",
             description = "The target version of the upgrade. " +
-                          "Specify the version out to the desired patch version.",
-            example = "3.4.1")
+                    "Specify the version out to the desired patch version.",
+            example = "3.4.5")
     String version;
 
     @Override
     public String getDisplayName() {
-        return "Library upgrade";
+        return "Parent POM upgrade";
     }
 
     @Override
@@ -66,7 +66,7 @@ public class LibraryUpgrade extends Recipe implements DevCenterMeasurer {
 
     @Override
     public String getDescription() {
-        return "Determine the current state of a repository relative to a desired library upgrade.";
+        return "Determine the current state of a repository relative to a desired parent POM upgrade.";
     }
 
     @Override
@@ -76,17 +76,20 @@ public class LibraryUpgrade extends Recipe implements DevCenterMeasurer {
             public Tree preVisit(Tree tree, ExecutionContext ctx) {
                 stopAfterPreVisit();
 
-                DependencyInsight dependencyInsight = new DependencyInsight(groupIdPattern, artifactIdPattern, null, null);
-                DataTableRowWatcher<DependenciesInUse.Row> dataTableWatcher = new DataTableRowWatcher<>(dependencyInsight.getDependenciesInUse(), ctx);
+                ParentPomInsight parentPomInsight = new ParentPomInsight(groupIdPattern, artifactIdPattern, null,
+                        null);
+                DataTableRowWatcher<ParentPomsInUse.Row> dataTableWatcher = new DataTableRowWatcher<>(parentPomInsight.getInUse(), ctx);
                 dataTableWatcher.start();
 
                 UpgradeRowBuilder rowBuilder = new UpgradeRowBuilder(cardName, version);
-                Tree t = dependencyInsight.getVisitor().visitNonNull(tree, ctx);
+                Tree t = parentPomInsight.getVisitor().visitNonNull(tree, ctx);
 
-                List<DependenciesInUse.Row> dependenciesInUse = dataTableWatcher.stop();
-                for (DependenciesInUse.Row dependencyInUse : dependenciesInUse) {
-                    UpgradesAndMigrations.Row row = rowBuilder.getRow(dependencyInUse.getVersion());
-                    upgradesAndMigrations.insertRow(ctx, row);
+                List<ParentPomsInUse.Row> parentPomsInUse = dataTableWatcher.stop();
+                for (ParentPomsInUse.Row parentPomInUse : parentPomsInUse) {
+                    if (parentPomInUse.getVersion() != null) {
+                        UpgradesAndMigrations.Row row = rowBuilder.getRow(parentPomInUse.getVersion());
+                        upgradesAndMigrations.insertRow(ctx, row);
+                    }
                 }
 
                 return t;
