@@ -23,7 +23,7 @@ import org.openrewrite.semver.VersionComparator;
 
 import static java.util.Objects.requireNonNull;
 
-public class UpgradeRowBuilder {
+public class SemverRowBuilder {
     private static final VersionParser parser = new VersionParser();
 
     private final String cardName;
@@ -31,7 +31,7 @@ public class UpgradeRowBuilder {
     private long minor;
     private long patch;
 
-    public UpgradeRowBuilder(String cardName, String version) {
+    public SemverRowBuilder(String cardName, String version) {
         this.cardName = cardName;
         Version parsed = parser.transform(version);
         Long[] numericParts = parsed.getNumericParts();
@@ -61,23 +61,23 @@ public class UpgradeRowBuilder {
         VersionComparator majorComparator = requireNonNull(Semver.validate(0 + "-" + (major - 1) + ".999", null)
                 .getValue());
         if (majorComparator.isValid(null, v)) {
-            return new UpgradesAndMigrations.Row(cardName, GavMeasure.Major.ordinal(), GavMeasure.Major.toString(), v);
+            return new UpgradesAndMigrations.Row(cardName, SemverMeasure.Major.ordinal(), SemverMeasure.Major.toString(), v);
         }
 
         VersionComparator minorComparator = requireNonNull(Semver.validate(
                 major + "-" + major + "." + (minor - 1) + ".999",
                 null).getValue());
         if (minorComparator.isValid(null, v)) {
-            return new UpgradesAndMigrations.Row(cardName, GavMeasure.Minor.ordinal(), GavMeasure.Minor.toString(), v);
+            return new UpgradesAndMigrations.Row(cardName, SemverMeasure.Minor.ordinal(), SemverMeasure.Minor.toString(), v);
         }
 
         VersionComparator patchComparator = requireNonNull(Semver.validate(
                 (major + "." + minor + ".0") + "-" + (major + "." + minor + "." + (patch - 1)),
                 null).getValue());
         if (patchComparator.isValid(null, v)) {
-            return new UpgradesAndMigrations.Row(cardName, GavMeasure.Patch.ordinal(), GavMeasure.Patch.toString(), v);
+            return new UpgradesAndMigrations.Row(cardName, SemverMeasure.Patch.ordinal(), SemverMeasure.Patch.toString(), v);
         }
 
-        return new UpgradesAndMigrations.Row(cardName, GavMeasure.Completed.ordinal(), GavMeasure.Completed.toString(), v);
+        return new UpgradesAndMigrations.Row(cardName, SemverMeasure.Completed.ordinal(), SemverMeasure.Completed.toString(), v);
     }
 }

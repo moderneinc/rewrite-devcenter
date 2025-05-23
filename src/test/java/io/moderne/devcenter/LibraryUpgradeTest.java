@@ -23,7 +23,7 @@ import org.openrewrite.test.RewriteTest;
 
 import java.util.stream.Stream;
 
-import static io.moderne.devcenter.GavMeasure.*;
+import static io.moderne.devcenter.SemverMeasure.*;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.openrewrite.maven.Assertions.pomXml;
 
@@ -41,7 +41,7 @@ public class LibraryUpgradeTest implements RewriteTest {
 
     @ParameterizedTest
     @MethodSource("jacksonVersions")
-    void minorUpgrade(String targetVersion, String currentVersion, GavMeasure gavMeasure) {
+    void minorUpgrade(String targetVersion, String currentVersion, SemverMeasure semverMeasure) {
         rewriteRun(
           spec ->
             spec
@@ -50,7 +50,7 @@ public class LibraryUpgradeTest implements RewriteTest {
               .dataTable(UpgradesAndMigrations.Row.class, rows ->
                 assertThat(rows).containsExactly(
                   new UpgradesAndMigrations.Row("Move Jackson",
-                    gavMeasure.ordinal(), gavMeasure.name(), currentVersion)
+                    semverMeasure.ordinal(), semverMeasure.name(), currentVersion)
                 )),
           //language=xml
           pomXml(

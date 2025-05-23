@@ -23,7 +23,7 @@ import org.openrewrite.test.RewriteTest;
 
 import java.util.stream.Stream;
 
-import static io.moderne.devcenter.GavMeasure.*;
+import static io.moderne.devcenter.SemverMeasure.*;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.openrewrite.maven.Assertions.pomXml;
 
@@ -41,7 +41,7 @@ public class ParentPomUpgradeTest implements RewriteTest {
 
     @ParameterizedTest
     @MethodSource("springBootParentVersions")
-    void minorUpgrade(String targetVersion, String currentVersion, GavMeasure gavMeasure) {
+    void minorUpgrade(String targetVersion, String currentVersion, SemverMeasure semverMeasure) {
         rewriteRun(
           spec ->
             spec
@@ -55,7 +55,7 @@ public class ParentPomUpgradeTest implements RewriteTest {
                   assertThat(rows).containsExactly(
                     new UpgradesAndMigrations.Row(
                       "Move Spring Boot Parent POM",
-                      gavMeasure.ordinal(), gavMeasure.name(), currentVersion)
+                      semverMeasure.ordinal(), semverMeasure.name(), currentVersion)
                   )),
           //language=xml
           pomXml(

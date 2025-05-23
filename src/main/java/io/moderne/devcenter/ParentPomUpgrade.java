@@ -79,7 +79,7 @@ public class ParentPomUpgrade  extends Recipe implements DevCenterMeasurer {
                 DataTableRowWatcher<ParentPomsInUse.Row> dataTableWatcher = new DataTableRowWatcher<>(parentPomInsight.getInUse(), ctx);
                 dataTableWatcher.start();
 
-                UpgradeRowBuilder rowBuilder = new UpgradeRowBuilder(cardName, version);
+                SemverRowBuilder rowBuilder = new SemverRowBuilder(cardName, version);
                 Tree t = parentPomInsight.getVisitor().visitNonNull(tree, ctx);
 
                 List<ParentPomsInUse.Row> parentPomsInUse = dataTableWatcher.stop();
@@ -97,6 +97,6 @@ public class ParentPomUpgrade  extends Recipe implements DevCenterMeasurer {
 
     @Override
     public List<String> getMeasures() {
-        return Stream.of(GavMeasure.values()).map(GavMeasure::name).collect(Collectors.toList());
+        return Stream.of(SemverMeasure.values()).map(SemverMeasure::name).collect(Collectors.toList());
     }
 }

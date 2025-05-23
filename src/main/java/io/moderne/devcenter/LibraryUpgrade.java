@@ -80,7 +80,7 @@ public class LibraryUpgrade extends Recipe implements DevCenterMeasurer {
                 DataTableRowWatcher<DependenciesInUse.Row> dataTableWatcher = new DataTableRowWatcher<>(dependencyInsight.getDependenciesInUse(), ctx);
                 dataTableWatcher.start();
 
-                UpgradeRowBuilder rowBuilder = new UpgradeRowBuilder(cardName, version);
+                SemverRowBuilder rowBuilder = new SemverRowBuilder(cardName, version);
                 Tree t = dependencyInsight.getVisitor().visitNonNull(tree, ctx);
 
                 List<DependenciesInUse.Row> dependenciesInUse = dataTableWatcher.stop();
@@ -96,6 +96,6 @@ public class LibraryUpgrade extends Recipe implements DevCenterMeasurer {
 
     @Override
     public List<String> getMeasures() {
-        return Stream.of(GavMeasure.values()).map(GavMeasure::name).collect(Collectors.toList());
+        return Stream.of(SemverMeasure.values()).map(SemverMeasure::name).collect(Collectors.toList());
     }
 }

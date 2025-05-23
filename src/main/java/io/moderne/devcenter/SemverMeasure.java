@@ -15,7 +15,7 @@
  */
 package io.moderne.devcenter;
 
-public enum GavMeasure implements DevCenterMeasure {
+public enum SemverMeasure implements DevCenterMeasure {
     Major,
     Minor,
     Patch,
