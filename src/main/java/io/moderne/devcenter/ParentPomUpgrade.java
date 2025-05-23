@@ -20,7 +20,6 @@ import io.moderne.devcenter.table.UpgradesAndMigrations;
 import lombok.EqualsAndHashCode;
 import lombok.Value;
 import org.openrewrite.*;
-import org.openrewrite.gradle.IsBuildGradle;
 import org.openrewrite.maven.search.FindMavenProject;
 import org.openrewrite.maven.search.ParentPomInsight;
 import org.openrewrite.maven.table.ParentPomsInUse;
@@ -71,13 +70,12 @@ public class ParentPomUpgrade  extends Recipe implements DevCenterMeasurer {
 
     @Override
     public TreeVisitor<?, ExecutionContext> getVisitor() {
-        return Preconditions.check(Preconditions.or(new IsBuildGradle<>(), new FindMavenProject().getVisitor()), new TreeVisitor<Tree, ExecutionContext>() {
+        return Preconditions.check(Preconditions.or(new FindMavenProject().getVisitor()), new TreeVisitor<Tree, ExecutionContext>() {
             @Override
             public Tree preVisit(Tree tree, ExecutionContext ctx) {
                 stopAfterPreVisit();
 
-                ParentPomInsight parentPomInsight = new ParentPomInsight(groupIdPattern, artifactIdPattern, null,
-                        null);
+                ParentPomInsight parentPomInsight = new ParentPomInsight(groupIdPattern, artifactIdPattern, null, null);
                 DataTableRowWatcher<ParentPomsInUse.Row> dataTableWatcher = new DataTableRowWatcher<>(parentPomInsight.getInUse(), ctx);
                 dataTableWatcher.start();
 
