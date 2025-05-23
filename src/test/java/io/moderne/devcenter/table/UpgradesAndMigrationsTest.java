@@ -64,11 +64,11 @@ public class UpgradesAndMigrationsTest {
           "org.openrewrite.dataTables", emptyMap()).get(um);
     }
 
-    private static UpgradesAndMigrations.Row row(GavMeasure measureeasure, String version) {
+    private static UpgradesAndMigrations.Row row(GavMeasure measure, String version) {
         return new UpgradesAndMigrations.Row(
           "cardName",
-          measureeasure.ordinal(),
-          measureeasure.toString(),
+          measure.ordinal(),
+          measure.toString(),
           version
         );
     }
