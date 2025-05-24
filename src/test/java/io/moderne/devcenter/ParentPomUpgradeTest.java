@@ -27,31 +27,36 @@ import static io.moderne.devcenter.SemverMeasure.*;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.openrewrite.maven.Assertions.pomXml;
 
-public class LibraryUpgradeTest implements RewriteTest {
+public class ParentPomUpgradeTest implements RewriteTest {
 
-    private static Stream<Arguments> jacksonVersions() {
+    private static Stream<Arguments> springBootParentVersions() {
         return Stream.of(
-          Arguments.of("3.0", "2.12.3", Major),
-          Arguments.of("2.16.0", "2.12.3", Minor),
-          Arguments.of("2.12.4", "2.12.3", Patch),
-          Arguments.of("2.12.4", "2.12.4", Completed),
-          Arguments.of("2.12.4", "2.16.0", Completed)
+          Arguments.of("3.4.5", "2.7.16", Major),
+          Arguments.of("3.4.5", "3.2.9", Minor),
+          Arguments.of("3.4.5", "3.4.3", Patch),
+          Arguments.of("3.4.5", "3.4.5", Completed),
+          Arguments.of("3.4.5", "3.5.0", Completed)
         );
     }
 
     @ParameterizedTest
-    @MethodSource("jacksonVersions")
+    @MethodSource("springBootParentVersions")
     void minorUpgrade(String targetVersion, String currentVersion, SemverMeasure semverMeasure) {
         rewriteRun(
           spec ->
             spec
-              .recipe(new LibraryUpgrade("Move Jackson",
-                "com.fasterxml*", "*", targetVersion))
-              .dataTable(UpgradesAndMigrations.Row.class, rows ->
-                assertThat(rows).containsExactly(
-                  new UpgradesAndMigrations.Row("Move Jackson",
-                    semverMeasure.ordinal(), semverMeasure.name(), currentVersion)
-                )),
+              .recipe(new ParentPomUpgrade(
+                "Move Spring Boot Parent POM",
+                "org.springframework.boot",
+                "spring-boot-parent",
+                targetVersion))
+              .dataTable(
+                UpgradesAndMigrations.Row.class, rows ->
+                  assertThat(rows).containsExactly(
+                    new UpgradesAndMigrations.Row(
+                      "Move Spring Boot Parent POM",
+                      semverMeasure.ordinal(), semverMeasure.name(), currentVersion)
+                  )),
           //language=xml
           pomXml(
             """
@@ -59,13 +64,11 @@ public class LibraryUpgradeTest implements RewriteTest {
                 <groupId>com.example</groupId>
                 <artifactId>example</artifactId>
                 <version>1.0-SNAPSHOT</version>
-                <dependencies>
-                    <dependency>
-                        <groupId>com.fasterxml.jackson.module</groupId>
-                        <artifactId>jackson-module-parameter-names</artifactId>
-                        <version>%s</version>
-                    </dependency>
-                </dependencies>
+                     <parent>
+                    <groupId>org.springframework.boot</groupId>
+                    <artifactId>spring-boot-parent</artifactId>
+                    <version>%s</version>
+                </parent>
               </project>
               """.formatted(currentVersion),
             """
@@ -73,13 +76,11 @@ public class LibraryUpgradeTest implements RewriteTest {
                 <groupId>com.example</groupId>
                 <artifactId>example</artifactId>
                 <version>1.0-SNAPSHOT</version>
-                <dependencies>
-                    <!--~~>--><dependency>
-                        <groupId>com.fasterxml.jackson.module</groupId>
-                        <artifactId>jackson-module-parameter-names</artifactId>
-                        <version>%s</version>
-                    </dependency>
-                </dependencies>
+                     <!--~~>--><parent>
+                    <groupId>org.springframework.boot</groupId>
+                    <artifactId>spring-boot-parent</artifactId>
+                    <version>%s</version>
+                </parent>
               </project>
               """.formatted(currentVersion)
           )
