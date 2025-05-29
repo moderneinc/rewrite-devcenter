@@ -57,22 +57,21 @@ public class DevCenter {
         return allSecurity.isEmpty() ? null : allSecurity.get(0);
     }
 
-    private List<UpgradeOrMigration> getUpgradesAndMigrationsRecursive(Recipe recipe, List<UpgradeOrMigration> upgradesAndMigrations) {
-        for (Recipe subRecipe : recipe.getRecipeList()) {
-            String fixRecipe = fixRecipe(subRecipe.getDescriptor());
-            if (fixRecipe != null) {
-                DevCenterMeasurer devCenterMeasurer = findDevCenterCardRecursive(subRecipe);
-                if (devCenterMeasurer != null) {
-                    upgradesAndMigrations.add(new UpgradeOrMigration(
-                            devCenterMeasurer.getInstanceName(),
-                            recipe.getName(),
-                            fixRecipe,
-                            devCenterMeasurer.getMeasures()
-                    ));
-                }
+    private List<UpgradeOrMigration> getUpgradesAndMigrationsRecursive(Recipe recipe,
+                                                                       List<UpgradeOrMigration> upgradesAndMigrations) {
+        String fixRecipe = fixRecipe(recipe.getDescriptor());
+        if (fixRecipe != null) {
+            DevCenterMeasurer devCenterMeasurer = findDevCenterCardRecursive(recipe);
+            if (devCenterMeasurer != null) {
+                upgradesAndMigrations.add(new UpgradeOrMigration(
+                        devCenterMeasurer.getInstanceName(),
+                        recipe.getName(),
+                        fixRecipe,
+                        devCenterMeasurer.getMeasures()));
             }
-            getUpgradesAndMigrationsRecursive(subRecipe, upgradesAndMigrations);
         }
+        recipe.getRecipeList()
+                .forEach(subRecipe -> getUpgradesAndMigrationsRecursive(subRecipe, upgradesAndMigrations));
         return upgradesAndMigrations;
     }
 
@@ -100,19 +99,14 @@ public class DevCenter {
     }
 
     private List<Security> getSecurityRecursive(Recipe recipe, List<Security> allSecurity) {
-        for (Recipe subRecipe : recipe.getRecipeList()) {
-            for (String tag : subRecipe.getTags()) {
-                if (tag.startsWith("DevCenter:security")) {
-                    allSecurity.add(new Security(
-                            subRecipe.getDisplayName(),
-                            subRecipe.getRecipeList().stream()
-                                    .map(Recipe::getInstanceName)
-                                    .collect(Collectors.toList())
-                    ));
-                }
+        for (String tag : recipe.getTags()) {
+            if (tag.startsWith("DevCenter:security")) {
+                allSecurity.add(new Security(
+                        recipe.getDisplayName(),
+                        recipe.getRecipeList().stream().map(Recipe::getInstanceName).collect(Collectors.toList())));
             }
-            getSecurityRecursive(subRecipe, allSecurity);
         }
+        recipe.getRecipeList().forEach(subRecipe -> getSecurityRecursive(subRecipe, allSecurity));
         return allSecurity;
     }
 
