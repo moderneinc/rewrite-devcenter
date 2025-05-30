@@ -33,14 +33,16 @@ import static org.openrewrite.java.Assertions.version;
 
 public class DevCenterTest implements RewriteTest {
     Recipe starterDevCenter;
+    Recipe starterOriginalSecurity;
 
     @BeforeEach
     void before() {
-        starterDevCenter = Environment.builder()
+        Environment environment = Environment.builder()
           .scanRuntimeClasspath("org.openrewrite")
           .scanYamlResources()
-          .build()
-          .activateRecipes("io.moderne.devcenter.DevCenterStarter");
+          .build();
+        starterDevCenter = environment.activateRecipes("io.moderne.devcenter.DevCenterStarter");
+        starterOriginalSecurity = environment.activateRecipes("io.moderne.devcenter.SecurityOriginalStarter");
     }
 
     @SuppressWarnings("DataFlowIssue")
@@ -57,6 +59,12 @@ public class DevCenterTest implements RewriteTest {
         assertThat(devCenter.getSecurity()).isNotNull();
         assertThat(devCenter.getSecurity().getMeasures())
           .contains("Zip slip");
+    }
+
+    @Test
+    void validateStandAloneDevCenterRecipe() throws DevCenterValidationException {
+        DevCenter devCenter = new DevCenter(starterOriginalSecurity);
+        devCenter.validate();
     }
 
     @Test
