@@ -25,6 +25,10 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 public class DevCenter {
+    public static final String UPGRADE_OR_MIGRATION_TAG = "DevCenter:upgradeOrMigration";
+    public static final String SECURITY_TAG = "DevCenter:security";
+    public static final String FIX_RECIPE_PREFIX = "DevCenter:fix:";
+
     private final Recipe recipe;
 
     public DevCenter(Recipe recipe) {
@@ -59,8 +63,8 @@ public class DevCenter {
 
     private List<UpgradeOrMigration> getUpgradesAndMigrationsRecursive(Recipe recipe,
                                                                        List<UpgradeOrMigration> upgradesAndMigrations) {
-        String fixRecipe = fixRecipe(recipe.getDescriptor());
-        if (fixRecipe != null) {
+        if (recipe.getDescriptor().getTags().contains(UPGRADE_OR_MIGRATION_TAG)) {
+            String fixRecipe = fixRecipe(recipe.getDescriptor());
             DevCenterMeasurer devCenterMeasurer = findDevCenterCardRecursive(recipe);
             if (devCenterMeasurer != null) {
                 upgradesAndMigrations.add(new UpgradeOrMigration(
@@ -69,14 +73,6 @@ public class DevCenter {
                         fixRecipe,
                         devCenterMeasurer.getMeasures()));
             }
-        } else if (recipe instanceof DevCenterMeasurer) {
-            // Upgrades and Migration card without a fix
-            upgradesAndMigrations.add(new UpgradeOrMigration(
-                    recipe.getDisplayName(),
-                    recipe.getName(),
-                    null,
-                    ((DevCenterMeasurer) recipe).getMeasures())
-            );
         } else {
             for (Recipe subRecipe : recipe.getRecipeList()) {
                 getUpgradesAndMigrationsRecursive(subRecipe, upgradesAndMigrations);
@@ -101,8 +97,8 @@ public class DevCenter {
     @Nullable
     private String fixRecipe(RecipeDescriptor recipeDescriptor) {
         for (String tag : recipeDescriptor.getTags()) {
-            if (tag.startsWith("DevCenter:fix:")) {
-                return tag.substring("DevCenter:fix:".length());
+            if (tag.startsWith(FIX_RECIPE_PREFIX)) {
+                return tag.substring(FIX_RECIPE_PREFIX.length());
             }
         }
         return null;
@@ -110,13 +106,16 @@ public class DevCenter {
 
     private List<Security> getSecurityRecursive(Recipe recipe, List<Security> allSecurity) {
         for (String tag : recipe.getTags()) {
-            if (tag.startsWith("DevCenter:security")) {
+            if (tag.startsWith(SECURITY_TAG)) {
                 allSecurity.add(new Security(
                         recipe.getDisplayName(),
-                        recipe.getRecipeList().stream().map(Recipe::getInstanceName).collect(Collectors.toList())));
+                        recipe.getRecipeList().stream().map(Recipe::getInstanceName).collect(Collectors.toList()),
+                        fixRecipe(recipe.getDescriptor())));
             }
         }
-        recipe.getRecipeList().forEach(subRecipe -> getSecurityRecursive(subRecipe, allSecurity));
+        for (Recipe subRecipe : recipe.getRecipeList()) {
+            getSecurityRecursive(subRecipe, allSecurity);
+        }
         return allSecurity;
     }
 
@@ -135,5 +134,8 @@ public class DevCenter {
     public static class Security {
         String recipeId;
         List<String> measures;
+
+        @Nullable
+        String fixRecipeId;
     }
 }

@@ -74,6 +74,8 @@ public class DevCenterTest implements RewriteTest {
           name: io.moderne.devcenter.JavaVersionNoFix
           displayName: Starter DevCenter Java version upgrade card
           description: Upgrade Java version
+          tags:
+            - DevCenter:upgradeOrMigration
           recipeList:
             - io.moderne.devcenter.JavaVersionUpgrade:
                 majorVersion: 21
