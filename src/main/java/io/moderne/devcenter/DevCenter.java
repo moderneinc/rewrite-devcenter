@@ -102,7 +102,7 @@ public class DevCenter {
         for (String tag : recipe.getTags()) {
             if (tag.startsWith("DevCenter:security")) {
                 allSecurity.add(new Security(
-                        recipe.getDisplayName(),
+                        recipe.getName(),
                         recipe.getRecipeList().stream().map(Recipe::getInstanceName).collect(Collectors.toList())));
             }
         }
