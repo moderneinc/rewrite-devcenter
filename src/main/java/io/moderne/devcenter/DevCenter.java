@@ -69,17 +69,27 @@ public class DevCenter {
                         fixRecipe,
                         devCenterMeasurer.getMeasures()));
             }
+        } else if (recipe instanceof DevCenterMeasurer) {
+            // Upgrades and Migration card without a fix
+            upgradesAndMigrations.add(new UpgradeOrMigration(
+                    recipe.getDisplayName(),
+                    recipe.getName(),
+                    null,
+                    ((DevCenterMeasurer) recipe).getMeasures())
+            );
+        } else {
+            for (Recipe subRecipe : recipe.getRecipeList()) {
+                getUpgradesAndMigrationsRecursive(subRecipe, upgradesAndMigrations);
+            }
         }
-        recipe.getRecipeList()
-                .forEach(subRecipe -> getUpgradesAndMigrationsRecursive(subRecipe, upgradesAndMigrations));
         return upgradesAndMigrations;
     }
 
     private @Nullable DevCenterMeasurer findDevCenterCardRecursive(Recipe recipe) {
+        if (recipe instanceof DevCenterMeasurer) {
+            return (DevCenterMeasurer) recipe;
+        }
         for (Recipe subRecipe : recipe.getRecipeList()) {
-            if (subRecipe instanceof DevCenterMeasurer) {
-                return (DevCenterMeasurer) subRecipe;
-            }
             DevCenterMeasurer devCenterMeasurer = findDevCenterCardRecursive(subRecipe);
             if (devCenterMeasurer != null) {
                 return devCenterMeasurer;
@@ -114,7 +124,10 @@ public class DevCenter {
     public static class UpgradeOrMigration {
         String displayName;
         String recipeId;
+
+        @Nullable
         String fixRecipeId;
+
         List<String> measures;
     }
 

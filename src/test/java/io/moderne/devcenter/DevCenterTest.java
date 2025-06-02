@@ -20,9 +20,14 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.openrewrite.Recipe;
 import org.openrewrite.config.Environment;
+import org.openrewrite.config.YamlResourceLoader;
 import org.openrewrite.test.RewriteTest;
 
+import java.io.ByteArrayInputStream;
+import java.net.URI;
+import java.nio.charset.StandardCharsets;
 import java.util.List;
+import java.util.Properties;
 
 import static io.moderne.devcenter.JUnitUpgrade.Measure.JUnit4;
 import static io.moderne.devcenter.JavaVersionUpgrade.Measure.Java8Plus;
@@ -59,6 +64,27 @@ public class DevCenterTest implements RewriteTest {
         assertThat(devCenter.getSecurity()).isNotNull();
         assertThat(devCenter.getSecurity().getMeasures())
           .contains("Zip slip");
+    }
+
+    @Test
+    void upgradeDoesntRequireFix() throws DevCenterValidationException {
+        //language=yaml
+        String recipe = """
+          type: specs.openrewrite.org/v1beta/recipe
+          name: io.moderne.devcenter.JavaVersionNoFix
+          displayName: Starter DevCenter Java version upgrade card
+          description: Upgrade Java version
+          recipeList:
+            - io.moderne.devcenter.JavaVersionUpgrade:
+                majorVersion: 21
+          """;
+        Recipe r = Environment.builder()
+          .load(new YamlResourceLoader(new ByteArrayInputStream(recipe.getBytes(StandardCharsets.UTF_8)),
+            URI.create("rewrite.yml"), new Properties()))
+          .build()
+          .activateRecipes("io.moderne.devcenter.JavaVersionNoFix");
+        DevCenter devCenter = new DevCenter(r);
+        devCenter.validate();
     }
 
     @Test
