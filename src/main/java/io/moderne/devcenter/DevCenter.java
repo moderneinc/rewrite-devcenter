@@ -32,7 +32,18 @@ public class DevCenter {
     }
 
     public void validate() throws DevCenterValidationException {
-        List<UpgradeOrMigration> upgradesAndMigrations = getUpgradesAndMigrations();
+        final List<String> validationErrors = determineValidationErrors(recipe);
+        if (!validationErrors.isEmpty()) {
+            throw new DevCenterValidationException(validationErrors);
+        }
+    }
+
+    public static boolean isDevCenter(Recipe recipe) {
+        return determineValidationErrors(recipe).isEmpty();
+    }
+
+    private static List<String> determineValidationErrors(Recipe recipe) {
+        List<UpgradeOrMigration> upgradesAndMigrations = getUpgradesAndMigrationsRecursive(recipe, new ArrayList<>());
         List<Security> security = getSecurityRecursive(recipe, new ArrayList<>());
 
         List<String> validationErrors = new ArrayList<>();
@@ -42,9 +53,7 @@ public class DevCenter {
         if (security.size() > 1) {
             validationErrors.add("Only one security recipe can be included.");
         }
-        if (!validationErrors.isEmpty()) {
-            throw new DevCenterValidationException(validationErrors);
-        }
+        return validationErrors;
     }
 
     public List<UpgradeOrMigration> getUpgradesAndMigrations() {
@@ -57,8 +66,8 @@ public class DevCenter {
         return allSecurity.isEmpty() ? null : allSecurity.get(0);
     }
 
-    private List<UpgradeOrMigration> getUpgradesAndMigrationsRecursive(Recipe recipe,
-                                                                       List<UpgradeOrMigration> upgradesAndMigrations) {
+    private static List<UpgradeOrMigration> getUpgradesAndMigrationsRecursive(Recipe recipe,
+                                                                              List<UpgradeOrMigration> upgradesAndMigrations) {
         String fixRecipe = fixRecipe(recipe.getDescriptor());
         if (fixRecipe != null) {
             DevCenterMeasurer devCenterMeasurer = findDevCenterCardRecursive(recipe);
@@ -75,7 +84,7 @@ public class DevCenter {
         return upgradesAndMigrations;
     }
 
-    private @Nullable DevCenterMeasurer findDevCenterCardRecursive(Recipe recipe) {
+    private static @Nullable DevCenterMeasurer findDevCenterCardRecursive(Recipe recipe) {
         for (Recipe subRecipe : recipe.getRecipeList()) {
             if (subRecipe instanceof DevCenterMeasurer) {
                 return (DevCenterMeasurer) subRecipe;
@@ -89,7 +98,7 @@ public class DevCenter {
     }
 
     @Nullable
-    private String fixRecipe(RecipeDescriptor recipeDescriptor) {
+    private static String fixRecipe(RecipeDescriptor recipeDescriptor) {
         for (String tag : recipeDescriptor.getTags()) {
             if (tag.startsWith("DevCenter:fix:")) {
                 return tag.substring("DevCenter:fix:".length());
@@ -98,7 +107,7 @@ public class DevCenter {
         return null;
     }
 
-    private List<Security> getSecurityRecursive(Recipe recipe, List<Security> allSecurity) {
+    private static List<Security> getSecurityRecursive(Recipe recipe, List<Security> allSecurity) {
         for (String tag : recipe.getTags()) {
             if (tag.startsWith("DevCenter:security")) {
                 allSecurity.add(new Security(
