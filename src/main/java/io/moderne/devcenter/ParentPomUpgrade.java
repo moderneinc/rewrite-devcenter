@@ -32,7 +32,7 @@ import java.util.stream.Stream;
 
 @Value
 @EqualsAndHashCode(callSuper = false)
-public class ParentPomUpgrade  extends Recipe implements DevCenterMeasurer {
+public class ParentPomUpgrade extends Recipe implements DevCenterMeasurer {
     transient UpgradesAndMigrations upgradesAndMigrations = new UpgradesAndMigrations(this);
 
     @Option(displayName = "Card name",
@@ -51,7 +51,7 @@ public class ParentPomUpgrade  extends Recipe implements DevCenterMeasurer {
 
     @Option(displayName = "Target version",
             description = "The target version of the upgrade. " +
-                    "Specify the version out to the desired patch version.",
+                          "Specify the version out to the desired patch version.",
             example = "3.4.5")
     String version;
 
@@ -72,7 +72,7 @@ public class ParentPomUpgrade  extends Recipe implements DevCenterMeasurer {
 
     @Override
     public Set<String> getTags() {
-        return Collections.singleton(DevCenter.UPGRADE_OR_MIGRATION_TAG);
+        return Collections.singleton(DevCenter.DEVCENTER_TAG);
     }
 
     @Override

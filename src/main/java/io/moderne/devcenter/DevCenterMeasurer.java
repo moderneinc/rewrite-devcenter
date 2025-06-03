@@ -18,7 +18,5 @@ package io.moderne.devcenter;
 import java.util.List;
 
 public interface DevCenterMeasurer {
-    String getInstanceName();
-
     List<String> getMeasures();
 }

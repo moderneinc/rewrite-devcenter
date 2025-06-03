@@ -22,7 +22,7 @@ description: >-
 tags:
   # This tag is used by ReportAsSecurityIssues to identify sibling recipes that make up the
   # dimensions of the security DevCenter card.
-  - DevCenter:security
+  - DevCenter:card
 recipeList:
   - org.openrewrite.java.security.secrets.FindSecrets
   - org.openrewrite.java.security.OwaspA01

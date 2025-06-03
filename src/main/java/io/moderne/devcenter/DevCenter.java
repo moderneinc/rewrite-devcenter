@@ -15,9 +15,11 @@
  */
 package io.moderne.devcenter;
 
+import io.moderne.devcenter.table.UpgradesAndMigrations;
 import lombok.Value;
 import org.jspecify.annotations.Nullable;
 import org.openrewrite.Recipe;
+import org.openrewrite.config.DataTableDescriptor;
 import org.openrewrite.config.RecipeDescriptor;
 
 import java.util.ArrayList;
@@ -25,8 +27,7 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 public class DevCenter {
-    public static final String UPGRADE_OR_MIGRATION_TAG = "DevCenter:upgradeOrMigration";
-    public static final String SECURITY_TAG = "DevCenter:security";
+    public static final String DEVCENTER_TAG = "DevCenter:card";
     public static final String FIX_RECIPE_PREFIX = "DevCenter:fix:";
 
     private final Recipe recipe;
@@ -36,14 +37,20 @@ public class DevCenter {
     }
 
     public static boolean isDevCenter(RecipeDescriptor recipe) {
-        return recipe.getTags().contains(UPGRADE_OR_MIGRATION_TAG) ||
-               recipe.getTags().contains(SECURITY_TAG) ||
-               recipe.getRecipeList().stream().anyMatch(DevCenter::isDevCenter);
+        if (recipe.getTags().contains(DEVCENTER_TAG)) {
+            return true;
+        }
+        for (RecipeDescriptor subRecipe : recipe.getRecipeList()) {
+            if (isDevCenter(subRecipe)) {
+                return true;
+            }
+        }
+        return false;
     }
 
     public void validate() throws DevCenterValidationException {
-        List<UpgradeOrMigration> upgradesAndMigrations = getUpgradesAndMigrations();
-        List<Security> security = getSecurityRecursive(recipe, new ArrayList<>());
+        List<Card> upgradesAndMigrations = getUpgradesAndMigrations();
+        List<Card> security = getSecurityRecursive(recipe, new ArrayList<>());
 
         List<String> validationErrors = new ArrayList<>();
         if (upgradesAndMigrations.isEmpty() && security.isEmpty()) {
@@ -57,24 +64,23 @@ public class DevCenter {
         }
     }
 
-    public List<UpgradeOrMigration> getUpgradesAndMigrations() {
+    public List<Card> getUpgradesAndMigrations() {
         return getUpgradesAndMigrationsRecursive(recipe, new ArrayList<>());
     }
 
     @Nullable
-    public Security getSecurity() {
-        List<Security> allSecurity = getSecurityRecursive(recipe, new ArrayList<>());
+    public Card getSecurity() {
+        List<Card> allSecurity = getSecurityRecursive(recipe, new ArrayList<>());
         return allSecurity.isEmpty() ? null : allSecurity.get(0);
     }
 
-    private List<UpgradeOrMigration> getUpgradesAndMigrationsRecursive(Recipe recipe,
-                                                                       List<UpgradeOrMigration> upgradesAndMigrations) {
-        if (recipe.getDescriptor().getTags().contains(UPGRADE_OR_MIGRATION_TAG)) {
+    private List<Card> getUpgradesAndMigrationsRecursive(Recipe recipe, List<Card> upgradesAndMigrations) {
+        if (recipe.getDescriptor().getTags().contains(DEVCENTER_TAG)) {
             String fixRecipe = fixRecipe(recipe.getDescriptor());
             DevCenterMeasurer devCenterMeasurer = findDevCenterCardRecursive(recipe);
-            if (devCenterMeasurer != null) {
-                upgradesAndMigrations.add(new UpgradeOrMigration(
-                        devCenterMeasurer.getInstanceName(),
+            if (devCenterMeasurer != null && hasUpgradesAndMigrations(recipe)) {
+                upgradesAndMigrations.add(new Card(
+                        recipe.getInstanceName(),
                         recipe.getName(),
                         fixRecipe,
                         devCenterMeasurer.getMeasures()));
@@ -100,6 +106,20 @@ public class DevCenter {
         return null;
     }
 
+    private boolean hasUpgradesAndMigrations(Recipe recipe) {
+        for (DataTableDescriptor dataTable : recipe.getDataTableDescriptors()) {
+            if (dataTable.getName().equals(UpgradesAndMigrations.class.getName())) {
+                return true;
+            }
+        }
+        for (Recipe subRecipe : recipe.getRecipeList()) {
+            if (hasUpgradesAndMigrations(subRecipe)) {
+                return true;
+            }
+        }
+        return false;
+    }
+
     @Nullable
     private String fixRecipe(RecipeDescriptor recipeDescriptor) {
         for (String tag : recipeDescriptor.getTags()) {
@@ -110,14 +130,19 @@ public class DevCenter {
         return null;
     }
 
-    private List<Security> getSecurityRecursive(Recipe recipe, List<Security> allSecurity) {
+    private List<Card> getSecurityRecursive(Recipe recipe, List<Card> allSecurity) {
         for (String tag : recipe.getTags()) {
-            if (tag.startsWith(SECURITY_TAG)) {
-                allSecurity.add(new Security(
-                        recipe.getDisplayName(),
-                        recipe.getName(),
-                        recipe.getRecipeList().stream().map(Recipe::getInstanceName).collect(Collectors.toList()),
-                        fixRecipe(recipe.getDescriptor())));
+            if (tag.startsWith(DEVCENTER_TAG)) {
+                for (Recipe subRecipe : recipe.getRecipeList()) {
+                    if (subRecipe.getName().equals(ReportAsSecurityIssues.class.getName())) {
+                        allSecurity.add(new Card(
+                                recipe.getInstanceName(),
+                                recipe.getName(),
+                                fixRecipe(recipe.getDescriptor()),
+                                recipe.getRecipeList().stream().map(Recipe::getInstanceName).collect(Collectors.toList())));
+                        return allSecurity;
+                    }
+                }
             }
         }
         for (Recipe subRecipe : recipe.getRecipeList()) {
@@ -127,7 +152,7 @@ public class DevCenter {
     }
 
     @Value
-    public static class UpgradeOrMigration {
+    public static class Card {
         String displayName;
         String recipeId;
 
@@ -135,15 +160,5 @@ public class DevCenter {
         String fixRecipeId;
 
         List<String> measures;
-    }
-
-    @Value
-    public static class Security {
-        String displayName;
-        String recipeId;
-        List<String> measures;
-
-        @Nullable
-        String fixRecipeId;
     }
 }

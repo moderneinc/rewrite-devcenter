@@ -73,7 +73,7 @@ public class LibraryUpgrade extends Recipe implements DevCenterMeasurer {
 
     @Override
     public Set<String> getTags() {
-        return Collections.singleton(DevCenter.UPGRADE_OR_MIGRATION_TAG);
+        return Collections.singleton(DevCenter.DEVCENTER_TAG);
     }
 
     @Override
