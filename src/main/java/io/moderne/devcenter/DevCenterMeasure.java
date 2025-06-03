@@ -15,6 +15,15 @@
  */
 package io.moderne.devcenter;
 
+import org.intellij.lang.annotations.Language;
+import org.openrewrite.NlsRewrite;
+
 public interface DevCenterMeasure {
-    String getDisplayName();
+    @Language("markdown")
+    @NlsRewrite.DisplayName
+    String getInstanceName();
+
+    @Language("markdown")
+    @NlsRewrite.Description
+    String getDescription();
 }

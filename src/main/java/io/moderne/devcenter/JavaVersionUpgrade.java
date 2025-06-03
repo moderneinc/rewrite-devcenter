@@ -20,6 +20,7 @@ import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 import lombok.Value;
+import org.intellij.lang.annotations.Language;
 import org.openrewrite.ExecutionContext;
 import org.openrewrite.Option;
 import org.openrewrite.Recipe;
@@ -29,10 +30,7 @@ import org.openrewrite.java.marker.JavaVersion;
 import org.openrewrite.java.tree.J;
 
 import java.util.Collections;
-import java.util.List;
 import java.util.Set;
-import java.util.stream.Collectors;
-import java.util.stream.Stream;
 
 @Value
 @EqualsAndHashCode(callSuper = false)
@@ -101,19 +99,20 @@ public class JavaVersionUpgrade extends Recipe implements DevCenterMeasurer {
     }
 
     @Override
-    public List<String> getMeasures() {
-        return Stream.of(Measure.values()).map(Measure::getDisplayName).collect(Collectors.toList());
+    public DevCenterMeasure[] getMeasures() {
+        return Measure.values();
     }
 
     @Getter
     @RequiredArgsConstructor
     public enum Measure implements DevCenterMeasure {
-        Java8Plus("Java 8+"),
-        Java11Plus("Java 11+"),
-        Java17Plus("Java 17+"),
-        Java21Plus("Java 21+"),
-        Completed("Completed");
+        Java8Plus("Java 8+", "Technically, this is any version less than 11."),
+        Java11Plus("Java 11+", "Java 11 and later"),
+        Java17Plus("Java 17+", "Java 17 and later"),
+        Java21Plus("Java 21+", "Java 21 and later"),
+        Completed("Completed", "The upgrade to the desired Java version is already complete.");
 
-        private final String displayName;
+        private final @Language("markdown") String displayName;
+        private final @Language("markdown") String description;
     }
 }

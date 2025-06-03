@@ -27,8 +27,6 @@ import org.openrewrite.maven.table.ParentPomsInUse;
 import java.util.Collections;
 import java.util.List;
 import java.util.Set;
-import java.util.stream.Collectors;
-import java.util.stream.Stream;
 
 @Value
 @EqualsAndHashCode(callSuper = false)
@@ -102,8 +100,7 @@ public class ParentPomUpgrade extends Recipe implements DevCenterMeasurer {
         });
     }
 
-    @Override
-    public List<String> getMeasures() {
-        return Stream.of(SemverMeasure.values()).map(SemverMeasure::name).collect(Collectors.toList());
+    public DevCenterMeasure[] getMeasures() {
+        return SemverMeasure.values();
     }
 }

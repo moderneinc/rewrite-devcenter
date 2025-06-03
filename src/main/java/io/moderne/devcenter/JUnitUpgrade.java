@@ -16,6 +16,9 @@
 package io.moderne.devcenter;
 
 import io.moderne.devcenter.table.UpgradesAndMigrations;
+import lombok.Getter;
+import lombok.RequiredArgsConstructor;
+import org.intellij.lang.annotations.Language;
 import org.openrewrite.ExecutionContext;
 import org.openrewrite.Recipe;
 import org.openrewrite.TreeVisitor;
@@ -24,10 +27,7 @@ import org.openrewrite.java.search.FindAnnotations;
 import org.openrewrite.java.tree.J;
 
 import java.util.Collections;
-import java.util.List;
 import java.util.Set;
-import java.util.stream.Collectors;
-import java.util.stream.Stream;
 
 public class JUnitUpgrade extends Recipe implements DevCenterMeasurer {
     private final transient UpgradesAndMigrations upgradesAndMigrations = new UpgradesAndMigrations(this);
@@ -82,17 +82,18 @@ public class JUnitUpgrade extends Recipe implements DevCenterMeasurer {
     }
 
     @Override
-    public List<String> getMeasures() {
-        return Stream.of(Measure.values()).map(Measure::name).collect(Collectors.toList());
+    public DevCenterMeasure[] getMeasures() {
+        return Measure.values();
     }
 
+    @RequiredArgsConstructor
+    @Getter
     public enum Measure implements DevCenterMeasure {
-        JUnit4,
-        Completed;
+        JUnit4("JUnit 4", "On JUnit 4 or less. Specifically looks for `@org.junit.Test`."),
+        Completed("Completed", "On JUnit Jupiter");
 
-        @Override
-        public String getDisplayName() {
-            return name();
-        }
+        private final @Language("markdown") String displayName;
+
+        private final @Language("markdown") String description;
     }
 }

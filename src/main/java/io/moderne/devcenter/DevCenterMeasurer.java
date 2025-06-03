@@ -15,8 +15,6 @@
  */
 package io.moderne.devcenter;
 
-import java.util.List;
-
 public interface DevCenterMeasurer {
-    List<String> getMeasures();
+    DevCenterMeasure[] getMeasures();
 }

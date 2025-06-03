@@ -18,13 +18,13 @@ package io.moderne.devcenter;
 import io.moderne.devcenter.table.UpgradesAndMigrations;
 import lombok.Value;
 import org.jspecify.annotations.Nullable;
+import org.openrewrite.NlsRewrite;
 import org.openrewrite.Recipe;
 import org.openrewrite.config.DataTableDescriptor;
 import org.openrewrite.config.RecipeDescriptor;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.stream.Collectors;
 
 public class DevCenter {
     public static final String DEVCENTER_TAG = "DevCenter:card";
@@ -139,7 +139,17 @@ public class DevCenter {
                                 recipe.getInstanceName(),
                                 recipe.getName(),
                                 fixRecipe(recipe.getDescriptor()),
-                                recipe.getRecipeList().stream().map(Recipe::getInstanceName).collect(Collectors.toList())));
+                                recipe.getRecipeList().stream().map(r -> new DevCenterMeasure() {
+                                    @Override
+                                    public String getInstanceName() {
+                                        return recipe.getInstanceName();
+                                    }
+
+                                    @Override
+                                    public String getDescription() {
+                                        return recipe.getDescription();
+                                    }
+                                }).toArray(DevCenterMeasure[]::new)));
                         return allSecurity;
                     }
                 }
@@ -153,12 +163,14 @@ public class DevCenter {
 
     @Value
     public static class Card {
-        String displayName;
+        @NlsRewrite.DisplayName
+        String instanceName;
+
         String recipeId;
 
         @Nullable
         String fixRecipeId;
 
-        List<String> measures;
+        DevCenterMeasure[] measures;
     }
 }

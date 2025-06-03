@@ -49,7 +49,7 @@ public class JavaVersionUpgradeTest implements RewriteTest {
             .dataTable(UpgradesAndMigrations.Row.class, rows ->
               assertThat(rows).containsExactly(
                 new UpgradesAndMigrations.Row("Move to Java " + targetVersion,
-                  measure.ordinal(), measure.getDisplayName(), Integer.toString(actualVersion))
+                  measure.ordinal(), measure.getInstanceName(), Integer.toString(actualVersion))
               )),
           version(
             //language=java

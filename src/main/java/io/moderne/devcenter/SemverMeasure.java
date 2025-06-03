@@ -15,14 +15,22 @@
  */
 package io.moderne.devcenter;
 
+import lombok.Getter;
+import lombok.RequiredArgsConstructor;
+import org.intellij.lang.annotations.Language;
+
+@RequiredArgsConstructor
+@Getter
 public enum SemverMeasure implements DevCenterMeasure {
-    Major,
-    Minor,
-    Patch,
-    Completed;
+    Major("The version is a major version away from the target version."),
+    Minor("The version is a minor version away from the target version."),
+    Patch("The version is a patch version away from the target version."),
+    Completed("The version is greater than or equal to the target version.");
 
     @Override
-    public String getDisplayName() {
+    public @Language("markdown") String getInstanceName() {
         return name();
     }
+
+    private final @Language("markdown") String description;
 }
