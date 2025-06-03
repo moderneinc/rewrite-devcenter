@@ -35,6 +35,12 @@ public class DevCenter {
         this.recipe = recipe;
     }
 
+    public static boolean isDevCenter(RecipeDescriptor recipe) {
+        return recipe.getTags().contains(UPGRADE_OR_MIGRATION_TAG) ||
+               recipe.getTags().contains(SECURITY_TAG) ||
+               recipe.getRecipeList().stream().anyMatch(DevCenter::isDevCenter);
+    }
+
     public void validate() throws DevCenterValidationException {
         List<UpgradeOrMigration> upgradesAndMigrations = getUpgradesAndMigrations();
         List<Security> security = getSecurityRecursive(recipe, new ArrayList<>());

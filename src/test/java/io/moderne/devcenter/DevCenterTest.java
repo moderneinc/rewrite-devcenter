@@ -37,17 +37,31 @@ import static org.openrewrite.java.Assertions.java;
 import static org.openrewrite.java.Assertions.version;
 
 public class DevCenterTest implements RewriteTest {
+    Environment environment = Environment.builder()
+      .scanRuntimeClasspath("org.openrewrite")
+      .scanYamlResources()
+      .build();
     Recipe starterDevCenter;
     Recipe starterOriginalSecurity;
 
     @BeforeEach
     void before() {
-        Environment environment = Environment.builder()
-          .scanRuntimeClasspath("org.openrewrite")
-          .scanYamlResources()
-          .build();
         starterDevCenter = environment.activateRecipes("io.moderne.devcenter.DevCenterStarter");
         starterOriginalSecurity = environment.activateRecipes("io.moderne.devcenter.SecurityOriginalStarter");
+    }
+
+    @Test
+    void isDevCenter() {
+        assertThat(DevCenter.isDevCenter(starterDevCenter.getDescriptor())).isTrue();
+        assertThat(DevCenter.isDevCenter(starterOriginalSecurity.getDescriptor())).isTrue();
+
+        // This is the variant that has no fix, but it can stand alone as an upgrade card if desired.
+        assertThat(DevCenter.isDevCenter(new JavaVersionUpgrade(8).getDescriptor())).isTrue();
+
+        // While the OwaspTopTen recipe may serve as a fix recipe for a security issues card, and some of its
+        // sub-recipes may be reused in the definition of it, the recipe itself is not a DevCenter card.
+        assertThat(DevCenter.isDevCenter(environment.activateRecipes("org.openrewrite.java.security.OwaspTopTen").getDescriptor()))
+          .isFalse();
     }
 
     @SuppressWarnings("DataFlowIssue")

@@ -24,7 +24,9 @@ import org.openrewrite.maven.search.FindMavenProject;
 import org.openrewrite.maven.search.ParentPomInsight;
 import org.openrewrite.maven.table.ParentPomsInUse;
 
+import java.util.Collections;
 import java.util.List;
+import java.util.Set;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
@@ -66,6 +68,11 @@ public class ParentPomUpgrade  extends Recipe implements DevCenterMeasurer {
     @Override
     public String getDescription() {
         return "Determine the current state of a repository relative to a desired parent POM upgrade.";
+    }
+
+    @Override
+    public Set<String> getTags() {
+        return Collections.singleton(DevCenter.UPGRADE_OR_MIGRATION_TAG);
     }
 
     @Override

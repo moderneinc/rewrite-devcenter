@@ -28,7 +28,9 @@ import org.openrewrite.java.JavaIsoVisitor;
 import org.openrewrite.java.marker.JavaVersion;
 import org.openrewrite.java.tree.J;
 
+import java.util.Collections;
 import java.util.List;
+import java.util.Set;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
@@ -55,6 +57,11 @@ public class JavaVersionUpgrade extends Recipe implements DevCenterMeasurer {
     @Override
     public String getDescription() {
         return "Determine the current state of a repository relative to a desired Java version upgrade.";
+    }
+
+    @Override
+    public Set<String> getTags() {
+        return Collections.singleton(DevCenter.UPGRADE_OR_MIGRATION_TAG);
     }
 
     @Override

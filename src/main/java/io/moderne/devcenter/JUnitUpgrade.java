@@ -23,7 +23,9 @@ import org.openrewrite.java.JavaIsoVisitor;
 import org.openrewrite.java.search.FindAnnotations;
 import org.openrewrite.java.tree.J;
 
+import java.util.Collections;
 import java.util.List;
+import java.util.Set;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
@@ -72,6 +74,11 @@ public class JUnitUpgrade extends Recipe implements DevCenterMeasurer {
                 return j3;
             }
         };
+    }
+
+    @Override
+    public Set<String> getTags() {
+        return Collections.singleton(DevCenter.UPGRADE_OR_MIGRATION_TAG);
     }
 
     @Override

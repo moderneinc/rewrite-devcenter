@@ -25,7 +25,9 @@ import org.openrewrite.java.dependencies.DependencyInsight;
 import org.openrewrite.maven.search.FindMavenProject;
 import org.openrewrite.maven.table.DependenciesInUse;
 
+import java.util.Collections;
 import java.util.List;
+import java.util.Set;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
@@ -67,6 +69,11 @@ public class LibraryUpgrade extends Recipe implements DevCenterMeasurer {
     @Override
     public String getDescription() {
         return "Determine the current state of a repository relative to a desired library upgrade.";
+    }
+
+    @Override
+    public Set<String> getTags() {
+        return Collections.singleton(DevCenter.UPGRADE_OR_MIGRATION_TAG);
     }
 
     @Override
