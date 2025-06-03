@@ -115,6 +115,7 @@ public class DevCenter {
             if (tag.startsWith(SECURITY_TAG)) {
                 allSecurity.add(new Security(
                         recipe.getDisplayName(),
+                        recipe.getName(),
                         recipe.getRecipeList().stream().map(Recipe::getInstanceName).collect(Collectors.toList()),
                         fixRecipe(recipe.getDescriptor())));
             }
@@ -138,6 +139,7 @@ public class DevCenter {
 
     @Value
     public static class Security {
+        String displayName;
         String recipeId;
         List<String> measures;
 
