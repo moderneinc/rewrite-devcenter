@@ -51,17 +51,22 @@ public class ReportAsSecurityIssues extends Recipe {
             public Tree preVisit(Tree tree, ExecutionContext ctx) {
                 stopAfterPreVisit();
                 tree.getMarkers().findFirst(RecipesThatMadeChanges.class).ifPresent(changes -> {
+                    nextChange:
                     for (List<Recipe> recipeStack : changes.getRecipes()) {
                         for (int i = 0; i < recipeStack.size(); i++) {
                             Recipe recipe = recipeStack.get(i);
                             if (recipe.getTags().contains(DevCenter.DEVCENTER_TAG)) {
-                                Recipe measure = recipeStack.get(i + 1);
-                                List<Recipe> recipeList = recipe.getRecipeList();
-                                for (int j = 0; j < recipeList.size(); j++) {
-                                    if (recipeList.get(j).getName().equals(measure.getName())) {
-                                        securityIssues.insertRow(ctx, new SecurityIssues.Row(
-                                                j, measure.getInstanceName()));
-                                        break;
+                                for (Recipe subRecipe : recipe.getRecipeList()) {
+                                    if (subRecipe == ReportAsSecurityIssues.this) {
+                                        Recipe measure = recipeStack.get(i + 1);
+                                        List<Recipe> recipeList = recipe.getRecipeList();
+                                        for (int j = 0; j < recipeList.size(); j++) {
+                                            if (recipeList.get(j).getName().equals(measure.getName())) {
+                                                securityIssues.insertRow(ctx, new SecurityIssues.Row(
+                                                        j, measure.getInstanceName()));
+                                                continue nextChange;
+                                            }
+                                        }
                                     }
                                 }
                             }
