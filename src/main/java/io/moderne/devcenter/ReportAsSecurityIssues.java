@@ -54,7 +54,7 @@ public class ReportAsSecurityIssues extends Recipe {
                     for (List<Recipe> recipeStack : changes.getRecipes()) {
                         for (int i = 0; i < recipeStack.size(); i++) {
                             Recipe recipe = recipeStack.get(i);
-                            if (recipe.getTags().contains("DevCenter:security")) {
+                            if (recipe.getTags().contains(DevCenter.DEVCENTER_TAG)) {
                                 Recipe measure = recipeStack.get(i + 1);
                                 List<Recipe> recipeList = recipe.getRecipeList();
                                 for (int j = 0; j < recipeList.size(); j++) {
