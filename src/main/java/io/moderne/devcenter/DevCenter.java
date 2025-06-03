@@ -80,8 +80,8 @@ public class DevCenter {
             DevCenterMeasurer devCenterMeasurer = findDevCenterCardRecursive(recipe);
             if (devCenterMeasurer != null && hasUpgradesAndMigrations(recipe)) {
                 upgradesAndMigrations.add(new Card(
-                        recipe.getInstanceName(),
-                        recipe.getName(),
+                        devCenterMeasurer.getInstanceName(),
+                        devCenterMeasurer.getName(),
                         fixRecipe,
                         devCenterMeasurer.getMeasures()));
             }

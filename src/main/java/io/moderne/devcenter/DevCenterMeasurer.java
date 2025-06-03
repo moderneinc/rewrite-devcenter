@@ -19,4 +19,8 @@ import java.util.List;
 
 public interface DevCenterMeasurer {
     List<String> getMeasures();
+
+    String getName();
+
+    String getInstanceName();
 }

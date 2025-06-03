@@ -71,9 +71,14 @@ public class DevCenterTest implements RewriteTest {
         devCenter.validate();
 
         assertThat(devCenter.getUpgradesAndMigrations()).hasSize(3);
-        assertThat(devCenter.getUpgradesAndMigrations().stream()
-          .map(DevCenter.Card::getMeasures))
-          .contains(List.of("Major", "Minor", "Patch", "Completed"));
+        assertThat(devCenter.getUpgradesAndMigrations())
+          .extracting(DevCenter.Card::getDisplayName)
+          .contains("Move to Java 21");
+        assertThat(devCenter.getUpgradesAndMigrations())
+          .extracting(DevCenter.Card::getMeasures)
+          .contains(
+            List.of("Major", "Minor", "Patch", "Completed")
+          );
 
         assertThat(devCenter.getSecurity()).isNotNull();
         assertThat(devCenter.getSecurity().getMeasures())
