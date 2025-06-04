@@ -92,7 +92,7 @@ public class JUnitUpgrade extends Recipe implements DevCenterMeasurer {
         JUnit4("JUnit 4", "On JUnit 4 or less. Specifically looks for `@org.junit.Test`."),
         Completed("Completed", "On JUnit Jupiter");
 
-        private final @Language("markdown") String displayName;
+        private final @Language("markdown") String instanceName;
 
         private final @Language("markdown") String description;
     }

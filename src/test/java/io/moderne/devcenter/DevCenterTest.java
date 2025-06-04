@@ -26,7 +26,7 @@ import org.openrewrite.test.RewriteTest;
 import java.io.ByteArrayInputStream;
 import java.net.URI;
 import java.nio.charset.StandardCharsets;
-import java.util.List;
+import java.util.Arrays;
 import java.util.Properties;
 
 import static io.moderne.devcenter.JUnitUpgrade.Measure.JUnit4;
@@ -36,7 +36,7 @@ import static org.assertj.core.api.Assertions.assertThatThrownBy;
 import static org.openrewrite.java.Assertions.java;
 import static org.openrewrite.java.Assertions.version;
 
-public class DevCenterTest implements RewriteTest {
+class DevCenterTest implements RewriteTest {
     Environment environment = Environment.builder()
       .scanRuntimeClasspath("org.openrewrite")
       .scanYamlResources()
@@ -70,13 +70,15 @@ public class DevCenterTest implements RewriteTest {
         DevCenter devCenter = new DevCenter(starterDevCenter);
         devCenter.validate();
 
-        assertThat(devCenter.getUpgradesAndMigrations()).hasSize(3);
-        assertThat(devCenter.getUpgradesAndMigrations().stream()
-          .map(DevCenter.Card::getMeasures))
-          .contains(List.of("Major", "Minor", "Patch", "Completed"));
+        assertThat(devCenter.getUpgradesAndMigrations())
+          .hasSize(3)
+          .map(DevCenter.Card::getMeasures)
+          .flatMap(Arrays::asList)
+          .map(DevCenterMeasure::getInstanceName)
+          .contains("Major", "Minor", "Patch", "Completed");
 
         assertThat(devCenter.getSecurity()).isNotNull();
-        assertThat(devCenter.getSecurity().getMeasures())
+        assertThat(devCenter.getSecurity().getMeasures()[0].getInstanceName())
           .contains("Zip slip");
     }
 

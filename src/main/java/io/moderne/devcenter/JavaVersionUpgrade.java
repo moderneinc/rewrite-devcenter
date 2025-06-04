@@ -89,7 +89,7 @@ public class JavaVersionUpgrade extends Recipe implements DevCenterMeasurer {
                     upgradesAndMigrations.insertRow(ctx, new UpgradesAndMigrations.Row(
                             getInstanceName(),
                             measure.ordinal(),
-                            measure.displayName,
+                            measure.instanceName,
                             javaVersion.getSourceCompatibility()
                     ));
                 });
@@ -112,7 +112,7 @@ public class JavaVersionUpgrade extends Recipe implements DevCenterMeasurer {
         Java21Plus("Java 21+", "Java 21 and later"),
         Completed("Completed", "The upgrade to the desired Java version is already complete.");
 
-        private final @Language("markdown") String displayName;
+        private final @Language("markdown") String instanceName;
         private final @Language("markdown") String description;
     }
 }
