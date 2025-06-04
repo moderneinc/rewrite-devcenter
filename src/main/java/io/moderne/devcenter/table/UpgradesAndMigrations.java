@@ -15,13 +15,14 @@
  */
 package io.moderne.devcenter.table;
 
-import io.moderne.devcenter.DevCenterMeasurer;
+import io.moderne.devcenter.DevCenterMeasure;
+import io.moderne.devcenter.UpgradeMigrationCard;
 import lombok.Value;
 import org.intellij.lang.annotations.Language;
 import org.openrewrite.Column;
 import org.openrewrite.DataTable;
 import org.openrewrite.ExecutionContext;
-import org.openrewrite.Recipe;
+import org.openrewrite.scheduling.RecipeRunCycle;
 import org.openrewrite.semver.LatestRelease;
 
 import java.util.ArrayList;
@@ -35,8 +36,20 @@ public class UpgradesAndMigrations extends DataTable<UpgradesAndMigrations.Row> 
     @Language("markdown")
     public final static String DISPLAY_NAME = "Upgrades and migrations";
 
-    public <T extends Recipe & DevCenterMeasurer> UpgradesAndMigrations(T recipe) {
+    public <T extends UpgradeMigrationCard> UpgradesAndMigrations(T recipe) {
         super(recipe, DISPLAY_NAME, "Progress towards organizational objectives on library or language migrations and upgrades.");
+    }
+
+    public <E extends Enum<E> & DevCenterMeasure> void insertRow(ExecutionContext ctx,
+                                                                 UpgradeMigrationCard recipe,
+                                                                 E measure, String currentMinimumVersion) {
+        RecipeRunCycle<?> cycle = ctx.getCycleDetails();
+        insertRow(ctx, new UpgradesAndMigrations.Row(
+                recipe.getInstanceName(),
+                measure.ordinal(),
+                measure.getName(),
+                currentMinimumVersion
+        ));
     }
 
     @Override

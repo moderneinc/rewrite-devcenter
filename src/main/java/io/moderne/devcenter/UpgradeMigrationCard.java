@@ -15,6 +15,17 @@
  */
 package io.moderne.devcenter;
 
-public interface DevCenterMeasurer {
-    DevCenterMeasure[] getMeasures();
+import io.moderne.devcenter.table.UpgradesAndMigrations;
+import org.jspecify.annotations.Nullable;
+import org.openrewrite.Recipe;
+
+import java.util.List;
+
+public abstract class UpgradeMigrationCard extends Recipe {
+    protected transient UpgradesAndMigrations upgradesAndMigrations = new UpgradesAndMigrations(this);
+
+    public abstract List<DevCenterMeasure> getMeasures();
+
+    @Nullable
+    public abstract String getFixRecipeId();
 }

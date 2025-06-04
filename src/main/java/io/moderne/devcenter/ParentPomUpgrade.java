@@ -19,20 +19,18 @@ import io.moderne.devcenter.internal.DataTableRowWatcher;
 import io.moderne.devcenter.table.UpgradesAndMigrations;
 import lombok.EqualsAndHashCode;
 import lombok.Value;
+import org.jspecify.annotations.Nullable;
 import org.openrewrite.*;
 import org.openrewrite.maven.search.FindMavenProject;
 import org.openrewrite.maven.search.ParentPomInsight;
 import org.openrewrite.maven.table.ParentPomsInUse;
 
-import java.util.Collections;
+import java.util.Arrays;
 import java.util.List;
-import java.util.Set;
 
 @Value
 @EqualsAndHashCode(callSuper = false)
-public class ParentPomUpgrade extends Recipe implements DevCenterMeasurer {
-    transient UpgradesAndMigrations upgradesAndMigrations = new UpgradesAndMigrations(this);
-
+public class ParentPomUpgrade extends UpgradeMigrationCard {
     @Option(displayName = "Card name",
             description = "The display name of the DevCenter card")
     String cardName;
@@ -53,6 +51,12 @@ public class ParentPomUpgrade extends Recipe implements DevCenterMeasurer {
             example = "3.4.5")
     String version;
 
+    @Option(displayName = "Upgrade recipe",
+            description = "The recipe to use to upgrade.",
+            required = false)
+    @Nullable
+    String upgradeRecipe;
+
     @Override
     public String getDisplayName() {
         return "Parent POM upgrade";
@@ -66,11 +70,6 @@ public class ParentPomUpgrade extends Recipe implements DevCenterMeasurer {
     @Override
     public String getDescription() {
         return "Determine the current state of a repository relative to a desired parent POM upgrade.";
-    }
-
-    @Override
-    public Set<String> getTags() {
-        return Collections.singleton(DevCenter.DEVCENTER_TAG);
     }
 
     @Override
@@ -100,7 +99,13 @@ public class ParentPomUpgrade extends Recipe implements DevCenterMeasurer {
         });
     }
 
-    public DevCenterMeasure[] getMeasures() {
-        return SemverMeasure.values();
+    @Override
+    public List<DevCenterMeasure> getMeasures() {
+        return Arrays.asList(SemverMeasure.values());
+    }
+
+    @Override
+    public @Nullable String getFixRecipeId() {
+        return upgradeRecipe;
     }
 }

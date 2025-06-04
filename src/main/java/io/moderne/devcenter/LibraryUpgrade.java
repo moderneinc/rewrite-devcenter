@@ -19,21 +19,19 @@ import io.moderne.devcenter.internal.DataTableRowWatcher;
 import io.moderne.devcenter.table.UpgradesAndMigrations;
 import lombok.EqualsAndHashCode;
 import lombok.Value;
+import org.jspecify.annotations.Nullable;
 import org.openrewrite.*;
 import org.openrewrite.gradle.IsBuildGradle;
 import org.openrewrite.java.dependencies.DependencyInsight;
 import org.openrewrite.maven.search.FindMavenProject;
 import org.openrewrite.maven.table.DependenciesInUse;
 
-import java.util.Collections;
+import java.util.Arrays;
 import java.util.List;
-import java.util.Set;
 
 @Value
 @EqualsAndHashCode(callSuper = false)
-public class LibraryUpgrade extends Recipe implements DevCenterMeasurer {
-    transient UpgradesAndMigrations upgradesAndMigrations = new UpgradesAndMigrations(this);
-
+public class LibraryUpgrade extends UpgradeMigrationCard {
     @Option(displayName = "Card name",
             description = "The display name of the DevCenter card")
     String cardName;
@@ -54,6 +52,12 @@ public class LibraryUpgrade extends Recipe implements DevCenterMeasurer {
             example = "3.4.1")
     String version;
 
+    @Option(displayName = "Upgrade recipe",
+            description = "The recipe to use to upgrade.",
+            required = false)
+    @Nullable
+    String upgradeRecipe;
+
     @Override
     public String getDisplayName() {
         return "Library upgrade";
@@ -67,11 +71,6 @@ public class LibraryUpgrade extends Recipe implements DevCenterMeasurer {
     @Override
     public String getDescription() {
         return "Determine the current state of a repository relative to a desired library upgrade.";
-    }
-
-    @Override
-    public Set<String> getTags() {
-        return Collections.singleton(DevCenter.DEVCENTER_TAG);
     }
 
     @Override
@@ -99,7 +98,13 @@ public class LibraryUpgrade extends Recipe implements DevCenterMeasurer {
         });
     }
 
-    public DevCenterMeasure[] getMeasures() {
-        return SemverMeasure.values();
+    @Override
+    public @Nullable String getFixRecipeId() {
+        return upgradeRecipe;
+    }
+
+    @Override
+    public List<DevCenterMeasure> getMeasures() {
+        return Arrays.asList(SemverMeasure.values());
     }
 }

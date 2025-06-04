@@ -28,7 +28,7 @@ public enum SemverMeasure implements DevCenterMeasure {
     Completed("The version is greater than or equal to the target version.");
 
     @Override
-    public @Language("markdown") String getInstanceName() {
+    public @Language("markdown") String getName() {
         return name();
     }
 

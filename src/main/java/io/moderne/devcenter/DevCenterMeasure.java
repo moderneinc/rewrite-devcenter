@@ -21,7 +21,7 @@ import org.openrewrite.NlsRewrite;
 public interface DevCenterMeasure {
     @Language("markdown")
     @NlsRewrite.DisplayName
-    String getInstanceName();
+    String getName();
 
     @Language("markdown")
     @NlsRewrite.Description

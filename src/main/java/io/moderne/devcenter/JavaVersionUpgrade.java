@@ -15,32 +15,36 @@
  */
 package io.moderne.devcenter;
 
-import io.moderne.devcenter.table.UpgradesAndMigrations;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 import lombok.Value;
 import org.intellij.lang.annotations.Language;
+import org.jspecify.annotations.Nullable;
 import org.openrewrite.ExecutionContext;
 import org.openrewrite.Option;
-import org.openrewrite.Recipe;
 import org.openrewrite.TreeVisitor;
 import org.openrewrite.java.JavaIsoVisitor;
 import org.openrewrite.java.marker.JavaVersion;
 import org.openrewrite.java.tree.J;
 
-import java.util.Collections;
-import java.util.Set;
+import java.util.Arrays;
+import java.util.List;
 
 @Value
 @EqualsAndHashCode(callSuper = false)
-public class JavaVersionUpgrade extends Recipe implements DevCenterMeasurer {
-    transient UpgradesAndMigrations upgradesAndMigrations = new UpgradesAndMigrations(this);
-
+public class JavaVersionUpgrade extends UpgradeMigrationCard {
     @Option(displayName = "Major version",
             description = "The major version of Java to upgrade to.",
             example = "24")
     int majorVersion;
+
+    @Option(displayName = "Upgrade recipe",
+            description = "The recipe to use to upgrade.",
+            example = "org.openrewrite.java.migrate.UpgradeToJava21",
+            required = false)
+    @Nullable
+    String upgradeRecipe;
 
     @Override
     public String getDisplayName() {
@@ -55,11 +59,6 @@ public class JavaVersionUpgrade extends Recipe implements DevCenterMeasurer {
     @Override
     public String getDescription() {
         return "Determine the current state of a repository relative to a desired Java version upgrade.";
-    }
-
-    @Override
-    public Set<String> getTags() {
-        return Collections.singleton(DevCenter.DEVCENTER_TAG);
     }
 
     @Override
@@ -86,12 +85,8 @@ public class JavaVersionUpgrade extends Recipe implements DevCenterMeasurer {
                         }
                     }
 
-                    upgradesAndMigrations.insertRow(ctx, new UpgradesAndMigrations.Row(
-                            getInstanceName(),
-                            measure.ordinal(),
-                            measure.displayName,
-                            javaVersion.getSourceCompatibility()
-                    ));
+                    upgradesAndMigrations.insertRow(ctx, JavaVersionUpgrade.this,
+                            measure, javaVersion.getSourceCompatibility());
                 });
                 return tree;
             }
@@ -99,8 +94,13 @@ public class JavaVersionUpgrade extends Recipe implements DevCenterMeasurer {
     }
 
     @Override
-    public DevCenterMeasure[] getMeasures() {
-        return Measure.values();
+    public List<DevCenterMeasure> getMeasures() {
+        return Arrays.asList(Measure.values());
+    }
+
+    @Override
+    public @Nullable String getFixRecipeId() {
+        return upgradeRecipe;
     }
 
     @Getter
@@ -112,7 +112,7 @@ public class JavaVersionUpgrade extends Recipe implements DevCenterMeasurer {
         Java21Plus("Java 21+", "Java 21 and later"),
         Completed("Completed", "The upgrade to the desired Java version is already complete.");
 
-        private final @Language("markdown") String displayName;
+        private final @Language("markdown") String name;
         private final @Language("markdown") String description;
     }
 }

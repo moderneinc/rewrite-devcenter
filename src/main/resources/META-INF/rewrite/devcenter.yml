@@ -16,5 +16,5 @@
 
 type: specs.openrewrite.org/v1beta/category
 name: Moderne DevCenter
-packageName: io.moderne.DevCenter
+packageName: io.moderne.devcenter
 

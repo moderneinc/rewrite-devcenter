@@ -15,22 +15,27 @@
  */
 package io.moderne.devcenter;
 
-import io.moderne.devcenter.table.UpgradesAndMigrations;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 import org.intellij.lang.annotations.Language;
+import org.jspecify.annotations.Nullable;
 import org.openrewrite.ExecutionContext;
-import org.openrewrite.Recipe;
+import org.openrewrite.Option;
 import org.openrewrite.TreeVisitor;
 import org.openrewrite.java.JavaIsoVisitor;
 import org.openrewrite.java.search.FindAnnotations;
 import org.openrewrite.java.tree.J;
 
-import java.util.Collections;
-import java.util.Set;
+import java.util.Arrays;
+import java.util.List;
 
-public class JUnitUpgrade extends Recipe implements DevCenterMeasurer {
-    private final transient UpgradesAndMigrations upgradesAndMigrations = new UpgradesAndMigrations(this);
+public class JUnitJupiterUpgrade extends UpgradeMigrationCard {
+    @Option(displayName = "Upgrade recipe",
+            description = "The recipe to use to upgrade.",
+            example = "org.openrewrite.java.testing.junit5.JUnit4to5Migration",
+            required = false)
+    @Nullable
+    String upgradeRecipe;
 
     @Override
     public String getDisplayName() {
@@ -52,23 +57,15 @@ public class JUnitUpgrade extends Recipe implements DevCenterMeasurer {
                 J j2 = (J) new FindAnnotations("@org.junit.Test", true)
                         .getVisitor().visitNonNull(tree, ctx);
                 if (tree != j2) {
-                    upgradesAndMigrations.insertRow(ctx, new UpgradesAndMigrations.Row(
-                            "Move to JUnit 5",
-                            Measure.JUnit4.ordinal(),
-                            "JUnit 4",
-                            "JUnit 4"
-                    ));
+                    upgradesAndMigrations.insertRow(ctx, JUnitJupiterUpgrade.this,
+                            Measure.JUnit4, "JUnit 4");
                 }
 
                 J j3 = (J) new FindAnnotations("@org.junit.jupiter.api.Test", true)
                         .getVisitor().visitNonNull(j2, ctx);
                 if (tree != j3) {
-                    upgradesAndMigrations.insertRow(ctx, new UpgradesAndMigrations.Row(
-                            getInstanceName(),
-                            Measure.Completed.ordinal(),
-                            "Completed",
-                            "JUnit 5"
-                    ));
+                    upgradesAndMigrations.insertRow(ctx, JUnitJupiterUpgrade.this,
+                            Measure.Completed, "JUnit 5");
                 }
 
                 return j3;
@@ -77,13 +74,15 @@ public class JUnitUpgrade extends Recipe implements DevCenterMeasurer {
     }
 
     @Override
-    public Set<String> getTags() {
-        return Collections.singleton(DevCenter.DEVCENTER_TAG);
+    public List<DevCenterMeasure> getMeasures() {
+        return Arrays.asList(Measure.values());
     }
 
     @Override
-    public DevCenterMeasure[] getMeasures() {
-        return Measure.values();
+    public String getFixRecipeId() {
+        return upgradeRecipe == null ?
+                "org.openrewrite.java.testing.junit5.JUnit4to5Migration" :
+                upgradeRecipe;
     }
 
     @RequiredArgsConstructor
@@ -92,7 +91,7 @@ public class JUnitUpgrade extends Recipe implements DevCenterMeasurer {
         JUnit4("JUnit 4", "On JUnit 4 or less. Specifically looks for `@org.junit.Test`."),
         Completed("Completed", "On JUnit Jupiter");
 
-        private final @Language("markdown") String displayName;
+        private final @Language("markdown") String name;
 
         private final @Language("markdown") String description;
     }
