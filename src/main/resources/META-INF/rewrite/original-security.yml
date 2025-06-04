@@ -19,10 +19,6 @@ name: io.moderne.devcenter.SecurityOriginalStarter
 displayName: Original DevCenter security card
 description: >-
   This is the same set of recipes as the original DevCenter security card.
-tags:
-  # This tag is used by ReportAsSecurityIssues to identify sibling recipes that make up the
-  # dimensions of the security DevCenter card.
-  - DevCenter:card
 recipeList:
   - org.openrewrite.java.security.secrets.FindSecrets
   - org.openrewrite.java.security.OwaspA01
