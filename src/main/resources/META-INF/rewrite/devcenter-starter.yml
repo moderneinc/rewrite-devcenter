@@ -21,72 +21,30 @@ description: >-
   This is a default DevCenter configuration that can be used as a starting point for your own DevCenter configuration.
   It includes a combination of upgrades, migrations, and security fixes.
   You can customize this configuration to suit your needs.
+  
   For more information on how to customize your DevCenter configuration, see the [DevCenter documentation](https://docs.moderne.io/user-documentation/moderne-platform/getting-started/dev-center/).
-recipeList:
-  - io.moderne.devcenter.SpringBootUpgradeStarter
-  - io.moderne.devcenter.JavaVersionUpgradeStarter
-  - io.moderne.devcenter.JUnitUpgradeStarter
-  - io.moderne.devcenter.SecurityStarter
----
-type: specs.openrewrite.org/v1beta/recipe
-name: io.moderne.devcenter.JavaVersionUpgradeStarter
-displayName: Starter DevCenter Java version upgrade card
-description: >-
-  The DevCenter card to upgrade Java versions. The default card uses the open source Java migration recipe.
-  You can customize this configuration to include recipes that add to the base Java migration for
-  libraries and frameworks that are unique to you.
-  For more information on how to customize your DevCenter configuration, see the [DevCenter documentation](https://docs.moderne.io/user-documentation/moderne-platform/getting-started/dev-center/).
-tags:
-  - DevCenter:card
-  - DevCenter:fix:org.openrewrite.java.migrate.UpgradeToJava21
-recipeList:
-  - io.moderne.devcenter.JavaVersionUpgrade:
-      majorVersion: 21
----
-type: specs.openrewrite.org/v1beta/recipe
-name: io.moderne.devcenter.SpringBootUpgradeStarter
-displayName: Starter DevCenter Spring Boot version upgrade card
-description: >-
-  The DevCenter card to upgrade Spring Boot versions. The default card uses the open source Spring Boot migration recipe.
-  You can customize this configuration to include recipes that add to the base Spring Boot migration for
-  libraries and frameworks that are unique to you.
-  For more information on how to customize your DevCenter configuration, see the [DevCenter documentation](https://docs.moderne.io/user-documentation/moderne-platform/getting-started/dev-center/).
-tags:
-  - DevCenter:card
-  - DevCenter:fix:io.moderne.java.spring.boot3.UpgradeSpringBoot_3_5
 recipeList:
   - io.moderne.devcenter.LibraryUpgrade:
       cardName: Move to Spring Boot 3.5.0
       groupIdPattern: org.springframework.boot
       artifactIdPattern: '*'
       version: 3.5.0
----
-type: specs.openrewrite.org/v1beta/recipe
-name: io.moderne.devcenter.JUnitUpgradeStarter
-displayName: Starter DevCenter JUnit upgrade card
-description: >-
-  The DevCenter card to upgrade JUnit. The default card uses the open source JUnit migration recipe.
-  You can customize this configuration to include recipes that add to the base JUnit migration for
-  customizations that are unique to you.
-  For more information on how to customize your DevCenter configuration, see the [DevCenter documentation](https://docs.moderne.io/user-documentation/moderne-platform/getting-started/dev-center/).
-tags:
-  - DevCenter:card
-  - DevCenter:fix:org.openrewrite.java.testing.junit5.JUnit4to5Migration
-recipeList:
-  - io.moderne.devcenter.JUnitUpgrade
+      upgradeRecipe: io.moderne.java.spring.boot3.UpgradeSpringBoot_3_5
+  - io.moderne.devcenter.JavaVersionUpgrade:
+      majorVersion: 21
+      upgradeRecipe: org.openrewrite.java.migrate.UpgradeToJava21
+  - io.moderne.devcenter.JUnitJupiterUpgrade:
+      upgradeRecipe: org.openrewrite.java.testing.junit5.JUnit4to5Migration
+  - io.moderne.devcenter.SecurityStarter
 ---
 type: specs.openrewrite.org/v1beta/recipe
 name: io.moderne.devcenter.SecurityStarter
-displayName: Starter DevCenter security card
+displayName: OWASP top ten
 description: >-
   This recipe is a starter card to reveal common OWASP Top 10 issues in your source code.
   You can customize this configuration to suit your needs.
+  
   For more information on how to customize your DevCenter configuration, see the [DevCenter documentation](https://docs.moderne.io/user-documentation/moderne-platform/getting-started/dev-center/).
-tags:
-  # This tag is used by ReportAsSecurityIssues to identify sibling recipes that make up the
-  # dimensions of the security DevCenter card.
-  - DevCenter:card
-  - DevCenter:fix:org.openrewrite.java.security.OwaspTopTen
 recipeList:
   - org.openrewrite.java.security.OwaspA01
   - org.openrewrite.java.security.OwaspA02
@@ -97,4 +55,5 @@ recipeList:
   - org.openrewrite.java.security.SecureTempFileCreation
   # Changes made by recipes above this one in the recipe list are reported as occurrences
   # in the Security DevCenter card.
-  - io.moderne.devcenter.ReportAsSecurityIssues
+  - io.moderne.devcenter.ReportAsSecurityIssues:
+      fixRecipe: org.openrewrite.java.security.OwaspTopTen

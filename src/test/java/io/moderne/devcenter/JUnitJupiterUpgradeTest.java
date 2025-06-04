@@ -23,12 +23,12 @@ import org.openrewrite.test.SourceSpecs;
 
 import java.util.function.Consumer;
 
-import static io.moderne.devcenter.JUnitUpgrade.Measure.Completed;
-import static io.moderne.devcenter.JUnitUpgrade.Measure.JUnit4;
+import static io.moderne.devcenter.JUnitJupiterUpgrade.Measure.Completed;
+import static io.moderne.devcenter.JUnitJupiterUpgrade.Measure.JUnit4;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.openrewrite.java.Assertions.java;
 
-public class JUnitUpgradeTest implements RewriteTest {
+public class JUnitJupiterUpgradeTest implements RewriteTest {
 
     //language=java
     SourceSpecs junit4 = java(
@@ -72,7 +72,7 @@ public class JUnitUpgradeTest implements RewriteTest {
 
     @Override
     public void defaults(RecipeSpec spec) {
-        spec.recipe(new JUnitUpgrade());
+        spec.recipe(new JUnitJupiterUpgrade());
     }
 
     @Test
@@ -100,7 +100,7 @@ public class JUnitUpgradeTest implements RewriteTest {
         );
     }
 
-    private static Consumer<RecipeSpec> assertUpgradeStatus(JUnitUpgrade.Measure JUnit4, String measureName, String dependencyVersion) {
+    private static Consumer<RecipeSpec> assertUpgradeStatus(JUnitJupiterUpgrade.Measure JUnit4, String measureName, String dependencyVersion) {
         return spec -> spec.dataTable(UpgradesAndMigrations.Row.class, rows ->
           assertThat(rows).containsExactly(
             new UpgradesAndMigrations.Row("Move to JUnit 5",

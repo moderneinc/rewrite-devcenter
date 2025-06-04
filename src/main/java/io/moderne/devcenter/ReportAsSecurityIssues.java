@@ -16,17 +16,26 @@
 package io.moderne.devcenter;
 
 import io.moderne.devcenter.table.SecurityIssues;
-import org.openrewrite.ExecutionContext;
-import org.openrewrite.Recipe;
-import org.openrewrite.Tree;
-import org.openrewrite.TreeVisitor;
+import lombok.EqualsAndHashCode;
+import lombok.Value;
+import org.jspecify.annotations.Nullable;
+import org.openrewrite.*;
 import org.openrewrite.marker.RecipesThatMadeChanges;
 
 import java.util.List;
 
 @SuppressWarnings("unused")
+@Value
+@EqualsAndHashCode(callSuper = false)
 public class ReportAsSecurityIssues extends Recipe {
     private final transient SecurityIssues securityIssues = new SecurityIssues(this);
+
+    @Option(displayName = "Fix recipe",
+            description = "The recipe to use to fix these issues.",
+            example = "org.openrewrite.java.security.OwaspTopTen",
+            required = false)
+    @Nullable
+    String fixRecipe;
 
     @Override
     public String getDisplayName() {
@@ -55,17 +64,15 @@ public class ReportAsSecurityIssues extends Recipe {
                     for (List<Recipe> recipeStack : changes.getRecipes()) {
                         for (int i = 0; i < recipeStack.size(); i++) {
                             Recipe recipe = recipeStack.get(i);
-                            if (recipe.getTags().contains(DevCenter.DEVCENTER_TAG)) {
-                                for (Recipe subRecipe : recipe.getRecipeList()) {
-                                    if (subRecipe == ReportAsSecurityIssues.this) {
-                                        Recipe measure = recipeStack.get(i + 1);
-                                        List<Recipe> recipeList = recipe.getRecipeList();
-                                        for (int j = 0; j < recipeList.size(); j++) {
-                                            if (recipeList.get(j).getName().equals(measure.getName())) {
-                                                securityIssues.insertRow(ctx, new SecurityIssues.Row(
-                                                        j, measure.getInstanceName()));
-                                                continue nextChange;
-                                            }
+                            for (Recipe subRecipe : recipe.getRecipeList()) {
+                                if (subRecipe == ReportAsSecurityIssues.this) {
+                                    Recipe measure = recipeStack.get(i + 1);
+                                    List<Recipe> recipeList = recipe.getRecipeList();
+                                    for (int j = 0; j < recipeList.size(); j++) {
+                                        if (recipeList.get(j).getName().equals(measure.getName())) {
+                                            securityIssues.insertRow(ctx, new SecurityIssues.Row(
+                                                    j, measure.getInstanceName()));
+                                            continue nextChange;
                                         }
                                     }
                                 }

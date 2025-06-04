@@ -49,7 +49,8 @@ public class ParentPomUpgradeTest implements RewriteTest {
                 "Move Spring Boot Parent POM",
                 "org.springframework.boot",
                 "spring-boot-parent",
-                targetVersion))
+                targetVersion,
+                null))
               .dataTable(
                 UpgradesAndMigrations.Row.class, rows ->
                   assertThat(rows).containsExactly(

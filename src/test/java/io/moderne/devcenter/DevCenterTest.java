@@ -26,10 +26,9 @@ import org.openrewrite.test.RewriteTest;
 import java.io.ByteArrayInputStream;
 import java.net.URI;
 import java.nio.charset.StandardCharsets;
-import java.util.List;
 import java.util.Properties;
 
-import static io.moderne.devcenter.JUnitUpgrade.Measure.JUnit4;
+import static io.moderne.devcenter.JUnitJupiterUpgrade.Measure.JUnit4;
 import static io.moderne.devcenter.JavaVersionUpgrade.Measure.Java8Plus;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
@@ -56,7 +55,7 @@ public class DevCenterTest implements RewriteTest {
         assertThat(DevCenter.isDevCenter(starterOriginalSecurity.getDescriptor())).isTrue();
 
         // This is the variant that has no fix, but it can stand alone as an upgrade card if desired.
-        assertThat(DevCenter.isDevCenter(new JavaVersionUpgrade(8).getDescriptor())).isTrue();
+        assertThat(DevCenter.isDevCenter(new JavaVersionUpgrade(8, null).getDescriptor())).isTrue();
 
         // While the OwaspTopTen recipe may serve as a fix recipe for a security issues card, and some of its
         // sub-recipes may be reused in the definition of it, the recipe itself is not a DevCenter card.
@@ -71,12 +70,13 @@ public class DevCenterTest implements RewriteTest {
         devCenter.validate();
 
         assertThat(devCenter.getUpgradesAndMigrations()).hasSize(3);
-        assertThat(devCenter.getUpgradesAndMigrations().stream()
-          .map(DevCenter.Card::getMeasures))
-          .contains(List.of("Major", "Minor", "Patch", "Completed"));
+        assertThat(devCenter.getUpgradesAndMigrations().getFirst().getMeasures().stream())
+          .map(DevCenterMeasure::getName)
+          .containsExactly("Major", "Minor", "Patch", "Completed");
 
         assertThat(devCenter.getSecurity()).isNotNull();
-        assertThat(devCenter.getSecurity().getMeasures())
+        assertThat(devCenter.getSecurity().getMeasures().stream())
+          .map(DevCenterMeasure::getName)
           .contains("Zip slip");
     }
 
@@ -126,7 +126,7 @@ public class DevCenterTest implements RewriteTest {
             .dataTable(UpgradesAndMigrations.Row.class, rows ->
               assertThat(rows).containsExactlyInAnyOrder(
                 new UpgradesAndMigrations.Row(
-                  "Move to Java 21", Java8Plus.ordinal(), Java8Plus.getInstanceName(), "8"),
+                  "Move to Java 21", Java8Plus.ordinal(), Java8Plus.getName(), "8"),
                 new UpgradesAndMigrations.Row("Move to JUnit 5",
                   JUnit4.ordinal(), "JUnit 4", "JUnit 4")
               )),

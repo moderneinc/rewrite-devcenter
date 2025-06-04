@@ -45,11 +45,11 @@ public class JavaVersionUpgradeTest implements RewriteTest {
     void java8(int targetVersion, int actualVersion, JavaVersionUpgrade.Measure measure) {
         rewriteRun(
           spec -> spec
-            .recipe(new JavaVersionUpgrade(targetVersion))
+            .recipe(new JavaVersionUpgrade(targetVersion, null))
             .dataTable(UpgradesAndMigrations.Row.class, rows ->
               assertThat(rows).containsExactly(
                 new UpgradesAndMigrations.Row("Move to Java " + targetVersion,
-                  measure.ordinal(), measure.getInstanceName(), Integer.toString(actualVersion))
+                  measure.ordinal(), measure.getName(), Integer.toString(actualVersion))
               )),
           version(
             //language=java

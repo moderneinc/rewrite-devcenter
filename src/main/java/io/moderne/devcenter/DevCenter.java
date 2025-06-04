@@ -15,6 +15,7 @@
  */
 package io.moderne.devcenter;
 
+import io.moderne.devcenter.table.SecurityIssues;
 import io.moderne.devcenter.table.UpgradesAndMigrations;
 import lombok.Value;
 import org.jspecify.annotations.Nullable;
@@ -25,11 +26,9 @@ import org.openrewrite.config.RecipeDescriptor;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 public class DevCenter {
-    public static final String DEVCENTER_TAG = "DevCenter:card";
-    public static final String FIX_RECIPE_PREFIX = "DevCenter:fix:";
-
     private final Recipe recipe;
 
     public DevCenter(Recipe recipe) {
@@ -37,8 +36,11 @@ public class DevCenter {
     }
 
     public static boolean isDevCenter(RecipeDescriptor recipe) {
-        if (recipe.getTags().contains(DEVCENTER_TAG)) {
-            return true;
+        for (DataTableDescriptor dataTable : recipe.getDataTables()) {
+            if (dataTable.getName().equals(UpgradesAndMigrations.class.getName()) ||
+                dataTable.getName().equals(SecurityIssues.class.getName())) {
+                return true;
+            }
         }
         for (RecipeDescriptor subRecipe : recipe.getRecipeList()) {
             if (isDevCenter(subRecipe)) {
@@ -75,84 +77,38 @@ public class DevCenter {
     }
 
     private List<Card> getUpgradesAndMigrationsRecursive(Recipe recipe, List<Card> upgradesAndMigrations) {
-        if (recipe.getDescriptor().getTags().contains(DEVCENTER_TAG)) {
-            String fixRecipe = fixRecipe(recipe.getDescriptor());
-            DevCenterMeasurer devCenterMeasurer = findDevCenterCardRecursive(recipe);
-            if (devCenterMeasurer != null && hasUpgradesAndMigrations(recipe)) {
-                upgradesAndMigrations.add(new Card(
-                        recipe.getInstanceName(),
-                        recipe.getName(),
-                        fixRecipe,
-                        devCenterMeasurer.getMeasures()));
-            }
-        } else {
-            for (Recipe subRecipe : recipe.getRecipeList()) {
-                getUpgradesAndMigrationsRecursive(subRecipe, upgradesAndMigrations);
-            }
+        if (recipe instanceof UpgradeMigrationCard) {
+            upgradesAndMigrations.add(new Card(
+                    recipe.getInstanceName(),
+                    recipe.getDescription(),
+                    ((UpgradeMigrationCard) recipe).getFixRecipeId(),
+                    ((UpgradeMigrationCard) recipe).getMeasures()));
+        }
+        for (Recipe subRecipe : recipe.getRecipeList()) {
+            getUpgradesAndMigrationsRecursive(subRecipe, upgradesAndMigrations);
         }
         return upgradesAndMigrations;
     }
 
-    private @Nullable DevCenterMeasurer findDevCenterCardRecursive(Recipe recipe) {
-        if (recipe instanceof DevCenterMeasurer) {
-            return (DevCenterMeasurer) recipe;
-        }
-        for (Recipe subRecipe : recipe.getRecipeList()) {
-            DevCenterMeasurer devCenterMeasurer = findDevCenterCardRecursive(subRecipe);
-            if (devCenterMeasurer != null) {
-                return devCenterMeasurer;
-            }
-        }
-        return null;
-    }
-
-    private boolean hasUpgradesAndMigrations(Recipe recipe) {
-        for (DataTableDescriptor dataTable : recipe.getDataTableDescriptors()) {
-            if (dataTable.getName().equals(UpgradesAndMigrations.class.getName())) {
-                return true;
-            }
-        }
-        for (Recipe subRecipe : recipe.getRecipeList()) {
-            if (hasUpgradesAndMigrations(subRecipe)) {
-                return true;
-            }
-        }
-        return false;
-    }
-
-    @Nullable
-    private String fixRecipe(RecipeDescriptor recipeDescriptor) {
-        for (String tag : recipeDescriptor.getTags()) {
-            if (tag.startsWith(FIX_RECIPE_PREFIX)) {
-                return tag.substring(FIX_RECIPE_PREFIX.length());
-            }
-        }
-        return null;
-    }
-
     private List<Card> getSecurityRecursive(Recipe recipe, List<Card> allSecurity) {
-        for (String tag : recipe.getTags()) {
-            if (tag.startsWith(DEVCENTER_TAG)) {
-                for (Recipe subRecipe : recipe.getRecipeList()) {
-                    if (subRecipe.getName().equals(ReportAsSecurityIssues.class.getName())) {
-                        allSecurity.add(new Card(
-                                recipe.getInstanceName(),
-                                recipe.getName(),
-                                fixRecipe(recipe.getDescriptor()),
-                                recipe.getRecipeList().stream().map(r -> new DevCenterMeasure() {
-                                    @Override
-                                    public String getInstanceName() {
-                                        return recipe.getInstanceName();
-                                    }
+        for (Recipe subRecipe : recipe.getRecipeList()) {
+            if (subRecipe instanceof ReportAsSecurityIssues) {
+                allSecurity.add(new Card(
+                        recipe.getInstanceName(),
+                        recipe.getDescription(),
+                        ((ReportAsSecurityIssues) subRecipe).getFixRecipe(),
+                        recipe.getRecipeList().stream().map(r -> new DevCenterMeasure() {
+                            @Override
+                            public String getName() {
+                                return r.getInstanceName();
+                            }
 
-                                    @Override
-                                    public String getDescription() {
-                                        return recipe.getDescription();
-                                    }
-                                }).toArray(DevCenterMeasure[]::new)));
-                        return allSecurity;
-                    }
-                }
+                            @Override
+                            public String getDescription() {
+                                return r.getDescription();
+                            }
+                        }).collect(Collectors.toList())));
+                return allSecurity;
             }
         }
         for (Recipe subRecipe : recipe.getRecipeList()) {
@@ -164,13 +120,14 @@ public class DevCenter {
     @Value
     public static class Card {
         @NlsRewrite.DisplayName
-        String instanceName;
+        String name;
 
-        String recipeId;
+        @NlsRewrite.Description
+        String description;
 
         @Nullable
         String fixRecipeId;
 
-        DevCenterMeasure[] measures;
+        List<DevCenterMeasure> measures;
     }
 }

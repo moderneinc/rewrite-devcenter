@@ -46,7 +46,7 @@ public class LibraryUpgradeTest implements RewriteTest {
           spec ->
             spec
               .recipe(new LibraryUpgrade("Move Jackson",
-                "com.fasterxml*", "*", targetVersion))
+                "com.fasterxml*", "*", targetVersion, null))
               .dataTable(UpgradesAndMigrations.Row.class, rows ->
                 assertThat(rows).containsExactly(
                   new UpgradesAndMigrations.Row("Move Jackson",
