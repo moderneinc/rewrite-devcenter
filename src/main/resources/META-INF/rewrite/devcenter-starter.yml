@@ -73,12 +73,24 @@ recipeList:
       groupIdPattern: io.quarkus
       artifactIdPattern: '*'
       version: 3.23.0
+      upgradeRecipe: io.moderne.devcenter.UpgradeQuarkus
   - io.moderne.devcenter.JavaVersionUpgrade:
       majorVersion: 21
       upgradeRecipe: org.openrewrite.java.migrate.UpgradeToJava21
   - io.moderne.devcenter.JUnitJupiterUpgrade:
       upgradeRecipe: org.openrewrite.java.testing.junit5.JUnit4to5Migration
   - io.moderne.devcenter.SecurityStarter
+---
+type: specs.openrewrite.org/v1beta/recipe
+name: io.moderne.devcenter.UpgradeQuarkus
+displayName: DevCenter
+description: >-
+  This recipe upgrades all Quarkus dependencies to the latest 3.23 version.
+recipeList:
+  - org.openrewrite.java.dependencies.UpgradeDependencyVersion:
+      groupId: io.quarkus
+      artifactId: '*'
+      newVersion: 3.23.x
 ---
 type: specs.openrewrite.org/v1beta/recipe
 name: io.moderne.devcenter.DevCenterStarterParent
