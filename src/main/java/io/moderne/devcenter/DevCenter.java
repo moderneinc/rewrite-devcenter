@@ -22,6 +22,7 @@ import org.jspecify.annotations.Nullable;
 import org.openrewrite.NlsRewrite;
 import org.openrewrite.Recipe;
 import org.openrewrite.config.DataTableDescriptor;
+import org.openrewrite.config.OptionDescriptor;
 import org.openrewrite.config.RecipeDescriptor;
 
 import java.util.ArrayList;
@@ -36,10 +37,12 @@ public class DevCenter {
     }
 
     public static boolean isDevCenter(RecipeDescriptor recipe) {
-        for (DataTableDescriptor dataTable : recipe.getDataTables()) {
-            if (dataTable.getName().equals(UpgradesAndMigrations.class.getName()) ||
-                dataTable.getName().equals(SecurityIssues.class.getName())) {
-                return true;
+        if (recipe.getOptions().stream().noneMatch(OptionDescriptor::isRequired)) {
+            for (DataTableDescriptor dataTable : recipe.getDataTables()) {
+                if (dataTable.getName().equals(UpgradesAndMigrations.class.getName()) ||
+                    dataTable.getName().equals(SecurityIssues.class.getName())) {
+                    return true;
+                }
             }
         }
         for (RecipeDescriptor subRecipe : recipe.getRecipeList()) {

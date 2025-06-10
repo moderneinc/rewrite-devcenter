@@ -54,8 +54,11 @@ public class DevCenterTest implements RewriteTest {
         assertThat(DevCenter.isDevCenter(starterDevCenter.getDescriptor())).isTrue();
         assertThat(DevCenter.isDevCenter(starterOriginalSecurity.getDescriptor())).isTrue();
 
+        // Since this recipe has options, it cannot be a standalone DevCenter.
+        assertThat(DevCenter.isDevCenter(new JavaVersionUpgrade(8, null).getDescriptor())).isFalse();
+
         // This is the variant that has no fix, but it can stand alone as an upgrade card if desired.
-        assertThat(DevCenter.isDevCenter(new JavaVersionUpgrade(8, null).getDescriptor())).isTrue();
+        assertThat(DevCenter.isDevCenter(new JUnitJupiterUpgrade().getDescriptor())).isTrue();
 
         // While the OwaspTopTen recipe may serve as a fix recipe for a security issues card, and some of its
         // sub-recipes may be reused in the definition of it, the recipe itself is not a DevCenter card.
