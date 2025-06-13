@@ -13,7 +13,8 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
-
+---
+# An example DevCenter configuration for a Spring Boot application, illustrating the use of the DevCenter Starter
 type: specs.openrewrite.org/v1beta/recipe
 name: io.moderne.devcenter.DevCenterStarterSpringBoot
 displayName: DevCenter
@@ -36,7 +37,10 @@ recipeList:
   - io.moderne.devcenter.JUnitJupiterUpgrade:
       upgradeRecipe: org.openrewrite.java.testing.junit5.JUnit4to5Migration
   - io.moderne.devcenter.SecurityStarter
+
+
 ---
+# Set of recipes shared across various DevCenter example configurations to show security issues as a DevCenter card.
 type: specs.openrewrite.org/v1beta/recipe
 name: io.moderne.devcenter.SecurityStarter
 displayName: OWASP top ten
@@ -57,7 +61,10 @@ recipeList:
   # in the Security DevCenter card.
   - io.moderne.devcenter.ReportAsSecurityIssues:
       fixRecipe: org.openrewrite.java.security.OwaspTopTen
+
+
 ---
+# An example DevCenter configuration for a Quarkus application, with a named custom upgrade recipe for Quarkus
 type: specs.openrewrite.org/v1beta/recipe
 name: io.moderne.devcenter.DevCenterStarterQuarkus
 displayName: DevCenter
@@ -91,7 +98,10 @@ recipeList:
       groupId: io.quarkus
       artifactId: '*'
       newVersion: 3.23.x
+
+
 ---
+# An example DevCenter tracking Parent POM versions, illustrated by using the Apache Maven parent POM
 type: specs.openrewrite.org/v1beta/recipe
 name: io.moderne.devcenter.DevCenterStarterParent
 displayName: DevCenter
@@ -103,13 +113,25 @@ description: >-
   For more information on how to customize your DevCenter configuration, see the [DevCenter documentation](https://docs.moderne.io/user-documentation/moderne-platform/getting-started/dev-center/).
 recipeList:
   - io.moderne.devcenter.ParentPomUpgrade:
-      cardName: Move to spring-boot-parent 3.5.0
-      groupIdPattern: org.springframework.boot
-      artifactIdPattern: spring-boot-parent
-      version: 3.5.0
+      cardName: Move to the latest Apache Maven parent POM
+      groupIdPattern: org.apache.maven
+      artifactIdPattern: maven-parent
+      version: x
+      upgradeRecipe: io.moderne.devcenter.UpgradeApacheMavenParent
   - io.moderne.devcenter.JavaVersionUpgrade:
       majorVersion: 21
       upgradeRecipe: org.openrewrite.java.migrate.UpgradeToJava21
   - io.moderne.devcenter.JUnitJupiterUpgrade:
       upgradeRecipe: org.openrewrite.java.testing.junit5.JUnit4to5Migration
   - io.moderne.devcenter.SecurityStarter
+---
+type: specs.openrewrite.org/v1beta/recipe
+name: io.moderne.devcenter.UpgradeApacheMavenParent
+displayName: Upgrade Apache Maven Parent
+description: >-
+  Upgrades the Apache Maven parent POM to the latest version.
+recipeList:
+  - org.openrewrite.maven.UpgradeParentVersion:
+      groupId: org.apache.maven
+      artifactId: maven-parent
+      newVersion: x
