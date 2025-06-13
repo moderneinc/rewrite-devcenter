@@ -35,7 +35,7 @@ recipeList:
       majorVersion: 21
       upgradeRecipe: org.openrewrite.java.migrate.UpgradeToJava21
   - io.moderne.devcenter.JUnitJupiterUpgrade:
-      upgradeRecipe: org.openrewrite.java.testing.junit5.JUnit4to5Migration
+      upgradeRecipe: org.openrewrite.java.spring.boot2.SpringBoot2JUnit4to5Migration
   - io.moderne.devcenter.SecurityStarter
 
 
