@@ -45,7 +45,7 @@ class DevCenterTest implements RewriteTest {
 
     @BeforeEach
     void before() {
-        starterDevCenter = environment.activateRecipes("io.moderne.devcenter.DevCenterStarter");
+        starterDevCenter = environment.activateRecipes("io.moderne.devcenter.DevCenterStarterSpringBoot");
         starterOriginalSecurity = environment.activateRecipes("io.moderne.devcenter.SecurityOriginalStarter");
     }
 
