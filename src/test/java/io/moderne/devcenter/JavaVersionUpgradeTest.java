@@ -29,7 +29,7 @@ import static org.assertj.core.api.AssertionsForInterfaceTypes.assertThat;
 import static org.openrewrite.java.Assertions.java;
 import static org.openrewrite.java.Assertions.version;
 
-public class JavaVersionUpgradeTest implements RewriteTest {
+class JavaVersionUpgradeTest implements RewriteTest {
 
     private static Stream<Arguments> javaVersions() {
         return Stream.of(

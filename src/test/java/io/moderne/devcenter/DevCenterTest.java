@@ -35,7 +35,7 @@ import static org.assertj.core.api.Assertions.assertThatThrownBy;
 import static org.openrewrite.java.Assertions.java;
 import static org.openrewrite.java.Assertions.version;
 
-public class DevCenterTest implements RewriteTest {
+class DevCenterTest implements RewriteTest {
     Environment environment = Environment.builder()
       .scanRuntimeClasspath("org.openrewrite")
       .scanYamlResources()

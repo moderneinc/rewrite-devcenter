@@ -33,7 +33,8 @@ import java.util.List;
 @EqualsAndHashCode(callSuper = false)
 public class LibraryUpgrade extends UpgradeMigrationCard {
     @Option(displayName = "Card name",
-            description = "The display name of the DevCenter card")
+            description = "The display name of the DevCenter card",
+            example = "Move to Spring Boot 3.5.0")
     String cardName;
 
     @Option(displayName = "Group pattern",
@@ -54,7 +55,8 @@ public class LibraryUpgrade extends UpgradeMigrationCard {
 
     @Option(displayName = "Upgrade recipe",
             description = "The recipe to use to upgrade.",
-            required = false)
+            required = false,
+            example = "io.moderne.java.spring.boot3.UpgradeSpringBoot_3_5")
     @Nullable
     String upgradeRecipe;
 
