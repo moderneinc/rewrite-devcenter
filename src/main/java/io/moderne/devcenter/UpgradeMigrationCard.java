@@ -26,6 +26,5 @@ public abstract class UpgradeMigrationCard extends Recipe {
 
     public abstract List<DevCenterMeasure> getMeasures();
 
-    @Nullable
-    public abstract String getFixRecipeId();
+    public abstract @Nullable String getFixRecipeId();
 }

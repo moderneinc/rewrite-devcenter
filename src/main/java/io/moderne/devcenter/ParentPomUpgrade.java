@@ -32,7 +32,8 @@ import java.util.List;
 @EqualsAndHashCode(callSuper = false)
 public class ParentPomUpgrade extends UpgradeMigrationCard {
     @Option(displayName = "Card name",
-            description = "The display name of the DevCenter card")
+            description = "The display name of the DevCenter card",
+            example = "Upgrade internal Parent POM")
     String cardName;
 
     @Option(displayName = "Group identifier",
@@ -53,7 +54,8 @@ public class ParentPomUpgrade extends UpgradeMigrationCard {
 
     @Option(displayName = "Upgrade recipe",
             description = "The recipe to use to upgrade.",
-            required = false)
+            required = false,
+            example = "com.acme.UpgradeInternalParentPom")
     @Nullable
     String upgradeRecipe;
 

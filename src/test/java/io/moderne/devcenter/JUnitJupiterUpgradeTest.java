@@ -28,7 +28,7 @@ import static io.moderne.devcenter.JUnitJupiterUpgrade.Measure.JUnit4;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.openrewrite.java.Assertions.java;
 
-public class JUnitJupiterUpgradeTest implements RewriteTest {
+class JUnitJupiterUpgradeTest implements RewriteTest {
 
     //language=java
     SourceSpecs junit4 = java(

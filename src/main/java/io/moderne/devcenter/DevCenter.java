@@ -73,8 +73,7 @@ public class DevCenter {
         return getUpgradesAndMigrationsRecursive(recipe, new ArrayList<>());
     }
 
-    @Nullable
-    public Card getSecurity() {
+    public @Nullable Card getSecurity() {
         List<Card> allSecurity = getSecurityRecursive(recipe, new ArrayList<>());
         return allSecurity.isEmpty() ? null : allSecurity.get(0);
     }
