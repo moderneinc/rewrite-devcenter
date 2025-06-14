@@ -17,6 +17,7 @@ package io.moderne.devcenter;
 
 import io.moderne.devcenter.table.SecurityIssues;
 import io.moderne.devcenter.table.UpgradesAndMigrations;
+import lombok.EqualsAndHashCode;
 import lombok.Value;
 import org.jspecify.annotations.Nullable;
 import org.openrewrite.NlsRewrite;
@@ -25,12 +26,14 @@ import org.openrewrite.config.DataTableDescriptor;
 import org.openrewrite.config.OptionDescriptor;
 import org.openrewrite.config.RecipeDescriptor;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.stream.Collectors;
+import java.util.*;
+import java.util.concurrent.atomic.AtomicReference;
 
 public class DevCenter {
     private final Recipe recipe;
+
+    private transient @Nullable List<Card> upgradesAndMigrations;
+    private transient @Nullable AtomicReference<Card> securityIssues;
 
     public DevCenter(Recipe recipe) {
         this.recipe = recipe;
@@ -64,18 +67,56 @@ public class DevCenter {
         if (security.size() > 1) {
             validationErrors.add("Only one security recipe can be included.");
         }
+        Map<String, Integer> countByName = new HashMap<>();
+        for (Card c : upgradesAndMigrations) {
+            countByName.merge(c.getName(), 1, Integer::sum);
+        }
+        for (Card c : security) {
+            countByName.merge(c.getName(), 1, Integer::sum);
+        }
+        for (Map.Entry<String, Integer> entry : countByName.entrySet()) {
+            if (entry.getValue() > 1) {
+                validationErrors.add("Card names must be unique. The name '" + entry.getKey() + "' is included multiple times.");
+            }
+        }
+
         if (!validationErrors.isEmpty()) {
             throw new DevCenterValidationException(validationErrors);
         }
     }
 
     public List<Card> getUpgradesAndMigrations() {
-        return getUpgradesAndMigrationsRecursive(recipe, new ArrayList<>());
+        if (upgradesAndMigrations == null) {
+            upgradesAndMigrations = getUpgradesAndMigrationsRecursive(recipe, new ArrayList<>());
+        }
+        return upgradesAndMigrations;
     }
 
     public @Nullable Card getSecurity() {
-        List<Card> allSecurity = getSecurityRecursive(recipe, new ArrayList<>());
-        return allSecurity.isEmpty() ? null : allSecurity.get(0);
+        if (securityIssues == null) {
+            List<Card> allSecurity = getSecurityRecursive(recipe, new ArrayList<>());
+            //noinspection DataFlowIssue
+            securityIssues = new AtomicReference<>(allSecurity.isEmpty() ? null : allSecurity.get(0));
+        }
+        return securityIssues.get();
+    }
+
+    public List<Card> getCards() {
+        List<Card> cards = new ArrayList<>(getUpgradesAndMigrations());
+        Card securityCard = getSecurity();
+        if (securityCard != null) {
+            cards.add(securityCard);
+        }
+        return Collections.unmodifiableList(cards);
+    }
+
+    public Card getCard(String name) {
+        for (Card card : getCards()) {
+            if (card.getName().equals(name)) {
+                return card;
+            }
+        }
+        throw new IllegalArgumentException("No card found with name: " + name);
     }
 
     private List<Card> getUpgradesAndMigrationsRecursive(Recipe recipe, List<Card> upgradesAndMigrations) {
@@ -84,7 +125,8 @@ public class DevCenter {
                     recipe.getInstanceName(),
                     recipe.getDescription(),
                     ((UpgradeMigrationCard) recipe).getFixRecipeId(),
-                    ((UpgradeMigrationCard) recipe).getMeasures()));
+                    ((UpgradeMigrationCard) recipe).getMeasures(),
+                    Aggregation.PER_REPOSITORY));
         }
         for (Recipe subRecipe : recipe.getRecipeList()) {
             getUpgradesAndMigrationsRecursive(subRecipe, upgradesAndMigrations);
@@ -95,21 +137,36 @@ public class DevCenter {
     private List<Card> getSecurityRecursive(Recipe recipe, List<Card> allSecurity) {
         for (Recipe subRecipe : recipe.getRecipeList()) {
             if (subRecipe instanceof ReportAsSecurityIssues) {
+                List<DevCenterMeasure> measures = new ArrayList<>();
+                List<Recipe> recipeList = recipe.getRecipeList();
+                for (int i = 0; i < recipeList.size(); i++) {
+                    Recipe r = recipeList.get(i);
+                    int ordinal = i;
+                    DevCenterMeasure devCenterMeasure = new DevCenterMeasure() {
+                        @Override
+                        public String getName() {
+                            return r.getInstanceName();
+                        }
+
+                        @Override
+                        public String getDescription() {
+                            return r.getDescription();
+                        }
+
+                        @Override
+                        public int ordinal() {
+                            return ordinal;
+                        }
+                    };
+                    measures.add(devCenterMeasure);
+                }
+
                 allSecurity.add(new Card(
                         recipe.getInstanceName(),
                         recipe.getDescription(),
                         ((ReportAsSecurityIssues) subRecipe).getFixRecipe(),
-                        recipe.getRecipeList().stream().map(r -> new DevCenterMeasure() {
-                            @Override
-                            public String getName() {
-                                return r.getInstanceName();
-                            }
-
-                            @Override
-                            public String getDescription() {
-                                return r.getDescription();
-                            }
-                        }).collect(Collectors.toList())));
+                        measures,
+                        Aggregation.PER_OCCURRENCE));
                 return allSecurity;
             }
         }
@@ -120,7 +177,9 @@ public class DevCenter {
     }
 
     @Value
+    @EqualsAndHashCode(onlyExplicitlyIncluded = true)
     public static class Card {
+        @EqualsAndHashCode.Include
         @NlsRewrite.DisplayName
         String name;
 
@@ -131,5 +190,12 @@ public class DevCenter {
         String fixRecipeId;
 
         List<DevCenterMeasure> measures;
+
+        Aggregation aggregation;
+    }
+
+    public enum Aggregation {
+        PER_OCCURRENCE,
+        PER_REPOSITORY
     }
 }

@@ -91,8 +91,6 @@ class DevCenterTest implements RewriteTest {
           name: io.moderne.devcenter.JavaVersionNoFix
           displayName: Starter DevCenter Java version upgrade card
           description: Upgrade Java version
-          tags:
-            - DevCenter:upgradeOrMigration
           recipeList:
             - io.moderne.devcenter.JavaVersionUpgrade:
                 majorVersion: 21
@@ -110,6 +108,30 @@ class DevCenterTest implements RewriteTest {
     void validateStandAloneDevCenterRecipe() throws DevCenterValidationException {
         DevCenter devCenter = new DevCenter(starterOriginalSecurity);
         devCenter.validate();
+    }
+
+    @Test
+    void uniqueCardNames() {
+        //language=yaml
+        String recipe = """
+          type: specs.openrewrite.org/v1beta/recipe
+          name: io.moderne.devcenter.DoubleJava21Misconfiguration
+          displayName: Starter DevCenter Java version upgrade card
+          description: Upgrade Java version
+          recipeList:
+            - io.moderne.devcenter.JavaVersionUpgrade:
+                majorVersion: 21
+            - io.moderne.devcenter.JavaVersionUpgrade:
+                majorVersion: 21
+          """;
+        Recipe r = Environment.builder()
+          .load(new YamlResourceLoader(new ByteArrayInputStream(recipe.getBytes(StandardCharsets.UTF_8)),
+            URI.create("rewrite.yml"), new Properties()))
+          .build()
+          .activateRecipes("io.moderne.devcenter.DoubleJava21Misconfiguration");
+        DevCenter devCenter = new DevCenter(r);
+        assertThatThrownBy(devCenter::validate).isInstanceOf(DevCenterValidationException.class)
+          .hasMessageContaining("Card names must be unique. The name 'Move to Java 21' is included multiple times.");
     }
 
     @Test

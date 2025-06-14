@@ -1,0 +1,13 @@
+cloneUrl,branch,org1,org2
+https://github.com/apache/maven-doxia,master,Default,ALL
+https://github.com/aws/amazon-documentdb-jdbc-driver,develop,Default,ALL
+https://github.com/awslabs/aws-saas-boost,main,Default,ALL
+https://github.com/finos/messageml-utils,main,Default,ALL
+https://github.com/finos/spring-bot,spring-bot-master,Default,ALL
+https://github.com/finos/symphony-bdk-java,main,Default,ALL
+https://github.com/finos/symphony-wdk,master,Default,ALL
+https://github.com/Netflix/photon,master,Default,ALL
+https://github.com/Netflix/ribbon,master,Default,ALL
+https://github.com/openrewrite/rewrite-recipe-bom,main,Default,ALL
+https://github.com/spring-projects/spring-data-commons,main,Default,ALL
+https://github.com/spring-projects/spring-petclinic,main,Default,ALL

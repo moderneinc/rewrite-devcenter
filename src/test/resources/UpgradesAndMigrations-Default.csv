@@ -1,0 +1,5 @@
+repositoryOrigin,repositoryPath,repositoryBranch,scmType,repositoryLink,card,ordinal,value,currentMinimumVersion
+github.com,finos/spring-bot,spring-bot-master,GITHUB,"https://github.com/finos/spring-bot/blob/spring-bot-master","Move to Spring Boot 3.5.0",1,Minor,3.4.5
+github.com,finos/symphony-bdk-java,main,GITHUB,"https://github.com/finos/symphony-bdk-java/blob/main","Move to Spring Boot 3.5.0",1,Minor,3.3.7
+github.com,finos/symphony-wdk,master,GITHUB,"https://github.com/finos/symphony-wdk/blob/master","Move to Spring Boot 3.5.0",1,Minor,3.2.2
+github.com,"spring-projects/spring-petclinic",main,GITHUB,"https://github.com/spring-projects/spring-petclinic/blob/main","Move to Spring Boot 3.5.0",3,Completed,3.5.0
