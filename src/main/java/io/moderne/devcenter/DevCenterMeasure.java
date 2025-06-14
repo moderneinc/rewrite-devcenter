@@ -26,4 +26,11 @@ public interface DevCenterMeasure {
     @Language("markdown")
     @NlsRewrite.Description
     String getDescription();
+
+    /**
+     * Used to sort measures in a defined order.
+     *
+     * @return The ordinal position of this measure.
+     */
+    int ordinal();
 }

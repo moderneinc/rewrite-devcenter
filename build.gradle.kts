@@ -10,6 +10,11 @@ val rewriteVersion = rewriteRecipe.rewriteVersion.get()
 dependencies {
     implementation(platform("io.moderne.recipe:moderne-recipe-bom:latest.release"))
 
+    // Only needed for result parsing (package io.moderne.devcenter.result),
+    // not for defining and running DevCenter recipes.
+    compileOnly("io.moderne:moderne-organizations-format:latest.release")
+    implementation("com.github.nbbrd.picocsv:picocsv:latest.release")
+
     implementation("org.openrewrite:rewrite-java:${rewriteVersion}")
     implementation("org.openrewrite.recipe:rewrite-java-dependencies:${rewriteVersion}")
     implementation("org.openrewrite.recipe:rewrite-java-security:${rewriteVersion}")
@@ -19,6 +24,7 @@ dependencies {
 
     implementation("org.slf4j:slf4j-api:1.7.+")
 
+    testImplementation("io.moderne:moderne-organizations-format:latest.release")
     testImplementation("org.openrewrite:rewrite-test")
     testImplementation("org.openrewrite:rewrite-java-21:${rewriteVersion}")
     testRuntimeOnly("junit:junit:4.+")
