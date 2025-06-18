@@ -58,15 +58,26 @@ public class DevCenterResultReducer {
                 }
 
                 RepositoryResult repositoryResult = requireNonNull(repository.getMaterialized());
-                for (Map.Entry<DevCenter.Card, DevCenterMeasure> um : repositoryResult.getUpgradesAndMigrations().entrySet()) {
-                    resultsByCard.computeIfAbsent(um.getKey(), k -> new DevCenterResult.ByMeasure())
-                            .getMeasures().merge(um.getValue(), 1, Integer::sum);
+                for (DevCenter.Card upgrade : devCenter.getUpgradesAndMigrations()) {
+                    DevCenterResult.ByMeasure byMeasure = resultsByCard.computeIfAbsent(
+                            upgrade,
+                            k -> new DevCenterResult.ByMeasure(upgrade.getMeasures())
+                    );
+                    DevCenterMeasure detectedMeasure = repositoryResult.getUpgradesAndMigrations().get(upgrade);
+                    if (detectedMeasure != null) {
+                        byMeasure.getMeasures()
+                                .merge(detectedMeasure, 1, Integer::sum);
+                    }
                 }
 
-                if (devCenter.getSecurity() != null) {
+                DevCenter.Card security = devCenter.getSecurity();
+                if (security != null) {
+                    DevCenterResult.ByMeasure byMeasure = resultsByCard.computeIfAbsent(
+                            security,
+                            card -> new DevCenterResult.ByMeasure(security.getMeasures())
+                    );
                     for (Map.Entry<DevCenterMeasure, Integer> sec : repositoryResult.getSecurityIssues().entrySet()) {
-                        resultsByCard.computeIfAbsent(devCenter.getSecurity(), k -> new DevCenterResult.ByMeasure())
-                                .getMeasures().merge(sec.getKey(), sec.getValue(), Integer::sum);
+                        byMeasure.getMeasures().merge(sec.getKey(), sec.getValue(), Integer::sum);
                     }
                 }
             }

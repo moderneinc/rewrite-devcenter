@@ -24,12 +24,12 @@ import org.openrewrite.config.Environment;
 
 import java.io.InputStreamReader;
 import java.io.StringReader;
+import java.util.Map;
 import java.util.Set;
 import java.util.TreeSet;
 
 import static java.util.Objects.requireNonNull;
 import static org.assertj.core.api.Assertions.assertThat;
-import static org.assertj.core.api.Assertions.fail;
 
 public class DevCenterResultReducerTest {
     Environment environment = Environment.builder()
@@ -71,7 +71,11 @@ public class DevCenterResultReducerTest {
           new StringReader("")
         );
 
-        assertThat(reducer.reduce(root).getResultsByCard()).isEmpty();
+        assertThat(reducer.reduce(root).getResultsByCard())
+          .allSatisfy((cardResult, byMeasure) -> assertThat(byMeasure.getMeasures().values())
+            .describedAs(cardResult.getName())
+            .containsOnly(0)
+          );
     }
 
     @Test
@@ -84,16 +88,24 @@ public class DevCenterResultReducerTest {
           new StringReader("")
         );
 
-        assertThat(reducer.reduce(root).getResultsByCard().keySet())
-          .map(DevCenter.Card::getName)
-          .containsExactly("Move to Spring Boot 3.5.0");
+        DevCenterResult result = reducer.reduce(root);
+
+        assertThat(result.getResultsByCard())
+          .extractingFromEntries(e -> e.getKey().getName())
+          .containsExactly("Move to Spring Boot 3.5.0", "Move to Java 21", "Move to JUnit 5", "OWASP top ten");
+
+        assertThat(result.getResultsByCard().get(devCenter.getSecurity()).getMeasures())
+          .describedAs("Security measures has only counts of 0")
+          .extractingFromEntries(Map.Entry::getValue)
+          .containsOnly(0);
     }
 
     private void hasSecurityResults(DevCenterResult result) {
-        result.forEach(devCenter.getSecurity(), (measure, count) -> {
-            assertThat(measure.getName()).isEqualTo("Remediate OWASP A08:2021 Software and data integrity failures");
-            assertThat(count).isEqualTo(20);
-        });
+        assertThat(result.getResultsByCard().get(devCenter.getSecurity()).getMeasures())
+          .anySatisfy((measure, count) -> {
+              assertThat(measure.getName()).isEqualTo("Remediate OWASP A08:2021 Software and data integrity failures");
+              assertThat(count).isEqualTo(20);
+          });
     }
 
     private void hasSpringBoot35Results(DevCenterResult result) {
@@ -103,7 +115,7 @@ public class DevCenterResultReducerTest {
               .isEqualTo((int) switch (measure) {
                   case SemverMeasure.Minor -> 3;
                   case SemverMeasure.Completed -> 1;
-                  default -> fail("Unexpected measure");
+                  default -> 0;
               });
         });
     }

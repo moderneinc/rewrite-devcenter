@@ -21,6 +21,7 @@ import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 import org.jspecify.annotations.Nullable;
 
+import java.util.Collection;
 import java.util.Comparator;
 import java.util.Map;
 import java.util.TreeMap;
@@ -45,8 +46,11 @@ public class DevCenterResult {
     public static class ByMeasure {
         Map<DevCenterMeasure, Integer> measures;
 
-        public ByMeasure() {
+        public ByMeasure(Collection<DevCenterMeasure> measures) {
             this.measures = new TreeMap<>(Comparator.comparing(DevCenterMeasure::ordinal));
+            for (DevCenterMeasure measure : measures) {
+                this.measures.put(measure, 0);
+            }
         }
     }
 }
