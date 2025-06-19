@@ -13,7 +13,7 @@ dependencies {
     // Only needed for result parsing (package io.moderne.devcenter.result),
     // not for defining and running DevCenter recipes.
     compileOnly("io.moderne:moderne-organizations-format:latest.release")
-    implementation("com.github.nbbrd.picocsv:picocsv:latest.release")
+    implementation("com.univocity:univocity-parsers:latest.release")
 
     implementation("org.openrewrite:rewrite-java:${rewriteVersion}")
     implementation("org.openrewrite.recipe:rewrite-java-dependencies:${rewriteVersion}")
