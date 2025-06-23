@@ -120,7 +120,7 @@ public class DevCenter {
     }
 
     private List<Card> getUpgradesAndMigrationsRecursive(Recipe recipe, List<Card> upgradesAndMigrations) {
-        if (recipe instanceof UpgradeMigrationCard) {
+        if (instanceOfByFqn(recipe.getClass(), UpgradeMigrationCard.class)) {
             upgradesAndMigrations.add(new Card(
                     recipe.getInstanceName(),
                     recipe.getDescription(),
@@ -136,7 +136,7 @@ public class DevCenter {
 
     private List<Card> getSecurityRecursive(Recipe recipe, List<Card> allSecurity) {
         for (Recipe subRecipe : recipe.getRecipeList()) {
-            if (subRecipe instanceof ReportAsSecurityIssues) {
+            if (instanceOfByFqn(subRecipe.getClass(), ReportAsSecurityIssues.class)) {
                 List<DevCenterMeasure> measures = new ArrayList<>();
                 List<Recipe> recipeList = recipe.getRecipeList();
                 for (int i = 0; i < recipeList.size(); i++) {
@@ -197,5 +197,15 @@ public class DevCenter {
     public enum Aggregation {
         PER_OCCURRENCE,
         PER_REPOSITORY
+    }
+
+    private boolean instanceOfByFqn(@Nullable Class<?> current, Class<?> expected) {
+        if (current == null) {
+            return false;
+        }
+        if (current.getName().equals(expected.getName())) {
+            return true;
+        }
+        return instanceOfByFqn(current.getSuperclass(), expected);
     }
 }

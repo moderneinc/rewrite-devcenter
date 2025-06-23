@@ -38,9 +38,9 @@ class SecurityIssuesReader {
     private final DevCenter devCenter;
     private final Map<RepositoryId, List<Organization<RepositoryResult>>> repositoryMap;
 
-    public void read(Reader upgradesAndMigrations) {
+    public void read(Reader securitiesIssues) {
         try (Csv.Reader csv = Csv.Reader.of(Csv.Format.DEFAULT, Csv.ReaderOptions.builder()
-                .lenientSeparator(true).build(), upgradesAndMigrations)) {
+                .lenientSeparator(true).build(), securitiesIssues)) {
 
             List<SecurityIssuesColumn> headers = null;
             while (csv.readLine()) {
