@@ -40,12 +40,12 @@ class SecurityIssuesReader {
     private final DevCenter devCenter;
     private final Map<RepositoryId, List<Organization<RepositoryResult>>> repositoryMap;
 
-    public void read(Reader securitiesIssues) {
+    public void read(Reader securityIssues) {
         CsvParserSettings settings = new CsvParserSettings();
         settings.setLineSeparatorDetectionEnabled(true);
 
         CsvParser parser = new CsvParser(settings);
-        parser.beginParsing(securitiesIssues);
+        parser.beginParsing(securityIssues);
 
         try {
             List<SecurityIssuesColumn> headers = null;
