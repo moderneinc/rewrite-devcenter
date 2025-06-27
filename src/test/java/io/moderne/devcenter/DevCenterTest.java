@@ -18,6 +18,9 @@ package io.moderne.devcenter;
 import io.moderne.devcenter.table.UpgradesAndMigrations;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.params.ParameterizedTest;
+import org.junit.jupiter.params.provider.Arguments;
+import org.junit.jupiter.params.provider.MethodSource;
 import org.openrewrite.Recipe;
 import org.openrewrite.config.Environment;
 import org.openrewrite.config.YamlResourceLoader;
@@ -26,7 +29,9 @@ import org.openrewrite.test.RewriteTest;
 import java.io.ByteArrayInputStream;
 import java.net.URI;
 import java.nio.charset.StandardCharsets;
+import java.util.List;
 import java.util.Properties;
+import java.util.stream.Stream;
 
 import static io.moderne.devcenter.JUnitJupiterUpgrade.Measure.JUnit4;
 import static io.moderne.devcenter.JavaVersionUpgrade.Measure.Java8Plus;
@@ -173,6 +178,66 @@ class DevCenterTest implements RewriteTest {
             ),
             8
           )
+        );
+    }
+
+    @ParameterizedTest(name = "{0}")
+    @MethodSource("recipesFromIsolatedClassLoader")
+    void recipeFromDifferentClassLoaderIdentifiesCards(String type, Recipe recipe) throws Exception {
+        // Create DevCenter instance and verify it correctly identifies the card
+        // This test will fail with the current instanceof-based implementation,
+        // demonstrating that the reflection-based approach is needed
+        DevCenter devCenter = new DevCenter(recipe);
+        devCenter.validate();
+    }
+
+    private static Stream<Arguments> recipesFromIsolatedClassLoader() throws ReflectiveOperationException {
+        ClassLoader isolatedClassLoader = new ClassLoader("isolated", null) {
+            @Override
+            protected Class<?> loadClass(String name, boolean resolve) throws ClassNotFoundException {
+                // Load io.moderne.devcenter classes (including UpgradeMigrationCard) in this classloader
+                // to ensure they are different from the ones in the test classloader
+                if (name.startsWith("io.moderne.devcenter.") &&
+                    !name.startsWith("io.moderne.devcenter.DevCenter")) {
+                    // Get the resource path for the class
+                    String resourcePath = name.replace('.', '/') + ".class";
+                    try (var inputStream = getClass().getClassLoader().getResourceAsStream(resourcePath)) {
+                        if (inputStream != null) {
+                            byte[] classData = inputStream.readAllBytes();
+                            return defineClass(name, classData, 0, classData.length);
+                        }
+                    } catch (Exception e) {
+                        throw new ClassNotFoundException("Failed to load " + name, e);
+                    }
+                }
+                // Delegate all other classes to the system classloader
+                return ClassLoader.getSystemClassLoader().loadClass(name);
+            }
+        };
+
+        Class<?> recipeClass = isolatedClassLoader.loadClass("io.moderne.devcenter.JavaVersionUpgrade");
+        Recipe recipe = (Recipe) recipeClass.getConstructor(int.class, String.class)
+          .newInstance(21, "org.openrewrite.java.migrate.Java21");
+
+        return Stream.of(
+          Arguments.of("Imperative recipe", recipe),
+          Arguments.of("Declarative recipe", new Recipe() {
+              @Override
+              public String getDisplayName() {
+                  return "Parent loaded";
+              }
+
+              @Override
+              public String getDescription() {
+                  return "Simulates `DeclarativeRecipe`, which is parent loaded and contains " +
+                         "child loaded sub-recipes.";
+              }
+
+              @Override
+              public List<Recipe> getRecipeList() {
+                  return List.of(recipe);
+              }
+          })
         );
     }
 }

@@ -120,13 +120,26 @@ public class DevCenter {
     }
 
     private List<Card> getUpgradesAndMigrationsRecursive(Recipe recipe, List<Card> upgradesAndMigrations) {
-        if (instanceOfByFqn(recipe.getClass(), UpgradeMigrationCard.class)) {
-            upgradesAndMigrations.add(new Card(
-                    recipe.getInstanceName(),
-                    recipe.getDescription(),
-                    ((UpgradeMigrationCard) recipe).getFixRecipeId(),
-                    ((UpgradeMigrationCard) recipe).getMeasures(),
-                    Aggregation.PER_REPOSITORY));
+        try {
+            Class<?> umcClass = Class.forName(
+                    "io.moderne.devcenter.UpgradeMigrationCard",
+                    false,
+                    recipe.getClass().getClassLoader()
+            );
+            if (umcClass.isInstance(recipe)) {
+                //noinspection unchecked
+                upgradesAndMigrations.add(new Card(
+                        recipe.getInstanceName(),
+                        recipe.getDescription(),
+                        (String) umcClass.getMethod("getFixRecipeId").invoke(recipe),
+                        (List<DevCenterMeasure>) umcClass.getMethod("getMeasures").invoke(recipe),
+                        Aggregation.PER_REPOSITORY
+                ));
+            }
+        } catch (ClassNotFoundException e) {
+            // Not an UpgradeMigrationCard - ignore
+        } catch (ReflectiveOperationException e) {
+            throw new RuntimeException("Failed to access UpgradeMigrationCard", e);
         }
         for (Recipe subRecipe : recipe.getRecipeList()) {
             getUpgradesAndMigrationsRecursive(subRecipe, upgradesAndMigrations);
@@ -136,38 +149,49 @@ public class DevCenter {
 
     private List<Card> getSecurityRecursive(Recipe recipe, List<Card> allSecurity) {
         for (Recipe subRecipe : recipe.getRecipeList()) {
-            if (instanceOfByFqn(subRecipe.getClass(), ReportAsSecurityIssues.class)) {
-                List<DevCenterMeasure> measures = new ArrayList<>();
-                List<Recipe> recipeList = recipe.getRecipeList();
-                for (int i = 0; i < recipeList.size(); i++) {
-                    Recipe r = recipeList.get(i);
-                    int ordinal = i;
-                    DevCenterMeasure devCenterMeasure = new DevCenterMeasure() {
-                        @Override
-                        public String getName() {
-                            return r.getInstanceName();
-                        }
+            try {
+                Class<?> rasClass = Class.forName(
+                        "io.moderne.devcenter.ReportAsSecurityIssues",
+                        false,
+                        subRecipe.getClass().getClassLoader()
+                );
+                if (rasClass.isInstance(subRecipe)) {
+                    List<DevCenterMeasure> measures = new ArrayList<>();
+                    List<Recipe> recipeList = recipe.getRecipeList();
+                    for (int i = 0; i < recipeList.size(); i++) {
+                        Recipe r = recipeList.get(i);
+                        int ordinal = i;
+                        DevCenterMeasure devCenterMeasure = new DevCenterMeasure() {
+                            @Override
+                            public String getName() {
+                                return r.getInstanceName();
+                            }
 
-                        @Override
-                        public String getDescription() {
-                            return r.getDescription();
-                        }
+                            @Override
+                            public String getDescription() {
+                                return r.getDescription();
+                            }
 
-                        @Override
-                        public int ordinal() {
-                            return ordinal;
-                        }
-                    };
-                    measures.add(devCenterMeasure);
+                            @Override
+                            public int ordinal() {
+                                return ordinal;
+                            }
+                        };
+                        measures.add(devCenterMeasure);
+                    }
+                    allSecurity.add(new Card(
+                            recipe.getInstanceName(),
+                            recipe.getDescription(),
+                            (String) rasClass.getMethod("getFixRecipe").invoke(subRecipe),
+                            measures,
+                            Aggregation.PER_OCCURRENCE
+                    ));
+                    return allSecurity;
                 }
-
-                allSecurity.add(new Card(
-                        recipe.getInstanceName(),
-                        recipe.getDescription(),
-                        ((ReportAsSecurityIssues) subRecipe).getFixRecipe(),
-                        measures,
-                        Aggregation.PER_OCCURRENCE));
-                return allSecurity;
+            } catch (ClassNotFoundException e) {
+                // Not a ReportAsSecurityIssues - ignore
+            } catch (ReflectiveOperationException e) {
+                throw new RuntimeException("Failed to access ReportAsSecurityIssues", e);
             }
         }
         for (Recipe subRecipe : recipe.getRecipeList()) {
@@ -197,15 +221,5 @@ public class DevCenter {
     public enum Aggregation {
         PER_OCCURRENCE,
         PER_REPOSITORY
-    }
-
-    private boolean instanceOfByFqn(@Nullable Class<?> current, Class<?> expected) {
-        if (current == null) {
-            return false;
-        }
-        if (current.getName().equals(expected.getName())) {
-            return true;
-        }
-        return instanceOfByFqn(current.getSuperclass(), expected);
     }
 }
