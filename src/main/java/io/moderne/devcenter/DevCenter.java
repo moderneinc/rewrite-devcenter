@@ -152,7 +152,7 @@ public class DevCenter {
             try {
                 Class<?> rasClass = Class.forName(
                         "io.moderne.devcenter.ReportAsSecurityIssues",
-                        true,
+                        false,
                         subRecipe.getClass().getClassLoader()
                 );
                 if (rasClass.isInstance(subRecipe)) {
