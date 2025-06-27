@@ -15,13 +15,13 @@
  */
 package io.moderne.devcenter.result;
 
+import com.univocity.parsers.csv.CsvParser;
+import com.univocity.parsers.csv.CsvParserSettings;
 import io.moderne.devcenter.DevCenter;
 import io.moderne.organizations.Organization;
 import io.moderne.organizations.RepositoryId;
 import io.moderne.organizations.RepositorySpec;
 import lombok.RequiredArgsConstructor;
-import com.univocity.parsers.csv.CsvParser;
-import com.univocity.parsers.csv.CsvParserSettings;
 import org.jspecify.annotations.Nullable;
 import org.openrewrite.internal.StringUtils;
 
@@ -40,12 +40,12 @@ class SecurityIssuesReader {
     private final DevCenter devCenter;
     private final Map<RepositoryId, List<Organization<RepositoryResult>>> repositoryMap;
 
-    public void read(Reader upgradesAndMigrations) {
+    public void read(Reader securityIssues) {
         CsvParserSettings settings = new CsvParserSettings();
         settings.setLineSeparatorDetectionEnabled(true);
 
         CsvParser parser = new CsvParser(settings);
-        parser.beginParsing(upgradesAndMigrations);
+        parser.beginParsing(securityIssues);
 
         try {
             List<SecurityIssuesColumn> headers = null;
