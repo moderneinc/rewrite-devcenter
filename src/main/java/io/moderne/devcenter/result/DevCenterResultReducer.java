@@ -42,7 +42,7 @@ public class DevCenterResultReducer {
      * Reduces the individual repository results for a given organization to a DevCenterResult.
      *
      * @param organization The organization to calculate the result for.
-     * @return A DevCenterResult containing the aggregated results for the organization.
+     * @return A DevCenterResult containing the summarized results for the organization.
      */
     public DevCenterResult reduce(Organization<?> organization) {
         Map<DevCenter.Card, DevCenterResult.ByMeasure> resultsByCard = new LinkedHashMap<>();
