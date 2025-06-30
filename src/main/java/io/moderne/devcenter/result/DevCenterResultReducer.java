@@ -83,7 +83,7 @@ public class DevCenterResultReducer {
         assert upgradesAndMigrationsCsv != null || securityIssuesCsv != null :
                 "At least one of upgradesAndMigrationsCsv or securityIssuesCsv must be provided";
 
-        Organization<RepositoryResult> results = root.rematerialize(RepositoryResult::new);
+        Organization<RepositoryResult> results = root.rematerialize((org, repo) -> new RepositoryResult());
         Map<RepositoryId, List<Organization<RepositoryResult>>> repositoryMap = repositoryMap(results, new HashMap<>());
 
         if (upgradesAndMigrationsCsv != null) {
