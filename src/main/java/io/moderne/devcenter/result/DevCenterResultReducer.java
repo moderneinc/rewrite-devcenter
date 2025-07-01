@@ -39,6 +39,11 @@ public class DevCenterResultReducer {
     private final Organization<RepositoryResult> results;
 
     /**
+     * Holds the root organization of the original organization hierarchy.
+     */
+    private final Organization<?> root;
+
+    /**
      * Reduces the individual repository results for a given organization to a DevCenterResult.
      *
      * @param organization The organization to calculate the result for.
@@ -48,7 +53,7 @@ public class DevCenterResultReducer {
         Map<DevCenter.Card, DevCenterResult.ByMeasure> resultsByCard = new LinkedHashMap<>();
 
         // Find the organization in the repository results materialization.
-        Organization<RepositoryResult> result = results.getChild(organization.getPathTo(results).toArray(new String[0]));
+        Organization<RepositoryResult> result = results.getChild(organization.getPathTo(root).toArray(new String[0]));
 
         Set<RepositoryId> seen = new HashSet<>();
         result.forEachOrganization(org -> {
@@ -75,7 +80,7 @@ public class DevCenterResultReducer {
         return new DevCenterResult(resultsByCard);
     }
 
-    public static DevCenterResultReducer fromDataTables(
+    public static DevCenterResultReducer<?> fromDataTables(
             DevCenter devCenter,
             Organization<?> root,
             @Nullable Reader upgradesAndMigrationsCsv,
@@ -93,7 +98,7 @@ public class DevCenterResultReducer {
             new SecurityIssuesReader(devCenter, repositoryMap).read(securityIssuesCsv);
         }
 
-        return new DevCenterResultReducer(devCenter, results);
+        return new DevCenterResultReducer<>(devCenter, results, root);
     }
 
     /**
