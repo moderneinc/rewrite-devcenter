@@ -80,7 +80,7 @@ public class DevCenterResultReducer {
         return new DevCenterResult(resultsByCard);
     }
 
-    public static DevCenterResultReducer<?> fromDataTables(
+    public static DevCenterResultReducer fromDataTables(
             DevCenter devCenter,
             Organization<?> root,
             @Nullable Reader upgradesAndMigrationsCsv,
@@ -98,7 +98,7 @@ public class DevCenterResultReducer {
             new SecurityIssuesReader(devCenter, repositoryMap).read(securityIssuesCsv);
         }
 
-        return new DevCenterResultReducer<>(devCenter, results, root);
+        return new DevCenterResultReducer(devCenter, results, root);
     }
 
     /**
