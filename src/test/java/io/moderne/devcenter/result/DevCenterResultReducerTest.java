@@ -59,7 +59,7 @@ public class DevCenterResultReducerTest {
             hasSecurityResults(result);
         });
 
-        assertThat(orgsChecked).containsExactly("ALL", "Default", "ε");
+        assertThat(orgsChecked).containsExactly("ALL", "Default");
     }
 
     @Test

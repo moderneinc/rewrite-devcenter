@@ -48,7 +48,7 @@ public class DevCenterResultReducer {
         Map<DevCenter.Card, DevCenterResult.ByMeasure> resultsByCard = new LinkedHashMap<>();
 
         // Find the organization in the repository results materialization.
-        Organization<RepositoryResult> result = results.getChild(organization.getPathTo(results.rematerialize()).toArray(new String[0]));
+        Organization<RepositoryResult> result = results.getChild(organization.getPathTo(results).toArray(new String[0]));
 
         Set<RepositoryId> seen = new HashSet<>();
         result.forEachOrganization(org -> {
