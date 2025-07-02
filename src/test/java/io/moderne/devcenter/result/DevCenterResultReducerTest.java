@@ -97,14 +97,13 @@ public class DevCenterResultReducerTest {
     }
 
     private void hasSpringBoot35Results(DevCenterResult result) {
-        result.forEach(devCenter.getCard("Move to Spring Boot 3.5.0"), (measure, count) -> {
+        result.forEach(devCenter.getCard("Move to Spring Boot 3.5.0"), (measure, count) ->
             assertThat(count)
               .describedAs(measure.getName())
               .isEqualTo((int) switch (measure) {
                   case SemverMeasure.Minor -> 3;
                   case SemverMeasure.Completed -> 1;
                   default -> fail("Unexpected measure");
-              });
-        });
+              }));
     }
 }

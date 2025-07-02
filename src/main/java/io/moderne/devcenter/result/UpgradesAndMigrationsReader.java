@@ -64,7 +64,10 @@ class UpgradesAndMigrationsReader {
                         }
                     }
                 } else {
-                    String origin = null, path = null, branch = null, cardName = null;
+                    String origin = null;
+                    String path = null;
+                    String branch = null;
+                    String cardName = null;
                     Integer ordinal = null;
 
                     for (int i = 0; i < row.length && i < headers.size(); i++) {
