@@ -34,7 +34,7 @@ import static org.openrewrite.ExecutionContext.CURRENT_CYCLE;
 
 public class UpgradesAndMigrations extends DataTable<UpgradesAndMigrations.Row> {
     @Language("markdown")
-    public final static String DISPLAY_NAME = "Upgrades and migrations";
+    public static final String DISPLAY_NAME = "Upgrades and migrations";
 
     public <T extends UpgradeMigrationCard> UpgradesAndMigrations(T recipe) {
         super(recipe, DISPLAY_NAME, "Progress towards organizational objectives on library or language migrations and upgrades.");
@@ -93,7 +93,7 @@ public class UpgradesAndMigrations extends DataTable<UpgradesAndMigrations.Row> 
         }
         //noinspection unchecked
         return (List<Row>) dataTables.computeIfAbsent(this,
-                (c) -> new ArrayList<>());
+                c -> new ArrayList<>());
     }
 
     @Value

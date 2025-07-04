@@ -64,7 +64,9 @@ class SecurityIssuesReader {
                         }
                     }
                 } else {
-                    String origin = null, path = null, branch = null;
+                    String origin = null;
+                    String path = null;
+                    String branch = null;
                     Integer ordinal = null;
 
                     for (int i = 0; i < row.length && i < headers.size(); i++) {
