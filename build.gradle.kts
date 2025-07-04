@@ -12,7 +12,7 @@ dependencies {
 
     // Only needed for result parsing (package io.moderne.devcenter.result),
     // not for defining and running DevCenter recipes.
-    compileOnly("io.moderne:moderne-organizations-format:latest.release")
+    compileOnly("io.moderne:moderne-organizations-format:0.12.0")
     implementation("com.univocity:univocity-parsers:latest.release")
 
     implementation("org.openrewrite:rewrite-java:${rewriteVersion}")
@@ -24,7 +24,7 @@ dependencies {
 
     implementation("org.slf4j:slf4j-api:1.7.+")
 
-    testImplementation("io.moderne:moderne-organizations-format:latest.release")
+    testImplementation("io.moderne:moderne-organizations-format:0.12.0")
     testImplementation("org.openrewrite:rewrite-test")
     testImplementation("org.openrewrite:rewrite-java-21:${rewriteVersion}")
     testRuntimeOnly("junit:junit:4.+")
@@ -32,7 +32,7 @@ dependencies {
 
 nexusPublishing {
     repositories.getByName("sonatype") {
-        nexusUrl.set(uri("https://s01.oss.sonatype.org/service/local/"))
-        snapshotRepositoryUrl.set(uri("https://s01.oss.sonatype.org/content/repositories/snapshots/"))
+        nexusUrl.set(uri("https://ossrh-staging-api.central.sonatype.com/service/local/"))
+        snapshotRepositoryUrl.set(uri("https://central.sonatype.com/repository/maven-snapshots/"))
     }
 }
