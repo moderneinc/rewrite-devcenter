@@ -37,7 +37,7 @@ public class DevCenterResultReducerTest {
       .scanYamlResources()
       .build();
     DevCenter devCenter = new DevCenter(environment.activateRecipes("io.moderne.devcenter.DevCenterStarter"));
-    Organization<Object> root = new OrganizationReader().fromCsv(requireNonNull(getClass()
+    Organization<Object> root = new OrganizationReader<>().fromCsv(requireNonNull(getClass()
       .getResourceAsStream("/repos-Default.csv")));
 
     @Test

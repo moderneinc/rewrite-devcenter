@@ -52,8 +52,24 @@ public class DevCenterResultReducer {
     public DevCenterResult reduce(Organization<?> organization) {
         Map<DevCenter.Card, DevCenterResult.ByMeasure> resultsByCard = new LinkedHashMap<>();
 
+        List<String> pathToRoot = new ArrayList<>();
+        Organization<?> o = organization;
+        do {
+            if (o.isRoot()) {
+                break;
+            }
+            if (!results.isRoot() && o.getParent() != null && o.getParent().isRoot()) {
+                // if the top of the tree is not the ε root, we need to
+                // ignore the last (top) parent organization, because this is the org we `getChild()` on
+                break;
+            }
+            pathToRoot.add(o.getName());
+            o = o.getParent();
+        } while (o != null);
+        Collections.reverse(pathToRoot);
+
         // Find the organization in the repository results materialization.
-        Organization<RepositoryResult> result = results.getChild(organization.getPathTo(root).toArray(new String[0]));
+        Organization<RepositoryResult> result = results.getChild(pathToRoot.toArray(new String[0]));
 
         Set<RepositoryId> seen = new HashSet<>();
         result.forEachOrganization(org -> {
