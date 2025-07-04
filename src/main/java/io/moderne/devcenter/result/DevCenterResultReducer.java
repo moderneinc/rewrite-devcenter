@@ -39,11 +39,6 @@ public class DevCenterResultReducer {
     private final Organization<RepositoryResult> results;
 
     /**
-     * Holds the root organization of the original organization hierarchy.
-     */
-    private final Organization<?> root;
-
-    /**
      * Reduces the individual repository results for a given organization to a DevCenterResult.
      *
      * @param organization The organization to calculate the result for.
@@ -114,7 +109,7 @@ public class DevCenterResultReducer {
             new SecurityIssuesReader(devCenter, repositoryMap).read(securityIssuesCsv);
         }
 
-        return new DevCenterResultReducer(devCenter, results, root);
+        return new DevCenterResultReducer(devCenter, results);
     }
 
     /**
