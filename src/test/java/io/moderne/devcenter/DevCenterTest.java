@@ -181,8 +181,8 @@ class DevCenterTest implements RewriteTest {
         );
     }
 
-    @ParameterizedTest(name = "{0}")
     @MethodSource("recipesFromIsolatedClassLoader")
+    @ParameterizedTest(name = "{0}")
     void recipeFromDifferentClassLoaderIdentifiesCards(String type, Recipe recipe) throws Exception {
         // Create DevCenter instance and verify it correctly identifies the card
         // This test will fail with the current instanceof-based implementation,

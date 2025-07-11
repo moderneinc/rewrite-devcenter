@@ -40,8 +40,8 @@ class JavaVersionUpgradeTest implements RewriteTest {
         );
     }
 
-    @ParameterizedTest
     @MethodSource("javaVersions")
+    @ParameterizedTest
     void java8(int targetVersion, int actualVersion, JavaVersionUpgrade.Measure measure) {
         rewriteRun(
           spec -> spec

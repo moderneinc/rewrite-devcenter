@@ -42,8 +42,8 @@ class LibraryUpgradeTest implements RewriteTest {
         );
     }
 
-    @ParameterizedTest
     @MethodSource("jacksonVersions")
+    @ParameterizedTest
     void minorUpgrade(String targetVersion, String currentVersion, SemverMeasure semverMeasure) {
         rewriteRun(
           spec ->

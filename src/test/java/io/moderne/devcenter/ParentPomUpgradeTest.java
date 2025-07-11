@@ -42,8 +42,8 @@ class ParentPomUpgradeTest implements RewriteTest {
         );
     }
 
-    @ParameterizedTest
     @MethodSource("springBootParentVersions")
+    @ParameterizedTest
     void minorUpgrade(String targetVersion, String currentVersion, SemverMeasure semverMeasure) {
         rewriteRun(
           spec ->
