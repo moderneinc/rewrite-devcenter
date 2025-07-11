@@ -21,10 +21,10 @@ import org.junit.jupiter.params.provider.Arguments;
 import org.junit.jupiter.params.provider.MethodSource;
 import org.openrewrite.test.RewriteTest;
 
+import java.util.List;
 import java.util.stream.Stream;
 
-import static io.moderne.devcenter.JavaVersionUpgrade.Measure.Completed;
-import static io.moderne.devcenter.JavaVersionUpgrade.Measure.Java8Plus;
+import static io.moderne.devcenter.JavaVersionUpgrade.Measure.*;
 import static org.assertj.core.api.AssertionsForInterfaceTypes.assertThat;
 import static org.openrewrite.java.Assertions.java;
 import static org.openrewrite.java.Assertions.version;
@@ -57,5 +57,23 @@ class JavaVersionUpgradeTest implements RewriteTest {
             actualVersion
           )
         );
+    }
+
+    private static Stream<Arguments> versionAndMeasures() {
+        return Stream.of(
+          Arguments.of(8, List.of(Completed)),
+          Arguments.of(11, List.of(Java8Plus, Completed)),
+          Arguments.of(17, List.of(Java8Plus, Java11Plus, Completed)),
+          Arguments.of(18, List.of(Java8Plus, Java11Plus, Java17Plus, Completed)),
+          Arguments.of(21, List.of(Java8Plus, Java11Plus, Java17Plus, Completed)),
+          Arguments.of(24, List.of(Java8Plus, Java11Plus, Java17Plus, Java21Plus, Completed))
+        );
+    }
+
+    @MethodSource("versionAndMeasures")
+    @ParameterizedTest
+    void measuresShouldNotIncludeTargetVersionOrAbove(int targetVersion, List<JavaVersionUpgrade.Measure> expectedMeasures) {
+        assertThat(new JavaVersionUpgrade(targetVersion, null).getMeasures())
+          .containsExactlyElementsOf(expectedMeasures);
     }
 }
