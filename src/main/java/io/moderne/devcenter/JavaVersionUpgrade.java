@@ -28,8 +28,9 @@ import org.openrewrite.java.JavaIsoVisitor;
 import org.openrewrite.java.marker.JavaVersion;
 import org.openrewrite.java.tree.J;
 
-import java.util.Arrays;
 import java.util.List;
+import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 @Value
 @EqualsAndHashCode(callSuper = false)
@@ -95,7 +96,9 @@ public class JavaVersionUpgrade extends UpgradeMigrationCard {
 
     @Override
     public List<DevCenterMeasure> getMeasures() {
-        return Arrays.asList(Measure.values());
+        return Stream.of(Measure.values())
+                .filter(measure -> measure.minimumMajorVersion < majorVersion)
+                .collect(Collectors.toList());
     }
 
     @Override
@@ -106,13 +109,14 @@ public class JavaVersionUpgrade extends UpgradeMigrationCard {
     @Getter
     @RequiredArgsConstructor
     public enum Measure implements DevCenterMeasure {
-        Java8Plus("Java 8+", "Technically, this is any version less than 11."),
-        Java11Plus("Java 11+", "Java 11 and later"),
-        Java17Plus("Java 17+", "Java 17 and later"),
-        Java21Plus("Java 21+", "Java 21 and later"),
-        Completed("Completed", "The upgrade to the desired Java version is already complete.");
+        Java8Plus("Java 8+", "Technically, this is any version less than 11.", 8),
+        Java11Plus("Java 11+", "Java 11 and later", 11),
+        Java17Plus("Java 17+", "Java 17 and later", 17),
+        Java21Plus("Java 21+", "Java 21 and later", 21),
+        Completed("Completed", "The upgrade to the desired Java version is already complete.", 0);
 
         private final @Language("markdown") String name;
         private final @Language("markdown") String description;
+        private final int minimumMajorVersion;
     }
 }
