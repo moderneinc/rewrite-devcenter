@@ -27,4 +27,8 @@ public abstract class UpgradeMigrationCard extends Recipe {
     public abstract List<DevCenterMeasure> getMeasures();
 
     public abstract @Nullable String getFixRecipeId();
+
+    public int ordinal(DevCenterMeasure measure) {
+        return getMeasures().indexOf(measure);
+    }
 }

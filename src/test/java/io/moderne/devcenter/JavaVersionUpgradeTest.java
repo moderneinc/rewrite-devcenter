@@ -43,13 +43,14 @@ class JavaVersionUpgradeTest implements RewriteTest {
     @MethodSource("javaVersions")
     @ParameterizedTest
     void java8(int targetVersion, int actualVersion, JavaVersionUpgrade.Measure measure) {
+        UpgradeMigrationCard recipe = new JavaVersionUpgrade(targetVersion, null);
         rewriteRun(
           spec -> spec
-            .recipe(new JavaVersionUpgrade(targetVersion, null))
+            .recipe(recipe)
             .dataTable(UpgradesAndMigrations.Row.class, rows ->
               assertThat(rows).containsExactly(
                 new UpgradesAndMigrations.Row("Move to Java " + targetVersion,
-                  measure.ordinal(), measure.getName(), Integer.toString(actualVersion))
+                  recipe.ordinal(measure), measure.getName(), Integer.toString(actualVersion))
               )),
           version(
             //language=java
@@ -61,19 +62,24 @@ class JavaVersionUpgradeTest implements RewriteTest {
 
     private static Stream<Arguments> versionAndMeasures() {
         return Stream.of(
-          Arguments.of(8, List.of(Completed)),
-          Arguments.of(11, List.of(Java8Plus, Completed)),
-          Arguments.of(17, List.of(Java8Plus, Java11Plus, Completed)),
-          Arguments.of(18, List.of(Java8Plus, Java11Plus, Java17Plus, Completed)),
-          Arguments.of(21, List.of(Java8Plus, Java11Plus, Java17Plus, Completed)),
-          Arguments.of(24, List.of(Java8Plus, Java11Plus, Java17Plus, Java21Plus, Completed))
+          Arguments.of(8, List.of(Completed), 0),
+          Arguments.of(11, List.of(Java8Plus, Completed), 1),
+          Arguments.of(17, List.of(Java8Plus, Java11Plus, Completed), 2),
+          Arguments.of(18, List.of(Java8Plus, Java11Plus, Java17Plus, Completed), 3),
+          Arguments.of(21, List.of(Java8Plus, Java11Plus, Java17Plus, Completed), 3),
+          Arguments.of(24, List.of(Java8Plus, Java11Plus, Java17Plus, Java21Plus, Completed), 4)
         );
     }
 
     @MethodSource("versionAndMeasures")
     @ParameterizedTest
-    void measuresShouldNotIncludeTargetVersionOrAbove(int targetVersion, List<JavaVersionUpgrade.Measure> expectedMeasures) {
-        assertThat(new JavaVersionUpgrade(targetVersion, null).getMeasures())
+    void measuresShouldNotIncludeTargetVersionOrAbove(int targetVersion,
+                                                      List<JavaVersionUpgrade.Measure> expectedMeasures,
+                                                      int expectedCompletedOrdinal) {
+        UpgradeMigrationCard recipe = new JavaVersionUpgrade(targetVersion, null);
+        assertThat(recipe.getMeasures())
           .containsExactlyElementsOf(expectedMeasures);
+
+        assertThat(recipe.ordinal(JavaVersionUpgrade.Measure.Completed)).isEqualTo(expectedCompletedOrdinal);
     }
 }

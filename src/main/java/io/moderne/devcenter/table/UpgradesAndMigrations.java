@@ -22,7 +22,6 @@ import org.intellij.lang.annotations.Language;
 import org.openrewrite.Column;
 import org.openrewrite.DataTable;
 import org.openrewrite.ExecutionContext;
-import org.openrewrite.scheduling.RecipeRunCycle;
 import org.openrewrite.semver.LatestRelease;
 
 import java.util.ArrayList;
@@ -40,13 +39,12 @@ public class UpgradesAndMigrations extends DataTable<UpgradesAndMigrations.Row> 
         super(recipe, DISPLAY_NAME, "Progress towards organizational objectives on library or language migrations and upgrades.");
     }
 
-    public <E extends Enum<E> & DevCenterMeasure> void insertRow(ExecutionContext ctx,
-                                                                 UpgradeMigrationCard recipe,
-                                                                 E measure, String currentMinimumVersion) {
-        RecipeRunCycle<?> cycle = ctx.getCycleDetails();
+    public <E extends DevCenterMeasure> void insertRow(ExecutionContext ctx,
+                                                       UpgradeMigrationCard recipe,
+                                                       E measure, String currentMinimumVersion) {
         insertRow(ctx, new UpgradesAndMigrations.Row(
                 recipe.getInstanceName(),
-                measure.ordinal(),
+                recipe.ordinal(measure),
                 measure.getName(),
                 currentMinimumVersion
         ));
