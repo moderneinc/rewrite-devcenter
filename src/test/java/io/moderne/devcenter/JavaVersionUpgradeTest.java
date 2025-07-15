@@ -73,7 +73,9 @@ class JavaVersionUpgradeTest implements RewriteTest {
 
     @MethodSource("versionAndMeasures")
     @ParameterizedTest
-    void measuresShouldNotIncludeTargetVersionOrAbove(int targetVersion, List<JavaVersionUpgrade.Measure> expectedMeasures, int expectedCompletedOrdinal) {
+    void measuresShouldNotIncludeTargetVersionOrAbove(int targetVersion,
+                                                      List<JavaVersionUpgrade.Measure> expectedMeasures,
+                                                      int expectedCompletedOrdinal) {
         UpgradeMigrationCard recipe = new JavaVersionUpgrade(targetVersion, null);
         assertThat(recipe.getMeasures())
           .containsExactlyElementsOf(expectedMeasures);
