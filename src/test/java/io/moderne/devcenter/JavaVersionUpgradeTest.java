@@ -43,13 +43,14 @@ class JavaVersionUpgradeTest implements RewriteTest {
     @MethodSource("javaVersions")
     @ParameterizedTest
     void java8(int targetVersion, int actualVersion, JavaVersionUpgrade.Measure measure) {
+        UpgradeMigrationCard recipe = new JavaVersionUpgrade(targetVersion, null);
         rewriteRun(
           spec -> spec
-            .recipe(new JavaVersionUpgrade(targetVersion, null))
+            .recipe(recipe)
             .dataTable(UpgradesAndMigrations.Row.class, rows ->
               assertThat(rows).containsExactly(
                 new UpgradesAndMigrations.Row("Move to Java " + targetVersion,
-                  measure.ordinal(), measure.getName(), Integer.toString(actualVersion))
+                  recipe.ordinal(measure), measure.getName(), Integer.toString(actualVersion))
               )),
           version(
             //language=java
