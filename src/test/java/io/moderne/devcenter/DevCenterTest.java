@@ -41,23 +41,24 @@ import static org.openrewrite.java.Assertions.java;
 import static org.openrewrite.java.Assertions.version;
 
 class DevCenterTest implements RewriteTest {
+
     Environment environment = Environment.builder()
       .scanRuntimeClasspath("org.openrewrite")
       .scanYamlResources()
       .build();
     Recipe starterDevCenter;
-    Recipe starterOriginalSecurity;
+    Recipe starterSecurity;
 
     @BeforeEach
     void before() {
         starterDevCenter = environment.activateRecipes("io.moderne.devcenter.DevCenterStarter");
-        starterOriginalSecurity = environment.activateRecipes("io.moderne.devcenter.SecurityOriginalStarter");
+        starterSecurity = environment.activateRecipes("io.moderne.devcenter.SecurityStarter");
     }
 
     @Test
     void isDevCenter() {
         assertThat(DevCenter.isDevCenter(starterDevCenter.getDescriptor())).isTrue();
-        assertThat(DevCenter.isDevCenter(starterOriginalSecurity.getDescriptor())).isTrue();
+        assertThat(DevCenter.isDevCenter(starterSecurity.getDescriptor())).isTrue();
 
         // Since this recipe has options, it cannot be a standalone DevCenter.
         assertThat(DevCenter.isDevCenter(new JavaVersionUpgrade(8, null).getDescriptor())).isFalse();
@@ -111,7 +112,7 @@ class DevCenterTest implements RewriteTest {
 
     @Test
     void validateStandAloneDevCenterRecipe() throws DevCenterValidationException {
-        DevCenter devCenter = new DevCenter(starterOriginalSecurity);
+        DevCenter devCenter = new DevCenter(starterSecurity);
         devCenter.validate();
     }
 

@@ -33,8 +33,8 @@ class ReportAsSecurityIssuesTest implements RewriteTest {
           .scanRuntimeClasspath("org.openrewrite")
           .scanYamlResources()
           .build()
-          // In src/main/resources/original-security.yml
-          .activateRecipes("io.moderne.devcenter.SecurityOriginalStarter"));
+          // In src/main/resources/META-INF/rewrite/devcenter-starter.yml
+          .activateRecipes("io.moderne.devcenter.SecurityStarter"));
     }
 
     @DocumentExample
@@ -42,18 +42,27 @@ class ReportAsSecurityIssuesTest implements RewriteTest {
     void reportSecret() {
         rewriteRun(spec -> spec.dataTable(SecurityIssues.Row.class, rows ->
             assertThat(rows).containsExactly(
-              new SecurityIssues.Row(0, "Find secrets")
+              new SecurityIssues.Row(3, "Remediate OWASP A08:2021 Software and data integrity failures")
             )),
           //language=java
           java(
             """
-              class Test {
-                String secret = "gho_16C7e42F292c6912E7710c838347Ae178B4a";
+              import java.io.File;
+
+              class Foo {
+                void bar() {
+                  File tmp = File.createTempFile("prefix", "suffix");
+                }
               }
               """,
             """
-              class Test {
-                String secret = /*~~(GitHub)~~>*/"gho_16C7e42F292c6912E7710c838347Ae178B4a";
+              import java.io.File;
+              import java.nio.file.Files;
+
+              class Foo {
+                void bar() {
+                  File tmp = Files.createTempFile("prefix", "suffix").toFile();
+                }
               }
               """
           )
