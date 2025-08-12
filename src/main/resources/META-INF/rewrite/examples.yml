@@ -13,16 +13,25 @@
 # limitations under the License.
 ---
 type: specs.openrewrite.org/v1beta/example
-recipeName: io.moderne.devcenter.SecurityOriginalStarter
+recipeName: io.moderne.devcenter.SecurityStarter
 examples:
 - description: ''
   sources:
   - before: |
-      class Test {
-        String secret = "gho_16C7e42F292c6912E7710c838347Ae178B4a";
+      import java.io.File;
+
+      class Foo {
+        void bar() {
+          File tmp = File.createTempFile("prefix", "suffix");
+        }
       }
     after: |
-      class Test {
-        String secret = /*~~(GitHub)~~>*/"gho_16C7e42F292c6912E7710c838347Ae178B4a";
+      import java.io.File;
+      import java.nio.file.Files;
+
+      class Foo {
+        void bar() {
+          File tmp = Files.createTempFile("prefix", "suffix").toFile();
+        }
       }
     language: java

@@ -18,7 +18,8 @@ package io.moderne.devcenter;
 import lombok.Getter;
 
 import java.util.List;
-import java.util.stream.Collectors;
+
+import static java.util.stream.Collectors.joining;
 
 public class DevCenterValidationException extends Exception {
     @Getter
@@ -27,7 +28,7 @@ public class DevCenterValidationException extends Exception {
     public DevCenterValidationException(List<String> validationErrors) {
         super("DevCenter validation failed:\n" + validationErrors.stream()
                 .map(error -> " - " + error)
-                .collect(Collectors.joining("\n")));
+                .collect(joining("\n")));
         this.validationErrors = validationErrors;
     }
 }

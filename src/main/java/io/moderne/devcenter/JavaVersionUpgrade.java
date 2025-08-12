@@ -29,8 +29,9 @@ import org.openrewrite.java.marker.JavaVersion;
 import org.openrewrite.java.tree.J;
 
 import java.util.List;
-import java.util.stream.Collectors;
 import java.util.stream.Stream;
+
+import static java.util.stream.Collectors.toList;
 
 @Value
 @EqualsAndHashCode(callSuper = false)
@@ -98,7 +99,7 @@ public class JavaVersionUpgrade extends UpgradeMigrationCard {
     public List<DevCenterMeasure> getMeasures() {
         return Stream.of(Measure.values())
                 .filter(measure -> measure.minimumMajorVersion < majorVersion)
-                .collect(Collectors.toList());
+                .collect(toList());
     }
 
     @Override
