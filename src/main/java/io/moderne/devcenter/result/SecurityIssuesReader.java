@@ -29,10 +29,10 @@ import java.io.IOException;
 import java.io.Reader;
 import java.io.UncheckedIOException;
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.List;
 import java.util.Map;
 
+import static java.util.Collections.emptyList;
 import static java.util.Objects.requireNonNull;
 
 @RequiredArgsConstructor
@@ -95,7 +95,7 @@ class SecurityIssuesReader {
                     RepositoryId id = new RepositoryId(origin, path, branch);
 
                     nextOrg:
-                    for (Organization<RepositoryResult> org : repositoryMap.getOrDefault(id, Collections.emptyList())) {
+                    for (Organization<RepositoryResult> org : repositoryMap.getOrDefault(id, emptyList())) {
                         // TODO should we add org.getRepository(id) to moderne-organizations-format?
                         for (RepositorySpec<RepositoryResult> repo : org.getRepositories()) {
                             if (repo.getId().equals(id)) {
