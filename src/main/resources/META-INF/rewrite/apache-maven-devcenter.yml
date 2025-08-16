@@ -1,0 +1,102 @@
+#
+# Copyright 2025 the original author or authors.
+# <p>
+# Licensed under the Moderne Source Available License (the "License");
+# you may not use this file except in compliance with the License.
+# You may obtain a copy of the License at
+# <p>
+# https://docs.moderne.io/licensing/moderne-source-available-license
+# <p>
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an "AS IS" BASIS,
+# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+# See the License for the specific language governing permissions and
+# limitations under the License.
+#
+---
+# An example DevCenter tracking Parent POM versions, illustrated by using the Apache Maven parent POM
+type: specs.openrewrite.org/v1beta/recipe
+name: io.moderne.devcenter.ApacheMavenDevCenter
+displayName: DevCenter
+description: >-
+  A DevCenter that tracks the latest Apache Maven parent POM versions and applies best practices.
+  This DevCenter includes recipes to upgrade the parent POMs of Apache Maven, as well as a collection of
+  best practices for Maven POMs.
+recipeList:
+  - io.moderne.devcenter.ParentPomUpgrade:
+      cardName: Move to the latest `maven-parent`
+      groupIdPattern: org.apache.maven
+      artifactIdPattern: maven-parent
+      version: 45
+      upgradeRecipe: io.moderne.devcenter.UpgradeMavenParent
+  - io.moderne.devcenter.ParentPomUpgrade:
+      cardName: Move to the latest `maven-plugins` parent POM
+      groupIdPattern: org.apache.maven.plugins
+      artifactIdPattern: maven-plugins
+      version: 45
+      upgradeRecipe: io.moderne.devcenter.UpgradeMavenPluginsParent
+  - io.moderne.devcenter.ParentPomUpgrade:
+      cardName: Move to the latest `maven-shared-components` parent POM
+      groupIdPattern: org.apache.maven.shared
+      artifactIdPattern: maven-shared-components
+      version: 45
+      upgradeRecipe: io.moderne.devcenter.UpgradeMavenSharedParent
+  - io.moderne.devcenter.JavaVersionUpgrade:
+      majorVersion: 17
+      upgradeRecipe: org.openrewrite.java.migrate.UpgradeToJava17
+  - io.moderne.devcenter.ApacheMavenBestPractices
+---
+type: specs.openrewrite.org/v1beta/recipe
+name: io.moderne.devcenter.UpgradeMavenParent
+displayName: Upgrade Apache Maven Parent
+description: >-
+  Upgrades the Apache Maven parent POM to the latest version.
+recipeList:
+  - org.openrewrite.maven.UpgradeParentVersion:
+      groupId: org.apache.maven
+      artifactId: maven-parent
+      newVersion: x
+---
+type: specs.openrewrite.org/v1beta/recipe
+name: io.moderne.devcenter.UpgradeMavenPluginsParent
+displayName: Upgrade Apache Maven Parent
+description: >-
+  Upgrades the Apache Maven parent POM to the latest version.
+recipeList:
+  - org.openrewrite.maven.UpgradeParentVersion:
+      groupId: org.apache.maven.plugins
+      artifactId: maven-plugins
+      newVersion: x
+---
+type: specs.openrewrite.org/v1beta/recipe
+name: io.moderne.devcenter.UpgradeMavenSharedParent
+displayName: Upgrade Apache Maven Parent
+description: >-
+  Upgrades the Apache Maven parent POM to the latest version.
+recipeList:
+  - org.openrewrite.maven.UpgradeParentVersion:
+      groupId: org.apache.maven.shared
+      artifactId: maven-shared-components
+      newVersion: x
+---
+type: specs.openrewrite.org/v1beta/recipe
+name: io.moderne.devcenter.ApacheMavenBestPractices
+displayName: Apache Maven best practices
+description: >-
+  A collection of recipes that apply best practices to Maven POMs.
+  Some of these recipes affect build stability, so they are reported as security issues in the DevCenter card.
+recipeList:
+  - org.openrewrite.maven.cleanup.ExplicitPluginGroupId
+  - org.openrewrite.maven.cleanup.ExplicitPluginVersion
+  - org.openrewrite.maven.cleanup.PrefixlessExpressions
+  - org.openrewrite.maven.OrderPomElements
+  - org.openrewrite.maven.RemoveDuplicateDependencies
+  - org.openrewrite.maven.RemoveRedundantDependencyVersions
+  - org.openrewrite.maven.RemoveRedundantProperties:
+      onlyIfValuesMatch: true
+  - org.openrewrite.maven.plugin.DependencyPluginGoalResolveSources
+  - org.openrewrite.maven.UpdateScmFromGitOrigin
+  # Changes made by recipes above this one in the recipe list are reported as occurrences
+  # in the Security DevCenter card.
+  - io.moderne.devcenter.ReportAsSecurityIssues:
+      fixRecipe: org.openrewrite.maven.BestPractices
