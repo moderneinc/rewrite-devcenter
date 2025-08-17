@@ -29,6 +29,8 @@ import org.openrewrite.config.RecipeDescriptor;
 import java.util.*;
 import java.util.concurrent.atomic.AtomicReference;
 
+import static java.util.Collections.unmodifiableList;
+
 public class DevCenter {
     private final Recipe recipe;
 
@@ -107,7 +109,7 @@ public class DevCenter {
         if (securityCard != null) {
             cards.add(securityCard);
         }
-        return Collections.unmodifiableList(cards);
+        return unmodifiableList(cards);
     }
 
     public Card getCard(String name) {

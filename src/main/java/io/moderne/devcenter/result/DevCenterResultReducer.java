@@ -26,6 +26,7 @@ import org.jspecify.annotations.Nullable;
 import java.io.Reader;
 import java.util.*;
 
+import static java.util.Collections.reverse;
 import static java.util.Objects.requireNonNull;
 
 @RequiredArgsConstructor
@@ -61,7 +62,7 @@ public class DevCenterResultReducer {
             pathToRoot.add(o.getName());
             o = o.getParent();
         } while (o != null);
-        Collections.reverse(pathToRoot);
+        reverse(pathToRoot);
 
         // Find the organization in the repository results materialization.
         Organization<RepositoryResult> result = results.getChild(pathToRoot.toArray(new String[0]));
