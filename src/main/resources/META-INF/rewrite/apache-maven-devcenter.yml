@@ -16,6 +16,26 @@
 ---
 # An example DevCenter tracking Parent POM versions, illustrated by using the Apache Maven parent POM
 type: specs.openrewrite.org/v1beta/recipe
+name: io.moderne.devcenter.ApacheDevCenter
+displayName: DevCenter
+description: >-
+  A DevCenter that tracks the latest Apache Maven parent POM versions and applies best practices.
+recipeList:
+  - io.moderne.devcenter.ParentPomUpgrade:
+      cardName: Move to the latest `apache` parent POM
+      groupIdPattern: org.apache
+      artifactIdPattern: apache
+      version: 35
+      upgradeRecipe: io.moderne.devcenter.UpgradeApacheParent
+  - io.moderne.devcenter.JavaVersionUpgrade:
+      majorVersion: 25
+      upgradeRecipe: org.openrewrite.java.migrate.UpgradeToJava25
+  - io.moderne.devcenter.JUnitJupiterUpgrade:
+      upgradeRecipe: org.openrewrite.java.testing.junit5.JUnit4to5Migration
+  - io.moderne.devcenter.SecurityStarter
+---
+# An example DevCenter tracking Parent POM versions, illustrated by using the Apache Maven parent POM
+type: specs.openrewrite.org/v1beta/recipe
 name: io.moderne.devcenter.ApacheMavenDevCenter
 displayName: DevCenter
 description: >-
@@ -45,6 +65,17 @@ recipeList:
       majorVersion: 17
       upgradeRecipe: org.openrewrite.java.migrate.UpgradeToJava17
   - io.moderne.devcenter.ApacheMavenBestPractices
+---
+type: specs.openrewrite.org/v1beta/recipe
+name: io.moderne.devcenter.UpgradeApacheParent
+displayName: Upgrade Apache Parent POM
+description: >-
+  Upgrades the Apache parent POM to the latest version.
+recipeList:
+  - org.openrewrite.maven.UpgradeParentVersion:
+      groupId: org.apache
+      artifactId: apache
+      newVersion: x
 ---
 type: specs.openrewrite.org/v1beta/recipe
 name: io.moderne.devcenter.UpgradeMavenParent
