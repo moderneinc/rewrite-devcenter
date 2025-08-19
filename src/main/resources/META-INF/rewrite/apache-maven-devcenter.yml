@@ -17,7 +17,7 @@
 # An example DevCenter tracking Parent POM versions, illustrated by using the Apache Maven parent POM
 type: specs.openrewrite.org/v1beta/recipe
 name: io.moderne.devcenter.ApacheDevCenter
-displayName: DevCenter
+displayName: DevCenter for Apache
 description: >-
   A DevCenter that tracks the latest Apache Maven parent POM versions and applies best practices.
 recipeList:
@@ -37,7 +37,7 @@ recipeList:
 # An example DevCenter tracking Parent POM versions, illustrated by using the Apache Maven parent POM
 type: specs.openrewrite.org/v1beta/recipe
 name: io.moderne.devcenter.ApacheMavenDevCenter
-displayName: DevCenter
+displayName: DevCenter for Apache Maven
 description: >-
   A DevCenter that tracks the latest Apache Maven parent POM versions and applies best practices.
   This DevCenter includes recipes to upgrade the parent POMs of Apache Maven, as well as a collection of
@@ -50,13 +50,13 @@ recipeList:
       version: 45
       upgradeRecipe: io.moderne.devcenter.UpgradeMavenParent
   - io.moderne.devcenter.ParentPomUpgrade:
-      cardName: Move to the latest `maven-plugins` parent POM
+      cardName: Move to the latest `maven-plugins`
       groupIdPattern: org.apache.maven.plugins
       artifactIdPattern: maven-plugins
       version: 45
       upgradeRecipe: io.moderne.devcenter.UpgradeMavenPluginsParent
   - io.moderne.devcenter.ParentPomUpgrade:
-      cardName: Move to the latest `maven-shared-components` parent POM
+      cardName: Move to the latest `maven-shared-components`
       groupIdPattern: org.apache.maven.shared
       artifactIdPattern: maven-shared-components
       version: 45
