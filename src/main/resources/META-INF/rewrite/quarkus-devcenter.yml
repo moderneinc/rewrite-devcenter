@@ -29,18 +29,15 @@ recipeList:
       artifactIdPattern: quarkus-*
       version: 3.26.x
       upgradeRecipe: io.moderne.devcenter.UpgradeQuarkus3_x
-  - io.moderne.devcenter.LibraryUpgrade: # TODO should we have a card for dependencyManagement BOMs? that's in the starter
-      cardName: Move to Quarkus Platform 3.26
-      groupIdPattern: io.quarkus.platform
-      artifactIdPattern: '*'
-      version: 3.26.x
-      upgradeRecipe: io.moderne.devcenter.UpgradeQuarkusPlatform3_x
   - io.moderne.devcenter.ParentPomUpgrade:
       cardName: Move to the latest Quarkus Universe BOM
-      groupIdPattern: io.quarkus.platform
+      groupIdPattern: io.quarkus
       artifactIdPattern: quarkus-universe-bom
       version: 3.26.x
       upgradeRecipe: io.moderne.devcenter.UpgradeQuarkusUniverseBom
+  - io.moderne.devcenter.JavaVersionUpgrade:
+      majorVersion: 21
+      upgradeRecipe: org.openrewrite.java.migrate.UpgradeToJava21
   - io.moderne.devcenter.SecurityStarter
 ---
 type: specs.openrewrite.org/v1beta/recipe
@@ -49,7 +46,6 @@ displayName: Upgrade to Quarkus 3.26
 description: >-
   Upgrades Quarkus dependencies to version 3.26.x, including core, extensions, and tooling.
 recipeList:
-  - org.openrewrite.quarkus.Quarkus1to1_13Migration
   - org.openrewrite.quarkus.quarkus2.Quarkus1to2Migration
   - org.openrewrite.maven.UpgradeDependencyVersion:
       groupId: io.quarkus
@@ -61,23 +57,12 @@ recipeList:
       newVersion: 3.26.x
 ---
 type: specs.openrewrite.org/v1beta/recipe
-name: io.moderne.devcenter.UpgradeQuarkusPlatform3_x
-displayName: Upgrade Quarkus Platform
-description: >-
-  Upgrades the Quarkus Platform BOM and related dependencies to version 3.26.x.
-recipeList:
-  - org.openrewrite.maven.UpgradeParentVersion:
-      groupId: io.quarkus.platform
-      artifactId: quarkus-bom
-      newVersion: 3.26.x
----
-type: specs.openrewrite.org/v1beta/recipe
 name: io.moderne.devcenter.UpgradeQuarkusUniverseBom
 displayName: Upgrade Quarkus Universe BOM
 description: >-
   Upgrades the Quarkus Universe BOM parent to the latest version.
 recipeList:
   - org.openrewrite.maven.UpgradeParentVersion:
-      groupId: io.quarkus.platform
+      groupId: io.quarkus
       artifactId: quarkus-universe-bom
       newVersion: x
