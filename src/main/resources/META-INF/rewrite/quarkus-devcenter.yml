@@ -1,0 +1,68 @@
+#
+# Copyright 2025 the original author or authors.
+# <p>
+# Licensed under the Moderne Source Available License (the "License");
+# you may not use this file except in compliance with the License.
+# You may obtain a copy of the License at
+# <p>
+# https://docs.moderne.io/licensing/moderne-source-available-license
+# <p>
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an "AS IS" BASIS,
+# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+# See the License for the specific language governing permissions and
+# limitations under the License.
+#
+---
+# DevCenter tracking Quarkus framework versions and best practices
+type: specs.openrewrite.org/v1beta/recipe
+name: io.moderne.devcenter.QuarkusDevCenter
+displayName: DevCenter for Quarkus
+description: >-
+  A DevCenter that tracks the latest Quarkus framework versions and applies best practices.
+  This DevCenter includes recipes to upgrade Quarkus versions, migrate from deprecated APIs,
+  and ensure compatibility with the latest Java versions and testing frameworks.
+recipeList:
+  - io.moderne.devcenter.LibraryUpgrade:
+      cardName: Move to Quarkus 3.26
+      groupIdPattern: io.quarkus
+      artifactIdPattern: quarkus-*
+      version: 3.26.x
+      upgradeRecipe: io.moderne.devcenter.UpgradeQuarkus3_x
+  - io.moderne.devcenter.ParentPomUpgrade:
+      cardName: Move to the latest Quarkus Universe BOM
+      groupIdPattern: io.quarkus
+      artifactIdPattern: quarkus-universe-bom
+      version: 3.26.x
+      upgradeRecipe: io.moderne.devcenter.UpgradeQuarkusUniverseBom
+  - io.moderne.devcenter.JavaVersionUpgrade:
+      majorVersion: 21
+      upgradeRecipe: org.openrewrite.java.migrate.UpgradeToJava21
+  - io.moderne.devcenter.SecurityStarter
+---
+type: specs.openrewrite.org/v1beta/recipe
+name: io.moderne.devcenter.UpgradeQuarkus3_x
+displayName: Upgrade to Quarkus 3.26
+description: >-
+  Upgrades Quarkus dependencies to version 3.26.x, including core, extensions, and tooling.
+recipeList:
+  - org.openrewrite.quarkus.quarkus2.Quarkus1to2Migration
+  - org.openrewrite.maven.UpgradeDependencyVersion:
+      groupId: io.quarkus
+      artifactId: '*'
+      newVersion: 3.26.x
+  - org.openrewrite.maven.UpgradeDependencyVersion:
+      groupId: io.quarkus.platform
+      artifactId: '*'
+      newVersion: 3.26.x
+---
+type: specs.openrewrite.org/v1beta/recipe
+name: io.moderne.devcenter.UpgradeQuarkusUniverseBom
+displayName: Upgrade Quarkus Universe BOM
+description: >-
+  Upgrades the Quarkus Universe BOM parent to the latest version.
+recipeList:
+  - org.openrewrite.maven.UpgradeParentVersion:
+      groupId: io.quarkus
+      artifactId: quarkus-universe-bom
+      newVersion: x
