@@ -25,9 +25,10 @@ import org.openrewrite.ExecutionContext;
 import org.openrewrite.semver.LatestRelease;
 
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.concurrent.ConcurrentHashMap;
 
 import static org.openrewrite.ExecutionContext.CURRENT_CYCLE;
 
@@ -54,7 +55,7 @@ public class UpgradesAndMigrations extends DataTable<UpgradesAndMigrations.Row> 
     public void insertRow(ExecutionContext ctx, Row row) {
         // TODO CURRENT_CYCLE value is null in the context of a RewriteTest.
         if (ctx.getMessage(CURRENT_CYCLE) == null || this.allowWritingInThisCycle(ctx)) {
-            ctx.computeMessage("org.openrewrite.dataTables", row, ConcurrentHashMap<DataTable<?>, List<?>>::new, (extract, allDataTables) -> {
+            ctx.computeMessage("org.openrewrite.dataTables", row, () -> Collections.synchronizedMap(new LinkedHashMap<DataTable<?>, List<?>>()), (extract, allDataTables) -> {
                 List<Row> rows = getRows(allDataTables);
                 int minOrdinal = rows.stream()
                         .filter(r -> r.getCard().equals(row.getCard()))

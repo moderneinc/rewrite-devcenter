@@ -36,7 +36,9 @@ import java.util.stream.Stream;
 
 import static io.moderne.devcenter.JUnitJupiterUpgrade.Measure.JUnit4;
 import static io.moderne.devcenter.JavaVersionUpgrade.Measure.Java8Plus;
-import static org.assertj.core.api.Assertions.*;
+import static org.assertj.core.api.Assertions.assertThat;
+import static org.assertj.core.api.Assertions.assertThatThrownBy;
+import static org.assertj.core.api.Assertions.tuple;
 import static org.openrewrite.gradle.Assertions.buildGradle;
 import static org.openrewrite.gradle.toolingapi.Assertions.withToolingApi;
 import static org.openrewrite.java.Assertions.java;
@@ -268,14 +270,12 @@ class DevCenterTest implements RewriteTest {
           spec ->
             spec.recipeFromYaml(recipe, "io.moderne.devcenter.TwoLibraryUpgrades")
               .beforeRecipe(withToolingApi())
-              .afterRecipe(after -> {
-                  assertThat(after.getDataTableRows("io.moderne.devcenter.table.UpgradesAndMigrations"))
-                    .extracting("card", "ordinal", "value", "currentMinimumVersion")
-                    .containsExactly(
-                      tuple("Move to Spring Boot 3.5.0", 0, "Major", "2.7.18"),
-                      tuple("Move to commons collections 3.2.2", 0, "Major", "2.0")
-                    );
-              }),
+              .afterRecipe(after -> assertThat(after.getDataTableRows("io.moderne.devcenter.table.UpgradesAndMigrations"))
+                .extracting("card", "ordinal", "value", "currentMinimumVersion")
+                .containsExactly(
+                  tuple("Move to Spring Boot 3.5.0", 0, "Major", "2.7.18"),
+                  tuple("Move to commons collections 3.2.2", 0, "Major", "2.0")
+                )),
           //language=Groovy
           buildGradle(
             """
