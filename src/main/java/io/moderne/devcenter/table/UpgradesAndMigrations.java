@@ -75,7 +75,6 @@ public class UpgradesAndMigrations extends DataTable<UpgradesAndMigrations.Row> 
                         rows.add(row);
                     }
                 }
-
                 return allDataTables;
             });
         }
