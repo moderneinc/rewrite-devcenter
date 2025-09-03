@@ -29,16 +29,16 @@ import static java.util.Collections.emptyMap;
 public class DataTableRowWatcher<Row> {
     private final DataTable<Row> dataTable;
     private final ExecutionContext ctx;
-
-    int startingRowCount;
+    private List<Row> startingRows;
 
     public void start() {
-        startingRowCount = getRows().size();
+        startingRows = getRows();
     }
 
     public List<Row> stop() {
         List<Row> rows = getRows();
-        return rows.subList(startingRowCount, rows.size());
+        rows.removeAll(startingRows);
+        return rows;
     }
 
     private List<Row> getRows() {
