@@ -27,6 +27,8 @@ dependencies {
     testImplementation("io.moderne:moderne-organizations-format:latest.release")
     testImplementation("org.openrewrite:rewrite-test")
     testImplementation("org.openrewrite:rewrite-java-21:${rewriteVersion}")
+    testImplementation(gradleApi())
+    testImplementation("org.openrewrite.gradle.tooling:model:${rewriteVersion}")
     testRuntimeOnly("junit:junit:4.+")
 }
 

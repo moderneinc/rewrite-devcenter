@@ -16,6 +16,7 @@
 package io.moderne.devcenter;
 
 import io.moderne.devcenter.table.UpgradesAndMigrations;
+import org.intellij.lang.annotations.Language;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
@@ -37,6 +38,9 @@ import static io.moderne.devcenter.JUnitJupiterUpgrade.Measure.JUnit4;
 import static io.moderne.devcenter.JavaVersionUpgrade.Measure.Java8Plus;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
+import static org.assertj.core.api.Assertions.tuple;
+import static org.openrewrite.gradle.Assertions.buildGradle;
+import static org.openrewrite.gradle.toolingapi.Assertions.withToolingApi;
 import static org.openrewrite.java.Assertions.java;
 import static org.openrewrite.java.Assertions.version;
 
@@ -199,7 +203,7 @@ class DevCenterTest implements RewriteTest {
                 // Load io.moderne.devcenter classes (including UpgradeMigrationCard) in this classloader
                 // to ensure they are different from the ones in the test classloader
                 if (name.startsWith("io.moderne.devcenter.") &&
-                    !name.startsWith("io.moderne.devcenter.DevCenter")) {
+                  !name.startsWith("io.moderne.devcenter.DevCenter")) {
                     // Get the resource path for the class
                     String resourcePath = name.replace('.', '/') + ".class";
                     try (var inputStream = getClass().getClassLoader().getResourceAsStream(resourcePath)) {
@@ -231,7 +235,7 @@ class DevCenterTest implements RewriteTest {
               @Override
               public String getDescription() {
                   return "Simulates `DeclarativeRecipe`, which is parent loaded and contains " +
-                         "child loaded sub-recipes.";
+                    "child loaded sub-recipes.";
               }
 
               @Override
@@ -239,6 +243,70 @@ class DevCenterTest implements RewriteTest {
                   return List.of(recipe);
               }
           })
+        );
+    }
+
+    @Test
+    void devcenterWithMultipleLibraryUpgradeRecipesHasCorrectData() {
+        @Language("yaml") String recipe = """
+          type: specs.openrewrite.org/v1beta/recipe
+          name: io.moderne.devcenter.TwoLibraryUpgrades
+          displayName: Starter DevCenter library version upgrade card
+          description: Upgrade library versions.
+          recipeList:
+            - io.moderne.devcenter.LibraryUpgrade:
+                cardName: Move to Spring Boot 3.5.0
+                groupIdPattern: org.springframework.boot
+                artifactIdPattern: '*'
+                version: 3.5.0
+                upgradeRecipe: io.moderne.java.spring.boot3.UpgradeSpringBoot_3_5
+            - io.moderne.devcenter.LibraryUpgrade:
+                cardName: Move to commons collections 3.2.2
+                groupIdPattern: commons-collections
+                artifactIdPattern: commons-collections
+                version: 3.2.2
+          """;
+        rewriteRun(
+          spec ->
+            spec.recipeFromYaml(recipe, "io.moderne.devcenter.TwoLibraryUpgrades")
+              .beforeRecipe(withToolingApi())
+              .afterRecipe(after -> assertThat(after.getDataTableRows("io.moderne.devcenter.table.UpgradesAndMigrations"))
+                .extracting("card", "ordinal", "value", "currentMinimumVersion")
+                .containsExactly(
+                  tuple("Move to Spring Boot 3.5.0", 0, "Major", "2.7.18"),
+                  tuple("Move to commons collections 3.2.2", 0, "Major", "2.0")
+                )),
+          //language=Groovy
+          buildGradle(
+            """
+              plugins {
+                  id "java"
+                  id 'org.springframework.boot' version '2.7.18'
+                  id 'io.spring.dependency-management' version '1.1.7'
+              }
+              repositories {
+                  mavenCentral()
+              }
+              dependencies {
+                  implementation "org.springframework.boot:spring-boot-starter-web"
+                  implementation "commons-collections:commons-collections:2.0"
+              }
+              """,
+            """
+            plugins {
+                id "java"
+                id 'org.springframework.boot' version '2.7.18'
+                id 'io.spring.dependency-management' version '1.1.7'
+            }
+            repositories {
+                mavenCentral()
+            }
+            dependencies {
+                /*~~(org.springframework.boot:spring-boot:2.7.18,org.springframework.boot:spring-boot-autoconfigure:2.7.18,org.springframework.boot:spring-boot-starter-logging:2.7.18,org.springframework.boot:spring-boot-starter-web:2.7.18,org.springframework.boot:spring-boot-starter:2.7.18,org.springframework.boot:spring-boot-starter-tomcat:2.7.18,org.springframework.boot:spring-boot-starter-json:2.7.18)~~>*/implementation "org.springframework.boot:spring-boot-starter-web"
+                /*~~(commons-collections:commons-collections:2.0)~~>*/implementation "commons-collections:commons-collections:2.0"
+            }
+            """
+          )
         );
     }
 }

@@ -19,7 +19,7 @@ import lombok.RequiredArgsConstructor;
 import org.openrewrite.DataTable;
 import org.openrewrite.ExecutionContext;
 
-import java.util.ArrayList;
+import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 
@@ -29,22 +29,22 @@ import static java.util.Collections.emptyMap;
 public class DataTableRowWatcher<Row> {
     private final DataTable<Row> dataTable;
     private final ExecutionContext ctx;
-
-    int startingRowCount;
+    private List<Row> startingRows;
 
     public void start() {
-        startingRowCount = getRows().size();
+        startingRows = getRows();
     }
 
     public List<Row> stop() {
         List<Row> rows = getRows();
-        return rows.subList(startingRowCount, rows.size());
+        rows.removeAll(startingRows);
+        return rows;
     }
 
     private List<Row> getRows() {
         Map<DataTable<?>, List<?>> dataTables = ctx.getMessage("org.openrewrite.dataTables", emptyMap());
         // TODO because two DataTable of the same type can be created
-        List<Row> rows = new ArrayList<>();
+        List<Row> rows = new LinkedList<>();
         for (Map.Entry<DataTable<?>, List<?>> dataTableEntry : dataTables.entrySet()) {
             if (dataTableEntry.getKey().getClass().equals(dataTable.getClass())) {
                 //noinspection unchecked
