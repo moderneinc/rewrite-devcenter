@@ -31,8 +31,8 @@ recipeList:
       version: 3.5.0
       upgradeRecipe: io.moderne.java.spring.boot3.UpgradeSpringBoot_3_5
   - io.moderne.devcenter.JavaVersionUpgrade:
-      majorVersion: 21
-      upgradeRecipe: org.openrewrite.java.migrate.UpgradeToJava21
+      majorVersion: 25
+      upgradeRecipe: org.openrewrite.java.migrate.UpgradeToJava25
   - io.moderne.devcenter.JUnitJupiterUpgrade:
       upgradeRecipe: org.openrewrite.java.testing.junit5.JUnit4to5Migration
   - io.moderne.devcenter.SecurityStarter

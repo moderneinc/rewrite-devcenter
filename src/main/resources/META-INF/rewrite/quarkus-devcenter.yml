@@ -36,8 +36,8 @@ recipeList:
       version: 3.26.x
       upgradeRecipe: io.moderne.devcenter.UpgradeQuarkusUniverseBom
   - io.moderne.devcenter.JavaVersionUpgrade:
-      majorVersion: 21
-      upgradeRecipe: org.openrewrite.java.migrate.UpgradeToJava21
+      majorVersion: 25
+      upgradeRecipe: org.openrewrite.java.migrate.UpgradeToJava25
   - io.moderne.devcenter.SecurityStarter
 ---
 type: specs.openrewrite.org/v1beta/recipe
