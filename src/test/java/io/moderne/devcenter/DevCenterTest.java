@@ -22,6 +22,7 @@ import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.Arguments;
 import org.junit.jupiter.params.provider.MethodSource;
+import org.openrewrite.DocumentExample;
 import org.openrewrite.Recipe;
 import org.openrewrite.config.Environment;
 import org.openrewrite.config.YamlResourceLoader;
@@ -246,6 +247,7 @@ class DevCenterTest implements RewriteTest {
         );
     }
 
+    @DocumentExample
     @Test
     void devcenterWithMultipleLibraryUpgradeRecipesHasCorrectData() {
         @Language("yaml") String recipe = """
