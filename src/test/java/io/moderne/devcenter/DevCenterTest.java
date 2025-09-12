@@ -162,7 +162,7 @@ class DevCenterTest implements RewriteTest {
             .dataTable(UpgradesAndMigrations.Row.class, rows ->
               assertThat(rows).containsExactlyInAnyOrder(
                 new UpgradesAndMigrations.Row(
-                  "Move to Java 21", Java8Plus.ordinal(), Java8Plus.getName(), "8"),
+                  "Move to Java 25", Java8Plus.ordinal(), Java8Plus.getName(), "8"),
                 new UpgradesAndMigrations.Row("Move to JUnit 5",
                   JUnit4.ordinal(), "JUnit 4", "JUnit 4")
               )),

@@ -73,7 +73,9 @@ public class JavaVersionUpgrade extends UpgradeMigrationCard {
                     Measure measure = Measure.Completed;
                     int actualVersion = javaVersion.getMajorVersion();
                     if (actualVersion < majorVersion) {
-                        if (actualVersion >= 21) {
+                        if (actualVersion >= 25) {
+                            measure = Measure.Java25Plus;
+                        } else if (actualVersion >= 21) {
                             measure = Measure.Java21Plus;
                         } else if (actualVersion >= 17) {
                             measure = Measure.Java17Plus;
@@ -114,6 +116,7 @@ public class JavaVersionUpgrade extends UpgradeMigrationCard {
         Java11Plus("Java 11+", "Java 11 and later", 11),
         Java17Plus("Java 17+", "Java 17 and later", 17),
         Java21Plus("Java 21+", "Java 21 and later", 21),
+        Java25Plus("Java 25+", "Java 25 and later", 25),
         Completed("Completed", "The upgrade to the desired Java version is already complete.", 0);
 
         private final @Language("markdown") String name;
