@@ -30,7 +30,7 @@ import static io.moderne.devcenter.SemverMeasure.Minor;
 import static java.util.Collections.emptyMap;
 import static org.assertj.core.api.Assertions.assertThat;
 
-public class UpgradesAndMigrationsTest {
+class UpgradesAndMigrationsTest {
     ExecutionContext ctx;
     UpgradesAndMigrations um;
 

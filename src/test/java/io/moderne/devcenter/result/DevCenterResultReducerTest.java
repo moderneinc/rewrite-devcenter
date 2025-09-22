@@ -31,7 +31,7 @@ import static java.util.Objects.requireNonNull;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.fail;
 
-public class DevCenterResultReducerTest {
+class DevCenterResultReducerTest {
     Environment environment = Environment.builder()
       .scanRuntimeClasspath("org.openrewrite")
       .scanYamlResources()

@@ -79,7 +79,7 @@ class DevCenterTest implements RewriteTest {
 
     @SuppressWarnings("DataFlowIssue")
     @Test
-    void valid() throws DevCenterValidationException {
+    void valid() throws Exception {
         DevCenter devCenter = new DevCenter(starterDevCenter);
         devCenter.validate();
 
@@ -95,7 +95,7 @@ class DevCenterTest implements RewriteTest {
     }
 
     @Test
-    void upgradeDoesntRequireFix() throws DevCenterValidationException {
+    void upgradeDoesntRequireFix() throws Exception {
         //language=yaml
         String recipe = """
           type: specs.openrewrite.org/v1beta/recipe
@@ -116,7 +116,7 @@ class DevCenterTest implements RewriteTest {
     }
 
     @Test
-    void validateStandAloneDevCenterRecipe() throws DevCenterValidationException {
+    void validateStandAloneDevCenterRecipe() throws Exception {
         DevCenter devCenter = new DevCenter(starterSecurity);
         devCenter.validate();
     }
