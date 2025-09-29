@@ -31,7 +31,7 @@ import static org.openrewrite.java.Assertions.java;
 class JUnitJupiterUpgradeTest implements RewriteTest {
 
     //language=java
-    SourceSpecs junit4 = java(
+    SourceSpecs junit4Source = java(
       """
         import org.junit.Test;
         class TestWith4 {
@@ -51,7 +51,7 @@ class JUnitJupiterUpgradeTest implements RewriteTest {
     );
 
     //language=java
-    SourceSpecs junit5 = java(
+    SourceSpecs junit5Source = java(
       """
         import org.junit.jupiter.api.Test;
         class TestWith5 {
@@ -78,33 +78,37 @@ class JUnitJupiterUpgradeTest implements RewriteTest {
     @Test
     void junit4() {
         rewriteRun(
-          assertUpgradeStatus(JUnit4, "JUnit 4", "JUnit 4"),
-          junit4
+          assertUpgradeStatus(JUnit4, "JUnit 4"),
+          junit4Source
         );
     }
 
     @Test
     void junit5() {
         rewriteRun(
-          assertUpgradeStatus(Completed, Completed.name(), "JUnit 5"),
-          junit5
+          assertUpgradeStatus(Completed, "JUnit 5"),
+          junit5Source
         );
     }
 
     @Test
     void bothJUnit4And5() {
         rewriteRun(
-          assertUpgradeStatus(JUnit4, "JUnit 4", "JUnit 4"),
-          junit4,
-          junit5
+          assertUpgradeStatus(JUnit4, "JUnit 4"),
+          junit4Source,
+          junit5Source
         );
     }
 
-    private static Consumer<RecipeSpec> assertUpgradeStatus(JUnitJupiterUpgrade.Measure JUnit4, String measureName, String dependencyVersion) {
+    private static Consumer<RecipeSpec> assertUpgradeStatus(JUnitJupiterUpgrade.Measure measure, String dependencyVersion) {
         return spec -> spec.dataTable(UpgradesAndMigrations.Row.class, rows ->
-          assertThat(rows).containsExactly(
-            new UpgradesAndMigrations.Row("Move to JUnit 5",
-              JUnit4.ordinal(), measureName, dependencyVersion)
-          ));
+          assertThat(rows)
+            .containsExactly(
+              new UpgradesAndMigrations.Row(
+                "Move to JUnit 5",
+                measure.ordinal(),
+                measure.getName(),
+                dependencyVersion)
+            ));
     }
 }
