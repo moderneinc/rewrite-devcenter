@@ -67,19 +67,14 @@ public class JUnitJupiterUpgrade extends UpgradeMigrationCard {
                         .getVisitor().visitNonNull(j2, ctx);
                 if (tree != j3) {
                     Optional<JavaSourceSet> first = tree.getMarkers().findFirst(JavaSourceSet.class);
-                    if (first.isPresent()) {
-                        Set<String> gavs = first.get().getGavToTypes().keySet();
-                        if (gavs.stream().anyMatch(gav -> gav.startsWith("org.junit.jupiter:junit-jupiter-api:5"))) {
-                            upgradesAndMigrations.insertRow(ctx, JUnitJupiterUpgrade.this, Measure.JUnit5, "JUnit 5");
-                        } else if (gavs.stream().anyMatch(gav -> gav.startsWith("org.junit.jupiter:junit-jupiter-api:6"))) {
-                            upgradesAndMigrations.insertRow(ctx, JUnitJupiterUpgrade.this, Measure.Completed, "JUnit 6");
-                        }
-                    } else {
-                        // Can't tell what version of JUnit is on the classpath, but we found JUnit 5 annotations
-                        upgradesAndMigrations.insertRow(ctx, JUnitJupiterUpgrade.this, Measure.JUnit5, "JUnit 5");
+                    if (first.isPresent() && first.get().getGavToTypes().keySet().stream()
+                            .anyMatch(gav -> gav.startsWith("org.junit.jupiter:junit-jupiter-api:6"))) {
+                        upgradesAndMigrations.insertRow(ctx, JUnitJupiterUpgrade.this, Measure.Completed, "JUnit 6");
+                        return j3;
                     }
+                    // Can't tell what version of JUnit is on the classpath, but we found JUnit 5 annotations
+                    upgradesAndMigrations.insertRow(ctx, JUnitJupiterUpgrade.this, Measure.JUnit5, "JUnit 5");
                 }
-
                 return j3;
             }
         };

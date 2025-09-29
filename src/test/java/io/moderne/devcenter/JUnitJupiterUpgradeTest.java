@@ -28,8 +28,7 @@ import java.util.function.Consumer;
 
 import static io.moderne.devcenter.JUnitJupiterUpgrade.Measure.*;
 import static org.assertj.core.api.Assertions.assertThat;
-import static org.openrewrite.java.Assertions.*;
-import static org.openrewrite.maven.Assertions.pomXml;
+import static org.openrewrite.java.Assertions.java;
 
 class JUnitJupiterUpgradeTest implements RewriteTest {
 
@@ -74,26 +73,25 @@ class JUnitJupiterUpgradeTest implements RewriteTest {
     );
 
     //language=java
-    SourceSpecs junit6Source =
-      java(
-        """
-          import org.junit.jupiter.api.Test;
-          class TestWith5 {
-            @Test
-            void test() {
-            }
+    SourceSpecs junit6Source = java(
+      """
+        import org.junit.jupiter.api.Test;
+        class TestWith6 {
+          @Test
+          void test() {
           }
-          """,
-        """
-          import org.junit.jupiter.api.Test;
-          class TestWith5 {
-            /*~~>*/@Test
-            void test() {
-            }
+        }
+        """,
+      """
+        import org.junit.jupiter.api.Test;
+        class TestWith6 {
+          /*~~>*/@Test
+          void test() {
           }
-          """,
-        spec -> spec.markers(
-          JavaSourceSet.build("test", JavaParser.dependenciesFromResources(new InMemoryExecutionContext(), "junit-jupiter-api"))));
+        }
+        """,
+      spec -> spec.markers(JavaSourceSet.build("test",
+        JavaParser.dependenciesFromResources(new InMemoryExecutionContext(), "junit-jupiter-api"))));
 
     @Override
     public void defaults(RecipeSpec spec) {
@@ -120,28 +118,7 @@ class JUnitJupiterUpgradeTest implements RewriteTest {
     void junit6() {
         rewriteRun(
           assertUpgradeStatus(Completed, "JUnit 6"),
-          mavenProject(
-            "project",
-            srcTestJava(junit6Source),
-            //language=xml
-            pomXml(
-              """
-                <project>
-                    <groupId>com.example</groupId>
-                    <artifactId>demo</artifactId>
-                    <version>1.0-SNAPSHOT</version>
-                    <dependencies>
-                        <dependency>
-                            <groupId>org.junit.jupiter</groupId>
-                            <artifactId>junit-jupiter-api</artifactId>
-                            <version>6.0.0-RC3</version>
-                            <scope>test</scope>
-                        </dependency>
-                    </dependencies>
-                </project>
-                """
-            )
-          )
+          junit6Source
         );
     }
 
