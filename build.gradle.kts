@@ -6,6 +6,10 @@ plugins {
 group = "io.moderne.recipe"
 description = "Rewrite DevCenter integration."
 
+recipeDependencies {
+    testParserClasspath("org.junit.jupiter:junit-jupiter-api:6.0.0-RC3")
+}
+
 val rewriteVersion = rewriteRecipe.rewriteVersion.get()
 dependencies {
     implementation(platform("io.moderne.recipe:moderne-recipe-bom:latest.release"))

@@ -17,16 +17,19 @@ package io.moderne.devcenter;
 
 import io.moderne.devcenter.table.UpgradesAndMigrations;
 import org.junit.jupiter.api.Test;
+import org.openrewrite.InMemoryExecutionContext;
+import org.openrewrite.java.JavaParser;
+import org.openrewrite.java.marker.JavaSourceSet;
 import org.openrewrite.test.RecipeSpec;
 import org.openrewrite.test.RewriteTest;
 import org.openrewrite.test.SourceSpecs;
 
 import java.util.function.Consumer;
 
-import static io.moderne.devcenter.JUnitJupiterUpgrade.Measure.Completed;
-import static io.moderne.devcenter.JUnitJupiterUpgrade.Measure.JUnit4;
+import static io.moderne.devcenter.JUnitJupiterUpgrade.Measure.*;
 import static org.assertj.core.api.Assertions.assertThat;
-import static org.openrewrite.java.Assertions.java;
+import static org.openrewrite.java.Assertions.*;
+import static org.openrewrite.maven.Assertions.pomXml;
 
 class JUnitJupiterUpgradeTest implements RewriteTest {
 
@@ -70,6 +73,28 @@ class JUnitJupiterUpgradeTest implements RewriteTest {
         """
     );
 
+    //language=java
+    SourceSpecs junit6Source =
+      java(
+        """
+          import org.junit.jupiter.api.Test;
+          class TestWith5 {
+            @Test
+            void test() {
+            }
+          }
+          """,
+        """
+          import org.junit.jupiter.api.Test;
+          class TestWith5 {
+            /*~~>*/@Test
+            void test() {
+            }
+          }
+          """,
+        spec -> spec.markers(
+          JavaSourceSet.build("test", JavaParser.dependenciesFromResources(new InMemoryExecutionContext(), "junit-jupiter-api"))));
+
     @Override
     public void defaults(RecipeSpec spec) {
         spec.recipe(new JUnitJupiterUpgrade());
@@ -86,8 +111,37 @@ class JUnitJupiterUpgradeTest implements RewriteTest {
     @Test
     void junit5() {
         rewriteRun(
-          assertUpgradeStatus(Completed, "JUnit 5"),
+          assertUpgradeStatus(JUnit5, "JUnit 5"),
           junit5Source
+        );
+    }
+
+    @Test
+    void junit6() {
+        rewriteRun(
+          assertUpgradeStatus(Completed, "JUnit 6"),
+          mavenProject(
+            "project",
+            srcTestJava(junit6Source),
+            //language=xml
+            pomXml(
+              """
+                <project>
+                    <groupId>com.example</groupId>
+                    <artifactId>demo</artifactId>
+                    <version>1.0-SNAPSHOT</version>
+                    <dependencies>
+                        <dependency>
+                            <groupId>org.junit.jupiter</groupId>
+                            <artifactId>junit-jupiter-api</artifactId>
+                            <version>6.0.0-RC3</version>
+                            <scope>test</scope>
+                        </dependency>
+                    </dependencies>
+                </project>
+                """
+            )
+          )
         );
     }
 
