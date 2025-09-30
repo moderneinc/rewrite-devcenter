@@ -17,14 +17,16 @@ package io.moderne.devcenter;
 
 import io.moderne.devcenter.table.UpgradesAndMigrations;
 import org.junit.jupiter.api.Test;
+import org.openrewrite.InMemoryExecutionContext;
+import org.openrewrite.java.JavaParser;
+import org.openrewrite.java.marker.JavaSourceSet;
 import org.openrewrite.test.RecipeSpec;
 import org.openrewrite.test.RewriteTest;
 import org.openrewrite.test.SourceSpecs;
 
 import java.util.function.Consumer;
 
-import static io.moderne.devcenter.JUnitJupiterUpgrade.Measure.Completed;
-import static io.moderne.devcenter.JUnitJupiterUpgrade.Measure.JUnit4;
+import static io.moderne.devcenter.JUnitJupiterUpgrade.Measure.*;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.openrewrite.java.Assertions.java;
 
@@ -70,6 +72,27 @@ class JUnitJupiterUpgradeTest implements RewriteTest {
         """
     );
 
+    //language=java
+    SourceSpecs junit6Source = java(
+      """
+        import org.junit.jupiter.api.Test;
+        class TestWith6 {
+          @Test
+          void test() {
+          }
+        }
+        """,
+      """
+        import org.junit.jupiter.api.Test;
+        class TestWith6 {
+          /*~~>*/@Test
+          void test() {
+          }
+        }
+        """,
+      spec -> spec.markers(JavaSourceSet.build("test",
+        JavaParser.dependenciesFromResources(new InMemoryExecutionContext(), "junit-jupiter-api"))));
+
     @Override
     public void defaults(RecipeSpec spec) {
         spec.recipe(new JUnitJupiterUpgrade());
@@ -86,8 +109,16 @@ class JUnitJupiterUpgradeTest implements RewriteTest {
     @Test
     void junit5() {
         rewriteRun(
-          assertUpgradeStatus(Completed, "JUnit 5"),
+          assertUpgradeStatus(JUnit5, "JUnit 5"),
           junit5Source
+        );
+    }
+
+    @Test
+    void junit6() {
+        rewriteRun(
+          assertUpgradeStatus(Completed, "JUnit 6"),
+          junit6Source
         );
     }
 
