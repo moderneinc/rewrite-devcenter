@@ -136,7 +136,7 @@ class JUnitJupiterUpgradeTest implements RewriteTest {
           assertThat(rows)
             .containsExactly(
               new UpgradesAndMigrations.Row(
-                "Move to JUnit 5",
+                "Move to JUnit 6",
                 measure.ordinal(),
                 measure.getName(),
                 dependencyVersion)

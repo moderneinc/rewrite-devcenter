@@ -163,7 +163,7 @@ class DevCenterTest implements RewriteTest {
               assertThat(rows).containsExactlyInAnyOrder(
                 new UpgradesAndMigrations.Row(
                   "Move to Java 25", Java8Plus.ordinal(), Java8Plus.getName(), "8"),
-                new UpgradesAndMigrations.Row("Move to JUnit 5",
+                new UpgradesAndMigrations.Row("Move to JUnit 6",
                   JUnit4.ordinal(), "JUnit 4", "JUnit 4")
               )),
           version(
