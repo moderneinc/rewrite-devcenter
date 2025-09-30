@@ -34,7 +34,7 @@ recipeList:
       majorVersion: 25
       upgradeRecipe: org.openrewrite.java.migrate.UpgradeToJava25
   - io.moderne.devcenter.JUnitJupiterUpgrade:
-      upgradeRecipe: org.openrewrite.java.testing.junit5.JUnit4to5Migration
+      upgradeRecipe: org.openrewrite.java.testing.junit6.JUnit5to6Migration
   - io.moderne.devcenter.SecurityStarter
 ---
 type: specs.openrewrite.org/v1beta/recipe

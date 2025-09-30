@@ -42,7 +42,7 @@ public class JUnitJupiterUpgrade extends UpgradeMigrationCard {
 
     @Override
     public String getDisplayName() {
-        return "Move to JUnit 5";
+        return "Move to JUnit 6";
     }
 
     @Override
