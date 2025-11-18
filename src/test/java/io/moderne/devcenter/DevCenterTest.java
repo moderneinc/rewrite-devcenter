@@ -257,7 +257,7 @@ class DevCenterTest implements RewriteTest {
           description: Upgrade library versions.
           recipeList:
             - io.moderne.devcenter.LibraryUpgrade:
-                cardName: Move to Spring Boot 3.5.0
+                cardName: Move to Spring Boot 4.0
                 groupIdPattern: org.springframework.boot
                 artifactIdPattern: '*'
                 version: 3.5.0
@@ -275,7 +275,7 @@ class DevCenterTest implements RewriteTest {
               .afterRecipe(after -> assertThat(after.getDataTableRows("io.moderne.devcenter.table.UpgradesAndMigrations"))
                 .extracting("card", "ordinal", "value", "currentMinimumVersion")
                 .containsExactly(
-                  tuple("Move to Spring Boot 3.5.0", 0, "Major", "2.7.18"),
+                  tuple("Move to Spring Boot 4.0", 0, "Major", "2.7.18"),
                   tuple("Move to commons collections 3.2.2", 0, "Major", "2.0")
                 )),
           //language=Groovy
