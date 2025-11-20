@@ -34,7 +34,7 @@ import java.util.List;
 public class LibraryUpgrade extends UpgradeMigrationCard {
     @Option(displayName = "Card name",
             description = "The display name of the DevCenter card",
-            example = "Move to Spring Boot 3.5.0")
+            example = "Move to Spring Boot 4.0")
     String cardName;
 
     @Option(displayName = "Group pattern",

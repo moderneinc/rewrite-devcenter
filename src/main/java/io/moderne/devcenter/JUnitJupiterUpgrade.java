@@ -30,7 +30,6 @@ import org.openrewrite.java.tree.J;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Optional;
-import java.util.Set;
 
 public class JUnitJupiterUpgrade extends UpgradeMigrationCard {
     @Option(displayName = "Upgrade recipe",

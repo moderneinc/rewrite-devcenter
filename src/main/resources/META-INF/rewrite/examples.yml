@@ -15,7 +15,7 @@
 type: specs.openrewrite.org/v1beta/example
 recipeName: io.moderne.devcenter.SecurityStarter
 examples:
-- description: ''
+- description: '`ReportAsSecurityIssuesTest#reportSecret`'
   sources:
   - before: |
       import java.io.File;

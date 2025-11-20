@@ -26,7 +26,9 @@ import org.openrewrite.test.SourceSpecs;
 
 import java.util.function.Consumer;
 
-import static io.moderne.devcenter.JUnitJupiterUpgrade.Measure.*;
+import static io.moderne.devcenter.JUnitJupiterUpgrade.Measure.Completed;
+import static io.moderne.devcenter.JUnitJupiterUpgrade.Measure.JUnit4;
+import static io.moderne.devcenter.JUnitJupiterUpgrade.Measure.JUnit5;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.openrewrite.java.Assertions.java;
 
