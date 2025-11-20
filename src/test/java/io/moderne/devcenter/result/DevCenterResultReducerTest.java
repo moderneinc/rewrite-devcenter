@@ -86,7 +86,7 @@ class DevCenterResultReducerTest {
 
         assertThat(reducer.reduce(root).getResultsByCard().keySet())
           .map(DevCenter.Card::getName)
-          .containsExactly("Move to Spring Boot 3.5.0");
+          .containsExactly("Move to Spring Boot 4.0");
     }
 
     private void hasSecurityResults(DevCenterResult result) {
@@ -97,7 +97,7 @@ class DevCenterResultReducerTest {
     }
 
     private void hasSpringBoot35Results(DevCenterResult result) {
-        result.forEach(devCenter.getCard("Move to Spring Boot 3.5.0"), (measure, count) ->
+        result.forEach(devCenter.getCard("Move to Spring Boot 4.0"), (measure, count) ->
             assertThat(count)
               .describedAs(measure.getName())
               .isEqualTo((int) switch (measure) {
