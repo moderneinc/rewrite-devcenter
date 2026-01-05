@@ -59,6 +59,14 @@ class UpgradesAndMigrationsTest {
         assertThat(rows()).containsExactly(row(Minor, "2.2.0"));
     }
 
+    @Test
+    void nullCurrentMinimumVersionDoesNotCauseNpe() {
+        um.insertRow(ctx, row(Minor, null));
+        um.insertRow(ctx, row(Minor, "2.2.0"));
+
+        assertThat(rows()).containsExactly(row(Minor, "2.2.0"));
+    }
+
     private List<UpgradesAndMigrations.Row> rows() {
         return ctx.<Map<DataTable<?>, List<UpgradesAndMigrations.Row>>>getMessage(
           "org.openrewrite.dataTables", emptyMap()).get(um);

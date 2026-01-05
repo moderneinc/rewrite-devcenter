@@ -27,6 +27,7 @@ import org.openrewrite.semver.LatestRelease;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
+import java.util.Objects;
 import java.util.concurrent.ConcurrentHashMap;
 
 import static org.openrewrite.ExecutionContext.CURRENT_CYCLE;
@@ -62,8 +63,8 @@ public class UpgradesAndMigrations extends DataTable<UpgradesAndMigrations.Row> 
                         .min()
                         .orElse(Integer.MAX_VALUE);
                 if (row.getOrdinal() <= minOrdinal) {
-                    String currentMinVersion = rows.stream().map(Row::getCurrentMinimumVersion).findFirst()
-                            .orElse(null);
+                    String currentMinVersion = rows.stream().map(Row::getCurrentMinimumVersion)
+                            .filter(Objects::nonNull).findFirst().orElse(null);
                     if (row.getOrdinal() == minOrdinal && !row.getCurrentMinimumVersion().equals(currentMinVersion) &&
                         new LatestRelease(null).compare(null,
                                 currentMinVersion == null ? "999" : currentMinVersion,
