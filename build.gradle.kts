@@ -7,7 +7,8 @@ group = "io.moderne.recipe"
 description = "Rewrite DevCenter integration."
 
 recipeDependencies {
-    testParserClasspath("org.junit.jupiter:junit-jupiter-api:6.0.0-RC3")
+    testParserClasspath("junit:junit:4.13.2")
+    testParserClasspath("org.junit.jupiter:junit-jupiter-api:6.0.2")
 }
 
 val rewriteVersion = rewriteRecipe.rewriteVersion.get()
