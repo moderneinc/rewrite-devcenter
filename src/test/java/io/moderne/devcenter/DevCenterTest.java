@@ -222,7 +222,7 @@ class DevCenterTest implements RewriteTest {
         };
 
         Class<?> recipeClass = isolatedClassLoader.loadClass("io.moderne.devcenter.JavaVersionUpgrade");
-        Recipe recipe = (Recipe) recipeClass.getConstructor(int.class, String.class)
+        var recipe = (Recipe) recipeClass.getConstructor(int.class, String.class)
           .newInstance(21, "org.openrewrite.java.migrate.Java21");
 
         return Stream.of(
