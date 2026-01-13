@@ -48,20 +48,14 @@ public class JavaVersionUpgrade extends UpgradeMigrationCard {
     @Nullable
     String upgradeRecipe;
 
-    @Override
-    public String getDisplayName() {
-        return "Move to a later Java version";
-    }
+    String displayName = "Move to a later Java version";
 
     @Override
     public String getInstanceName() {
         return "Move to Java " + majorVersion;
     }
 
-    @Override
-    public String getDescription() {
-        return "Determine the current state of a repository relative to a desired Java version upgrade.";
-    }
+    String description = "Determine the current state of a repository relative to a desired Java version upgrade.";
 
     @Override
     public TreeVisitor<?, ExecutionContext> getVisitor() {

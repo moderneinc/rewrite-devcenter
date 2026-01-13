@@ -37,21 +37,15 @@ public class ReportAsSecurityIssues extends Recipe {
     @Nullable
     String fixRecipe;
 
-    @Override
-    public String getDisplayName() {
-        return "Report as security issues";
-    }
+    String displayName = "Report as security issues";
 
     @Override
     public String getInstanceName() {
         return "Security DevCenter";
     }
 
-    @Override
-    public String getDescription() {
-        return "Look for results produced by recipes in the same recipe list that this recipe is part of, " +
+    String description = "Look for results produced by recipes in the same recipe list that this recipe is part of, " +
                "and report them as security issues in DevCenter.";
-    }
 
     @Override
     public TreeVisitor<?, ExecutionContext> getVisitor() {

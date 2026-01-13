@@ -60,20 +60,14 @@ public class LibraryUpgrade extends UpgradeMigrationCard {
     @Nullable
     String upgradeRecipe;
 
-    @Override
-    public String getDisplayName() {
-        return "Library upgrade";
-    }
+    String displayName = "Library upgrade";
 
     @Override
     public String getInstanceName() {
         return getCardName();
     }
 
-    @Override
-    public String getDescription() {
-        return "Determine the current state of a repository relative to a desired library upgrade.";
-    }
+    String description = "Determine the current state of a repository relative to a desired library upgrade.";
 
     @Override
     public TreeVisitor<?, ExecutionContext> getVisitor() {

@@ -59,20 +59,14 @@ public class ParentPomUpgrade extends UpgradeMigrationCard {
     @Nullable
     String upgradeRecipe;
 
-    @Override
-    public String getDisplayName() {
-        return "Parent POM upgrade";
-    }
+    String displayName = "Parent POM upgrade";
 
     @Override
     public String getInstanceName() {
         return getCardName();
     }
 
-    @Override
-    public String getDescription() {
-        return "Determine the current state of a repository relative to a desired parent POM upgrade.";
-    }
+    String description = "Determine the current state of a repository relative to a desired parent POM upgrade.";
 
     @Override
     public TreeVisitor<?, ExecutionContext> getVisitor() {
