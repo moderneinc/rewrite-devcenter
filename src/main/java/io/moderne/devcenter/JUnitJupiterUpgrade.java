@@ -39,15 +39,11 @@ public class JUnitJupiterUpgrade extends UpgradeMigrationCard {
     @Nullable
     String upgradeRecipe;
 
-    @Override
-    public String getDisplayName() {
-        return "Move to JUnit 6";
-    }
+    @Getter
+    final String displayName = "Move to JUnit 6";
 
-    @Override
-    public String getDescription() {
-        return "Move to JUnit Jupiter.";
-    }
+    @Getter
+    final String description = "Move to JUnit Jupiter.";
 
     @Override
     public TreeVisitor<?, ExecutionContext> getVisitor() {
