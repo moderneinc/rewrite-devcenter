@@ -32,9 +32,14 @@ import java.util.concurrent.ConcurrentHashMap;
 
 import static org.openrewrite.ExecutionContext.CURRENT_CYCLE;
 
+
 public class UpgradesAndMigrations extends DataTable<UpgradesAndMigrations.Row> {
     @Language("markdown")
     public static final String DISPLAY_NAME = "Upgrades and migrations";
+
+    public UpgradesAndMigrations() {
+        super(DISPLAY_NAME, "Progress towards organizational objectives on library or language migrations and upgrades.");
+    }
 
     public <T extends UpgradeMigrationCard> UpgradesAndMigrations(T recipe) {
         super(recipe, DISPLAY_NAME, "Progress towards organizational objectives on library or language migrations and upgrades.");

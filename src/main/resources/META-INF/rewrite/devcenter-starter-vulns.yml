@@ -1,0 +1,46 @@
+#
+# Copyright 2025 the original author or authors.
+# <p>
+# Licensed under the Moderne Source Available License (the "License");
+# you may not use this file except in compliance with the License.
+# You may obtain a copy of the License at
+# <p>
+# https://docs.moderne.io/licensing/moderne-source-available-license
+# <p>
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an "AS IS" BASIS,
+# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+# See the License for the specific language governing permissions and
+# limitations under the License.
+#
+
+type: specs.openrewrite.org/v1beta/recipe
+name: io.moderne.devcenter.DevCenterStarterVulns
+displayName: DevCenter
+description: >-
+  This is a default DevCenter configuration that can be used as a starting point for your own DevCenter configuration.
+  It includes a combination of upgrades, migrations, and security fixes.
+  You can customize this configuration to suit your needs.
+  
+  For more information on how to customize your DevCenter configuration, see the [DevCenter documentation](https://docs.moderne.io/administrator-documentation/moderne-platform/how-to-guides/recipe-based-devcenter-beta/).
+recipeList:
+  - io.moderne.devcenter.DependencyVulnerabilityCheck:
+      measure: Severity
+  - io.moderne.devcenter.DependencyVulnerabilityCheck:
+      measure: UpgradeDelta
+  - io.moderne.devcenter.DependencyVulnerabilityCheck:
+      measure: RiskScore
+  - io.moderne.devcenter.SecurityStarterVulns
+---
+type: specs.openrewrite.org/v1beta/recipe
+name: io.moderne.devcenter.SecurityStarterVulns
+displayName: OWASP top ten
+description: >-
+  This recipe is a starter card to reveal common OWASP Top 10 issues in your source code.
+  You can customize this configuration to suit your needs.
+  
+  For more information on how to customize your DevCenter configuration, see the [DevCenter documentation](https://docs.moderne.io/administrator-documentation/moderne-platform/how-to-guides/recipe-based-devcenter-beta/).
+recipeList:
+  - io.moderne.devcenter.DependencyVulnerabilityCheck:
+      measure: TopTen
+  - io.moderne.devcenter.ReportAsSecurityIssues
