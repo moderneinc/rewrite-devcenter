@@ -37,7 +37,7 @@ public class DataTableRowWatcher<Row> {
 
     public List<Row> stop() {
         List<Row> rows = getRows();
-        rows.removeAll(startingRows);
+        rows.removeIf(r -> startingRows.stream().anyMatch(sr -> r == sr));
         return rows;
     }
 
