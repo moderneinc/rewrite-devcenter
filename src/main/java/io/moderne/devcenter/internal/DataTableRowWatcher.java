@@ -22,13 +22,14 @@ import org.openrewrite.ExecutionContext;
 import java.util.*;
 
 import static java.util.Collections.emptyMap;
+import static java.util.Collections.newSetFromMap;
 
 @RequiredArgsConstructor
 public class DataTableRowWatcher<Row> {
     private final DataTable<Row> dataTable;
     private final ExecutionContext ctx;
 
-    private final Set<DataTable<?>> seen = Collections.newSetFromMap(new IdentityHashMap<>());
+    private final Set<DataTable<?>> seen = newSetFromMap(new IdentityHashMap<>());
 
     public void start() {
         Map<DataTable<?>, List<?>> dataTables = ctx.getMessage("org.openrewrite.dataTables", emptyMap());
