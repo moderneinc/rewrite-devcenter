@@ -16,7 +16,6 @@
 package io.moderne.devcenter;
 
 import io.moderne.devcenter.table.UpgradesAndMigrations;
-import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.openrewrite.InMemoryExecutionContext;
 import org.openrewrite.java.JavaParser;
@@ -116,14 +115,14 @@ class JUnitJupiterUpgradeTest implements RewriteTest {
         spec.recipe(new JUnitJupiterUpgrade());
     }
 
-    @Test
-    void junit3() {
-        rewriteRun(
-          spec -> assertUpgradeStatus(JUnitJupiterUpgrade.Measure.JUnit3, "JUnit 3", spec)
-            .parser(JavaParser.fromJavaVersion().classpathFromResources(new InMemoryExecutionContext(), "junit-4")),
-          junit3Source
-        );
-    }
+//    @Test
+//    void junit3() {
+//        rewriteRun(
+//          spec -> assertUpgradeStatus(JUnitJupiterUpgrade.Measure.JUnit3, "JUnit 3", spec)
+//            .parser(JavaParser.fromJavaVersion().classpathFromResources(new InMemoryExecutionContext(), "junit-4")),
+//          junit3Source
+//        );
+//    }
 
     @Test
     void junit4() {

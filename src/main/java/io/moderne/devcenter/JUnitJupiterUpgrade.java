@@ -53,20 +53,18 @@ public class JUnitJupiterUpgrade extends UpgradeMigrationCard {
             public J preVisit(J tree, ExecutionContext ctx) {
                 stopAfterPreVisit();
 
-                J j1 = (J) new FindTypes("junit.framework.TestCase", true)
-                        .getVisitor().visitNonNull(tree, ctx);
-                if (tree != j1) {
-                    upgradesAndMigrations.insertRow(ctx, JUnitJupiterUpgrade.this, Measure.JUnit3, "JUnit 3");
-                }
+                J j1 = tree;
+//                = (J) new FindTypes("junit.framework.TestCase", true).getVisitor().visitNonNull(tree, ctx);
+//                if (tree != j1) {
+//                    upgradesAndMigrations.insertRow(ctx, JUnitJupiterUpgrade.this, Measure.JUnit3, "JUnit 3");
+//                }
 
-                J j2 = (J) new FindAnnotations("@org.junit.Test", true)
-                        .getVisitor().visitNonNull(j1, ctx);
+                J j2 = (J) new FindAnnotations("@org.junit.Test", true).getVisitor().visitNonNull(j1, ctx);
                 if (tree != j2) {
                     upgradesAndMigrations.insertRow(ctx, JUnitJupiterUpgrade.this, Measure.JUnit4, "JUnit 4");
                 }
 
-                J j3 = (J) new FindAnnotations("@org.junit.jupiter.api.Test", true)
-                        .getVisitor().visitNonNull(j2, ctx);
+                J j3 = (J) new FindAnnotations("@org.junit.jupiter.api.Test", true).getVisitor().visitNonNull(j2, ctx);
                 if (tree != j3) {
                     Optional<JavaSourceSet> first = j3.getMarkers().findFirst(JavaSourceSet.class);
                     if (first.isPresent() && first.get().getGavToTypes().keySet().stream()
@@ -97,7 +95,8 @@ public class JUnitJupiterUpgrade extends UpgradeMigrationCard {
     @RequiredArgsConstructor
     @Getter
     public enum Measure implements DevCenterMeasure {
-        JUnit3("JUnit 3", "On JUnit 3 or less. Specifically looks for `junit.framework.TestCase`."),
+// TODO Can we add JUnit 3 without affecting already stored data?
+//        JUnit3("JUnit 3", "On JUnit 3 or less. Specifically looks for `junit.framework.TestCase`."),
         JUnit4("JUnit 4", "On JUnit 4 or less. Specifically looks for `@org.junit.Test`."),
         JUnit5("JUnit 5", "On JUnit Jupiter 5."),
         Completed("Completed", "On JUnit Jupiter 6.");
