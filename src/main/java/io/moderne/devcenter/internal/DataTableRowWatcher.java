@@ -19,34 +19,34 @@ import lombok.RequiredArgsConstructor;
 import org.openrewrite.DataTable;
 import org.openrewrite.ExecutionContext;
 
-import java.util.LinkedList;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 import static java.util.Collections.emptyMap;
+import static java.util.Collections.newSetFromMap;
 
 @RequiredArgsConstructor
 public class DataTableRowWatcher<Row> {
     private final DataTable<Row> dataTable;
     private final ExecutionContext ctx;
-    private List<Row> startingRows;
+
+    private final Set<DataTable<?>> seen = newSetFromMap(new IdentityHashMap<>());
 
     public void start() {
-        startingRows = getRows();
+        Map<DataTable<?>, List<?>> dataTables = ctx.getMessage("org.openrewrite.dataTables", emptyMap());
+        for (Map.Entry<DataTable<?>, List<?>> dataTableEntry : dataTables.entrySet()) {
+            if (dataTableEntry.getKey().getClass().equals(dataTable.getClass())) {
+                // We only want to process data tables produces in this recipe run; not copies from previous runs
+                seen.add(dataTableEntry.getKey());
+            }
+        }
     }
 
     public List<Row> stop() {
-        List<Row> rows = getRows();
-        rows.removeIf(r -> startingRows.stream().anyMatch(sr -> r == sr));
-        return rows;
-    }
-
-    private List<Row> getRows() {
         Map<DataTable<?>, List<?>> dataTables = ctx.getMessage("org.openrewrite.dataTables", emptyMap());
-        // TODO because two DataTable of the same type can be created
         List<Row> rows = new LinkedList<>();
         for (Map.Entry<DataTable<?>, List<?>> dataTableEntry : dataTables.entrySet()) {
-            if (dataTableEntry.getKey().getClass().equals(dataTable.getClass())) {
+            if (!seen.contains(dataTableEntry.getKey()) &&
+                    dataTableEntry.getKey().getClass().equals(dataTable.getClass())) {
                 //noinspection unchecked
                 rows.addAll((List<Row>) dataTableEntry.getValue());
             }
