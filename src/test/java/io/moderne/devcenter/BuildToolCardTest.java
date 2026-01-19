@@ -43,7 +43,7 @@ class BuildToolCardTest implements RewriteTest {
     @MethodSource("buildTools")
     @ParameterizedTest
     void detectsBuildTool(BuildTool.Type type, String version, int expectedMajorVersion) {
-        BuildToolCard recipe = new BuildToolCard(null);
+        BuildToolCard recipe = new BuildToolCard(null, null);
         rewriteRun(
           spec -> spec
             .recipe(recipe)
@@ -64,21 +64,52 @@ class BuildToolCardTest implements RewriteTest {
     }
 
     @Test
+    void filtersByBuildTool() {
+        BuildToolCard recipe = new BuildToolCard("Gradle", null);
+        rewriteRun(
+          spec -> spec
+            .recipe(recipe)
+            .dataTable(UpgradesAndMigrations.Row.class, rows ->
+              assertThat(rows).containsExactly(
+                new UpgradesAndMigrations.Row(
+                  "Build tool",
+                  8,
+                  "Gradle",
+                  "8.5"
+                )
+              )),
+          java(
+            "class Test {}",
+            spec -> spec.markers(new BuildTool(UUID.randomUUID(), BuildTool.Type.Gradle, "8.5"))
+          )
+        );
+    }
+
+    @Test
     void getMeasuresReturnsAllBuildToolTypes() {
-        BuildToolCard recipe = new BuildToolCard(null);
+        BuildToolCard recipe = new BuildToolCard(null, null);
         assertThat(recipe.getMeasures())
           .hasSameSizeAs(BuildTool.Type.values());
     }
 
     @Test
+    void getMeasuresReturnsOnlyMatchingBuildTool() {
+        BuildToolCard recipe = new BuildToolCard("Gradle", null);
+        assertThat(recipe.getMeasures())
+          .hasSize(1)
+          .first()
+          .isEqualTo(BuildToolCard.Measure.Gradle);
+    }
+
+    @Test
     void noFixRecipe() {
-        BuildToolCard recipe = new BuildToolCard(null);
+        BuildToolCard recipe = new BuildToolCard(null, null);
         assertThat(recipe.getFixRecipeId()).isNull();
     }
 
     @Test
     void argFixRecipe() {
-        BuildToolCard recipe = new BuildToolCard("com.example.Recipe");
+        BuildToolCard recipe = new BuildToolCard(null, "com.example.Recipe");
         assertThat(recipe.getFixRecipeId()).isEqualTo("com.example.Recipe");
     }
 }

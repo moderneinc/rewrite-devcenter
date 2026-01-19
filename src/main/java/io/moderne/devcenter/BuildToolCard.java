@@ -28,7 +28,11 @@ import org.openrewrite.marker.BuildTool;
 import org.openrewrite.semver.Semver;
 
 import java.util.Arrays;
+import java.util.Collections;
 import java.util.List;
+import java.util.stream.Collectors;
+
+import static java.util.Collections.singletonList;
 
 @Value
 @EqualsAndHashCode(callSuper = false)
@@ -37,6 +41,15 @@ public class BuildToolCard extends UpgradeMigrationCard {
     String displayName = "Build tool";
 
     String description = "Identify the build tool used by repositories.";
+
+    @Option(
+            displayName = "Build tool",
+            description = "The build tool to track.",
+            valid = {"Gradle", "Maven", "Bazel", "ModerneCli"},
+            required = false
+    )
+    @Nullable
+    String buildTool;
 
     @Option(
             displayName = "Fix Recipe ID",
@@ -53,15 +66,17 @@ public class BuildToolCard extends UpgradeMigrationCard {
             @Override
             public @Nullable Tree visit(@Nullable Tree tree, ExecutionContext ctx) {
                 if (tree instanceof SourceFile) {
-                    tree.getMarkers().findFirst(BuildTool.class).ifPresent(buildTool -> {
-                        String s = Semver.majorVersion(buildTool.getVersion());
-                        int majorVersion = StringUtils.isNumeric(s) ? Integer.parseInt(s) : 0;
-                        upgradesAndMigrations.insertRow(ctx, new UpgradesAndMigrations.Row(
-                                getInstanceName(),
-                                majorVersion,
-                                buildTool.getType().name(),
-                                buildTool.getVersion()
-                        ));
+                    tree.getMarkers().findFirst(BuildTool.class).ifPresent(bt -> {
+                        if (buildTool == null || bt.getType().name().equalsIgnoreCase(buildTool)) {
+                            String s = Semver.majorVersion(bt.getVersion());
+                            int majorVersion = StringUtils.isNumeric(s) ? Integer.parseInt(s) : 0;
+                            upgradesAndMigrations.insertRow(ctx, new UpgradesAndMigrations.Row(
+                                    getInstanceName(),
+                                    majorVersion,
+                                    bt.getType().name(),
+                                    bt.getVersion()
+                            ));
+                        }
                     });
                 }
                 return tree;
@@ -71,7 +86,10 @@ public class BuildToolCard extends UpgradeMigrationCard {
 
     @Override
     public List<DevCenterMeasure> getMeasures() {
-        return Arrays.asList(Measure.values());
+        if (StringUtils.isBlank(buildTool)) {
+            return Arrays.asList(Measure.values());
+        }
+        return singletonList(Measure.valueOf(buildTool));
     }
 
     @Getter
