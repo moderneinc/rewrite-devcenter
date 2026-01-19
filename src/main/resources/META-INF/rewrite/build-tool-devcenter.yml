@@ -24,9 +24,13 @@ description: >-
 recipeList:
   - io.moderne.devcenter.BuildToolCard:
       buildTool: Gradle
+      fixRecipeId: org.openrewrite.gradle.MigrateToGradle9
   - io.moderne.devcenter.BuildToolCard:
       buildTool: Maven
+      fixRecipeId: org.openrewrite.maven.UpdateMavenWrapper
   - io.moderne.devcenter.BuildToolCard:
       buildTool: Bazel
+      fixRecipeId: org.openrewrite.java.search.HasBuildToolVersion
   - io.moderne.devcenter.BuildToolCard:
       buildTool: ModerneCli
+      fixRecipeId: org.openrewrite.java.search.HasBuildToolVersion
