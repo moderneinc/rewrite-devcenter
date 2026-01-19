@@ -49,7 +49,8 @@ public class UpgradesAndMigrations extends DataTable<UpgradesAndMigrations.Row> 
 
     public <E extends DevCenterMeasure> void insertRow(ExecutionContext ctx,
                                                        UpgradeMigrationCard recipe,
-                                                       E measure, String currentMinimumVersion) {
+                                                       E measure,
+                                                       String currentMinimumVersion) {
         insertRow(ctx, new UpgradesAndMigrations.Row(
                 recipe.getInstanceName(),
                 recipe.ordinal(measure),

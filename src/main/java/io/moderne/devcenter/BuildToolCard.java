@@ -15,7 +15,6 @@
  */
 package io.moderne.devcenter;
 
-import io.moderne.devcenter.table.UpgradesAndMigrations;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
@@ -66,14 +65,11 @@ public class BuildToolCard extends UpgradeMigrationCard {
                 if (tree instanceof SourceFile) {
                     tree.getMarkers().findFirst(BuildTool.class).ifPresent(bt -> {
                         if (buildTool == null || bt.getType().name().equalsIgnoreCase(buildTool)) {
-                            String s = Semver.majorVersion(bt.getVersion());
-                            int majorVersion = StringUtils.isNumeric(s) ? Integer.parseInt(s) : 0;
-                            upgradesAndMigrations.insertRow(ctx, new UpgradesAndMigrations.Row(
-                                    getInstanceName(),
-                                    majorVersion,
-                                    bt.getType().name(),
-                                    bt.getVersion()
-                            ));
+                            upgradesAndMigrations.insertRow(
+                                    ctx,
+                                    BuildToolCard.this,
+                                    Measure.valueOf(bt.getType().name()),
+                                    bt.getVersion());
                         }
                     });
                 }
@@ -94,10 +90,10 @@ public class BuildToolCard extends UpgradeMigrationCard {
     @RequiredArgsConstructor
     public enum Measure implements DevCenterMeasure {
         // Values should match BuildTool.Type enum names
-        Gradle("Gradle", "Uses Gradle as build tool."),
-        Maven("Maven", "Uses Maven as build tool."),
+        ModerneCli("Moderne CLI", "Uses Moderne CLI as build tool."),
         Bazel("Bazel", "Uses Bazel as build tool."),
-        ModerneCli("Moderne CLI", "Uses Moderne CLI as build tool.");
+        Maven("Maven", "Uses Maven as build tool."),
+        Gradle("Gradle", "Uses Gradle as build tool.");
 
         private final @Language("markdown") String name;
         private final @Language("markdown") String description;

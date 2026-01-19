@@ -15,6 +15,7 @@
  */
 package io.moderne.devcenter;
 
+import io.moderne.devcenter.BuildToolCard.Measure;
 import io.moderne.devcenter.table.UpgradesAndMigrations;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
@@ -33,10 +34,10 @@ class BuildToolCardTest implements RewriteTest {
 
     private static Stream<Arguments> buildTools() {
         return Stream.of(
-          Arguments.of(BuildTool.Type.Gradle, "8.5", 8),
-          Arguments.of(BuildTool.Type.Maven, "3.9.6", 3),
-          Arguments.of(BuildTool.Type.Bazel, "7.0.0", 7),
-          Arguments.of(BuildTool.Type.ModerneCli, "3.30.5", 3)
+          Arguments.of(BuildTool.Type.Gradle, "8.5", 3),
+          Arguments.of(BuildTool.Type.Maven, "3.9.6", 2),
+          Arguments.of(BuildTool.Type.Bazel, "7.0.0", 1),
+          Arguments.of(BuildTool.Type.ModerneCli, "3.30.5", 0)
         );
     }
 
@@ -52,7 +53,7 @@ class BuildToolCardTest implements RewriteTest {
                 new UpgradesAndMigrations.Row(
                   "Build tool",
                   expectedMajorVersion,
-                  type.name(),
+                  Measure.valueOf(type.name()).getName(),
                   version
                 )
               )),
@@ -73,7 +74,7 @@ class BuildToolCardTest implements RewriteTest {
               assertThat(rows).containsExactly(
                 new UpgradesAndMigrations.Row(
                   "Build tool",
-                  8,
+                  0,
                   "Gradle",
                   "8.5"
                 )
@@ -98,7 +99,7 @@ class BuildToolCardTest implements RewriteTest {
         assertThat(recipe.getMeasures())
           .hasSize(1)
           .first()
-          .isEqualTo(BuildToolCard.Measure.Gradle);
+          .isEqualTo(Measure.Gradle);
     }
 
     @Test
