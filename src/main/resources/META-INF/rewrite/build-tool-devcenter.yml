@@ -17,20 +17,20 @@
 ---
 type: specs.openrewrite.org/v1beta/recipe
 name: io.moderne.devcenter.BuildToolStarter
-displayName: Build tools
+displayName: DevCenter for Gradle and Maven
 description: >-
-  Track build tool versions across repositories.
-  This recipe creates a DevCenter card for each build tool type (Gradle, Maven, Bazel, Moderne CLI).
+  Track and automate upgrades for Gradle, Maven, and Java versions.
 recipeList:
   - io.moderne.devcenter.BuildToolCard:
+      cardName: Upgrade to Gradle 9
       buildTool: Gradle
+      targetVersion: 9.0.0
       fixRecipeId: org.openrewrite.gradle.MigrateToGradle9
   - io.moderne.devcenter.BuildToolCard:
+      cardName: Upgrade to Maven 4
       buildTool: Maven
+      targetVersion: 4.0.0
       fixRecipeId: org.openrewrite.maven.UpdateMavenWrapper
-  - io.moderne.devcenter.BuildToolCard:
-      buildTool: Bazel
-      fixRecipeId: org.openrewrite.java.search.HasBuildToolVersion
-  - io.moderne.devcenter.BuildToolCard:
-      buildTool: ModerneCli
-      fixRecipeId: org.openrewrite.java.search.HasBuildToolVersion
+  - io.moderne.devcenter.JavaVersionUpgrade:
+      majorVersion: 25
+      upgradeRecipe: org.openrewrite.java.migrate.UpgradeToJava25
