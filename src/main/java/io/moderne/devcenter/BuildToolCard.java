@@ -15,47 +15,49 @@
  */
 package io.moderne.devcenter;
 
+import io.moderne.devcenter.table.UpgradesAndMigrations;
 import lombok.EqualsAndHashCode;
-import lombok.Getter;
-import lombok.RequiredArgsConstructor;
 import lombok.Value;
-import org.intellij.lang.annotations.Language;
 import org.jspecify.annotations.Nullable;
 import org.openrewrite.*;
-import org.openrewrite.internal.StringUtils;
 import org.openrewrite.marker.BuildTool;
-import org.openrewrite.semver.Semver;
 
 import java.util.Arrays;
 import java.util.List;
-
-import static java.util.Collections.singletonList;
 
 @Value
 @EqualsAndHashCode(callSuper = false)
 public class BuildToolCard extends UpgradeMigrationCard {
 
-    String displayName = "Build tool";
+    @Option(displayName = "Card name",
+            description = "The display name of the DevCenter card.",
+            example = "Upgrade to Gradle 9")
+    String cardName;
 
-    String description = "Identify the build tool used by repositories.";
-
-    @Option(
-            displayName = "Build tool",
+    @Option(displayName = "Build tool",
             description = "The build tool to track.",
-            valid = {"Gradle", "Maven", "Bazel", "ModerneCli"},
-            required = false
-    )
-    @Nullable
+            valid = {"Gradle", "Maven", "Bazel", "ModerneCli"})
     String buildTool;
 
-    @Option(
-            displayName = "Fix Recipe ID",
-            description = "The ID of the recipe to apply to upgrade build tools.",
+    @Option(displayName = "Target version",
+            description = "The target version of the build tool. Specify the version out to the desired patch version.",
+            example = "9.0.0")
+    String targetVersion;
+
+    @Option(displayName = "Fix Recipe ID",
+            description = "The recipe to use to upgrade the build tool.",
             example = "org.openrewrite.gradle.MigrateToGradle9",
-            required = false
-    )
+            required = false)
     @Nullable
     String fixRecipeId;
+
+    String displayName = "Build tool";
+    String description = "Track build tool versions across repositories.";
+
+    @Override
+    public String getInstanceName() {
+        return getCardName();
+    }
 
     @Override
     public TreeVisitor<?, ExecutionContext> getVisitor() {
@@ -64,12 +66,9 @@ public class BuildToolCard extends UpgradeMigrationCard {
             public @Nullable Tree visit(@Nullable Tree tree, ExecutionContext ctx) {
                 if (tree instanceof SourceFile) {
                     tree.getMarkers().findFirst(BuildTool.class).ifPresent(bt -> {
-                        if (buildTool == null || bt.getType().name().equalsIgnoreCase(buildTool)) {
-                            upgradesAndMigrations.insertRow(
-                                    ctx,
-                                    BuildToolCard.this,
-                                    Measure.valueOf(bt.getType().name()),
-                                    bt.getVersion());
+                        if (bt.getType().name().equalsIgnoreCase(buildTool)) {
+                            SemverRowBuilder rowBuilder = new SemverRowBuilder(cardName, targetVersion);
+                            upgradesAndMigrations.insertRow(ctx, rowBuilder.getRow(bt.getVersion()));
                         }
                     });
                 }
@@ -80,22 +79,6 @@ public class BuildToolCard extends UpgradeMigrationCard {
 
     @Override
     public List<DevCenterMeasure> getMeasures() {
-        if (StringUtils.isBlank(buildTool)) {
-            return Arrays.asList(Measure.values());
-        }
-        return singletonList(Measure.valueOf(buildTool));
-    }
-
-    @Getter
-    @RequiredArgsConstructor
-    public enum Measure implements DevCenterMeasure {
-        // Values should match BuildTool.Type enum names
-        ModerneCli("Moderne CLI", "Uses Moderne CLI as build tool."),
-        Bazel("Bazel", "Uses Bazel as build tool."),
-        Maven("Maven", "Uses Maven as build tool."),
-        Gradle("Gradle", "Uses Gradle as build tool.");
-
-        private final @Language("markdown") String name;
-        private final @Language("markdown") String description;
+        return Arrays.asList(SemverMeasure.values());
     }
 }

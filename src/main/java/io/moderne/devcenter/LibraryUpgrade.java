@@ -33,7 +33,7 @@ import java.util.List;
 @EqualsAndHashCode(callSuper = false)
 public class LibraryUpgrade extends UpgradeMigrationCard {
     @Option(displayName = "Card name",
-            description = "The display name of the DevCenter card",
+            description = "The display name of the DevCenter card.",
             example = "Move to Spring Boot 4.0")
     String cardName;
 

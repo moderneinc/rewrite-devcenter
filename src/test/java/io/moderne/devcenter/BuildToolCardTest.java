@@ -15,102 +15,150 @@
  */
 package io.moderne.devcenter;
 
-import io.moderne.devcenter.BuildToolCard.Measure;
 import io.moderne.devcenter.table.UpgradesAndMigrations;
 import org.junit.jupiter.api.Test;
-import org.junit.jupiter.params.ParameterizedTest;
-import org.junit.jupiter.params.provider.Arguments;
-import org.junit.jupiter.params.provider.MethodSource;
 import org.openrewrite.marker.BuildTool;
 import org.openrewrite.test.RewriteTest;
 
 import java.util.UUID;
-import java.util.stream.Stream;
 
 import static org.assertj.core.api.AssertionsForInterfaceTypes.assertThat;
 import static org.openrewrite.java.Assertions.java;
 
 class BuildToolCardTest implements RewriteTest {
 
-    private static Stream<Arguments> buildTools() {
-        return Stream.of(
-          Arguments.of(BuildTool.Type.Gradle, "8.5", 3),
-          Arguments.of(BuildTool.Type.Maven, "3.9.6", 2),
-          Arguments.of(BuildTool.Type.Bazel, "7.0.0", 1),
-          Arguments.of(BuildTool.Type.ModerneCli, "3.30.5", 0)
-        );
-    }
-
-    @MethodSource("buildTools")
-    @ParameterizedTest
-    void detectsBuildTool(BuildTool.Type type, String version, int expectedMajorVersion) {
-        BuildToolCard recipe = new BuildToolCard(null, null);
+    @Test
+    void detectsMajorVersionBehind() {
+        BuildToolCard recipe = new BuildToolCard("Upgrade to Gradle 9", "Gradle", "9.0.0", null);
         rewriteRun(
           spec -> spec
             .recipe(recipe)
             .dataTable(UpgradesAndMigrations.Row.class, rows ->
               assertThat(rows).containsExactly(
                 new UpgradesAndMigrations.Row(
-                  "Build tool",
-                  expectedMajorVersion,
-                  Measure.valueOf(type.name()).getName(),
-                  version
+                  "Upgrade to Gradle 9",
+                  SemverMeasure.Major.ordinal(),
+                  SemverMeasure.Major.toString(),
+                  "8.5.0"
                 )
               )),
           java(
             "class Test {}",
-            spec -> spec.markers(new BuildTool(UUID.randomUUID(), type, version))
+            spec -> spec.markers(new BuildTool(UUID.randomUUID(), BuildTool.Type.Gradle, "8.5.0"))
           )
         );
     }
 
     @Test
-    void filtersByBuildTool() {
-        BuildToolCard recipe = new BuildToolCard("Gradle", null);
+    void detectsMinorVersionBehind() {
+        BuildToolCard recipe = new BuildToolCard("Upgrade to Gradle 9", "Gradle", "9.3.0", null);
         rewriteRun(
           spec -> spec
             .recipe(recipe)
             .dataTable(UpgradesAndMigrations.Row.class, rows ->
               assertThat(rows).containsExactly(
                 new UpgradesAndMigrations.Row(
-                  "Build tool",
-                  0,
-                  "Gradle",
-                  "8.5"
+                  "Upgrade to Gradle 9",
+                  SemverMeasure.Minor.ordinal(),
+                  SemverMeasure.Minor.toString(),
+                  "9.1.0"
                 )
               )),
           java(
             "class Test {}",
-            spec -> spec.markers(new BuildTool(UUID.randomUUID(), BuildTool.Type.Gradle, "8.5"))
+            spec -> spec.markers(new BuildTool(UUID.randomUUID(), BuildTool.Type.Gradle, "9.1.0"))
           )
         );
     }
 
     @Test
-    void getMeasuresReturnsAllBuildToolTypes() {
-        BuildToolCard recipe = new BuildToolCard(null, null);
-        assertThat(recipe.getMeasures())
-          .hasSameSizeAs(BuildTool.Type.values());
+    void detectsPatchVersionBehind() {
+        BuildToolCard recipe = new BuildToolCard("Upgrade to Gradle 9", "Gradle", "9.3.2", null);
+        rewriteRun(
+          spec -> spec
+            .recipe(recipe)
+            .dataTable(UpgradesAndMigrations.Row.class, rows ->
+              assertThat(rows).containsExactly(
+                new UpgradesAndMigrations.Row(
+                  "Upgrade to Gradle 9",
+                  SemverMeasure.Patch.ordinal(),
+                  SemverMeasure.Patch.toString(),
+                  "9.3.0"
+                )
+              )),
+          java(
+            "class Test {}",
+            spec -> spec.markers(new BuildTool(UUID.randomUUID(), BuildTool.Type.Gradle, "9.3.0"))
+          )
+        );
     }
 
     @Test
-    void getMeasuresReturnsOnlyMatchingBuildTool() {
-        BuildToolCard recipe = new BuildToolCard("Gradle", null);
+    void detectsCompleted() {
+        BuildToolCard recipe = new BuildToolCard("Upgrade to Gradle 9", "Gradle", "9.0.0", null);
+        rewriteRun(
+          spec -> spec
+            .recipe(recipe)
+            .dataTable(UpgradesAndMigrations.Row.class, rows ->
+              assertThat(rows).containsExactly(
+                new UpgradesAndMigrations.Row(
+                  "Upgrade to Gradle 9",
+                  SemverMeasure.Completed.ordinal(),
+                  SemverMeasure.Completed.toString(),
+                  "9.3.0"
+                )
+              )),
+          java(
+            "class Test {}",
+            spec -> spec.markers(new BuildTool(UUID.randomUUID(), BuildTool.Type.Gradle, "9.3.0"))
+          )
+        );
+    }
+
+    @Test
+    void filtersByBuildToolCaseInsensitive() {
+        BuildToolCard recipe = new BuildToolCard("Upgrade to Gradle 9", "gradle", "9.0.0", null);
+        rewriteRun(
+          spec -> spec
+            .recipe(recipe)
+            .dataTable(UpgradesAndMigrations.Row.class, rows ->
+              assertThat(rows).containsExactly(
+                new UpgradesAndMigrations.Row(
+                  "Upgrade to Gradle 9",
+                  SemverMeasure.Completed.ordinal(),
+                  SemverMeasure.Completed.toString(),
+                  "9.3.0"
+                )
+              )),
+          java(
+            "class Test {}",
+            spec -> spec.markers(new BuildTool(UUID.randomUUID(), BuildTool.Type.Gradle, "9.3.0"))
+          )
+        );
+    }
+
+    @Test
+    void getMeasuresReturnsSemverMeasures() {
+        BuildToolCard recipe = new BuildToolCard("Upgrade to Gradle 9", "Gradle", "9.0.0", null);
         assertThat(recipe.getMeasures())
-          .hasSize(1)
-          .first()
-          .isEqualTo(Measure.Gradle);
+          .hasSameSizeAs(SemverMeasure.values());
+    }
+
+    @Test
+    void instanceNameIsCardName() {
+        BuildToolCard recipe = new BuildToolCard("Upgrade to Gradle 9", "Gradle", "9.0.0", null);
+        assertThat(recipe.getInstanceName()).isEqualTo("Upgrade to Gradle 9");
     }
 
     @Test
     void noFixRecipe() {
-        BuildToolCard recipe = new BuildToolCard(null, null);
+        BuildToolCard recipe = new BuildToolCard("Upgrade to Gradle 9", "Gradle", "9.0.0", null);
         assertThat(recipe.getFixRecipeId()).isNull();
     }
 
     @Test
     void argFixRecipe() {
-        BuildToolCard recipe = new BuildToolCard(null, "com.example.Recipe");
-        assertThat(recipe.getFixRecipeId()).isEqualTo("com.example.Recipe");
+        BuildToolCard recipe = new BuildToolCard("Upgrade to Gradle 9", "Gradle", "9.0.0", "org.openrewrite.gradle.MigrateToGradle9");
+        assertThat(recipe.getFixRecipeId()).isEqualTo("org.openrewrite.gradle.MigrateToGradle9");
     }
 }
