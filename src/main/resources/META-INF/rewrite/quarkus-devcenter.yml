@@ -22,6 +22,9 @@ description: >-
   A DevCenter that tracks the latest Quarkus framework versions and applies best practices.
   This DevCenter includes recipes to upgrade Quarkus versions, migrate from deprecated APIs,
   and ensure compatibility with the latest Java versions and testing frameworks.
+# DevCenter tracking Quarkus framework versions and best practices
+preconditions:
+  - org.openrewrite.Singleton
 recipeList:
   - io.moderne.devcenter.LibraryUpgrade:
       cardName: Move to Quarkus 3.26
@@ -45,6 +48,8 @@ name: io.moderne.devcenter.UpgradeQuarkus3_x
 displayName: Upgrade to Quarkus 3.26
 description: >-
   Upgrades Quarkus dependencies to version 3.26.x, including core, extensions, and tooling.
+preconditions:
+  - org.openrewrite.Singleton
 recipeList:
   - org.openrewrite.quarkus.quarkus2.Quarkus1to2Migration
   - org.openrewrite.maven.UpgradeDependencyVersion:
@@ -61,6 +66,8 @@ name: io.moderne.devcenter.UpgradeQuarkusUniverseBom
 displayName: Upgrade Quarkus Universe BOM
 description: >-
   Upgrades the Quarkus Universe BOM parent to the latest version.
+preconditions:
+  - org.openrewrite.Singleton
 recipeList:
   - org.openrewrite.maven.UpgradeParentVersion:
       groupId: io.quarkus
