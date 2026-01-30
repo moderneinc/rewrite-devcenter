@@ -20,6 +20,9 @@ name: io.moderne.devcenter.ApacheDevCenter
 displayName: DevCenter for Apache
 description: >-
   A DevCenter that tracks the latest Apache Maven parent POM versions and applies best practices.
+# An example DevCenter tracking Parent POM versions, illustrated by using the Apache Maven parent POM
+preconditions:
+  - org.openrewrite.Singleton
 recipeList:
   - io.moderne.devcenter.ParentPomUpgrade:
       cardName: Move to the latest `apache` parent POM
@@ -42,6 +45,9 @@ description: >-
   A DevCenter that tracks the latest Apache Maven parent POM versions and applies best practices.
   This DevCenter includes recipes to upgrade the parent POMs of Apache Maven, as well as a collection of
   best practices for Maven POMs.
+# An example DevCenter tracking Parent POM versions, illustrated by using the Apache Maven parent POM
+preconditions:
+  - org.openrewrite.Singleton
 recipeList:
   - io.moderne.devcenter.ParentPomUpgrade:
       cardName: Move to the latest `maven-parent`
@@ -71,6 +77,8 @@ name: io.moderne.devcenter.UpgradeApacheParent
 displayName: Upgrade Apache Parent POM
 description: >-
   Upgrades the Apache parent POM to the latest version.
+preconditions:
+  - org.openrewrite.Singleton
 recipeList:
   - org.openrewrite.maven.UpgradeParentVersion:
       groupId: org.apache
@@ -82,6 +90,8 @@ name: io.moderne.devcenter.UpgradeMavenParent
 displayName: Upgrade Apache Maven Parent
 description: >-
   Upgrades the Apache Maven parent POM to the latest version.
+preconditions:
+  - org.openrewrite.Singleton
 recipeList:
   - org.openrewrite.maven.UpgradeParentVersion:
       groupId: org.apache.maven
@@ -93,6 +103,8 @@ name: io.moderne.devcenter.UpgradeMavenPluginsParent
 displayName: Upgrade Maven Plugins Parent
 description: >-
   Upgrades the Apache Maven parent POM to the latest version.
+preconditions:
+  - org.openrewrite.Singleton
 recipeList:
   - org.openrewrite.maven.UpgradeParentVersion:
       groupId: org.apache.maven.plugins
@@ -104,6 +116,8 @@ name: io.moderne.devcenter.UpgradeMavenSharedParent
 displayName: Upgrade Maven Shared Parent
 description: >-
   Upgrades the Apache Maven parent POM to the latest version.
+preconditions:
+  - org.openrewrite.Singleton
 recipeList:
   - org.openrewrite.maven.UpgradeParentVersion:
       groupId: org.apache.maven.shared
@@ -116,6 +130,8 @@ displayName: Apache Maven best practices
 description: >-
   A collection of recipes that apply best practices to Maven POMs.
   Some of these recipes affect build stability, so they are reported as security issues in the DevCenter card.
+preconditions:
+  - org.openrewrite.Singleton
 recipeList:
   - org.openrewrite.maven.cleanup.ExplicitPluginGroupId
   - org.openrewrite.maven.cleanup.ExplicitPluginVersion

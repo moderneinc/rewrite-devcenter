@@ -22,7 +22,8 @@ description: >-
   It includes a combination of upgrades, migrations, and security fixes.
   You can customize this configuration to suit your needs.
   
-  For more information on how to customize your DevCenter configuration, see the [DevCenter documentation](https://docs.moderne.io/administrator-documentation/moderne-platform/how-to-guides/recipe-based-devcenter-beta/).
+  For more information on how to customize your DevCenter configuration, see the [DevCenter documentation](https://docs.moderne.io/administrator-documentation/moderne-platform/how-to-guides/recipe-based-devcenter-beta/).preconditions:
+  - org.openrewrite.Singleton
 recipeList:
   - io.moderne.devcenter.LibraryUpgrade:
       cardName: Move to Spring Boot 4.0
@@ -45,6 +46,8 @@ description: >-
   You can customize this configuration to suit your needs.
   
   For more information on how to customize your DevCenter configuration, see the [DevCenter documentation](https://docs.moderne.io/administrator-documentation/moderne-platform/how-to-guides/recipe-based-devcenter-beta/).
+preconditions:
+  - org.openrewrite.Singleton
 recipeList:
   - org.openrewrite.java.security.OwaspA01
   - org.openrewrite.java.security.OwaspA02

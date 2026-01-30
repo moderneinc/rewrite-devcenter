@@ -20,6 +20,8 @@ name: io.moderne.devcenter.VulnerabilitiesDevCenter
 displayName: DevCenter for Vulnerability Management
 description: >-
   Recipes to analyze and manage dependency vulnerabilities using Moderne DevCenter.
+preconditions:
+  - org.openrewrite.Singleton
 recipeList:
   - io.moderne.devcenter.DependencyVulnerabilityCheck:
       measure: Severity

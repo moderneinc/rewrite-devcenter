@@ -20,6 +20,8 @@ name: io.moderne.devcenter.BuildToolStarter
 displayName: DevCenter for Gradle and Maven
 description: >-
   Track and automate upgrades for Gradle, Maven, and Java versions.
+preconditions:
+  - org.openrewrite.Singleton
 recipeList:
   - io.moderne.devcenter.BuildToolCard:
       cardName: Upgrade to Gradle 9
