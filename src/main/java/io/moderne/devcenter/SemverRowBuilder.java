@@ -24,7 +24,10 @@ import org.openrewrite.semver.VersionComparator;
 import static java.util.Objects.requireNonNull;
 
 public class SemverRowBuilder {
-    private static final VersionParser parser = new VersionParser();
+    // Lazy initialization to avoid class loading failures poisoning SemverRowBuilder's static initialization
+    private static class ParserHolder {
+        static final VersionParser INSTANCE = new VersionParser();
+    }
 
     private final String cardName;
     private long major;
@@ -33,7 +36,7 @@ public class SemverRowBuilder {
 
     public SemverRowBuilder(String cardName, String version) {
         this.cardName = cardName;
-        Version parsed = parser.transform(version);
+        Version parsed = ParserHolder.INSTANCE.transform(version);
         Long[] numericParts = parsed.getNumericParts();
         for (int i = 0; i < numericParts.length; i++) {
             Long part = numericParts[i];
