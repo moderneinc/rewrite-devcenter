@@ -1,0 +1,24 @@
+Convention type,Pattern,Example,Frequency,Scope
+naming,get* method naming pattern,getInstanceName,,project-wide
+imports,Static imports from io.moderne.devcenter.DependencyVulnerabilityCheck,io.moderne.devcenter.DependencyVulnerabilityCheck.UpgradeDeltaMeasure.NotFixable,,project-wide
+imports,Static imports from java.util,java.util.Collections.emptyList,,project-wide
+imports,Static imports from java.util.stream,java.util.stream.Collectors.toList,,project-wide
+naming,UPPER_SNAKE_CASE for constants,SEVERITY,,project-wide
+naming,camelCase for constants,parser,,project-wide
+naming,is* method naming pattern,isDevCenter,,project-wide
+comments,Methods have Javadoc documentation,ordinal,,project-wide
+naming,Exception suffix for classes,DevCenterValidationException,,project-wide
+naming,Builder suffix for classes,SemverRowBuilder,,project-wide
+comments,Classes have Javadoc documentation,DevCenterResult,,project-wide
+imports,Static imports from org.openrewrite,org.openrewrite.ExecutionContext.CURRENT_CYCLE,,project-wide
+imports,Static imports from org.assertj.core.api,org.assertj.core.api.AssertionsForInterfaceTypes.assertThat,,project-wide
+imports,Static imports from org.openrewrite.java,org.openrewrite.java.Assertions.java,,project-wide
+naming,Test suffix for classes,BuildToolCardTest,,project-wide
+imports,Static imports from org.openrewrite.maven,org.openrewrite.maven.Assertions.pomXml,,project-wide
+imports,Static imports from io.moderne.devcenter.JUnitJupiterUpgrade,io.moderne.devcenter.JUnitJupiterUpgrade.Measure.JUnit4,,project-wide
+imports,Static imports from io.moderne.devcenter.JavaVersionUpgrade,io.moderne.devcenter.JavaVersionUpgrade.Measure.Java8Plus,,project-wide
+imports,Static imports from org.openrewrite.gradle,org.openrewrite.gradle.Assertions.buildGradle,,project-wide
+imports,Static imports from org.openrewrite.gradle.toolingapi,org.openrewrite.gradle.toolingapi.Assertions.withToolingApi,,project-wide
+naming,validate* method naming pattern,validateStandAloneDevCenterRecipe,,project-wide
+imports,Static imports from io.moderne.devcenter,io.moderne.devcenter.SemverMeasure.Completed,,project-wide
+naming,has* method naming pattern,hasSecurityResults,,project-wide
