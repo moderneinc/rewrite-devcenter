@@ -11,7 +11,7 @@ recipeDependencies {
     testParserClasspath("org.junit.jupiter:junit-jupiter-api:6.0.2")
 }
 
-val rewriteVersion = "8.72.8"
+val rewriteVersion = "8.73.0-SNAPSHOT"
 dependencies {
     // Only needed for result parsing (package io.moderne.devcenter.result),
     // not for defining and running DevCenter recipes.
