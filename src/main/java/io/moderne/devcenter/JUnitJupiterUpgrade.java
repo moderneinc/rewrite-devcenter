@@ -87,7 +87,7 @@ public class JUnitJupiterUpgrade extends UpgradeMigrationCard {
     @Override
     public String getFixRecipeId() {
         return upgradeRecipe == null ?
-                "org.openrewrite.java.testing.junit5.JUnit4to5Migration" :
+                "org.openrewrite.java.testing.junit6.JUnit5to6Migration" :
                 upgradeRecipe;
     }
 
