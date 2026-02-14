@@ -8,3 +8,7 @@ src/main/generated/
 *.iml
 license.txt
 samples/
+
+# Moderne CLI
+.moderne/*
+!.moderne/context/
