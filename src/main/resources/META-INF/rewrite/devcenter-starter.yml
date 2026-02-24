@@ -36,6 +36,8 @@ recipeList:
   - io.moderne.devcenter.JUnitJupiterUpgrade:
       upgradeRecipe: org.openrewrite.java.testing.junit6.JUnit5to6Migration
   - io.moderne.devcenter.SecurityStarter
+  - io.moderne.devcenter.FindOrganizationStatistics
+  - org.openrewrite.search.FindCommitters
 ---
 type: specs.openrewrite.org/v1beta/recipe
 name: io.moderne.devcenter.SecurityStarter
