@@ -91,7 +91,8 @@ class DevCenterTest implements RewriteTest {
         assertThat(devCenter.getSecurity()).isNotNull();
         assertThat(devCenter.getSecurity().getMeasures().stream())
           .map(DevCenterMeasure::getName)
-          .contains("Zip slip");
+          .contains("Zip slip")
+          .doesNotContain("Security DevCenter");
     }
 
     @Test

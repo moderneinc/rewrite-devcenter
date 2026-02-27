@@ -165,6 +165,9 @@ public class DevCenter {
                     List<Recipe> recipeList = recipe.getRecipeList();
                     for (int i = 0; i < recipeList.size(); i++) {
                         Recipe r = recipeList.get(i);
+                        if (rasClass.isInstance(r)) {
+                            continue;
+                        }
                         int ordinal = i;
                         DevCenterMeasure devCenterMeasure = new DevCenterMeasure() {
                             @Override
