@@ -152,54 +152,49 @@ public class DevCenter {
         return upgradesAndMigrations;
     }
 
+    private static final String REPORT_AS_SECURITY_ISSUES = "io.moderne.devcenter.ReportAsSecurityIssues";
+
     private List<Card> getSecurityRecursive(Recipe recipe, List<Card> allSecurity) {
         for (Recipe subRecipe : recipe.getRecipeList()) {
-            try {
-                Class<?> rasClass = Class.forName(
-                        "io.moderne.devcenter.ReportAsSecurityIssues",
-                        false,
-                        subRecipe.getClass().getClassLoader()
-                );
-                if (rasClass.isInstance(subRecipe)) {
-                    List<DevCenterMeasure> measures = new ArrayList<>();
-                    List<Recipe> recipeList = recipe.getRecipeList();
-                    for (int i = 0; i < recipeList.size(); i++) {
-                        Recipe r = recipeList.get(i);
-                        if (rasClass.isInstance(r)) {
-                            continue;
-                        }
-                        int ordinal = i;
-                        DevCenterMeasure devCenterMeasure = new DevCenterMeasure() {
-                            @Override
-                            public String getName() {
-                                return r.getInstanceName();
-                            }
-
-                            @Override
-                            public String getDescription() {
-                                return r.getDescription();
-                            }
-
-                            @Override
-                            public int ordinal() {
-                                return ordinal;
-                            }
-                        };
-                        measures.add(devCenterMeasure);
+            if (REPORT_AS_SECURITY_ISSUES.equals(subRecipe.getClass().getName())) {
+                List<DevCenterMeasure> measures = new ArrayList<>();
+                List<Recipe> recipeList = recipe.getRecipeList();
+                for (int i = 0; i < recipeList.size(); i++) {
+                    Recipe r = recipeList.get(i);
+                    if (REPORT_AS_SECURITY_ISSUES.equals(r.getClass().getName())) {
+                        continue;
                     }
+                    int ordinal = i;
+                    DevCenterMeasure devCenterMeasure = new DevCenterMeasure() {
+                        @Override
+                        public String getName() {
+                            return r.getInstanceName();
+                        }
+
+                        @Override
+                        public String getDescription() {
+                            return r.getDescription();
+                        }
+
+                        @Override
+                        public int ordinal() {
+                            return ordinal;
+                        }
+                    };
+                    measures.add(devCenterMeasure);
+                }
+                try {
                     allSecurity.add(new Card(
                             recipe.getInstanceName(),
                             recipe.getDescription(),
-                            (String) rasClass.getMethod("getFixRecipe").invoke(subRecipe),
+                            (String) subRecipe.getClass().getMethod("getFixRecipe").invoke(subRecipe),
                             measures,
                             Aggregation.PER_OCCURRENCE
                     ));
-                    return allSecurity;
+                } catch (ReflectiveOperationException e) {
+                    throw new RuntimeException("Failed to access ReportAsSecurityIssues", e);
                 }
-            } catch (ClassNotFoundException e) {
-                // Not a ReportAsSecurityIssues - ignore
-            } catch (ReflectiveOperationException e) {
-                throw new RuntimeException("Failed to access ReportAsSecurityIssues", e);
+                return allSecurity;
             }
         }
         for (Recipe subRecipe : recipe.getRecipeList()) {
