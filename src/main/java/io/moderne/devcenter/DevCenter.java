@@ -18,6 +18,7 @@ package io.moderne.devcenter;
 import io.moderne.devcenter.table.SecurityIssues;
 import io.moderne.devcenter.table.UpgradesAndMigrations;
 import lombok.EqualsAndHashCode;
+import lombok.RequiredArgsConstructor;
 import lombok.Value;
 import org.jspecify.annotations.Nullable;
 import org.openrewrite.NlsRewrite;
@@ -34,15 +35,12 @@ import java.util.concurrent.atomic.AtomicReference;
 
 import static java.util.Collections.unmodifiableList;
 
+@RequiredArgsConstructor
 public class DevCenter {
     private final Recipe recipe;
 
     private transient @Nullable List<Card> upgradesAndMigrations;
     private transient @Nullable AtomicReference<Card> securityIssues;
-
-    public DevCenter(Recipe recipe) {
-        this.recipe = recipe;
-    }
 
     public static boolean isDevCenter(RecipeDescriptor recipe) {
         if (recipe.getOptions().stream().noneMatch(OptionDescriptor::isRequired)) {
