@@ -13,7 +13,7 @@ recipeDependencies {
 
 val rewriteVersion = rewriteRecipe.rewriteVersion.get()
 dependencies {
-    implementation(platform("io.moderne.recipe:moderne-recipe-bom:latest.release"))
+    implementation(platform("org.openrewrite:rewrite-bom:latest.release"))
 
     // Only needed for result parsing (package io.moderne.devcenter.result),
     // not for defining and running DevCenter recipes.
