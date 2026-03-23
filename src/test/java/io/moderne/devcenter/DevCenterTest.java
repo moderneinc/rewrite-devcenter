@@ -80,7 +80,7 @@ class DevCenterTest implements RewriteTest {
     @SuppressWarnings("DataFlowIssue")
     @Test
     void valid() throws Exception {
-        DevCenter devCenter = new DevCenter(starterDevCenter);
+        var devCenter = new DevCenter(starterDevCenter);
         devCenter.validate();
 
         assertThat(devCenter.getUpgradesAndMigrations()).hasSize(3);
@@ -112,13 +112,13 @@ class DevCenterTest implements RewriteTest {
             URI.create("rewrite.yml"), new Properties()))
           .build()
           .activateRecipes("io.moderne.devcenter.JavaVersionNoFix");
-        DevCenter devCenter = new DevCenter(r);
+        var devCenter = new DevCenter(r);
         devCenter.validate();
     }
 
     @Test
     void validateStandAloneDevCenterRecipe() throws Exception {
-        DevCenter devCenter = new DevCenter(starterSecurity);
+        var devCenter = new DevCenter(starterSecurity);
         devCenter.validate();
     }
 
@@ -141,14 +141,14 @@ class DevCenterTest implements RewriteTest {
             URI.create("rewrite.yml"), new Properties()))
           .build()
           .activateRecipes("io.moderne.devcenter.DoubleJava21Misconfiguration");
-        DevCenter devCenter = new DevCenter(r);
+        var devCenter = new DevCenter(r);
         assertThatThrownBy(devCenter::validate).isInstanceOf(DevCenterValidationException.class)
           .hasMessageContaining("Card names must be unique. The name 'Move to Java 21' is included multiple times.");
     }
 
     @Test
     void noCards() {
-        DevCenter devCenter = new DevCenter(Recipe.builder("No cards", "A DevCenter with no cards.")
+        var devCenter = new DevCenter(Recipe.builder("No cards", "A DevCenter with no cards.")
           .build("io.moderne.devcenter.DevCenterNoCards"));
 
         assertThatThrownBy(devCenter::validate)
@@ -194,7 +194,7 @@ class DevCenterTest implements RewriteTest {
         // Create DevCenter instance and verify it correctly identifies the card
         // This test will fail with the current instanceof-based implementation,
         // demonstrating that the reflection-based approach is needed
-        DevCenter devCenter = new DevCenter(recipe);
+        var devCenter = new DevCenter(recipe);
         devCenter.validate();
     }
 

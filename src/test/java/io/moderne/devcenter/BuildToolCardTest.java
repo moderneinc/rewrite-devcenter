@@ -29,7 +29,7 @@ class BuildToolCardTest implements RewriteTest {
 
     @Test
     void detectsMajorVersionBehind() {
-        BuildToolCard recipe = new BuildToolCard("Upgrade to Gradle 9", "Gradle", "9.0.0", null);
+        var recipe = new BuildToolCard("Upgrade to Gradle 9", "Gradle", "9.0.0", null);
         rewriteRun(
           spec -> spec
             .recipe(recipe)
@@ -51,7 +51,7 @@ class BuildToolCardTest implements RewriteTest {
 
     @Test
     void detectsMinorVersionBehind() {
-        BuildToolCard recipe = new BuildToolCard("Upgrade to Gradle 9", "Gradle", "9.3.0", null);
+        var recipe = new BuildToolCard("Upgrade to Gradle 9", "Gradle", "9.3.0", null);
         rewriteRun(
           spec -> spec
             .recipe(recipe)
@@ -73,7 +73,7 @@ class BuildToolCardTest implements RewriteTest {
 
     @Test
     void detectsPatchVersionBehind() {
-        BuildToolCard recipe = new BuildToolCard("Upgrade to Gradle 9", "Gradle", "9.3.2", null);
+        var recipe = new BuildToolCard("Upgrade to Gradle 9", "Gradle", "9.3.2", null);
         rewriteRun(
           spec -> spec
             .recipe(recipe)
@@ -95,7 +95,7 @@ class BuildToolCardTest implements RewriteTest {
 
     @Test
     void detectsCompleted() {
-        BuildToolCard recipe = new BuildToolCard("Upgrade to Gradle 9", "Gradle", "9.0.0", null);
+        var recipe = new BuildToolCard("Upgrade to Gradle 9", "Gradle", "9.0.0", null);
         rewriteRun(
           spec -> spec
             .recipe(recipe)
@@ -117,7 +117,7 @@ class BuildToolCardTest implements RewriteTest {
 
     @Test
     void filtersByBuildToolCaseInsensitive() {
-        BuildToolCard recipe = new BuildToolCard("Upgrade to Gradle 9", "gradle", "9.0.0", null);
+        var recipe = new BuildToolCard("Upgrade to Gradle 9", "gradle", "9.0.0", null);
         rewriteRun(
           spec -> spec
             .recipe(recipe)
@@ -139,26 +139,26 @@ class BuildToolCardTest implements RewriteTest {
 
     @Test
     void getMeasuresReturnsSemverMeasures() {
-        BuildToolCard recipe = new BuildToolCard("Upgrade to Gradle 9", "Gradle", "9.0.0", null);
+        var recipe = new BuildToolCard("Upgrade to Gradle 9", "Gradle", "9.0.0", null);
         assertThat(recipe.getMeasures())
           .hasSameSizeAs(SemverMeasure.values());
     }
 
     @Test
     void instanceNameIsCardName() {
-        BuildToolCard recipe = new BuildToolCard("Upgrade to Gradle 9", "Gradle", "9.0.0", null);
+        var recipe = new BuildToolCard("Upgrade to Gradle 9", "Gradle", "9.0.0", null);
         assertThat(recipe.getInstanceName()).isEqualTo("Upgrade to Gradle 9");
     }
 
     @Test
     void noFixRecipe() {
-        BuildToolCard recipe = new BuildToolCard("Upgrade to Gradle 9", "Gradle", "9.0.0", null);
+        var recipe = new BuildToolCard("Upgrade to Gradle 9", "Gradle", "9.0.0", null);
         assertThat(recipe.getFixRecipeId()).isNull();
     }
 
     @Test
     void argFixRecipe() {
-        BuildToolCard recipe = new BuildToolCard("Upgrade to Gradle 9", "Gradle", "9.0.0", "org.openrewrite.gradle.MigrateToGradle9");
+        var recipe = new BuildToolCard("Upgrade to Gradle 9", "Gradle", "9.0.0", "org.openrewrite.gradle.MigrateToGradle9");
         assertThat(recipe.getFixRecipeId()).isEqualTo("org.openrewrite.gradle.MigrateToGradle9");
     }
 }
