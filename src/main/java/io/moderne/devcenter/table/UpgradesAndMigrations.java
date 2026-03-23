@@ -19,6 +19,7 @@ import io.moderne.devcenter.DevCenterMeasure;
 import io.moderne.devcenter.UpgradeMigrationCard;
 import lombok.Value;
 import org.intellij.lang.annotations.Language;
+import org.jspecify.annotations.Nullable;
 import org.openrewrite.*;
 import org.openrewrite.semver.LatestRelease;
 
@@ -72,30 +73,6 @@ public class UpgradesAndMigrations extends DataTable<UpgradesAndMigrations.Row> 
         }
     }
 
-    static Row deduplicate(Row existing, Row incoming) {
-        if (existing == null) {
-            return incoming;
-        }
-        int minOrdinal = existing.getOrdinal();
-        if (incoming.getOrdinal() > minOrdinal) {
-            return existing;
-        }
-        if (incoming.getOrdinal() < minOrdinal) {
-            return incoming;
-        }
-        // Same ordinal — keep the row with the lower version
-        String existingVersion = existing.getCurrentMinimumVersion();
-        String incomingVersion = incoming.getCurrentMinimumVersion();
-        if (Objects.equals(existingVersion, incomingVersion)) {
-            return existing;
-        }
-        if (incomingVersion != null && (existingVersion == null ||
-            new LatestRelease(null).compare(null, existingVersion, incomingVersion) > 0)) {
-            return incoming;
-        }
-        return existing;
-    }
-
     /**
      * DataTableStore wrapper that deduplicates UpgradesAndMigrations rows when they are read.
      * Rows are stored as-is (append-only), and deduplication happens at read time by keeping
@@ -131,8 +108,32 @@ public class UpgradesAndMigrations extends DataTable<UpgradesAndMigrations.Row> 
         private Stream<?> deduplicateRows(Stream<?> rows) {
             Map<String, Row> bestPerCard = new LinkedHashMap<>();
             rows.forEach(r -> bestPerCard.merge(((Row) r).getCard(), (Row) r,
-                    UpgradesAndMigrations::deduplicate));
+                    DeduplicatingDataTableStore::deduplicate));
             return bestPerCard.values().stream();
+        }
+
+        static Row deduplicate(@Nullable Row existing, Row incoming) {
+            if (existing == null) {
+                return incoming;
+            }
+            int minOrdinal = existing.getOrdinal();
+            if (incoming.getOrdinal() > minOrdinal) {
+                return existing;
+            }
+            if (incoming.getOrdinal() < minOrdinal) {
+                return incoming;
+            }
+            // Same ordinal — keep the row with the lower version
+            String existingVersion = existing.getCurrentMinimumVersion();
+            String incomingVersion = incoming.getCurrentMinimumVersion();
+            if (Objects.equals(existingVersion, incomingVersion)) {
+                return existing;
+            }
+            if (incomingVersion != null && (existingVersion == null ||
+                    new LatestRelease(null).compare(null, existingVersion, incomingVersion) > 0)) {
+                return incoming;
+            }
+            return existing;
         }
     }
 
