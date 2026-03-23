@@ -18,16 +18,15 @@ package io.moderne.devcenter.table;
 import io.moderne.devcenter.SemverMeasure;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import org.openrewrite.DataTable;
+import org.openrewrite.DataTableExecutionContextView;
 import org.openrewrite.ExecutionContext;
 import org.openrewrite.InMemoryExecutionContext;
 
 import java.util.List;
-import java.util.Map;
+import java.util.stream.Collectors;
 
 import static io.moderne.devcenter.SemverMeasure.Major;
 import static io.moderne.devcenter.SemverMeasure.Minor;
-import static java.util.Collections.emptyMap;
 import static org.assertj.core.api.Assertions.assertThat;
 
 class UpgradesAndMigrationsTest {
@@ -67,17 +66,20 @@ class UpgradesAndMigrationsTest {
         assertThat(rows()).containsExactly(row(Minor, "2.2.0"));
     }
 
+    @SuppressWarnings("unchecked")
     private List<UpgradesAndMigrations.Row> rows() {
-        return ctx.<Map<DataTable<?>, List<UpgradesAndMigrations.Row>>>getMessage(
-          "org.openrewrite.dataTables", emptyMap()).get(um);
+        return DataTableExecutionContextView.view(ctx).getDataTableStore()
+                .getRows(um.getName(), null)
+                .map(row -> (UpgradesAndMigrations.Row) row)
+                .collect(Collectors.toList());
     }
 
     private static UpgradesAndMigrations.Row row(SemverMeasure measure, String version) {
         return new UpgradesAndMigrations.Row(
-          "cardName",
-          measure.ordinal(),
-          measure.toString(),
-          version
+                "cardName",
+                measure.ordinal(),
+                measure.toString(),
+                version
         );
     }
 }

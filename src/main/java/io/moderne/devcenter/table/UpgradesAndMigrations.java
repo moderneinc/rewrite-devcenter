@@ -19,18 +19,14 @@ import io.moderne.devcenter.DevCenterMeasure;
 import io.moderne.devcenter.UpgradeMigrationCard;
 import lombok.Value;
 import org.intellij.lang.annotations.Language;
-import org.openrewrite.Column;
-import org.openrewrite.DataTable;
-import org.openrewrite.ExecutionContext;
+import org.openrewrite.*;
 import org.openrewrite.semver.LatestRelease;
 
-import java.util.ArrayList;
-import java.util.List;
+import java.util.Collection;
+import java.util.LinkedHashMap;
 import java.util.Map;
 import java.util.Objects;
-import java.util.concurrent.ConcurrentHashMap;
-
-import static org.openrewrite.ExecutionContext.CURRENT_CYCLE;
+import java.util.stream.Stream;
 
 public class UpgradesAndMigrations extends DataTable<UpgradesAndMigrations.Row> {
     @Language("markdown")
@@ -61,46 +57,83 @@ public class UpgradesAndMigrations extends DataTable<UpgradesAndMigrations.Row> 
 
     @Override
     public void insertRow(ExecutionContext ctx, Row row) {
-        // TODO CURRENT_CYCLE value is null in the context of a RewriteTest.
-        if (ctx.getMessage(CURRENT_CYCLE) == null || this.allowWritingInThisCycle(ctx)) {
-            ctx.computeMessage("org.openrewrite.dataTables", row, ConcurrentHashMap<DataTable<?>, List<?>>::new, (extract, allDataTables) -> {
-                List<Row> rows = getRows(allDataTables);
-                int minOrdinal = rows.stream()
-                        .filter(r -> r.getCard().equals(row.getCard()))
-                        .mapToInt(Row::getOrdinal)
-                        .min()
-                        .orElse(Integer.MAX_VALUE);
-                if (row.getOrdinal() <= minOrdinal) {
-                    String currentMinVersion = rows.stream().map(Row::getCurrentMinimumVersion)
-                            .filter(Objects::nonNull).findFirst().orElse(null);
-                    if (row.getOrdinal() == minOrdinal && !row.getCurrentMinimumVersion().equals(currentMinVersion) &&
-                        new LatestRelease(null).compare(null,
-                                currentMinVersion == null ? "999" : currentMinVersion,
-                                row.getCurrentMinimumVersion()) > 0) {
-                        rows.removeIf(r -> row.getCard().equals(r.getCard())); // There can only be one!
-                        rows.add(row);
-                    } else if (row.getOrdinal() != minOrdinal) {
-                        rows.removeIf(r -> row.getCard().equals(r.getCard())); // There can only be one!
-                        rows.add(row);
-                    }
-                }
-                return allDataTables;
-            });
+        ensureDeduplicatingStore(ctx);
+        if (ctx.getMessage(ExecutionContext.CURRENT_CYCLE) == null || allowWritingInThisCycle(ctx)) {
+            DataTableExecutionContextView.view(ctx).getDataTableStore()
+                    .insertRow(this, ctx, row);
         }
     }
 
-    // TODO We have some design challenges with DataTable where two DataTable of the same
-    //  type show up as two different entries. I think only one ultimately is downloadable.
-    private List<Row> getRows(Map<DataTable<?>, List<?>> dataTables) {
-        for (Map.Entry<DataTable<?>, List<?>> dataTableEntry : dataTables.entrySet()) {
-            if (dataTableEntry.getKey().getClass().equals(UpgradesAndMigrations.class)) {
-                //noinspection unchecked
-                return (List<Row>) dataTableEntry.getValue();
-            }
+    private static void ensureDeduplicatingStore(ExecutionContext ctx) {
+        DataTableExecutionContextView view = DataTableExecutionContextView.view(ctx);
+        DataTableStore store = view.getDataTableStore();
+        if (!(store instanceof DeduplicatingDataTableStore)) {
+            view.setDataTableStore(new DeduplicatingDataTableStore(store));
         }
-        //noinspection unchecked
-        return (List<Row>) dataTables.computeIfAbsent(this,
-                c -> new ArrayList<>());
+    }
+
+    static Row deduplicate(Row existing, Row incoming) {
+        if (existing == null) {
+            return incoming;
+        }
+        int minOrdinal = existing.getOrdinal();
+        if (incoming.getOrdinal() > minOrdinal) {
+            return existing;
+        }
+        if (incoming.getOrdinal() < minOrdinal) {
+            return incoming;
+        }
+        // Same ordinal — keep the row with the lower version
+        String existingVersion = existing.getCurrentMinimumVersion();
+        String incomingVersion = incoming.getCurrentMinimumVersion();
+        if (Objects.equals(existingVersion, incomingVersion)) {
+            return existing;
+        }
+        if (incomingVersion != null && (existingVersion == null ||
+            new LatestRelease(null).compare(null, existingVersion, incomingVersion) > 0)) {
+            return incoming;
+        }
+        return existing;
+    }
+
+    /**
+     * DataTableStore wrapper that deduplicates UpgradesAndMigrations rows when they are read.
+     * Rows are stored as-is (append-only), and deduplication happens at read time by keeping
+     * only the best row per card (lowest ordinal, lowest version for same ordinal).
+     */
+    private static class DeduplicatingDataTableStore implements DataTableStore {
+        private final DataTableStore delegate;
+
+        DeduplicatingDataTableStore(DataTableStore delegate) {
+            this.delegate = delegate;
+        }
+
+        @Override
+        public <R> void insertRow(DataTable<R> dataTable, ExecutionContext ctx, R row) {
+            delegate.insertRow(dataTable, ctx, row);
+        }
+
+        @Override
+        public Stream<?> getRows(String name, String instanceName) {
+            Stream<?> rows = delegate.getRows(name, instanceName);
+            if (UpgradesAndMigrations.class.getName().equals(name)) {
+                return deduplicateRows(rows);
+            }
+            return rows;
+        }
+
+        @Override
+        public Collection<DataTable<?>> getDataTables() {
+            return delegate.getDataTables();
+        }
+
+        @SuppressWarnings("unchecked")
+        private Stream<?> deduplicateRows(Stream<?> rows) {
+            Map<String, Row> bestPerCard = new LinkedHashMap<>();
+            rows.forEach(r -> bestPerCard.merge(((Row) r).getCard(), (Row) r,
+                    UpgradesAndMigrations::deduplicate));
+            return bestPerCard.values().stream();
+        }
     }
 
     @Value

@@ -17,40 +17,35 @@ package io.moderne.devcenter.internal;
 
 import lombok.RequiredArgsConstructor;
 import org.openrewrite.DataTable;
+import org.openrewrite.DataTableExecutionContextView;
 import org.openrewrite.ExecutionContext;
 
-import java.util.*;
-
-import static java.util.Collections.emptyMap;
-import static java.util.Collections.newSetFromMap;
+import java.util.Collections;
+import java.util.List;
+import java.util.stream.Collectors;
 
 @RequiredArgsConstructor
 public class DataTableRowWatcher<Row> {
     private final DataTable<Row> dataTable;
     private final ExecutionContext ctx;
 
-    private final Set<DataTable<?>> seen = newSetFromMap(new IdentityHashMap<>());
+    private int snapshotSize;
 
     public void start() {
-        Map<DataTable<?>, List<?>> dataTables = ctx.getMessage("org.openrewrite.dataTables", emptyMap());
-        for (Map.Entry<DataTable<?>, List<?>> dataTableEntry : dataTables.entrySet()) {
-            if (dataTableEntry.getKey().getClass().equals(dataTable.getClass())) {
-                // We only want to process data tables produces in this recipe run; not copies from previous runs
-                seen.add(dataTableEntry.getKey());
-            }
-        }
+        snapshotSize = (int) DataTableExecutionContextView.view(ctx).getDataTableStore()
+                .getRows(dataTable.getName(), dataTable.getGroup())
+                .count();
     }
 
+    @SuppressWarnings("unchecked")
     public List<Row> stop() {
-        Map<DataTable<?>, List<?>> dataTables = ctx.getMessage("org.openrewrite.dataTables", emptyMap());
-        List<Row> rows = new LinkedList<>();
-        for (Map.Entry<DataTable<?>, List<?>> dataTableEntry : dataTables.entrySet()) {
-            if (!seen.contains(dataTableEntry.getKey()) &&
-                    dataTableEntry.getKey().getClass().equals(dataTable.getClass())) {
-                //noinspection unchecked
-                rows.addAll((List<Row>) dataTableEntry.getValue());
-            }
+        List<Row> allRows = DataTableExecutionContextView.view(ctx).getDataTableStore()
+                .getRows(dataTable.getName(), dataTable.getGroup())
+                .map(r -> (Row) r)
+                .collect(Collectors.toList());
+        if (snapshotSize < allRows.size()) {
+            return allRows.subList(snapshotSize, allRows.size());
         }
-        return rows;
+        return Collections.emptyList();
     }
 }
