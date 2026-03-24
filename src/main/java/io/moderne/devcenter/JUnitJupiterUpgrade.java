@@ -64,14 +64,13 @@ public class JUnitJupiterUpgrade extends UpgradeMigrationCard {
                 }
 
                 J j3 = (J) new FindAnnotations("@org.junit.jupiter.api.Test", true).getVisitor().visitNonNull(j2, ctx);
-                if (tree != j3) {
+                if (j2 != j3) {
                     Optional<JavaSourceSet> first = j3.getMarkers().findFirst(JavaSourceSet.class);
                     if (first.isPresent() && first.get().getGavToTypes().keySet().stream()
                             .anyMatch(gav -> gav.startsWith("org.junit.jupiter:junit-jupiter-api:6"))) {
                         upgradesAndMigrations.insertRow(ctx, JUnitJupiterUpgrade.this, Measure.Completed, "JUnit 6");
                         return j3;
                     }
-                    // Can't tell what version of JUnit is on the classpath, but we found JUnit 5 annotations
                     upgradesAndMigrations.insertRow(ctx, JUnitJupiterUpgrade.this, Measure.JUnit5, "JUnit 5");
                 }
                 return j3;
