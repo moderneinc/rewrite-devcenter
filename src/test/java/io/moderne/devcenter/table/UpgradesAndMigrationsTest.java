@@ -1,5 +1,5 @@
 /*
- * Copyright 2025 the original author or authors.
+ * Copyright 2026 the original author or authors.
  * <p>
  * Licensed under the Moderne Source Available License (the "License");
  * you may not use this file except in compliance with the License.
@@ -15,69 +15,88 @@
  */
 package io.moderne.devcenter.table;
 
-import io.moderne.devcenter.SemverMeasure;
-import org.junit.jupiter.api.BeforeEach;
+import io.moderne.devcenter.ParentPomUpgrade;
 import org.junit.jupiter.api.Test;
-import org.openrewrite.DataTable;
-import org.openrewrite.ExecutionContext;
-import org.openrewrite.InMemoryExecutionContext;
+import org.openrewrite.test.RewriteTest;
 
-import java.util.List;
-import java.util.Map;
+import java.nio.file.Paths;
 
-import static io.moderne.devcenter.SemverMeasure.Major;
-import static io.moderne.devcenter.SemverMeasure.Minor;
-import static java.util.Collections.emptyMap;
+import static io.moderne.devcenter.SemverMeasure.*;
+import static io.moderne.devcenter.table.UpgradesAndMigrations.bestRow;
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.openrewrite.maven.Assertions.pomXml;
 
-class UpgradesAndMigrationsTest {
-    ExecutionContext ctx;
-    UpgradesAndMigrations um;
-
-    @BeforeEach
-    void before() {
-        //noinspection DataFlowIssue
-        um = new UpgradesAndMigrations(null);
-        ctx = new InMemoryExecutionContext();
-    }
+class UpgradesAndMigrationsTest implements RewriteTest {
 
     @Test
-    void onlyLeastOrdinalRowRetained() {
-        um.insertRow(ctx, row(Minor, "2.1.0"));
-        um.insertRow(ctx, row(Major, "1.0.0"));
-        um.insertRow(ctx, row(Minor, "2.2.0"));
-
-        assertThat(rows()).containsExactly(row(Major, "1.0.0"));
-    }
-
-    @Test
-    void leastCurrentMinimumVersionRetained() {
-        um.insertRow(ctx, row(Minor, "2.4.0"));
-        um.insertRow(ctx, row(Minor, "2.2.0"));
-        um.insertRow(ctx, row(Minor, "2.3.0"));
-
-        assertThat(rows()).containsExactly(row(Minor, "2.2.0"));
-    }
-
-    @Test
-    void nullCurrentMinimumVersionDoesNotCauseNpe() {
-        um.insertRow(ctx, row(Minor, null));
-        um.insertRow(ctx, row(Minor, "2.2.0"));
-
-        assertThat(rows()).containsExactly(row(Minor, "2.2.0"));
-    }
-
-    private List<UpgradesAndMigrations.Row> rows() {
-        return ctx.<Map<DataTable<?>, List<UpgradesAndMigrations.Row>>>getMessage(
-          "org.openrewrite.dataTables", emptyMap()).get(um);
-    }
-
-    private static UpgradesAndMigrations.Row row(SemverMeasure measure, String version) {
-        return new UpgradesAndMigrations.Row(
-          "cardName",
-          measure.ordinal(),
-          measure.toString(),
-          version
+    void leastOrdinalRetained() {
+        rewriteRun(
+          spec -> spec
+            .recipe(new ParentPomUpgrade("Spring Boot", "org.springframework.boot",
+              "spring-boot-parent", "3.4.5", null))
+            .dataTable(UpgradesAndMigrations.Row.class, rows ->
+              assertThat(rows).containsExactly(
+                new UpgradesAndMigrations.Row("Spring Boot", Major.ordinal(), "Major", "2.7.0")
+              )),
+          pomXml(pom("2.7.0"), expected("2.7.0"),
+            spec -> spec.path(Paths.get("module1/pom.xml"))),
+          pomXml(pom("3.2.0"), expected("3.2.0"),
+            spec -> spec.path(Paths.get("module2/pom.xml")))
         );
+    }
+
+    @Test
+    void leastVersionRetainedAtSameOrdinal() {
+        rewriteRun(
+          spec -> spec
+            .recipe(new ParentPomUpgrade("Spring Boot", "org.springframework.boot",
+              "spring-boot-parent", "3.4.5", null))
+            .dataTable(UpgradesAndMigrations.Row.class, rows ->
+              assertThat(rows).containsExactly(
+                new UpgradesAndMigrations.Row("Spring Boot", Minor.ordinal(), "Minor", "3.1.0")
+              )),
+          pomXml(pom("3.1.0"), expected("3.1.0"),
+            spec -> spec.path(Paths.get("module1/pom.xml"))),
+          pomXml(pom("3.2.0"), expected("3.2.0"),
+            spec -> spec.path(Paths.get("module2/pom.xml")))
+        );
+    }
+
+    @Test
+    void nullVersionDoesNotCauseNpe() {
+        var nullVersion = new UpgradesAndMigrations.Row("card", Minor.ordinal(), "Minor", null);
+        var withVersion = new UpgradesAndMigrations.Row("card", Minor.ordinal(), "Minor", "2.2.0");
+
+        assertThat(bestRow(nullVersion, withVersion)).isEqualTo(withVersion);
+    }
+
+    private static String pom(String version) {
+        return """
+          <project>
+            <groupId>com.example</groupId>
+            <artifactId>example</artifactId>
+            <version>1.0-SNAPSHOT</version>
+            <parent>
+              <groupId>org.springframework.boot</groupId>
+              <artifactId>spring-boot-parent</artifactId>
+              <version>%s</version>
+            </parent>
+          </project>
+          """.formatted(version);
+    }
+
+    private static String expected(String version) {
+        return """
+          <project>
+            <groupId>com.example</groupId>
+            <artifactId>example</artifactId>
+            <version>1.0-SNAPSHOT</version>
+            <!--~~>--><parent>
+              <groupId>org.springframework.boot</groupId>
+              <artifactId>spring-boot-parent</artifactId>
+              <version>%s</version>
+            </parent>
+          </project>
+          """.formatted(version);
     }
 }

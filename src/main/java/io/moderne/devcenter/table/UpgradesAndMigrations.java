@@ -24,8 +24,6 @@ import org.openrewrite.DataTable;
 import org.openrewrite.ExecutionContext;
 import org.openrewrite.semver.LatestRelease;
 
-import java.util.ArrayList;
-import java.util.List;
 import java.util.Map;
 import java.util.Objects;
 import java.util.concurrent.ConcurrentHashMap;
@@ -33,6 +31,7 @@ import java.util.concurrent.ConcurrentHashMap;
 import static org.openrewrite.ExecutionContext.CURRENT_CYCLE;
 
 public class UpgradesAndMigrations extends DataTable<UpgradesAndMigrations.Row> {
+    private final Map<String, Row> bestRows = new ConcurrentHashMap<>();
     @Language("markdown")
     private static final String DISPLAY_NAME = "Upgrades and migrations";
 
@@ -60,47 +59,34 @@ public class UpgradesAndMigrations extends DataTable<UpgradesAndMigrations.Row> 
     }
 
     @Override
+    protected boolean allowWritingInThisCycle(ExecutionContext ctx) {
+        return ctx.getMessage(CURRENT_CYCLE) == null || super.allowWritingInThisCycle(ctx);
+    }
+
+    @Override
     public void insertRow(ExecutionContext ctx, Row row) {
-        // TODO CURRENT_CYCLE value is null in the context of a RewriteTest.
-        if (ctx.getMessage(CURRENT_CYCLE) == null || this.allowWritingInThisCycle(ctx)) {
-            ctx.computeMessage("org.openrewrite.dataTables", row, ConcurrentHashMap<DataTable<?>, List<?>>::new, (extract, allDataTables) -> {
-                List<Row> rows = getRows(allDataTables);
-                int minOrdinal = rows.stream()
-                        .filter(r -> r.getCard().equals(row.getCard()))
-                        .mapToInt(Row::getOrdinal)
-                        .min()
-                        .orElse(Integer.MAX_VALUE);
-                if (row.getOrdinal() <= minOrdinal) {
-                    String currentMinVersion = rows.stream().map(Row::getCurrentMinimumVersion)
-                            .filter(Objects::nonNull).findFirst().orElse(null);
-                    if (row.getOrdinal() == minOrdinal && !row.getCurrentMinimumVersion().equals(currentMinVersion) &&
-                        new LatestRelease(null).compare(null,
-                                currentMinVersion == null ? "999" : currentMinVersion,
-                                row.getCurrentMinimumVersion()) > 0) {
-                        rows.removeIf(r -> row.getCard().equals(r.getCard())); // There can only be one!
-                        rows.add(row);
-                    } else if (row.getOrdinal() != minOrdinal) {
-                        rows.removeIf(r -> row.getCard().equals(r.getCard())); // There can only be one!
-                        rows.add(row);
-                    }
-                }
-                return allDataTables;
-            });
+        Row prev = bestRows.get(row.getCard());
+        Row best = prev == null ? row : bestRow(prev, row);
+        if (best != prev) {
+            bestRows.put(row.getCard(), best);
+            super.insertRow(ctx, row);
         }
     }
 
-    // TODO We have some design challenges with DataTable where two DataTable of the same
-    //  type show up as two different entries. I think only one ultimately is downloadable.
-    private List<Row> getRows(Map<DataTable<?>, List<?>> dataTables) {
-        for (Map.Entry<DataTable<?>, List<?>> dataTableEntry : dataTables.entrySet()) {
-            if (dataTableEntry.getKey().getClass().equals(UpgradesAndMigrations.class)) {
-                //noinspection unchecked
-                return (List<Row>) dataTableEntry.getValue();
-            }
+    public static Row bestRow(Row a, Row b) {
+        if (a.getOrdinal() < b.getOrdinal()) {
+            return a;
         }
-        //noinspection unchecked
-        return (List<Row>) dataTables.computeIfAbsent(this,
-                c -> new ArrayList<>());
+        if (a.getOrdinal() > b.getOrdinal()) {
+            return b;
+        }
+        if (!Objects.equals(a.getCurrentMinimumVersion(), b.getCurrentMinimumVersion()) &&
+            new LatestRelease(null).compare(null,
+                    a.getCurrentMinimumVersion() == null ? "999" : a.getCurrentMinimumVersion(),
+                    b.getCurrentMinimumVersion()) > 0) {
+            return b;
+        }
+        return a;
     }
 
     @Value
