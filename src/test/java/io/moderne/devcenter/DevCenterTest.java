@@ -98,7 +98,7 @@ class DevCenterTest implements RewriteTest {
     @Test
     void upgradeDoesntRequireFix() throws Exception {
         //language=yaml
-        String recipe = """
+        var recipe = """
           type: specs.openrewrite.org/v1beta/recipe
           name: io.moderne.devcenter.JavaVersionNoFix
           displayName: Starter DevCenter Java version upgrade card
@@ -125,7 +125,7 @@ class DevCenterTest implements RewriteTest {
     @Test
     void uniqueCardNames() {
         //language=yaml
-        String recipe = """
+        var recipe = """
           type: specs.openrewrite.org/v1beta/recipe
           name: io.moderne.devcenter.DoubleJava21Misconfiguration
           displayName: Starter DevCenter Java version upgrade card
@@ -251,7 +251,7 @@ class DevCenterTest implements RewriteTest {
     @DocumentExample
     @Test
     void devcenterWithMultipleLibraryUpgradeRecipesHasCorrectData() {
-        @Language("yaml") String recipe = """
+        @Language("yaml") var recipe = """
           type: specs.openrewrite.org/v1beta/recipe
           name: io.moderne.devcenter.TwoLibraryUpgrades
           displayName: Starter DevCenter library version upgrade card

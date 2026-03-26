@@ -22,7 +22,8 @@ import org.openrewrite.ExecutionContext;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.stream.Collectors;
+
+import static java.util.stream.Collectors.toList;
 
 public class DataTableRowWatcher<Row> {
     private final DataTable<Row> dataTable;
@@ -43,7 +44,7 @@ public class DataTableRowWatcher<Row> {
     public List<Row> stop() {
         DataTableStore store = DataTableExecutionContextView.view(ctx).getDataTableStore();
         List<Row> allRows = (List<Row>) store.getRows(dataTable.getName(), dataTable.getGroup())
-                .collect(Collectors.toList());
+                .collect(toList());
         if (allRows.size() > snapshotSize) {
             return new ArrayList<>(allRows.subList(snapshotSize, allRows.size()));
         }

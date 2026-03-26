@@ -32,6 +32,7 @@ import static org.openrewrite.ExecutionContext.CURRENT_CYCLE;
 
 public class UpgradesAndMigrations extends DataTable<UpgradesAndMigrations.Row> {
     private final Map<String, Row> bestRows = new ConcurrentHashMap<>();
+
     @Language("markdown")
     private static final String DISPLAY_NAME = "Upgrades and migrations";
 

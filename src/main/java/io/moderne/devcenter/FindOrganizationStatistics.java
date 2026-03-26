@@ -24,23 +24,18 @@ import org.openrewrite.binary.Binary;
 import org.openrewrite.quark.Quark;
 
 import java.util.Collection;
-import java.util.Collections;
 import java.util.concurrent.atomic.AtomicLong;
+
+import static java.util.Collections.emptyList;
 
 @Value
 @EqualsAndHashCode(callSuper = false)
 public class FindOrganizationStatistics extends ScanningRecipe<AtomicLong> {
     transient OrganizationStatistics orgStats = new OrganizationStatistics(this);
 
-    @Override
-    public String getDisplayName() {
-        return "Find organization statistics";
-    }
+    String displayName = "Find organization statistics";
 
-    @Override
-    public String getDescription() {
-        return "Counts lines of code per repository for organization-level statistics.";
-    }
+    String description = "Counts lines of code per repository for organization-level statistics.";
 
     @Override
     public int maxCycles() {
@@ -73,6 +68,6 @@ public class FindOrganizationStatistics extends ScanningRecipe<AtomicLong> {
     @Override
     public Collection<? extends SourceFile> generate(AtomicLong acc, ExecutionContext ctx) {
         orgStats.insertRow(ctx, new OrganizationStatistics.Row(acc.get()));
-        return Collections.emptyList();
+        return emptyList();
     }
 }

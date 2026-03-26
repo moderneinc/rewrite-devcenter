@@ -19,9 +19,10 @@ import io.moderne.devcenter.ParentPomUpgrade;
 import org.junit.jupiter.api.Test;
 import org.openrewrite.test.RewriteTest;
 
-import java.nio.file.Paths;
+import java.nio.file.Path;
 
-import static io.moderne.devcenter.SemverMeasure.*;
+import static io.moderne.devcenter.SemverMeasure.Major;
+import static io.moderne.devcenter.SemverMeasure.Minor;
 import static io.moderne.devcenter.table.UpgradesAndMigrations.bestRow;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.openrewrite.maven.Assertions.pomXml;
@@ -39,9 +40,9 @@ class UpgradesAndMigrationsTest implements RewriteTest {
                 new UpgradesAndMigrations.Row("Spring Boot", Major.ordinal(), "Major", "2.7.0")
               )),
           pomXml(pom("2.7.0"), expected("2.7.0"),
-            spec -> spec.path(Paths.get("module1/pom.xml"))),
+            spec -> spec.path(Path.of("module1/pom.xml"))),
           pomXml(pom("3.2.0"), expected("3.2.0"),
-            spec -> spec.path(Paths.get("module2/pom.xml")))
+            spec -> spec.path(Path.of("module2/pom.xml")))
         );
     }
 
@@ -56,9 +57,9 @@ class UpgradesAndMigrationsTest implements RewriteTest {
                 new UpgradesAndMigrations.Row("Spring Boot", Minor.ordinal(), "Minor", "3.1.0")
               )),
           pomXml(pom("3.1.0"), expected("3.1.0"),
-            spec -> spec.path(Paths.get("module1/pom.xml"))),
+            spec -> spec.path(Path.of("module1/pom.xml"))),
           pomXml(pom("3.2.0"), expected("3.2.0"),
-            spec -> spec.path(Paths.get("module2/pom.xml")))
+            spec -> spec.path(Path.of("module2/pom.xml")))
         );
     }
 
