@@ -64,7 +64,8 @@ public class GroovyVersionUpgrade extends UpgradeMigrationCard {
             public Tree preVisit(Tree tree, ExecutionContext ctx) {
                 stopAfterPreVisit();
 
-                Tree t = findGroovyDependency(ctx, tree, "org.codehaus.groovy", "groovy");
+                Tree t = findGroovyDependency(ctx, tree, "groovy", "groovy");
+                t = findGroovyDependency(ctx, t, "org.codehaus.groovy", "groovy");
                 t = findGroovyDependency(ctx, t, "org.apache.groovy", "groovy");
 
                 return t;
@@ -90,8 +91,10 @@ public class GroovyVersionUpgrade extends UpgradeMigrationCard {
                     measure = Measure.Groovy4Plus;
                 } else if (actualMajor >= 3) {
                     measure = Measure.Groovy3Plus;
-                } else {
+                } else if (actualMajor >= 2) {
                     measure = Measure.Groovy2Plus;
+                } else {
+                    measure = Measure.Groovy1Plus;
                 }
             }
 
@@ -121,6 +124,7 @@ public class GroovyVersionUpgrade extends UpgradeMigrationCard {
     @Getter
     @RequiredArgsConstructor
     public enum Measure implements DevCenterMeasure {
+        Groovy1Plus("Groovy 1+", "Groovy 1 and later", 1),
         Groovy2Plus("Groovy 2+", "Groovy 2 and later", 2),
         Groovy3Plus("Groovy 3+", "Groovy 3 and later", 3),
         Groovy4Plus("Groovy 4+", "Groovy 4 and later", 4),

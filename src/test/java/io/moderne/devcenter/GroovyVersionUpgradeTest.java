@@ -32,6 +32,7 @@ class GroovyVersionUpgradeTest implements RewriteTest {
 
     private static Stream<Arguments> groovyVersions() {
         return Stream.of(
+          Arguments.of(4, "groovy", "1.0", Groovy1Plus),
           Arguments.of(4, "org.codehaus.groovy", "2.5.14", Groovy2Plus),
           Arguments.of(4, "org.codehaus.groovy", "3.0.19", Groovy3Plus),
           Arguments.of(4, "org.apache.groovy", "4.0.24", Completed),
@@ -79,9 +80,10 @@ class GroovyVersionUpgradeTest implements RewriteTest {
 
     private static Stream<Arguments> versionAndMeasures() {
         return Stream.of(
-          Arguments.of(3, List.of(Groovy2Plus, Completed)),
-          Arguments.of(4, List.of(Groovy2Plus, Groovy3Plus, Completed)),
-          Arguments.of(5, List.of(Groovy2Plus, Groovy3Plus, Groovy4Plus, Completed))
+          Arguments.of(2, List.of(Groovy1Plus, Completed)),
+          Arguments.of(3, List.of(Groovy1Plus, Groovy2Plus, Completed)),
+          Arguments.of(4, List.of(Groovy1Plus, Groovy2Plus, Groovy3Plus, Completed)),
+          Arguments.of(5, List.of(Groovy1Plus, Groovy2Plus, Groovy3Plus, Groovy4Plus, Completed))
         );
     }
 
