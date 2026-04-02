@@ -27,6 +27,7 @@ dependencies {
     implementation("org.openrewrite:rewrite-gradle:${rewriteVersion}")
     implementation("org.openrewrite:rewrite-python:${rewriteVersion}")
     implementation("org.openrewrite:rewrite-javascript:${rewriteVersion}")
+    implementation("org.openrewrite:rewrite-csharp:${rewriteVersion}")
     runtimeOnly("org.openrewrite:rewrite-java-17:${rewriteVersion}")
 
     implementation("org.slf4j:slf4j-api:1.7.+")
