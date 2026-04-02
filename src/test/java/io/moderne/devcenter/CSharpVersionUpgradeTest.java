@@ -48,14 +48,15 @@ class CSharpVersionUpgradeTest implements RewriteTest {
 
     private static Stream<Arguments> dotnetVersions() {
         return Stream.of(
-          Arguments.of(9, "net6.0", "net6.0", DotNet6Plus),
-          Arguments.of(9, "net7.0", "net7.0", DotNet7Plus),
-          Arguments.of(9, "net8.0", "net8.0", DotNet8Plus),
+          Arguments.of(10, "net6.0", "net6.0", DotNet6Plus),
+          Arguments.of(10, "net7.0", "net7.0", DotNet7Plus),
+          Arguments.of(10, "net8.0", "net8.0", DotNet8Plus),
+          Arguments.of(10, "net9.0", "net9.0", DotNet9Plus),
+          Arguments.of(10, "net10.0", "net10.0", Completed),
           Arguments.of(9, "net9.0", "net9.0", Completed),
-          Arguments.of(8, "net8.0", "net8.0", Completed),
-          Arguments.of(9, "netcoreapp3.1", "netcoreapp3.1", DotNetFramework),
-          Arguments.of(9, "net48", "net48", DotNetFramework),
-          Arguments.of(9, "netstandard2.0", "netstandard2.0", DotNetFramework)
+          Arguments.of(10, "netcoreapp3.1", "netcoreapp3.1", DotNetFramework),
+          Arguments.of(10, "net48", "net48", DotNetFramework),
+          Arguments.of(10, "netstandard2.0", "netstandard2.0", DotNetFramework)
         );
     }
 
@@ -118,7 +119,8 @@ class CSharpVersionUpgradeTest implements RewriteTest {
           Arguments.of(7, List.of(DotNetFramework, DotNet6Plus, Completed), 2),
           Arguments.of(8, List.of(DotNetFramework, DotNet6Plus, DotNet7Plus, Completed), 3),
           Arguments.of(9, List.of(DotNetFramework, DotNet6Plus, DotNet7Plus, DotNet8Plus, Completed), 4),
-          Arguments.of(10, List.of(DotNetFramework, DotNet6Plus, DotNet7Plus, DotNet8Plus, DotNet9Plus, Completed), 5)
+          Arguments.of(10, List.of(DotNetFramework, DotNet6Plus, DotNet7Plus, DotNet8Plus, DotNet9Plus, Completed), 5),
+          Arguments.of(11, List.of(DotNetFramework, DotNet6Plus, DotNet7Plus, DotNet8Plus, DotNet9Plus, DotNet10Plus, Completed), 6)
         );
     }
 

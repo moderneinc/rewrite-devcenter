@@ -85,7 +85,9 @@ public class CSharpVersionUpgrade extends UpgradeMigrationCard {
                             if (minTfm != null) {
                                 Measure measure = Measure.Completed;
                                 if (minVersion < majorVersion) {
-                                    if (minVersion >= 9) {
+                                    if (minVersion >= 10) {
+                                        measure = Measure.DotNet10Plus;
+                                    } else if (minVersion >= 9) {
                                         measure = Measure.DotNet9Plus;
                                     } else if (minVersion >= 8) {
                                         measure = Measure.DotNet8Plus;
@@ -149,6 +151,7 @@ public class CSharpVersionUpgrade extends UpgradeMigrationCard {
         DotNet7Plus(".NET 7+", ".NET 7 and later", 7),
         DotNet8Plus(".NET 8+", ".NET 8 and later", 8),
         DotNet9Plus(".NET 9+", ".NET 9 and later", 9),
+        DotNet10Plus(".NET 10+", ".NET 10 and later", 10),
         Completed("Completed", "The upgrade to the desired .NET version is already complete.", 0);
 
         private final @Language("markdown") String name;

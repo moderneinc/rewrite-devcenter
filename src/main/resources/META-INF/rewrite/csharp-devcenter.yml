@@ -23,6 +23,6 @@ description: >-
   Track .NET version adoption across your organization.
 recipeList:
   - io.moderne.devcenter.CSharpVersionUpgrade:
-      majorVersion: 9
+      majorVersion: 10
   - io.moderne.devcenter.FindOrganizationStatistics
   - org.openrewrite.search.FindCommitters
