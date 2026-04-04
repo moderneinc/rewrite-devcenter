@@ -273,7 +273,7 @@ class DevCenterTest implements RewriteTest {
           spec ->
             spec.recipeFromYaml(recipe, "io.moderne.devcenter.TwoLibraryUpgrades")
               .beforeRecipe(withToolingApi())
-              .afterRecipe(after -> assertThat(after.getDataTableRows("io.moderne.devcenter.table.UpgradesAndMigrations"))
+              .afterRecipe(after -> assertThat(after.<UpgradesAndMigrations.Row>getDataTableRows("io.moderne.devcenter.table.UpgradesAndMigrations", "io.moderne.devcenter.upgradesAndMigrations"))
                 .extracting("card", "ordinal", "value", "currentMinimumVersion")
                 .containsExactly(
                   tuple("Move to Spring Boot 4.0", 0, "Major", "2.7.18"),
