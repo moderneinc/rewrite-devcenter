@@ -31,7 +31,11 @@ import java.util.concurrent.ConcurrentHashMap;
 import static org.openrewrite.ExecutionContext.CURRENT_CYCLE;
 
 public class UpgradesAndMigrations extends DataTable<UpgradesAndMigrations.Row> {
-    private final Map<String, Row> bestRows = new ConcurrentHashMap<>();
+    private static final String BEST_ROWS_KEY = UpgradesAndMigrations.class.getName() + ".bestRows";
+
+    private Map<String, Row> getBestRows(ExecutionContext ctx) {
+        return ctx.computeMessageIfAbsent(BEST_ROWS_KEY, k -> new ConcurrentHashMap<>());
+    }
 
     @Language("markdown")
     private static final String DISPLAY_NAME = "Upgrades and migrations";
@@ -67,7 +71,7 @@ public class UpgradesAndMigrations extends DataTable<UpgradesAndMigrations.Row> 
     @Override
     public void insertRow(ExecutionContext ctx, Row row) {
         boolean[] improved = {false};
-        bestRows.compute(row.getCard(), (card, prev) -> {
+        getBestRows(ctx).compute(row.getCard(), (card, prev) -> {
             Row best = prev == null ? row : bestRow(prev, row);
             if (best != prev) {
                 improved[0] = true;
@@ -118,9 +122,5 @@ public class UpgradesAndMigrations extends DataTable<UpgradesAndMigrations.Row> 
         @Column(displayName = "Minimum version",
                 description = "The minimum matching version that is currently in use.")
         String currentMinimumVersion;
-    }
-
-    public void onComplete() {
-        bestRows.clear();
     }
 }

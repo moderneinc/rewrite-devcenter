@@ -33,9 +33,4 @@ public abstract class UpgradeMigrationCard extends Recipe {
     public int ordinal(DevCenterMeasure measure) {
         return getMeasures().indexOf(measure);
     }
-
-    @Override
-    public void onComplete(ExecutionContext ctx) {
-        upgradesAndMigrations.onComplete();
-    }
 }
