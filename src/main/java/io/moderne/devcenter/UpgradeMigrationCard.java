@@ -17,6 +17,7 @@ package io.moderne.devcenter;
 
 import io.moderne.devcenter.table.UpgradesAndMigrations;
 import org.jspecify.annotations.Nullable;
+import org.openrewrite.ExecutionContext;
 import org.openrewrite.Recipe;
 
 import java.util.List;
@@ -31,5 +32,10 @@ public abstract class UpgradeMigrationCard extends Recipe {
 
     public int ordinal(DevCenterMeasure measure) {
         return getMeasures().indexOf(measure);
+    }
+
+    @Override
+    public void onComplete(ExecutionContext ctx) {
+        upgradesAndMigrations.onComplete();
     }
 }

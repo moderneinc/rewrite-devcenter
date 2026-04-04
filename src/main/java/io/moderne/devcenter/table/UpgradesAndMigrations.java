@@ -119,4 +119,8 @@ public class UpgradesAndMigrations extends DataTable<UpgradesAndMigrations.Row> 
                 description = "The minimum matching version that is currently in use.")
         String currentMinimumVersion;
     }
+
+    public void onComplete() {
+        bestRows.clear();
+    }
 }
