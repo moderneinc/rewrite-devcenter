@@ -17,7 +17,10 @@ package io.moderne.devcenter;
 
 import io.moderne.devcenter.table.UpgradesAndMigrations;
 import org.junit.jupiter.api.Test;
-import org.openrewrite.*;
+import org.openrewrite.DataTableExecutionContextView;
+import org.openrewrite.ExecutionContext;
+import org.openrewrite.InMemoryDataTableStore;
+import org.openrewrite.InMemoryExecutionContext;
 
 import static org.assertj.core.api.Assertions.assertThat;
 

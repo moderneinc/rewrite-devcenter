@@ -24,7 +24,11 @@ import org.openrewrite.test.RewriteTest;
 import java.util.List;
 import java.util.stream.Stream;
 
-import static io.moderne.devcenter.GroovyVersionUpgrade.Measure.*;
+import static io.moderne.devcenter.GroovyVersionUpgrade.Measure.Completed;
+import static io.moderne.devcenter.GroovyVersionUpgrade.Measure.Groovy1Plus;
+import static io.moderne.devcenter.GroovyVersionUpgrade.Measure.Groovy2Plus;
+import static io.moderne.devcenter.GroovyVersionUpgrade.Measure.Groovy3Plus;
+import static io.moderne.devcenter.GroovyVersionUpgrade.Measure.Groovy4Plus;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.openrewrite.maven.Assertions.pomXml;
 
