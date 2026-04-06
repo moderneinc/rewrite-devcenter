@@ -17,7 +17,6 @@ package io.moderne.devcenter;
 
 import io.moderne.devcenter.table.UpgradesAndMigrations;
 import org.jspecify.annotations.Nullable;
-import org.openrewrite.ExecutionContext;
 import org.openrewrite.Recipe;
 
 import java.util.List;

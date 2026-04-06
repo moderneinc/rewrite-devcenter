@@ -20,6 +20,7 @@ import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.Arguments;
 import org.junit.jupiter.params.provider.MethodSource;
+import org.openrewrite.DocumentExample;
 import org.openrewrite.javascript.marker.NodeResolutionResult;
 import org.openrewrite.test.RewriteTest;
 
@@ -56,6 +57,23 @@ class NodeVersionUpgradeTest implements RewriteTest {
         );
     }
 
+    @DocumentExample
+    @Test
+    void skipsWhenNoNodeEngine() {
+        var recipe = new NodeVersionUpgrade(22, null);
+        rewriteRun(
+          spec -> spec.recipe(recipe),
+          java(
+            "class Test {}",
+            spec -> spec.markers(new NodeResolutionResult(
+              UUID.randomUUID(), "test-project", "1.0.0", null, ".",
+              null, List.of(), List.of(), List.of(), List.of(), List.of(), List.of(),
+              null, Map.of("npm", ">=9"), null
+            ))
+          )
+        );
+    }
+
     @MethodSource("nodeVersions")
     @ParameterizedTest
     void detectsNodeVersion(int targetMajor, String nodeConstraint,
@@ -88,22 +106,6 @@ class NodeVersionUpgradeTest implements RewriteTest {
               UUID.randomUUID(), "test-project", "1.0.0", null, ".",
               null, List.of(), List.of(), List.of(), List.of(), List.of(), List.of(),
               null, null, null
-            ))
-          )
-        );
-    }
-
-    @Test
-    void skipsWhenNoNodeEngine() {
-        var recipe = new NodeVersionUpgrade(22, null);
-        rewriteRun(
-          spec -> spec.recipe(recipe),
-          java(
-            "class Test {}",
-            spec -> spec.markers(new NodeResolutionResult(
-              UUID.randomUUID(), "test-project", "1.0.0", null, ".",
-              null, List.of(), List.of(), List.of(), List.of(), List.of(), List.of(),
-              null, Map.of("npm", ">=9"), null
             ))
           )
         );

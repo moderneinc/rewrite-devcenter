@@ -42,9 +42,9 @@ public class GroovyVersionUpgrade extends UpgradeMigrationCard {
             example = "4")
     int majorVersion;
 
-    @Option(displayName = "Upgrade recipe",
-            description = "The recipe to use to upgrade.",
-            required = false)
+    @Option(example = "TODO Provide a usage example for the docs", displayName = "Upgrade recipe",
+        description = "The recipe to use to upgrade.",
+        required = false)
     @Nullable
     String upgradeRecipe;
 
@@ -66,9 +66,7 @@ public class GroovyVersionUpgrade extends UpgradeMigrationCard {
 
                 Tree t = findGroovyDependency(ctx, tree, "groovy", "groovy");
                 t = findGroovyDependency(ctx, t, "org.codehaus.groovy", "groovy");
-                t = findGroovyDependency(ctx, t, "org.apache.groovy", "groovy");
-
-                return t;
+                return findGroovyDependency(ctx, t, "org.apache.groovy", "groovy");
             }
         });
     }

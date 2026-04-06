@@ -20,11 +20,11 @@ import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.Arguments;
 import org.junit.jupiter.params.provider.MethodSource;
+import org.openrewrite.DocumentExample;
 import org.openrewrite.csharp.marker.MSBuildProject;
 import org.openrewrite.test.RewriteTest;
 
 import java.util.List;
-import java.util.Map;
 import java.util.UUID;
 import java.util.stream.Stream;
 
@@ -60,6 +60,25 @@ class CSharpVersionUpgradeTest implements RewriteTest {
         );
     }
 
+    @DocumentExample
+    @Test
+    void usesLowestVersionWhenMultiTargeting() {
+        var recipe = new CSharpVersionUpgrade(9, null);
+        rewriteRun(
+          spec -> spec
+            .recipe(recipe)
+            .dataTable(UpgradesAndMigrations.Row.class, rows ->
+              assertThat(rows).containsExactly(
+                new UpgradesAndMigrations.Row("Move to .NET 9",
+                  recipe.ordinal(DotNet6Plus), DotNet6Plus.getName(), "net6.0")
+              )),
+          java(
+            "class Test {}",
+            spec -> spec.markers(msBuildMarker("net6.0", "net8.0"))
+          )
+        );
+    }
+
     @MethodSource("dotnetVersions")
     @ParameterizedTest
     void detectsDotNetVersion(int targetMajor, String tfm,
@@ -77,24 +96,6 @@ class CSharpVersionUpgradeTest implements RewriteTest {
           java(
             "class Test {}",
             spec -> spec.markers(msBuildMarker(tfm))
-          )
-        );
-    }
-
-    @Test
-    void usesLowestVersionWhenMultiTargeting() {
-        var recipe = new CSharpVersionUpgrade(9, null);
-        rewriteRun(
-          spec -> spec
-            .recipe(recipe)
-            .dataTable(UpgradesAndMigrations.Row.class, rows ->
-              assertThat(rows).containsExactly(
-                new UpgradesAndMigrations.Row("Move to .NET 9",
-                  recipe.ordinal(DotNet6Plus), DotNet6Plus.getName(), "net6.0")
-              )),
-          java(
-            "class Test {}",
-            spec -> spec.markers(msBuildMarker("net6.0", "net8.0"))
           )
         );
     }

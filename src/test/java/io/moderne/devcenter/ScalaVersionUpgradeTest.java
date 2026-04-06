@@ -24,7 +24,11 @@ import org.openrewrite.test.RewriteTest;
 import java.util.List;
 import java.util.stream.Stream;
 
-import static io.moderne.devcenter.ScalaVersionUpgrade.Measure.*;
+import static io.moderne.devcenter.ScalaVersionUpgrade.Measure.Completed;
+import static io.moderne.devcenter.ScalaVersionUpgrade.Measure.Scala211Plus;
+import static io.moderne.devcenter.ScalaVersionUpgrade.Measure.Scala212Plus;
+import static io.moderne.devcenter.ScalaVersionUpgrade.Measure.Scala213Plus;
+import static io.moderne.devcenter.ScalaVersionUpgrade.Measure.Scala3Plus;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.openrewrite.maven.Assertions.pomXml;
 

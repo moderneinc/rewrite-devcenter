@@ -45,9 +45,9 @@ public class PythonVersionUpgrade extends UpgradeMigrationCard {
             example = "13")
     int minorVersion;
 
-    @Option(displayName = "Upgrade recipe",
-            description = "The recipe to use to upgrade.",
-            required = false)
+    @Option(example = "TODO Provide a usage example for the docs", displayName = "Upgrade recipe",
+        description = "The recipe to use to upgrade.",
+        required = false)
     @Nullable
     String upgradeRecipe;
 

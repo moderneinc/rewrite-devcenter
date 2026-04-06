@@ -42,9 +42,9 @@ public class KotlinVersionUpgrade extends UpgradeMigrationCard {
             example = "2.1")
     String version;
 
-    @Option(displayName = "Upgrade recipe",
-            description = "The recipe to use to upgrade.",
-            required = false)
+    @Option(example = "TODO Provide a usage example for the docs", displayName = "Upgrade recipe",
+        description = "The recipe to use to upgrade.",
+        required = false)
     @Nullable
     String upgradeRecipe;
 

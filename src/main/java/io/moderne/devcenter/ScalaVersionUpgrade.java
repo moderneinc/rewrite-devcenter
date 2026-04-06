@@ -42,9 +42,9 @@ public class ScalaVersionUpgrade extends UpgradeMigrationCard {
             example = "3")
     int majorVersion;
 
-    @Option(displayName = "Upgrade recipe",
-            description = "The recipe to use to upgrade.",
-            required = false)
+    @Option(example = "TODO Provide a usage example for the docs", displayName = "Upgrade recipe",
+        description = "The recipe to use to upgrade.",
+        required = false)
     @Nullable
     String upgradeRecipe;
 
