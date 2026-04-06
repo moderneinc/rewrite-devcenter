@@ -42,7 +42,7 @@ public class ScalaVersionUpgrade extends UpgradeMigrationCard {
             example = "3")
     int majorVersion;
 
-    @Option(example = "TODO Provide a usage example for the docs", displayName = "Upgrade recipe",
+    @Option(example = "org.openrewrite.scala.migrate.UpgradeScala_2_12", displayName = "Upgrade recipe",
         description = "The recipe to use to upgrade.",
         required = false)
     @Nullable

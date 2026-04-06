@@ -46,7 +46,7 @@ public class NodeVersionUpgrade extends UpgradeMigrationCard {
             example = "22")
     int majorVersion;
 
-    @Option(example = "TODO Provide a usage example for the docs", displayName = "Upgrade recipe",
+    @Option(displayName = "Upgrade recipe",
         description = "The recipe to use to upgrade.",
         required = false)
     @Nullable

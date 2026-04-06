@@ -48,7 +48,7 @@ public class CSharpVersionUpgrade extends UpgradeMigrationCard {
             example = "9")
     int majorVersion;
 
-    @Option(example = "TODO Provide a usage example for the docs", displayName = "Upgrade recipe",
+    @Option(displayName = "Upgrade recipe",
         description = "The recipe to use to upgrade.",
         required = false)
     @Nullable

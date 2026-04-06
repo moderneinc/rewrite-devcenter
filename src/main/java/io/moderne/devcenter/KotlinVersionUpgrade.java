@@ -42,7 +42,7 @@ public class KotlinVersionUpgrade extends UpgradeMigrationCard {
             example = "2.1")
     String version;
 
-    @Option(example = "TODO Provide a usage example for the docs", displayName = "Upgrade recipe",
+    @Option(example = "org.openrewrite.kotlin.migrate.UpgradeToKotlin2", displayName = "Upgrade recipe",
         description = "The recipe to use to upgrade.",
         required = false)
     @Nullable

@@ -45,7 +45,7 @@ public class PythonVersionUpgrade extends UpgradeMigrationCard {
             example = "13")
     int minorVersion;
 
-    @Option(example = "TODO Provide a usage example for the docs", displayName = "Upgrade recipe",
+    @Option(example = "org.openrewrite.python.migrate.UpgradeToPython313", displayName = "Upgrade recipe",
         description = "The recipe to use to upgrade.",
         required = false)
     @Nullable
