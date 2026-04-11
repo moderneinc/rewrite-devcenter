@@ -23,7 +23,7 @@ import java.util.List;
 
 public abstract class UpgradeMigrationCard extends Recipe {
     protected transient UpgradesAndMigrations upgradesAndMigrations = new UpgradesAndMigrations(this)
-            .withGroup("io.moderne.devcenter.upgradesAndMigrations");
+            .withGroup(UpgradesAndMigrations.GROUP);
 
     public abstract List<DevCenterMeasure> getMeasures();
 
