@@ -31,6 +31,14 @@ import java.util.concurrent.ConcurrentHashMap;
 import static org.openrewrite.ExecutionContext.CURRENT_CYCLE;
 
 public class UpgradesAndMigrations extends DataTable<UpgradesAndMigrations.Row> {
+    /**
+     * The community group name that all {@link io.moderne.devcenter.UpgradeMigrationCard}
+     * subclasses use to share a single data table bucket. Downstream consumers (the Moderne
+     * CLI and SaaS worker) can reference this constant to compose the on-disk CSV filename
+     * via {@code CsvDataTableStore.fileKey()} without duplicating the literal.
+     */
+    public static final String GROUP = "io.moderne.devcenter.upgradesAndMigrations";
+
     private static final String BEST_ROWS_KEY = UpgradesAndMigrations.class.getName() + ".bestRows";
 
     private Map<String, Row> getBestRows(ExecutionContext ctx) {
