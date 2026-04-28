@@ -1,0 +1,5 @@
+Package name,Afferent coupling (Ca),Efferent coupling (Ce),Instability,Abstractness,Distance from main sequence,In cycle,Cycle members
+io.moderne.devcenter.table,1,1,0.5,0.0,0.5,true,"io.moderne.devcenter,io.moderne.devcenter.table"
+io.moderne.devcenter,2,2,0.5,0.0392156862745098,0.4607843137254902,true,"io.moderne.devcenter,io.moderne.devcenter.table"
+io.moderne.devcenter.result,0,1,1.0,0.0,0.0,false,
+io.moderne.devcenter.internal,1,0,0.0,0.0,1.0,false,
