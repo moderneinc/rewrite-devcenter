@@ -15,20 +15,23 @@
  */
 package io.moderne.devcenter.internal;
 
+import org.jspecify.annotations.Nullable;
 import org.openrewrite.DataTable;
 import org.openrewrite.DataTableExecutionContextView;
 import org.openrewrite.DataTableStore;
 import org.openrewrite.ExecutionContext;
 
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.List;
-
-import static java.util.stream.Collectors.toList;
+import java.util.Objects;
+import java.util.stream.Stream;
 
 public class DataTableRowWatcher<Row> {
     private final DataTable<Row> dataTable;
     private final ExecutionContext ctx;
-    private int snapshotSize;
+    private final List<Row> captured = new ArrayList<>();
+    private @Nullable DataTableStore originalStore;
 
     public DataTableRowWatcher(DataTable<Row> dataTable, ExecutionContext ctx) {
         this.dataTable = dataTable;
@@ -36,18 +39,53 @@ public class DataTableRowWatcher<Row> {
     }
 
     public void start() {
-        DataTableStore store = DataTableExecutionContextView.view(ctx).getDataTableStore();
-        snapshotSize = (int) store.getRows(dataTable.getName(), dataTable.getGroup()).count();
+        DataTableExecutionContextView view = DataTableExecutionContextView.view(ctx);
+        originalStore = view.getDataTableStore();
+        view.setDataTableStore(new RecordingStore(originalStore));
     }
 
-    @SuppressWarnings("unchecked")
     public List<Row> stop() {
-        DataTableStore store = DataTableExecutionContextView.view(ctx).getDataTableStore();
-        List<Row> allRows = (List<Row>) store.getRows(dataTable.getName(), dataTable.getGroup())
-                .collect(toList());
-        if (allRows.size() > snapshotSize) {
-            return new ArrayList<>(allRows.subList(snapshotSize, allRows.size()));
+        DataTableExecutionContextView.view(ctx).setDataTableStore(
+                Objects.requireNonNull(originalStore, "stop() called before start()"));
+        return new ArrayList<>(captured);
+    }
+
+    private boolean matchesTarget(DataTable<?> table) {
+        if (!table.getName().equals(dataTable.getName())) {
+            return false;
         }
-        return new ArrayList<>();
+        return Objects.equals(bucketKey(table), bucketKey(dataTable));
+    }
+
+    private static @Nullable String bucketKey(DataTable<?> table) {
+        return table.getGroup() != null ? table.getGroup() : table.getInstanceName();
+    }
+
+    private final class RecordingStore implements DataTableStore {
+        private final DataTableStore delegate;
+
+        RecordingStore(DataTableStore delegate) {
+            this.delegate = delegate;
+        }
+
+        @Override
+        public <R> void insertRow(DataTable<R> table, ExecutionContext ctx, R row) {
+            delegate.insertRow(table, ctx, row);
+            if (matchesTarget(table)) {
+                @SuppressWarnings("unchecked")
+                Row casted = (Row) row;
+                captured.add(casted);
+            }
+        }
+
+        @Override
+        public Stream<?> getRows(String dataTableName, @Nullable String group) {
+            return delegate.getRows(dataTableName, group);
+        }
+
+        @Override
+        public Collection<DataTable<?>> getDataTables() {
+            return delegate.getDataTables();
+        }
     }
 }
