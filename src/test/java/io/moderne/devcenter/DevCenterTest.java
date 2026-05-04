@@ -15,22 +15,32 @@
  */
 package io.moderne.devcenter;
 
+import de.siegmar.fastcsv.reader.CommentStrategy;
+import de.siegmar.fastcsv.reader.CsvReader;
+import de.siegmar.fastcsv.reader.NamedCsvRecord;
 import io.moderne.devcenter.table.UpgradesAndMigrations;
 import org.intellij.lang.annotations.Language;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.io.TempDir;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.Arguments;
 import org.junit.jupiter.params.provider.MethodSource;
+import org.openrewrite.CsvDataTableStore;
+import org.openrewrite.DataTableExecutionContextView;
 import org.openrewrite.DocumentExample;
+import org.openrewrite.InMemoryExecutionContext;
 import org.openrewrite.Recipe;
 import org.openrewrite.config.Environment;
 import org.openrewrite.config.YamlResourceLoader;
 import org.openrewrite.test.RewriteTest;
 
 import java.io.ByteArrayInputStream;
+import java.io.IOException;
 import java.net.URI;
 import java.nio.charset.StandardCharsets;
+import java.nio.file.Files;
+import java.nio.file.Path;
 import java.util.List;
 import java.util.Properties;
 import java.util.stream.Stream;
@@ -246,6 +256,99 @@ class DevCenterTest implements RewriteTest {
               }
           })
         );
+    }
+
+    @Test
+    void libraryUpgradeUnderCsvDataTableStore(@TempDir Path tempDir) throws Exception {
+        Path csvDir = tempDir.resolve("datatables");
+        Files.createDirectories(csvDir);
+        CsvDataTableStore store = new CsvDataTableStore(csvDir);
+        InMemoryExecutionContext ctx = new InMemoryExecutionContext();
+        DataTableExecutionContextView.view(ctx).setDataTableStore(store);
+
+        @Language("yaml") var recipe = """
+          type: specs.openrewrite.org/v1beta/recipe
+          name: io.moderne.devcenter.SpringBoot4Card
+          displayName: Move to Spring Boot 4.0
+          description: Spring Boot 4.0 upgrade card.
+          recipeList:
+            - io.moderne.devcenter.LibraryUpgrade:
+                cardName: Move to Spring Boot 4.0
+                groupIdPattern: org.springframework.boot
+                artifactIdPattern: '*'
+                version: 4.0.0
+                upgradeRecipe: io.moderne.java.spring.boot4.UpgradeSpringBoot_4_0
+          """;
+        rewriteRun(
+          spec ->
+            spec.recipeFromYaml(recipe, "io.moderne.devcenter.SpringBoot4Card")
+              .executionContext(ctx)
+              .beforeRecipe(withToolingApi()),
+          //language=Groovy
+          buildGradle(
+            """
+              plugins {
+                  id "java"
+              }
+              repositories {
+                  mavenCentral()
+              }
+              dependencies {
+                  implementation "org.springframework.boot:spring-boot-starter:3.1.2"
+              }
+              """,
+            """
+              plugins {
+                  id "java"
+              }
+              repositories {
+                  mavenCentral()
+              }
+              dependencies {
+                  /*~~(org.springframework.boot:spring-boot-autoconfigure:3.1.2,org.springframework.boot:spring-boot-starter-logging:3.1.2,org.springframework.boot:spring-boot-starter:3.1.2,org.springframework.boot:spring-boot:3.1.2)~~>*/implementation "org.springframework.boot:spring-boot-starter:3.1.2"
+              }
+              """
+          )
+        );
+        store.close();
+
+        Path depsCsv = csvDir.resolve("org.openrewrite.maven.table.DependenciesInUse.csv");
+        assertThat(depsCsv).exists();
+        assertThat(readCsvRows(depsCsv))
+          .as("Dependency is resolved and written to DependenciesInUse.csv")
+          .anySatisfy(row -> {
+              assertThat(row.getField("groupId")).isEqualTo("org.springframework.boot");
+              assertThat(row.getField("artifactId")).isEqualTo("spring-boot-starter");
+              assertThat(row.getField("version")).isEqualTo("3.1.2");
+          });
+
+        Path upgradesCsv = findCsv(csvDir, "io.moderne.devcenter.table.UpgradesAndMigrations");
+        assertThat(readCsvRows(upgradesCsv))
+          .singleElement()
+          .satisfies(row -> {
+              assertThat(row.getField("card")).isEqualTo("Move to Spring Boot 4.0");
+              assertThat(row.getField("value")).isEqualTo("Major");
+              assertThat(row.getField("currentMinimumVersion")).isEqualTo("3.1.2");
+          });
+    }
+
+    private static List<NamedCsvRecord> readCsvRows(Path csv) throws IOException {
+        try (CsvReader<NamedCsvRecord> reader = CsvReader.builder()
+                .commentCharacter('#')
+                .commentStrategy(CommentStrategy.SKIP)
+                .ofNamedCsvRecord(csv)) {
+            return reader.stream().toList();
+        }
+    }
+
+    private static Path findCsv(Path dir, String namePrefix) throws IOException {
+        try (Stream<Path> files = Files.list(dir)) {
+            return files
+              .filter(p -> p.getFileName().toString().startsWith(namePrefix))
+              .findFirst()
+              .orElseThrow(() -> new AssertionError(
+                "No CSV starting with '" + namePrefix + "' in " + dir));
+        }
     }
 
     @DocumentExample
