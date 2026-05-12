@@ -428,21 +428,7 @@ class DevCenterTest implements RewriteTest {
                   implementation "org.springframework.boot:spring-boot-starter-web"
                   implementation "commons-collections:commons-collections:2.0"
               }
-              """,
-            """
-            plugins {
-                id "java"
-                id 'org.springframework.boot' version '2.7.18'
-                id 'io.spring.dependency-management' version '1.1.7'
-            }
-            repositories {
-                mavenCentral()
-            }
-            dependencies {
-                /*~~(org.springframework.boot:spring-boot-autoconfigure:2.7.18,org.springframework.boot:spring-boot-starter-json:2.7.18,org.springframework.boot:spring-boot-starter-logging:2.7.18,org.springframework.boot:spring-boot-starter-tomcat:2.7.18,org.springframework.boot:spring-boot-starter-web:2.7.18,org.springframework.boot:spring-boot-starter:2.7.18,org.springframework.boot:spring-boot:2.7.18)~~>*/implementation "org.springframework.boot:spring-boot-starter-web"
-                /*~~(commons-collections:commons-collections:2.0)~~>*/implementation "commons-collections:commons-collections:2.0"
-            }
-            """
+              """
           )
         );
     }
