@@ -36,25 +36,23 @@ class ScalaVersionUpgradeTest implements RewriteTest {
 
     private static Stream<Arguments> scalaVersions() {
         return Stream.of(
-          Arguments.of(3, "org.scala-lang", "scala-library", "2.11.12", Scala211Plus, 1),
-          Arguments.of(3, "org.scala-lang", "scala-library", "2.12.18", Scala212Plus, 1),
-          Arguments.of(3, "org.scala-lang", "scala-library", "2.13.12", Scala213Plus, 1),
-          Arguments.of(3, "org.scala-lang", "scala3-library_3", "3.3.1", Completed, 2),
-          Arguments.of(3, "org.scala-lang", "scala3-library_3", "3.5.0", Completed, 2),
-          Arguments.of(4, "org.scala-lang", "scala3-library_3", "3.5.0", Scala3Plus, 2)
+          Arguments.of(3, "org.scala-lang", "scala-library", "2.11.12", Scala211Plus),
+          Arguments.of(3, "org.scala-lang", "scala-library", "2.12.18", Scala212Plus),
+          Arguments.of(3, "org.scala-lang", "scala-library", "2.13.12", Scala213Plus),
+          Arguments.of(3, "org.scala-lang", "scala3-library_3", "3.3.1", Completed),
+          Arguments.of(3, "org.scala-lang", "scala3-library_3", "3.5.0", Completed),
+          Arguments.of(4, "org.scala-lang", "scala3-library_3", "3.5.0", Scala3Plus)
         );
     }
 
     @MethodSource("scalaVersions")
     @ParameterizedTest
     void detectsScalaVersion(int targetVersion, String groupId, String artifactId,
-                             String currentVersion, ScalaVersionUpgrade.Measure measure,
-                             int expectedCycles) {
+                             String currentVersion, ScalaVersionUpgrade.Measure measure) {
         var recipe = new ScalaVersionUpgrade(targetVersion, null);
         rewriteRun(
           spec -> spec
             .recipe(recipe)
-            .expectedCyclesThatMakeChanges(expectedCycles)
             .dataTable(UpgradesAndMigrations.Row.class, rows ->
               assertThat(rows).containsExactly(
                 new UpgradesAndMigrations.Row("Move to Scala " + targetVersion,
@@ -75,11 +73,7 @@ class ScalaVersionUpgradeTest implements RewriteTest {
                     </dependency>
                 </dependencies>
               </project>
-              """.formatted(groupId, artifactId, currentVersion),
-            spec -> spec.after(after -> {
-                assertThat(after).isNotNull();
-                return after;
-            })
+              """.formatted(groupId, artifactId, currentVersion)
           )
         );
     }

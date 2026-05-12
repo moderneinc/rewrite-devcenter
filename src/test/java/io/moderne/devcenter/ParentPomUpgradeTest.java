@@ -74,18 +74,6 @@ class ParentPomUpgradeTest implements RewriteTest {
                     <version>%s</version>
                 </parent>
               </project>
-              """.formatted(currentVersion),
-            """
-              <project>
-                <groupId>com.example</groupId>
-                <artifactId>example</artifactId>
-                <version>1.0-SNAPSHOT</version>
-                     <!--~~>--><parent>
-                    <groupId>org.springframework.boot</groupId>
-                    <artifactId>spring-boot-parent</artifactId>
-                    <version>%s</version>
-                </parent>
-              </project>
               """.formatted(currentVersion)
           )
         );

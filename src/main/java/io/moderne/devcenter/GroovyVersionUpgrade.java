@@ -15,7 +15,7 @@
  */
 package io.moderne.devcenter;
 
-import io.moderne.devcenter.internal.DataTableRowWatcher;
+import io.moderne.devcenter.internal.ResolvedDependencyVersions;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
@@ -24,9 +24,7 @@ import org.intellij.lang.annotations.Language;
 import org.jspecify.annotations.Nullable;
 import org.openrewrite.*;
 import org.openrewrite.gradle.IsBuildGradle;
-import org.openrewrite.java.dependencies.DependencyInsight;
 import org.openrewrite.maven.search.FindMavenProject;
-import org.openrewrite.maven.table.DependenciesInUse;
 
 import java.util.List;
 import java.util.stream.Stream;
@@ -63,24 +61,21 @@ public class GroovyVersionUpgrade extends UpgradeMigrationCard {
             @Override
             public Tree preVisit(Tree tree, ExecutionContext ctx) {
                 stopAfterPreVisit();
-
-                Tree t = findGroovyDependency(ctx, tree, "groovy", "groovy");
-                t = findGroovyDependency(ctx, t, "org.codehaus.groovy", "groovy");
-                return findGroovyDependency(ctx, t, "org.apache.groovy", "groovy");
+                if (!(tree instanceof SourceFile)) {
+                    return tree;
+                }
+                SourceFile source = (SourceFile) tree;
+                findGroovyDependency(ctx, source, "groovy", "groovy");
+                findGroovyDependency(ctx, source, "org.codehaus.groovy", "groovy");
+                findGroovyDependency(ctx, source, "org.apache.groovy", "groovy");
+                return tree;
             }
         });
     }
 
-    private Tree findGroovyDependency(ExecutionContext ctx, Tree tree, String groupId, String artifactId) {
-        DependencyInsight dependencyInsight = new DependencyInsight(groupId, artifactId, null, null);
-        DataTableRowWatcher<DependenciesInUse.Row> dataTableWatcher = new DataTableRowWatcher<>(dependencyInsight.getDependenciesInUse(), ctx);
-        dataTableWatcher.start();
-
-        Tree t = dependencyInsight.getVisitor().visitNonNull(tree, ctx);
-
-        List<DependenciesInUse.Row> dependenciesInUse = dataTableWatcher.stop();
-        for (DependenciesInUse.Row row : dependenciesInUse) {
-            int actualMajor = parseMajorVersion(row.getVersion());
+    private void findGroovyDependency(ExecutionContext ctx, SourceFile source, String groupId, String artifactId) {
+        for (String version : ResolvedDependencyVersions.findVersions(source, groupId, artifactId)) {
+            int actualMajor = parseMajorVersion(version);
             Measure measure = Measure.Completed;
             if (actualMajor < majorVersion) {
                 if (actualMajor >= 5) {
@@ -96,10 +91,8 @@ public class GroovyVersionUpgrade extends UpgradeMigrationCard {
                 }
             }
 
-            upgradesAndMigrations.insertRow(ctx, GroovyVersionUpgrade.this,
-                    measure, row.getVersion());
+            upgradesAndMigrations.insertRow(ctx, GroovyVersionUpgrade.this, measure, version);
         }
-        return t;
     }
 
     static int parseMajorVersion(String version) {

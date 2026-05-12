@@ -70,20 +70,6 @@ class LibraryUpgradeTest implements RewriteTest {
                     </dependency>
                 </dependencies>
               </project>
-              """.formatted(currentVersion),
-            """
-              <project>
-                <groupId>com.example</groupId>
-                <artifactId>example</artifactId>
-                <version>1.0-SNAPSHOT</version>
-                <dependencies>
-                    <!--~~(com.fasterxml.jackson.core:jackson-annotations:%1$s,com.fasterxml.jackson.core:jackson-core:%1$s,com.fasterxml.jackson.core:jackson-databind:%1$s,com.fasterxml.jackson.module:jackson-module-parameter-names:%1$s)~~>--><dependency>
-                        <groupId>com.fasterxml.jackson.module</groupId>
-                        <artifactId>jackson-module-parameter-names</artifactId>
-                        <version>%1$s</version>
-                    </dependency>
-                </dependencies>
-              </project>
               """.formatted(currentVersion)
           )
         );

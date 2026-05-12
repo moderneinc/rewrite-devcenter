@@ -71,11 +71,7 @@ class KotlinVersionUpgradeTest implements RewriteTest {
                     </dependency>
                 </dependencies>
               </project>
-              """.formatted(currentVersion),
-            spec -> spec.after(after -> {
-                assertThat(after).isNotNull();
-                return after;
-            })
+              """.formatted(currentVersion)
           )
         );
     }

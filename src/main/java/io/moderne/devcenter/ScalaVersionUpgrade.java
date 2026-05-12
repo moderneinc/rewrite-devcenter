@@ -15,7 +15,7 @@
  */
 package io.moderne.devcenter;
 
-import io.moderne.devcenter.internal.DataTableRowWatcher;
+import io.moderne.devcenter.internal.ResolvedDependencyVersions;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
@@ -24,9 +24,7 @@ import org.intellij.lang.annotations.Language;
 import org.jspecify.annotations.Nullable;
 import org.openrewrite.*;
 import org.openrewrite.gradle.IsBuildGradle;
-import org.openrewrite.java.dependencies.DependencyInsight;
 import org.openrewrite.maven.search.FindMavenProject;
-import org.openrewrite.maven.table.DependenciesInUse;
 
 import java.util.List;
 import java.util.stream.Stream;
@@ -63,47 +61,33 @@ public class ScalaVersionUpgrade extends UpgradeMigrationCard {
             @Override
             public Tree preVisit(Tree tree, ExecutionContext ctx) {
                 stopAfterPreVisit();
+                if (!(tree instanceof SourceFile)) {
+                    return tree;
+                }
+                SourceFile source = (SourceFile) tree;
 
                 // Check for Scala 3 first (scala3-library_3), then fall back to
                 // scala-library for Scala 2. This order matters because scala3-library_3
                 // transitively depends on scala-library, and we want to report
                 // the Scala 3 version, not the transitive Scala 2 dependency.
-                FindResult result = findScalaDependency(ctx, tree, "org.scala-lang", "scala3-library_3");
-                if (!result.found) {
-                    result = findScalaDependency(ctx, result.tree, "org.scala-lang", "scala-library");
+                if (!emitMeasures(ctx, source, "org.scala-lang", "scala3-library_3")) {
+                    emitMeasures(ctx, source, "org.scala-lang", "scala-library");
                 }
-
-                return result.tree;
+                return tree;
             }
         });
     }
 
-    private static class FindResult {
-        final Tree tree;
-        final boolean found;
-
-        FindResult(Tree tree, boolean found) {
-            this.tree = tree;
-            this.found = found;
-        }
-    }
-
-    private FindResult findScalaDependency(ExecutionContext ctx, Tree tree, String groupId, String artifactId) {
-        DependencyInsight dependencyInsight = new DependencyInsight(groupId, artifactId, null, null);
-        DataTableRowWatcher<DependenciesInUse.Row> dataTableWatcher = new DataTableRowWatcher<>(dependencyInsight.getDependenciesInUse(), ctx);
-        dataTableWatcher.start();
-
-        Tree t = dependencyInsight.getVisitor().visitNonNull(tree, ctx);
-
-        List<DependenciesInUse.Row> dependenciesInUse = dataTableWatcher.stop();
-        for (DependenciesInUse.Row row : dependenciesInUse) {
-            int actualMajor = parseMajorVersion(row.getVersion());
+    private boolean emitMeasures(ExecutionContext ctx, SourceFile source, String groupId, String artifactId) {
+        List<String> versions = ResolvedDependencyVersions.findVersions(source, groupId, artifactId);
+        for (String version : versions) {
+            int actualMajor = parseMajorVersion(version);
             Measure measure = Measure.Completed;
             if (actualMajor < majorVersion) {
                 if (actualMajor >= 3) {
                     measure = Measure.Scala3Plus;
                 } else if (actualMajor == 2) {
-                    int actualMinor = parseMinorVersion(row.getVersion());
+                    int actualMinor = parseMinorVersion(version);
                     if (actualMinor >= 13) {
                         measure = Measure.Scala213Plus;
                     } else if (actualMinor >= 12) {
@@ -116,10 +100,9 @@ public class ScalaVersionUpgrade extends UpgradeMigrationCard {
                 }
             }
 
-            upgradesAndMigrations.insertRow(ctx, ScalaVersionUpgrade.this,
-                    measure, row.getVersion());
+            upgradesAndMigrations.insertRow(ctx, ScalaVersionUpgrade.this, measure, version);
         }
-        return new FindResult(t, !dependenciesInUse.isEmpty());
+        return !versions.isEmpty();
     }
 
     static int parseMajorVersion(String version) {

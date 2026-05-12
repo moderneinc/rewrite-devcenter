@@ -73,11 +73,7 @@ class GroovyVersionUpgradeTest implements RewriteTest {
                     </dependency>
                 </dependencies>
               </project>
-              """.formatted(groupId, currentVersion),
-            spec -> spec.after(after -> {
-                assertThat(after).isNotNull();
-                return after;
-            })
+              """.formatted(groupId, currentVersion)
           )
         );
     }
