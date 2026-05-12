@@ -15,7 +15,7 @@
  */
 package io.moderne.devcenter;
 
-import io.moderne.devcenter.internal.DataTableRowWatcher;
+import io.moderne.devcenter.internal.ResolvedDependencyVersions;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
@@ -24,9 +24,7 @@ import org.intellij.lang.annotations.Language;
 import org.jspecify.annotations.Nullable;
 import org.openrewrite.*;
 import org.openrewrite.gradle.IsBuildGradle;
-import org.openrewrite.java.dependencies.DependencyInsight;
 import org.openrewrite.maven.search.FindMavenProject;
-import org.openrewrite.maven.table.DependenciesInUse;
 
 import java.util.List;
 import java.util.stream.Stream;
@@ -63,17 +61,12 @@ public class KotlinVersionUpgrade extends UpgradeMigrationCard {
             @Override
             public Tree preVisit(Tree tree, ExecutionContext ctx) {
                 stopAfterPreVisit();
-
-                DependencyInsight dependencyInsight = new DependencyInsight("org.jetbrains.kotlin", "kotlin-stdlib", null, null);
-                DataTableRowWatcher<DependenciesInUse.Row> dataTableWatcher = new DataTableRowWatcher<>(dependencyInsight.getDependenciesInUse(), ctx);
-                dataTableWatcher.start();
-
-                Tree t = dependencyInsight.getVisitor().visitNonNull(tree, ctx);
-
-                List<DependenciesInUse.Row> dependenciesInUse = dataTableWatcher.stop();
+                if (!(tree instanceof SourceFile)) {
+                    return tree;
+                }
                 int[] target = parseVersion(version);
-                for (DependenciesInUse.Row row : dependenciesInUse) {
-                    int[] actual = parseVersion(row.getVersion());
+                for (String found : ResolvedDependencyVersions.findVersions((SourceFile) tree, "org.jetbrains.kotlin", "kotlin-stdlib")) {
+                    int[] actual = parseVersion(found);
                     Measure measure = Measure.Completed;
                     if (compareMajorMinor(actual, target) < 0) {
                         if (actual[0] >= 2 && actual[1] >= 1) {
@@ -89,11 +82,9 @@ public class KotlinVersionUpgrade extends UpgradeMigrationCard {
                         }
                     }
 
-                    upgradesAndMigrations.insertRow(ctx, KotlinVersionUpgrade.this,
-                            measure, row.getVersion());
+                    upgradesAndMigrations.insertRow(ctx, KotlinVersionUpgrade.this, measure, found);
                 }
-
-                return t;
+                return tree;
             }
         });
     }

@@ -39,10 +39,8 @@ class UpgradesAndMigrationsTest implements RewriteTest {
               assertThat(rows).containsExactly(
                 new UpgradesAndMigrations.Row("Spring Boot", Major.ordinal(), "Major", "2.7.0")
               )),
-          pomXml(pom("2.7.0"), expected("2.7.0"),
-            spec -> spec.path(Path.of("module1/pom.xml"))),
-          pomXml(pom("3.2.0"), expected("3.2.0"),
-            spec -> spec.path(Path.of("module2/pom.xml")))
+          pomXml(pom("2.7.0"), spec -> spec.path(Path.of("module1/pom.xml"))),
+          pomXml(pom("3.2.0"), spec -> spec.path(Path.of("module2/pom.xml")))
         );
     }
 
@@ -56,10 +54,8 @@ class UpgradesAndMigrationsTest implements RewriteTest {
               assertThat(rows).containsExactly(
                 new UpgradesAndMigrations.Row("Spring Boot", Minor.ordinal(), "Minor", "3.1.0")
               )),
-          pomXml(pom("3.1.0"), expected("3.1.0"),
-            spec -> spec.path(Path.of("module1/pom.xml"))),
-          pomXml(pom("3.2.0"), expected("3.2.0"),
-            spec -> spec.path(Path.of("module2/pom.xml")))
+          pomXml(pom("3.1.0"), spec -> spec.path(Path.of("module1/pom.xml"))),
+          pomXml(pom("3.2.0"), spec -> spec.path(Path.of("module2/pom.xml")))
         );
     }
 
@@ -86,18 +82,4 @@ class UpgradesAndMigrationsTest implements RewriteTest {
           """.formatted(version);
     }
 
-    private static String expected(String version) {
-        return """
-          <project>
-            <groupId>com.example</groupId>
-            <artifactId>example</artifactId>
-            <version>1.0-SNAPSHOT</version>
-            <!--~~>--><parent>
-              <groupId>org.springframework.boot</groupId>
-              <artifactId>spring-boot-parent</artifactId>
-              <version>%s</version>
-            </parent>
-          </project>
-          """.formatted(version);
-    }
 }

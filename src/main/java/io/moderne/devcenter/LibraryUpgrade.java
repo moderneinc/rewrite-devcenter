@@ -15,16 +15,13 @@
  */
 package io.moderne.devcenter;
 
-import io.moderne.devcenter.internal.DataTableRowWatcher;
-import io.moderne.devcenter.table.UpgradesAndMigrations;
+import io.moderne.devcenter.internal.ResolvedDependencyVersions;
 import lombok.EqualsAndHashCode;
 import lombok.Value;
 import org.jspecify.annotations.Nullable;
 import org.openrewrite.*;
 import org.openrewrite.gradle.IsBuildGradle;
-import org.openrewrite.java.dependencies.DependencyInsight;
 import org.openrewrite.maven.search.FindMavenProject;
-import org.openrewrite.maven.table.DependenciesInUse;
 
 import java.util.Arrays;
 import java.util.List;
@@ -75,21 +72,14 @@ public class LibraryUpgrade extends UpgradeMigrationCard {
             @Override
             public Tree preVisit(Tree tree, ExecutionContext ctx) {
                 stopAfterPreVisit();
-
-                DependencyInsight dependencyInsight = new DependencyInsight(groupIdPattern, artifactIdPattern, null, null);
-                DataTableRowWatcher<DependenciesInUse.Row> dataTableWatcher = new DataTableRowWatcher<>(dependencyInsight.getDependenciesInUse(), ctx);
-                dataTableWatcher.start();
-
-                SemverRowBuilder rowBuilder = new SemverRowBuilder(cardName, version);
-                Tree t = dependencyInsight.getVisitor().visitNonNull(tree, ctx);
-
-                List<DependenciesInUse.Row> dependenciesInUse = dataTableWatcher.stop();
-                for (DependenciesInUse.Row dependencyInUse : dependenciesInUse) {
-                    UpgradesAndMigrations.Row row = rowBuilder.getRow(dependencyInUse.getVersion());
-                    upgradesAndMigrations.insertRow(ctx, row);
+                if (!(tree instanceof SourceFile)) {
+                    return tree;
                 }
-
-                return t;
+                SemverRowBuilder rowBuilder = new SemverRowBuilder(cardName, version);
+                for (String found : ResolvedDependencyVersions.findVersions((SourceFile) tree, groupIdPattern, artifactIdPattern)) {
+                    upgradesAndMigrations.insertRow(ctx, rowBuilder.getRow(found));
+                }
+                return tree;
             }
         });
     }

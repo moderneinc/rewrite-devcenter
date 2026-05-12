@@ -348,31 +348,10 @@ class DevCenterTest implements RewriteTest {
               dependencies {
                   implementation "org.springframework.boot:spring-boot-starter:3.1.2"
               }
-              """,
-            """
-              plugins {
-                  id "java"
-              }
-              repositories {
-                  mavenCentral()
-              }
-              dependencies {
-                  /*~~(org.springframework.boot:spring-boot-autoconfigure:3.1.2,org.springframework.boot:spring-boot-starter-logging:3.1.2,org.springframework.boot:spring-boot-starter:3.1.2,org.springframework.boot:spring-boot:3.1.2)~~>*/implementation "org.springframework.boot:spring-boot-starter:3.1.2"
-              }
               """
           )
         );
         store.close();
-
-        Path depsCsv = csvDir.resolve("org.openrewrite.maven.table.DependenciesInUse.csv");
-        assertThat(depsCsv).exists();
-        assertThat(readCsvRows(depsCsv))
-          .as("Dependency is resolved and written to DependenciesInUse.csv")
-          .anySatisfy(row -> {
-              assertThat(row.getField("groupId")).isEqualTo("org.springframework.boot");
-              assertThat(row.getField("artifactId")).isEqualTo("spring-boot-starter");
-              assertThat(row.getField("version")).isEqualTo("3.1.2");
-          });
 
         Path upgradesCsv = findCsv(csvDir, "io.moderne.devcenter.table.UpgradesAndMigrations");
         assertThat(readCsvRows(upgradesCsv))
@@ -449,21 +428,7 @@ class DevCenterTest implements RewriteTest {
                   implementation "org.springframework.boot:spring-boot-starter-web"
                   implementation "commons-collections:commons-collections:2.0"
               }
-              """,
-            """
-            plugins {
-                id "java"
-                id 'org.springframework.boot' version '2.7.18'
-                id 'io.spring.dependency-management' version '1.1.7'
-            }
-            repositories {
-                mavenCentral()
-            }
-            dependencies {
-                /*~~(org.springframework.boot:spring-boot-autoconfigure:2.7.18,org.springframework.boot:spring-boot-starter-json:2.7.18,org.springframework.boot:spring-boot-starter-logging:2.7.18,org.springframework.boot:spring-boot-starter-tomcat:2.7.18,org.springframework.boot:spring-boot-starter-web:2.7.18,org.springframework.boot:spring-boot-starter:2.7.18,org.springframework.boot:spring-boot:2.7.18)~~>*/implementation "org.springframework.boot:spring-boot-starter-web"
-                /*~~(commons-collections:commons-collections:2.0)~~>*/implementation "commons-collections:commons-collections:2.0"
-            }
-            """
+              """
           )
         );
     }

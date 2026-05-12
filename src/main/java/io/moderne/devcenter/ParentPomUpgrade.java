@@ -15,18 +15,18 @@
  */
 package io.moderne.devcenter;
 
-import io.moderne.devcenter.internal.DataTableRowWatcher;
-import io.moderne.devcenter.table.UpgradesAndMigrations;
 import lombok.EqualsAndHashCode;
 import lombok.Value;
 import org.jspecify.annotations.Nullable;
 import org.openrewrite.*;
 import org.openrewrite.maven.search.FindMavenProject;
-import org.openrewrite.maven.search.ParentPomInsight;
-import org.openrewrite.maven.table.ParentPomsInUse;
+import org.openrewrite.maven.tree.MavenResolutionResult;
+import org.openrewrite.maven.tree.Parent;
 
 import java.util.Arrays;
 import java.util.List;
+
+import static org.openrewrite.internal.StringUtils.matchesGlob;
 
 @Value
 @EqualsAndHashCode(callSuper = false)
@@ -74,23 +74,20 @@ public class ParentPomUpgrade extends UpgradeMigrationCard {
             @Override
             public Tree preVisit(Tree tree, ExecutionContext ctx) {
                 stopAfterPreVisit();
-
-                ParentPomInsight parentPomInsight = new ParentPomInsight(groupIdPattern, artifactIdPattern, null, null);
-                DataTableRowWatcher<ParentPomsInUse.Row> dataTableWatcher = new DataTableRowWatcher<>(parentPomInsight.getInUse(), ctx);
-                dataTableWatcher.start();
-
-                SemverRowBuilder rowBuilder = new SemverRowBuilder(cardName, version);
-                Tree t = parentPomInsight.getVisitor().visitNonNull(tree, ctx);
-
-                List<ParentPomsInUse.Row> parentPomsInUse = dataTableWatcher.stop();
-                for (ParentPomsInUse.Row parentPomInUse : parentPomsInUse) {
-                    if (parentPomInUse.getVersion() != null) {
-                        UpgradesAndMigrations.Row row = rowBuilder.getRow(parentPomInUse.getVersion());
-                        upgradesAndMigrations.insertRow(ctx, row);
-                    }
+                if (!(tree instanceof SourceFile)) {
+                    return tree;
                 }
-
-                return t;
+                SemverRowBuilder rowBuilder = new SemverRowBuilder(cardName, version);
+                ((SourceFile) tree).getMarkers().findFirst(MavenResolutionResult.class).ifPresent(mrr -> {
+                    Parent parent = mrr.getPom().getRequested().getParent();
+                    if (parent != null &&
+                        matchesGlob(parent.getGroupId(), groupIdPattern) &&
+                        matchesGlob(parent.getArtifactId(), artifactIdPattern) &&
+                        parent.getVersion() != null) {
+                        upgradesAndMigrations.insertRow(ctx, rowBuilder.getRow(parent.getVersion()));
+                    }
+                });
+                return tree;
             }
         });
     }
