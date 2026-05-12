@@ -15,6 +15,8 @@
  */
 package io.moderne.devcenter;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import io.moderne.devcenter.table.SecurityIssues;
 import io.moderne.devcenter.table.UpgradesAndMigrations;
 import lombok.EqualsAndHashCode;
@@ -29,6 +31,7 @@ import org.openrewrite.config.RecipeDescriptor;
 
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.concurrent.atomic.AtomicReference;
@@ -120,6 +123,55 @@ public class DevCenter {
             }
         }
         throw new IllegalArgumentException("No card found with name: " + name);
+    }
+
+    /**
+     * Returns a stable JSON description of this DevCenter's structure for
+     * cross-classloader consumption by tools (e.g. the Moderne CLI). The
+     * format carries an {@code apiVersion} so consumers can detect schema
+     * compatibility. Schema (v1):
+     * <pre>{@code
+     * {
+     *   "apiVersion": "v1",
+     *   "upgradesAndMigrations": [
+     *     {"name": "...", "fixRecipeId": "...", "measures": ["...", ...]},
+     *     ...
+     *   ],
+     *   "security": {"name": "...", "fixRecipeId": "...", "measures": [...]} | null
+     * }
+     * }</pre>
+     * Card and measure ordering is preserved.
+     */
+    public String getSpec() {
+        Map<String, Object> spec = new LinkedHashMap<>();
+        spec.put("apiVersion", "v1");
+
+        List<Map<String, Object>> upgrades = new ArrayList<>();
+        for (Card card : getUpgradesAndMigrations()) {
+            upgrades.add(cardToSpec(card));
+        }
+        spec.put("upgradesAndMigrations", upgrades);
+
+        Card securityCard = getSecurity();
+        spec.put("security", securityCard == null ? null : cardToSpec(securityCard));
+
+        try {
+            return new ObjectMapper().writeValueAsString(spec);
+        } catch (JsonProcessingException e) {
+            throw new RuntimeException("Failed to serialize DevCenter spec", e);
+        }
+    }
+
+    private static Map<String, Object> cardToSpec(Card card) {
+        Map<String, Object> map = new LinkedHashMap<>();
+        map.put("name", card.getName());
+        map.put("fixRecipeId", card.getFixRecipeId());
+        List<String> measureNames = new ArrayList<>();
+        for (DevCenterMeasure m : card.getMeasures()) {
+            measureNames.add(m.getName());
+        }
+        map.put("measures", measureNames);
+        return map;
     }
 
     private List<Card> getUpgradesAndMigrationsRecursive(Recipe recipe, List<Card> upgradesAndMigrations) {

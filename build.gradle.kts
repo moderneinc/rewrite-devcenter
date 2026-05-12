@@ -37,6 +37,7 @@ dependencies {
     testImplementation("org.openrewrite:rewrite-java-21:${rewriteVersion}")
     testImplementation(gradleApi())
     testImplementation("org.openrewrite.gradle.tooling:model:${rewriteVersion}")
+    testImplementation("de.siegmar:fastcsv:3.+")
     testRuntimeOnly("junit:junit:4.+")
 }
 

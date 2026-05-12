@@ -15,22 +15,35 @@
  */
 package io.moderne.devcenter;
 
+import com.fasterxml.jackson.databind.JsonNode;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import de.siegmar.fastcsv.reader.CommentStrategy;
+import de.siegmar.fastcsv.reader.CsvReader;
+import de.siegmar.fastcsv.reader.NamedCsvRecord;
 import io.moderne.devcenter.table.UpgradesAndMigrations;
 import org.intellij.lang.annotations.Language;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.io.TempDir;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.Arguments;
 import org.junit.jupiter.params.provider.MethodSource;
+import org.openrewrite.CsvDataTableStore;
+import org.openrewrite.DataTableExecutionContextView;
 import org.openrewrite.DocumentExample;
+import org.openrewrite.InMemoryExecutionContext;
 import org.openrewrite.Recipe;
 import org.openrewrite.config.Environment;
 import org.openrewrite.config.YamlResourceLoader;
 import org.openrewrite.test.RewriteTest;
 
 import java.io.ByteArrayInputStream;
+import java.io.IOException;
 import java.net.URI;
 import java.nio.charset.StandardCharsets;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Properties;
 import java.util.stream.Stream;
@@ -120,6 +133,55 @@ class DevCenterTest implements RewriteTest {
     void validateStandAloneDevCenterRecipe() throws Exception {
         var devCenter = new DevCenter(starterSecurity);
         devCenter.validate();
+    }
+
+    @Test
+    void getSpecMatchesStarterDevCenter() throws Exception {
+        var devCenter = new DevCenter(starterDevCenter);
+        JsonNode spec = new ObjectMapper().readTree(devCenter.getSpec());
+
+        assertThat(spec.get("apiVersion").asText()).isEqualTo("v1");
+
+        JsonNode upgrades = spec.get("upgradesAndMigrations");
+        assertThat(upgrades.isArray()).isTrue();
+        assertThat(upgrades.size()).isEqualTo(3);
+
+        JsonNode firstCard = upgrades.get(0);
+        assertThat(firstCard.get("name").asText()).isEqualTo(devCenter.getUpgradesAndMigrations().getFirst().getName());
+        List<String> measureNames = new ArrayList<>();
+        firstCard.get("measures").forEach(m -> measureNames.add(m.asText()));
+        assertThat(measureNames).containsExactly("Major", "Minor", "Patch", "Completed");
+
+        JsonNode security = spec.get("security");
+        assertThat(security.isNull()).isFalse();
+        assertThat(security.get("name").asText()).isEqualTo(devCenter.getSecurity().getName());
+        List<String> securityMeasures = new ArrayList<>();
+        security.get("measures").forEach(m -> securityMeasures.add(m.asText()));
+        assertThat(securityMeasures).contains("Zip slip");
+    }
+
+    @Test
+    void getSpecOmitsSecurityWhenAbsent() throws Exception {
+        //language=yaml
+        var recipe = """
+          type: specs.openrewrite.org/v1beta/recipe
+          name: io.moderne.devcenter.JavaOnly
+          displayName: Just an upgrade card
+          description: Upgrade Java version
+          recipeList:
+            - io.moderne.devcenter.JavaVersionUpgrade:
+                majorVersion: 21
+          """;
+        Recipe r = Environment.builder()
+          .load(new YamlResourceLoader(new ByteArrayInputStream(recipe.getBytes(StandardCharsets.UTF_8)),
+            URI.create("rewrite.yml"), new Properties()))
+          .build()
+          .activateRecipes("io.moderne.devcenter.JavaOnly");
+
+        JsonNode spec = new ObjectMapper().readTree(new DevCenter(r).getSpec());
+        assertThat(spec.get("apiVersion").asText()).isEqualTo("v1");
+        assertThat(spec.get("upgradesAndMigrations").size()).isEqualTo(1);
+        assertThat(spec.get("security").isNull()).isTrue();
     }
 
     @Test
@@ -246,6 +308,78 @@ class DevCenterTest implements RewriteTest {
               }
           })
         );
+    }
+
+    @Test
+    void libraryUpgradeUnderCsvDataTableStore(@TempDir Path tempDir) throws Exception {
+        Path csvDir = tempDir.resolve("datatables");
+        Files.createDirectories(csvDir);
+        CsvDataTableStore store = new CsvDataTableStore(csvDir);
+        InMemoryExecutionContext ctx = new InMemoryExecutionContext();
+        DataTableExecutionContextView.view(ctx).setDataTableStore(store);
+
+        @Language("yaml") var recipe = """
+          type: specs.openrewrite.org/v1beta/recipe
+          name: io.moderne.devcenter.SpringBoot4Card
+          displayName: Move to Spring Boot 4.0
+          description: Spring Boot 4.0 upgrade card.
+          recipeList:
+            - io.moderne.devcenter.LibraryUpgrade:
+                cardName: Move to Spring Boot 4.0
+                groupIdPattern: org.springframework.boot
+                artifactIdPattern: '*'
+                version: 4.0.0
+                upgradeRecipe: io.moderne.java.spring.boot4.UpgradeSpringBoot_4_0
+          """;
+        rewriteRun(
+          spec ->
+            spec.recipeFromYaml(recipe, "io.moderne.devcenter.SpringBoot4Card")
+              .executionContext(ctx)
+              .beforeRecipe(withToolingApi()),
+          //language=Groovy
+          buildGradle(
+            """
+              plugins {
+                  id "java"
+              }
+              repositories {
+                  mavenCentral()
+              }
+              dependencies {
+                  implementation "org.springframework.boot:spring-boot-starter:3.1.2"
+              }
+              """
+          )
+        );
+        store.close();
+
+        Path upgradesCsv = findCsv(csvDir, "io.moderne.devcenter.table.UpgradesAndMigrations");
+        assertThat(readCsvRows(upgradesCsv))
+          .singleElement()
+          .satisfies(row -> {
+              assertThat(row.getField("card")).isEqualTo("Move to Spring Boot 4.0");
+              assertThat(row.getField("value")).isEqualTo("Major");
+              assertThat(row.getField("currentMinimumVersion")).isEqualTo("3.1.2");
+          });
+    }
+
+    private static List<NamedCsvRecord> readCsvRows(Path csv) throws IOException {
+        try (CsvReader<NamedCsvRecord> reader = CsvReader.builder()
+                .commentCharacter('#')
+                .commentStrategy(CommentStrategy.SKIP)
+                .ofNamedCsvRecord(csv)) {
+            return reader.stream().toList();
+        }
+    }
+
+    private static Path findCsv(Path dir, String namePrefix) throws IOException {
+        try (Stream<Path> files = Files.list(dir)) {
+            return files
+              .filter(p -> p.getFileName().toString().startsWith(namePrefix))
+              .findFirst()
+              .orElseThrow(() -> new AssertionError(
+                "No CSV starting with '" + namePrefix + "' in " + dir));
+        }
     }
 
     @DocumentExample
