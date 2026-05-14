@@ -28,8 +28,6 @@ import java.util.Map;
 import java.util.Objects;
 import java.util.concurrent.ConcurrentHashMap;
 
-import static org.openrewrite.ExecutionContext.CURRENT_CYCLE;
-
 public class UpgradesAndMigrations extends DataTable<UpgradesAndMigrations.Row> {
     /**
      * The community group name that all {@link io.moderne.devcenter.UpgradeMigrationCard}
@@ -73,7 +71,11 @@ public class UpgradesAndMigrations extends DataTable<UpgradesAndMigrations.Row> 
 
     @Override
     protected boolean allowWritingInThisCycle(ExecutionContext ctx) {
-        return ctx.getMessage(CURRENT_CYCLE) == null || super.allowWritingInThisCycle(ctx);
+        // Dedup is handled in insertRow via bestRow, so writes are safe in any cycle.
+        // This also lets cards that defer their work to onComplete or a later cycle
+        // (such as BucketedMetricCard) populate this table after their upstream
+        // recipes have finished running.
+        return true;
     }
 
     @Override
