@@ -1,0 +1,73 @@
+#
+# Copyright 2026 the original author or authors.
+# <p>
+# Licensed under the Moderne Source Available License (the "License");
+# you may not use this file except in compliance with the License.
+# You may obtain a copy of the License at
+# <p>
+# https://docs.moderne.io/licensing/moderne-source-available-license
+# <p>
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an "AS IS" BASIS,
+# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+# See the License for the specific language governing permissions and
+# limitations under the License.
+#
+
+---
+type: specs.openrewrite.org/v1beta/recipe
+name: io.moderne.devcenter.ClassCohesionDevCenter
+displayName: Class cohesion DevCenter
+description: |
+  A DevCenter that finds class quality metrics for repositories
+  and buckets the average LCOM4 (Lack of Cohesion of Methods, version 4)
+  into HIGH / MEDIUM / LOW cohesion categories.
+recipeList:
+  # 1. Populate ClassQualityMetrics by running Prethink's class metrics recipe.
+  - io.moderne.prethink.quality.FindClassMetrics
+  - io.moderne.prethink.testing.coverage.FindTestGaps
+
+  # 2. Read the LCOM4 column from that data table, average it across all
+  #    classes in the repo, and bucket the result.
+  - io.moderne.devcenter.BucketedMetricCard:
+      inputDataTable: io.moderne.prethink.table.ClassQualityMetrics
+      cardName: Average Class Maintainability
+      column: maintainabilityIndex
+      aggregation: average
+      buckets:
+      - name: F
+        moreThan: 0
+      - name: D
+        moreThan: 20
+      - name: C
+        moreThan: 40
+      - name: B
+        moreThan: 60
+      - name: A
+        moreThan: 80
+
+  - io.moderne.devcenter.BucketedMetricCard:
+      inputDataTable: io.moderne.prethink.table.ClassQualityMetrics
+      cardName: Average Class Cohesion
+      column: lcom4
+      aggregation: average
+      buckets:
+      - name: LOW
+        moreThan: 10
+      - name: MEDIUM
+        moreThan: 3
+      - name: HIGH
+        moreThan: 0
+  
+  - io.moderne.devcenter.BucketedMetricCard:
+      inputDataTable: io.moderne.prethink.table.TestGaps
+      cardName: Test Gaps Risk
+      column: riskScore
+      aggregation: sum
+      buckets:
+      - name: LOW
+        moreThan: 0
+      - name: MEDIUM
+        moreThan: 3
+      - name: HIGH
+        moreThan: 10

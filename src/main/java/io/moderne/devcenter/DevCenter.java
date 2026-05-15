@@ -40,6 +40,18 @@ import static java.util.Collections.unmodifiableList;
 
 @RequiredArgsConstructor
 public class DevCenter {
+
+    /**
+     * ExecutionContext message key whose <em>presence</em> requests another scheduler cycle.
+     * The key itself is never read and the value is never consumed. Recipes call
+     * {@code ctx.putMessage(CYCLE_TRIGGER, true)} for the side effect of flipping
+     * {@code WatchableExecutionContext.hasNewMessages}, which {@code RecipeRunCycle}
+     * treats as "this recipe made a change" and combines with {@link Recipe#causesAnotherCycle()}
+     * to enroll the recipe for the next cycle. The {@code io.moderne.} prefix is required
+     * by {@code CursorValidatingExecutionContextView}'s allow-list for ExecutionContext mutations.
+     */
+    public static final String CYCLE_TRIGGER = "io.moderne.devcenter.cycleTrigger";
+
     private final Recipe recipe;
 
     private transient @Nullable List<Card> upgradesAndMigrations;

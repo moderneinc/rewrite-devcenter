@@ -30,6 +30,10 @@ dependencies {
     implementation("org.openrewrite:rewrite-csharp:${rewriteVersion}")
     runtimeOnly("org.openrewrite:rewrite-java-17:${rewriteVersion}")
 
+    // Provides the Prethink recipes referenced by code-quality-devcenter.yml
+    // (e.g. io.moderne.prethink.quality.FindClassMetrics).
+    implementation("io.moderne.recipe:rewrite-prethink:latest.release")
+
     implementation("org.slf4j:slf4j-api:1.7.+")
 
     testImplementation("io.moderne:moderne-organizations-format:latest.release")
