@@ -1,5 +1,5 @@
 /*
- * Copyright 2025 the original author or authors.
+ * Copyright 2026 the original author or authors.
  * <p>
  * Licensed under the Moderne Source Available License (the "License");
  * you may not use this file except in compliance with the License.
@@ -16,9 +16,20 @@
 package io.moderne.devcenter;
 
 import io.moderne.devcenter.table.UpgradesAndMigrations;
+import lombok.EqualsAndHashCode;
+import lombok.Value;
 import org.intellij.lang.annotations.Language;
 import org.junit.jupiter.api.Test;
+import org.openrewrite.Column;
+import org.openrewrite.DataTable;
+import org.openrewrite.ExecutionContext;
+import org.openrewrite.Option;
+import org.openrewrite.Recipe;
+import org.openrewrite.Tree;
+import org.openrewrite.TreeVisitor;
 import org.openrewrite.test.RewriteTest;
+
+import java.util.List;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.groups.Tuple.tuple;
@@ -27,6 +38,8 @@ import static org.openrewrite.java.Assertions.java;
 class BucketedMetricCardTest implements RewriteTest {
 
     private static final String CARD_RECIPE_NAME = "io.moderne.devcenter.test.EmitAndBucket";
+    private static final String EMITTER_FQN = "io.moderne.devcenter.BucketedMetricCardTest$EmitLcomValues";
+    private static final String LCOM_TABLE_FQN = "io.moderne.devcenter.BucketedMetricCardTest$LcomTable";
 
     @Language("yaml")
     private static String pipelineYaml(String aggregation, String values) {
@@ -36,10 +49,10 @@ class BucketedMetricCardTest implements RewriteTest {
           displayName: Emit then bucket
           description: Pipeline that emits a data table and then buckets it.
           recipeList:
-            - io.moderne.devcenter.EmitLcomValues:
+            - %s:
                 values: %s
             - io.moderne.devcenter.BucketedMetricCard:
-                inputDataTable: io.moderne.devcenter.LcomTable
+                inputDataTable: %s
                 cardName: Class cohesion
                 column: lcom4
                 aggregation: %s
@@ -50,7 +63,7 @@ class BucketedMetricCardTest implements RewriteTest {
                     moreThan: 3
                   - name: HIGH
                     moreThan: 0
-          """.formatted(CARD_RECIPE_NAME, values, aggregation);
+          """.formatted(CARD_RECIPE_NAME, EMITTER_FQN, values, LCOM_TABLE_FQN, aggregation);
     }
 
     @Test
@@ -191,7 +204,7 @@ class BucketedMetricCardTest implements RewriteTest {
     @Test
     void measuresFollowListOrder() {
         BucketedMetricCard card = new BucketedMetricCard(
-                LcomTable.class.getName(),
+                LCOM_TABLE_FQN,
                 "Class cohesion",
                 "lcom4",
                 AggregationFunction.AVERAGE,
@@ -207,5 +220,58 @@ class BucketedMetricCardTest implements RewriteTest {
             tuple("LOW", 0),
             tuple("MEDIUM", 1),
             tuple("HIGH", 2));
+    }
+
+    /**
+     * Test-only data table used to exercise {@link BucketedMetricCard}.
+     */
+    public static class LcomTable extends DataTable<LcomTable.Row> {
+        public LcomTable(Recipe recipe) {
+            super(recipe, "Lack of cohesion", "Per-class LCOM4 values.");
+        }
+
+        @Value
+        public static class Row {
+            @Column(displayName = "lcom4", description = "Lack of cohesion of methods, version 4.")
+            double lcom4;
+        }
+    }
+
+    /**
+     * Test-only recipe that pushes a fixed series of doubles into {@link LcomTable}.
+     */
+    @Value
+    @EqualsAndHashCode(callSuper = false)
+    public static class EmitLcomValues extends Recipe {
+        transient LcomTable lcom = new LcomTable(this);
+
+        @Option(displayName = "Values",
+                description = "Values to emit into the LCOM table.",
+                example = "[2.0, 4.0, 6.0]")
+        List<Double> values;
+
+        @Override
+        public String getDisplayName() {
+            return "Emit LCOM rows";
+        }
+
+        @Override
+        public String getDescription() {
+            return "Emit a fixed series of LCOM values into the data table.";
+        }
+
+        @Override
+        public TreeVisitor<?, ExecutionContext> getVisitor() {
+            return new TreeVisitor<Tree, ExecutionContext>() {
+                @Override
+                public Tree preVisit(Tree tree, ExecutionContext ctx) {
+                    stopAfterPreVisit();
+                    for (Double value : values) {
+                        lcom.insertRow(ctx, new LcomTable.Row(value));
+                    }
+                    return tree;
+                }
+            };
+        }
     }
 }

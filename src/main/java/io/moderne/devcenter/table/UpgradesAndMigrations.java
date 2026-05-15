@@ -71,10 +71,24 @@ public class UpgradesAndMigrations extends DataTable<UpgradesAndMigrations.Row> 
 
     @Override
     protected boolean allowWritingInThisCycle(ExecutionContext ctx) {
-        // Dedup is handled in insertRow via bestRow, so writes are safe in any cycle.
-        // This also lets cards that defer their work to onComplete or a later cycle
-        // (such as BucketedMetricCard) populate this table after their upstream
-        // recipes have finished running.
+        // We override the default ("cycle <= 1") because some cards need to write
+        // in a later cycle:
+        //
+        //   {@link io.moderne.devcenter.BucketedMetricCard} reads rows from an
+        //   upstream data table and can only aggregate after that table has been
+        //   fully populated. It defers its insert to cycle 2 (and bumps the
+        //   scheduler via {@code DevCenter.CYCLE_TRIGGER}). The default
+        //   {@code allowWritingInThisCycle} would silently drop those writes.
+        //
+        // Returning {@code true} is safe for the existing cards (JavaVersionUpgrade,
+        // JUnitJupiterUpgrade, BuildToolCard, etc.) — none of them currently override
+        // {@link Recipe#causesAnotherCycle()}, so they only fire in cycle 1. Even if
+        // they did re-run in a later cycle (because some sibling recipe triggers
+        // another cycle), the {@link #insertRow(ExecutionContext, Row)} override
+        // below already dedupes via {@link #bestRow(Row, Row)} keyed on the card
+        // name: a card recomputing the same measure produces an equivalent Row and
+        // {@code bestRow} returns the existing entry, so no duplicate is written
+        // to the underlying store.
         return true;
     }
 
