@@ -13,34 +13,34 @@ recipeDependencies {
 
 val rewriteVersion = rewriteRecipe.rewriteVersion.get()
 dependencies {
-    implementation(platform("org.openrewrite:rewrite-bom:latest.release"))
+    implementation(platform("org.openrewrite:rewrite-bom:${rewriteVersion}"))
 
     // Only needed for result parsing (package io.moderne.devcenter.result),
     // not for defining and running DevCenter recipes.
     compileOnly("io.moderne:moderne-organizations-format:latest.release")
     implementation("com.univocity:univocity-parsers:latest.release")
 
-    implementation("org.openrewrite:rewrite-java:${rewriteVersion}")
+    implementation("org.openrewrite:rewrite-java")
     implementation("org.openrewrite.recipe:rewrite-java-dependencies:${rewriteVersion}")
     implementation("org.openrewrite.recipe:rewrite-java-security:${rewriteVersion}")
-    implementation("org.openrewrite:rewrite-maven:${rewriteVersion}")
-    implementation("org.openrewrite:rewrite-gradle:${rewriteVersion}")
-    implementation("org.openrewrite:rewrite-python:${rewriteVersion}")
-    implementation("org.openrewrite:rewrite-javascript:${rewriteVersion}")
-    implementation("org.openrewrite:rewrite-csharp:${rewriteVersion}")
-    runtimeOnly("org.openrewrite:rewrite-java-17:${rewriteVersion}")
+    implementation("org.openrewrite:rewrite-maven")
+    implementation("org.openrewrite:rewrite-gradle")
+    implementation("org.openrewrite:rewrite-python")
+    implementation("org.openrewrite:rewrite-javascript")
+    implementation("org.openrewrite:rewrite-csharp")
+    runtimeOnly("org.openrewrite:rewrite-java-17")
 
     // Provides the Prethink recipes referenced by code-quality-devcenter.yml
     // (e.g. io.moderne.prethink.quality.FindClassMetrics).
-    implementation("io.moderne.recipe:rewrite-prethink:latest.release")
+    implementation("io.moderne.recipe:rewrite-prethink:${rewriteVersion}")
 
     implementation("org.slf4j:slf4j-api:1.7.+")
 
     testImplementation("io.moderne:moderne-organizations-format:latest.release")
     testImplementation("org.openrewrite:rewrite-test")
-    testImplementation("org.openrewrite:rewrite-java-21:${rewriteVersion}")
+    testImplementation("org.openrewrite:rewrite-java-21")
     testImplementation(gradleApi())
-    testImplementation("org.openrewrite.gradle.tooling:model:${rewriteVersion}")
+    testImplementation("org.openrewrite.gradle.tooling:model")
     testImplementation("de.siegmar:fastcsv:3.+")
     testRuntimeOnly("junit:junit:4.+")
 }
