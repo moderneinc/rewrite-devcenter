@@ -95,21 +95,15 @@ public class BucketedMetricCard extends UpgradeMigrationCard {
                       "{\"name\": \"HIGH\", \"moreThan\": 0}]")
     Bucket[] buckets;
 
-    @Override
-    public String getDisplayName() {
-        return "DevCenter card from a data table column";
-    }
+    String displayName = "DevCenter card from a data table column";
 
     @Override
     public String getInstanceName() {
         return cardName;
     }
 
-    @Override
-    public String getDescription() {
-        return "Read rows from a previously emitted data table, aggregate a numeric column across " +
-               "all rows for this repository, and bucket the result into ordinal DevCenter measures.";
-    }
+    String description = "Read rows from a previously emitted data table, aggregate a numeric column across " +
+            "all rows for this repository, and bucket the result into ordinal DevCenter measures.";
 
     @Override
     public boolean causesAnotherCycle() {

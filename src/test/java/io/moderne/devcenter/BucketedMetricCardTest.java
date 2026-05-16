@@ -22,6 +22,7 @@ import org.intellij.lang.annotations.Language;
 import org.junit.jupiter.api.Test;
 import org.openrewrite.Column;
 import org.openrewrite.DataTable;
+import org.openrewrite.DocumentExample;
 import org.openrewrite.ExecutionContext;
 import org.openrewrite.Option;
 import org.openrewrite.Recipe;
@@ -66,6 +67,7 @@ class BucketedMetricCardTest implements RewriteTest {
           """.formatted(CARD_RECIPE_NAME, EMITTER_FQN, values, LCOM_TABLE_FQN, aggregation);
     }
 
+    @DocumentExample
     @Test
     void averageLandsInMedium() {
         // AVERAGE of [2, 4, 6] = 4 → MEDIUM (largest moreThan ≤ 4 is 3) → ordinal 1
@@ -203,7 +205,7 @@ class BucketedMetricCardTest implements RewriteTest {
 
     @Test
     void measuresFollowListOrder() {
-        BucketedMetricCard card = new BucketedMetricCard(
+        var card = new BucketedMetricCard(
                 LCOM_TABLE_FQN,
                 "Class cohesion",
                 "lcom4",
@@ -240,8 +242,8 @@ class BucketedMetricCardTest implements RewriteTest {
     /**
      * Test-only recipe that pushes a fixed series of doubles into {@link LcomTable}.
      */
-    @Value
     @EqualsAndHashCode(callSuper = false)
+    @Value
     public static class EmitLcomValues extends Recipe {
         transient LcomTable lcom = new LcomTable(this);
 
@@ -250,15 +252,9 @@ class BucketedMetricCardTest implements RewriteTest {
                 example = "[2.0, 4.0, 6.0]")
         List<Double> values;
 
-        @Override
-        public String getDisplayName() {
-            return "Emit LCOM rows";
-        }
+        String displayName = "Emit LCOM rows";
 
-        @Override
-        public String getDescription() {
-            return "Emit a fixed series of LCOM values into the data table.";
-        }
+        String description = "Emit a fixed series of LCOM values into the data table.";
 
         @Override
         public TreeVisitor<?, ExecutionContext> getVisitor() {
