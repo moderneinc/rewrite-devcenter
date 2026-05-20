@@ -11,6 +11,15 @@ recipeDependencies {
     testParserClasspath("org.junit.jupiter:junit-jupiter-api:6.0.2")
 }
 
+configurations.all {
+    resolutionStrategy.eachDependency {
+        if (requested.group == "org.apache.opennlp" && requested.name == "opennlp-tools") {
+            useVersion("2.5.9")
+            because("CVE-2026-42027, CVE-2026-40682, CVE-2026-42440")
+        }
+    }
+}
+
 val rewriteVersion = rewriteRecipe.rewriteVersion.get()
 dependencies {
     implementation(platform("org.openrewrite:rewrite-bom:${rewriteVersion}"))
