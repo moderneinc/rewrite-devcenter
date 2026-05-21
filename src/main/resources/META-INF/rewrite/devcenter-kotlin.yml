@@ -28,7 +28,7 @@ recipeList:
       upgradeRecipe: io.moderne.java.spring.boot4.UpgradeSpringBoot_4_0
   - io.moderne.devcenter.KotlinVersionUpgrade:
       version: "2.1"
-      upgradeRecipe: org.openrewrite.kotlin.migrate.Kotlin1To2$KtRecipe
+#      upgradeRecipe: org.openrewrite.kotlin.migrate.Kotlin1To2$KtRecipe, configure no recipe because we have a problem display these
   - io.moderne.devcenter.JUnitJupiterUpgrade:
       upgradeRecipe: org.openrewrite.java.testing.junit6.JUnit5to6Migration
   - io.moderne.devcenter.SecurityStarter
