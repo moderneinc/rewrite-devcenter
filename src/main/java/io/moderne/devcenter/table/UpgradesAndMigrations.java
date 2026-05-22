@@ -96,8 +96,12 @@ public class UpgradesAndMigrations extends DataTable<UpgradesAndMigrations.Row> 
     public void insertRow(ExecutionContext ctx, Row row) {
         boolean[] improved = {false};
         getBestRows(ctx).compute(row.getCard(), (card, prev) -> {
-            Row best = prev == null ? row : bestRow(prev, row);
-            if (best != prev) {
+            if (prev == null) {
+                improved[0] = true;
+                return row;
+            }
+            Row best = bestRow(prev, row);
+            if (best != prev && best.getOrdinal() < prev.getOrdinal()) {
                 improved[0] = true;
             }
             return best;

@@ -15,6 +15,7 @@
  */
 package io.moderne.devcenter.table;
 
+import io.moderne.devcenter.LibraryUpgrade;
 import io.moderne.devcenter.ParentPomUpgrade;
 import org.junit.jupiter.api.Test;
 import org.openrewrite.test.RewriteTest;
@@ -23,6 +24,7 @@ import java.nio.file.Path;
 
 import static io.moderne.devcenter.SemverMeasure.Major;
 import static io.moderne.devcenter.SemverMeasure.Minor;
+import static io.moderne.devcenter.SemverMeasure.Patch;
 import static io.moderne.devcenter.table.UpgradesAndMigrations.bestRow;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.openrewrite.maven.Assertions.pomXml;
@@ -60,6 +62,25 @@ class UpgradesAndMigrationsTest implements RewriteTest {
     }
 
     @Test
+    void singleRowAtSameOrdinalRegardlessOfOrder() {
+        rewriteRun(
+          spec -> spec
+            .recipe(new LibraryUpgrade("Spring Boot",
+              "org.springframework.boot", "*", "3.4.5", null))
+            .dataTable(UpgradesAndMigrations.Row.class, rows -> {
+                assertThat(rows).hasSize(3);
+                assertThat(rows)
+                  .extracting(UpgradesAndMigrations.Row::getOrdinal)
+                  .containsExactlyInAnyOrder(
+                    Patch.ordinal(), Minor.ordinal(), Major.ordinal());
+            }),
+          pomXml(pairPom("3.4.3", "3.4.2"), spec -> spec.path(Path.of("patch-pair/pom.xml"))),
+          pomXml(pairPom("3.2.0", "3.1.0"), spec -> spec.path(Path.of("minor-pair/pom.xml"))),
+          pomXml(pairPom("2.5.0", "2.4.0"), spec -> spec.path(Path.of("major-pair/pom.xml")))
+        );
+    }
+
+    @Test
     void nullVersionDoesNotCauseNpe() {
         var nullVersion = new UpgradesAndMigrations.Row("card", Minor.ordinal(), "Minor", null);
         var withVersion = new UpgradesAndMigrations.Row("card", Minor.ordinal(), "Minor", "2.2.0");
@@ -80,6 +101,28 @@ class UpgradesAndMigrationsTest implements RewriteTest {
             </parent>
           </project>
           """.formatted(version);
+    }
+
+    private static String pairPom(String firstVersion, String secondVersion) {
+        return """
+          <project>
+            <groupId>com.example</groupId>
+            <artifactId>example</artifactId>
+            <version>1.0-SNAPSHOT</version>
+            <dependencies>
+              <dependency>
+                <groupId>org.springframework.boot</groupId>
+                <artifactId>spring-boot</artifactId>
+                <version>%s</version>
+              </dependency>
+              <dependency>
+                <groupId>org.springframework.boot</groupId>
+                <artifactId>spring-boot-starter</artifactId>
+                <version>%s</version>
+              </dependency>
+            </dependencies>
+          </project>
+          """.formatted(firstVersion, secondVersion);
     }
 
 }
