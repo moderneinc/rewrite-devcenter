@@ -18,6 +18,7 @@ package io.moderne.devcenter.table;
 import io.moderne.devcenter.LibraryUpgrade;
 import io.moderne.devcenter.ParentPomUpgrade;
 import org.junit.jupiter.api.Test;
+import org.openrewrite.DocumentExample;
 import org.openrewrite.test.RewriteTest;
 
 import java.nio.file.Path;
@@ -30,6 +31,26 @@ import static org.assertj.core.api.Assertions.assertThat;
 import static org.openrewrite.maven.Assertions.pomXml;
 
 class UpgradesAndMigrationsTest implements RewriteTest {
+
+    @DocumentExample
+    @Test
+    void singleRowAtSameOrdinalRegardlessOfOrder() {
+        rewriteRun(
+          spec -> spec
+            .recipe(new LibraryUpgrade("Spring Boot",
+              "org.springframework.boot", "*", "3.4.5", null))
+            .dataTable(UpgradesAndMigrations.Row.class, rows -> {
+                assertThat(rows).hasSize(3);
+                assertThat(rows)
+                  .extracting(UpgradesAndMigrations.Row::getOrdinal)
+                  .containsExactlyInAnyOrder(
+                    Patch.ordinal(), Minor.ordinal(), Major.ordinal());
+            }),
+          pomXml(pairPom("3.4.3", "3.4.2"), spec -> spec.path(Path.of("patch-pair/pom.xml"))),
+          pomXml(pairPom("3.2.0", "3.1.0"), spec -> spec.path(Path.of("minor-pair/pom.xml"))),
+          pomXml(pairPom("2.5.0", "2.4.0"), spec -> spec.path(Path.of("major-pair/pom.xml")))
+        );
+    }
 
     @Test
     void leastOrdinalRetained() {
@@ -58,25 +79,6 @@ class UpgradesAndMigrationsTest implements RewriteTest {
               )),
           pomXml(pom("3.1.0"), spec -> spec.path(Path.of("module1/pom.xml"))),
           pomXml(pom("3.2.0"), spec -> spec.path(Path.of("module2/pom.xml")))
-        );
-    }
-
-    @Test
-    void singleRowAtSameOrdinalRegardlessOfOrder() {
-        rewriteRun(
-          spec -> spec
-            .recipe(new LibraryUpgrade("Spring Boot",
-              "org.springframework.boot", "*", "3.4.5", null))
-            .dataTable(UpgradesAndMigrations.Row.class, rows -> {
-                assertThat(rows).hasSize(3);
-                assertThat(rows)
-                  .extracting(UpgradesAndMigrations.Row::getOrdinal)
-                  .containsExactlyInAnyOrder(
-                    Patch.ordinal(), Minor.ordinal(), Major.ordinal());
-            }),
-          pomXml(pairPom("3.4.3", "3.4.2"), spec -> spec.path(Path.of("patch-pair/pom.xml"))),
-          pomXml(pairPom("3.2.0", "3.1.0"), spec -> spec.path(Path.of("minor-pair/pom.xml"))),
-          pomXml(pairPom("2.5.0", "2.4.0"), spec -> spec.path(Path.of("major-pair/pom.xml")))
         );
     }
 
