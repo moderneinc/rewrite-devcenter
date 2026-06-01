@@ -48,6 +48,7 @@ public class NodeVersionUpgrade extends UpgradeMigrationCard {
 
     @Option(displayName = "Upgrade recipe",
         description = "The recipe to use to upgrade.",
+        example = "org.openrewrite.node.migrate.upgrade-node-22",
         required = false)
     @Nullable
     String upgradeRecipe;

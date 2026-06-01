@@ -48,6 +48,7 @@ public class AngularVersionUpgrade extends UpgradeMigrationCard {
 
     @Option(displayName = "Upgrade recipe",
             description = "The recipe to use to upgrade.",
+            example = "org.openrewrite.codemods.migrate.angular.ApplyAngularCLI",
             required = false)
     @Nullable
     String upgradeRecipe;
