@@ -81,14 +81,14 @@ class DevCenterResultReducerTest {
           root,
           new StringReader("""
             repositoryOrigin,repositoryPath,repositoryBranch,card,ordinal,value,currentMinimumVersion
-            github.com,finos/spring-bot,spring-bot-master,Move to Spring Boot 4.0,0,Major,3.5.0
-            github.com,finos/spring-bot,spring-bot-master,Move to Spring Boot 4.0,0,Major,3.4.0
+            github.com,finos/spring-bot,spring-bot-master,Move to Spring Boot 4.1,0,Major,3.5.0
+            github.com,finos/spring-bot,spring-bot-master,Move to Spring Boot 4.1,0,Major,3.4.0
             """),
           new StringReader("")
         );
 
         reducer.reduce(root).forEach(
-          devCenter.getCard("Move to Spring Boot 4.0"),
+          devCenter.getCard("Move to Spring Boot 4.1"),
           (measure, count) -> {
               assertThat(measure).isEqualTo(SemverMeasure.Major);
               assertThat(count).isEqualTo(1);
@@ -107,7 +107,7 @@ class DevCenterResultReducerTest {
 
         assertThat(reducer.reduce(root).getResultsByCard().keySet())
           .map(DevCenter.Card::getName)
-          .containsExactly("Move to Spring Boot 4.0");
+          .containsExactly("Move to Spring Boot 4.1");
     }
 
     private void hasSecurityResults(DevCenterResult result) {
@@ -118,7 +118,7 @@ class DevCenterResultReducerTest {
     }
 
     private void hasSpringBoot35Results(DevCenterResult result) {
-        result.forEach(devCenter.getCard("Move to Spring Boot 4.0"), (measure, count) ->
+        result.forEach(devCenter.getCard("Move to Spring Boot 4.1"), (measure, count) ->
             assertThat(count)
               .describedAs(measure.getName())
               .isEqualTo((int) switch (measure) {
