@@ -81,14 +81,14 @@ class DevCenterResultReducerTest {
           root,
           new StringReader("""
             repositoryOrigin,repositoryPath,repositoryBranch,card,ordinal,value,currentMinimumVersion
-            github.com,finos/spring-bot,spring-bot-master,Move to Spring Boot 4.0,0,Major,3.5.0
-            github.com,finos/spring-bot,spring-bot-master,Move to Spring Boot 4.0,0,Major,3.4.0
+            github.com,finos/spring-bot,spring-bot-master,Move to Spring Boot 4.1,0,Major,3.5.0
+            github.com,finos/spring-bot,spring-bot-master,Move to Spring Boot 4.1,0,Major,3.4.0
             """),
           new StringReader("")
         );
 
         reducer.reduce(root).forEach(
-          devCenter.getCard("Move to Spring Boot 4.0"),
+          devCenter.getCard("Move to Spring Boot 4.1"),
           (measure, count) -> {
               assertThat(measure).isEqualTo(SemverMeasure.Major);
               assertThat(count).isEqualTo(1);
