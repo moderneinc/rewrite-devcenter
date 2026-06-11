@@ -28,8 +28,6 @@ import java.util.Map;
 import java.util.Objects;
 import java.util.concurrent.ConcurrentHashMap;
 
-import static org.openrewrite.ExecutionContext.CURRENT_CYCLE;
-
 public class UpgradesAndMigrations extends DataTable<UpgradesAndMigrations.Row> {
     /**
      * The community group name that all {@link io.moderne.devcenter.UpgradeMigrationCard}
@@ -73,15 +71,37 @@ public class UpgradesAndMigrations extends DataTable<UpgradesAndMigrations.Row> 
 
     @Override
     protected boolean allowWritingInThisCycle(ExecutionContext ctx) {
-        return ctx.getMessage(CURRENT_CYCLE) == null || super.allowWritingInThisCycle(ctx);
+        // We override the default ("cycle <= 1") because some cards need to write
+        // in a later cycle:
+        //
+        //   {@link io.moderne.devcenter.BucketedMetricCard} reads rows from an
+        //   upstream data table and can only aggregate after that table has been
+        //   fully populated. It defers its insert to cycle 2 (and bumps the
+        //   scheduler via {@code DevCenter.CYCLE_TRIGGER}). The default
+        //   {@code allowWritingInThisCycle} would silently drop those writes.
+        //
+        // Returning {@code true} is safe for the existing cards (JavaVersionUpgrade,
+        // JUnitJupiterUpgrade, BuildToolCard, etc.) — none of them currently override
+        // {@link Recipe#causesAnotherCycle()}, so they only fire in cycle 1. Even if
+        // they did re-run in a later cycle (because some sibling recipe triggers
+        // another cycle), the {@link #insertRow(ExecutionContext, Row)} override
+        // below already dedupes via {@link #bestRow(Row, Row)} keyed on the card
+        // name: a card recomputing the same measure produces an equivalent Row and
+        // {@code bestRow} returns the existing entry, so no duplicate is written
+        // to the underlying store.
+        return true;
     }
 
     @Override
     public void insertRow(ExecutionContext ctx, Row row) {
         boolean[] improved = {false};
         getBestRows(ctx).compute(row.getCard(), (card, prev) -> {
-            Row best = prev == null ? row : bestRow(prev, row);
-            if (best != prev) {
+            if (prev == null) {
+                improved[0] = true;
+                return row;
+            }
+            Row best = bestRow(prev, row);
+            if (best != prev && best.getOrdinal() < prev.getOrdinal()) {
                 improved[0] = true;
             }
             return best;

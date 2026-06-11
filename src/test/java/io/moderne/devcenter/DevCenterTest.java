@@ -148,14 +148,14 @@ class DevCenterTest implements RewriteTest {
 
         JsonNode firstCard = upgrades.get(0);
         assertThat(firstCard.get("name").asText()).isEqualTo(devCenter.getUpgradesAndMigrations().getFirst().getName());
-        List<String> measureNames = new ArrayList<>();
+        var measureNames = new ArrayList<String>();
         firstCard.get("measures").forEach(m -> measureNames.add(m.asText()));
         assertThat(measureNames).containsExactly("Major", "Minor", "Patch", "Completed");
 
         JsonNode security = spec.get("security");
         assertThat(security.isNull()).isFalse();
         assertThat(security.get("name").asText()).isEqualTo(devCenter.getSecurity().getName());
-        List<String> securityMeasures = new ArrayList<>();
+        var securityMeasures = new ArrayList<String>();
         security.get("measures").forEach(m -> securityMeasures.add(m.asText()));
         assertThat(securityMeasures).contains("Zip slip");
     }
@@ -180,7 +180,7 @@ class DevCenterTest implements RewriteTest {
 
         JsonNode spec = new ObjectMapper().readTree(new DevCenter(r).getSpec());
         assertThat(spec.get("apiVersion").asText()).isEqualTo("v1");
-        assertThat(spec.get("upgradesAndMigrations").size()).isEqualTo(1);
+        assertThat(spec.get("upgradesAndMigrations").size()).isOne();
         assertThat(spec.get("security").isNull()).isTrue();
     }
 
@@ -284,7 +284,7 @@ class DevCenterTest implements RewriteTest {
             }
         };
 
-        Class<?> recipeClass = isolatedClassLoader.loadClass("io.moderne.devcenter.JavaVersionUpgrade");
+        var recipeClass = isolatedClassLoader.loadClass("io.moderne.devcenter.JavaVersionUpgrade");
         var recipe = (Recipe) recipeClass.getConstructor(int.class, String.class)
           .newInstance(21, "org.openrewrite.java.migrate.Java21");
 
@@ -314,8 +314,8 @@ class DevCenterTest implements RewriteTest {
     void libraryUpgradeUnderCsvDataTableStore(@TempDir Path tempDir) throws Exception {
         Path csvDir = tempDir.resolve("datatables");
         Files.createDirectories(csvDir);
-        CsvDataTableStore store = new CsvDataTableStore(csvDir);
-        InMemoryExecutionContext ctx = new InMemoryExecutionContext();
+        var store = new CsvDataTableStore(csvDir);
+        var ctx = new InMemoryExecutionContext();
         DataTableExecutionContextView.view(ctx).setDataTableStore(store);
 
         @Language("yaml") var recipe = """
@@ -364,7 +364,7 @@ class DevCenterTest implements RewriteTest {
     }
 
     private static List<NamedCsvRecord> readCsvRows(Path csv) throws IOException {
-        try (CsvReader<NamedCsvRecord> reader = CsvReader.builder()
+        try (var reader = CsvReader.builder()
                 .commentCharacter('#')
                 .commentStrategy(CommentStrategy.SKIP)
                 .ofNamedCsvRecord(csv)) {
@@ -373,7 +373,7 @@ class DevCenterTest implements RewriteTest {
     }
 
     private static Path findCsv(Path dir, String namePrefix) throws IOException {
-        try (Stream<Path> files = Files.list(dir)) {
+        try (var files = Files.list(dir)) {
             return files
               .filter(p -> p.getFileName().toString().startsWith(namePrefix))
               .findFirst()

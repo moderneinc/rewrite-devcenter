@@ -15,7 +15,6 @@
  */
 package io.moderne.devcenter;
 
-import io.moderne.devcenter.table.UpgradesAndMigrations;
 import lombok.EqualsAndHashCode;
 import lombok.Value;
 import org.jspecify.annotations.Nullable;

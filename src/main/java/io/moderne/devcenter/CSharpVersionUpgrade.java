@@ -50,6 +50,7 @@ public class CSharpVersionUpgrade extends UpgradeMigrationCard {
 
     @Option(displayName = "Upgrade recipe",
         description = "The recipe to use to upgrade.",
+        example = "org.openrewrite.dotnet.UpgradeToNet9",
         required = false)
     @Nullable
     String upgradeRecipe;
