@@ -1,0 +1,300 @@
+schemaVersion: 1
+metadata:
+  source: https://endoflife.date/api/v1/products/full/
+  generatedAt: 2026-06-09T17:04:38.260222Z
+  productCount: 5
+products:
+- name: dotnet
+  label: Microsoft .NET
+  coordinates:
+  - pkg:docker/dotnet/aspnet
+  - pkg:docker/dotnet/runtime
+  - pkg:docker/dotnet/runtime-deps
+  - pkg:docker/dotnet/sdk
+  - pkg:generic/dotnet
+  - pkg:nuget/Microsoft.NETCore.App
+  - pkg:nuget/Microsoft.NETCore.App.Runtime.linux-arm
+  - pkg:nuget/Microsoft.NETCore.App.Runtime.linux-arm64
+  - pkg:nuget/Microsoft.NETCore.App.Runtime.linux-bionic-arm64
+  - pkg:nuget/Microsoft.NETCore.App.Runtime.linux-bionic-x64
+  - pkg:nuget/Microsoft.NETCore.App.Runtime.linux-musl-arm
+  - pkg:nuget/Microsoft.NETCore.App.Runtime.linux-musl-arm64
+  - pkg:nuget/Microsoft.NETCore.App.Runtime.linux-musl-x64
+  - pkg:nuget/Microsoft.NETCore.App.Runtime.linux-x64
+  - pkg:nuget/Microsoft.NETCore.App.Runtime.osx-arm64
+  - pkg:nuget/Microsoft.NETCore.App.Runtime.osx-x64
+  - pkg:nuget/Microsoft.NETCore.App.Runtime.win-arm
+  - pkg:nuget/Microsoft.NETCore.App.Runtime.win-arm64
+  - pkg:nuget/Microsoft.NETCore.App.Runtime.win-x64
+  - pkg:nuget/Microsoft.NETCore.App.Runtime.win-x86
+  cycles:
+  - cycle: 10
+    eolDate: 2028-11-14
+    eol: false
+  - cycle: 9
+    eolDate: 2026-11-10
+    eol: false
+  - cycle: 8
+    eolDate: 2026-11-10
+    eol: false
+  - cycle: 7
+    eolDate: 2024-05-14
+    eol: true
+  - cycle: 6
+    eolDate: 2024-11-12
+    eol: true
+  - cycle: 5
+    eolDate: 2022-05-10
+    eol: true
+  - cycle: 3.1
+    eolDate: 2022-12-13
+    eol: true
+  - cycle: 3.0
+    eolDate: 2020-03-03
+    eol: true
+  - cycle: 2.2
+    eolDate: 2019-12-23
+    eol: true
+  - cycle: 2.1
+    eolDate: 2021-08-21
+    eol: true
+  - cycle: 2.0
+    eolDate: 2018-10-01
+    eol: true
+  - cycle: 1.1
+    eolDate: 2019-06-27
+    eol: true
+  - cycle: 1.0
+    eolDate: 2019-06-27
+    eol: true
+- name: dotnetfx
+  label: Microsoft .NET Framework
+  coordinates:
+  - pkg:generic/dotnetfx
+  cycles:
+  - cycle: 4.8.1
+    eolDate: null
+    eol: false
+  - cycle: 4.8
+    eolDate: null
+    eol: false
+  - cycle: 4.7.2
+    eolDate: null
+    eol: false
+  - cycle: 4.7.1
+    eolDate: null
+    eol: false
+  - cycle: 4.7
+    eolDate: null
+    eol: false
+  - cycle: 4.6.2
+    eolDate: 2027-01-12
+    eol: false
+  - cycle: 4.6.1
+    eolDate: 2022-04-26
+    eol: true
+  - cycle: 4.6
+    eolDate: 2022-04-26
+    eol: true
+  - cycle: 4.5.2
+    eolDate: 2022-04-26
+    eol: true
+  - cycle: 4.5.1
+    eolDate: 2016-01-12
+    eol: true
+  - cycle: 4.5
+    eolDate: 2016-01-12
+    eol: true
+  - cycle: 4.0
+    eolDate: 2016-01-12
+    eol: true
+  - cycle: 3.5-sp1
+    eolDate: 2029-01-09
+    eol: false
+- name: nodejs
+  label: Node.js
+  coordinates:
+  - pkg:docker/bitnami/node
+  - pkg:docker/cimg/node
+  - pkg:docker/circleci/node
+  - pkg:docker/library/node
+  - pkg:generic/node
+  cycles:
+  - cycle: 26
+    eolDate: 2029-04-30
+    eol: false
+  - cycle: 25
+    eolDate: 2026-06-01
+    eol: true
+  - cycle: 24
+    eolDate: 2028-04-30
+    eol: false
+  - cycle: 23
+    eolDate: 2025-06-01
+    eol: true
+  - cycle: 22
+    eolDate: 2027-04-30
+    eol: false
+  - cycle: 21
+    eolDate: 2024-06-01
+    eol: true
+  - cycle: 20
+    eolDate: 2026-04-30
+    eol: true
+  - cycle: 19
+    eolDate: 2023-06-01
+    eol: true
+  - cycle: 18
+    eolDate: 2025-04-30
+    eol: true
+  - cycle: 17
+    eolDate: 2022-06-01
+    eol: true
+  - cycle: 16
+    eolDate: 2023-09-11
+    eol: true
+  - cycle: 15
+    eolDate: 2021-06-01
+    eol: true
+  - cycle: 14
+    eolDate: 2023-04-30
+    eol: true
+  - cycle: 13
+    eolDate: 2020-06-01
+    eol: true
+  - cycle: 12
+    eolDate: 2022-04-30
+    eol: true
+  - cycle: 11
+    eolDate: 2019-06-30
+    eol: true
+  - cycle: 10
+    eolDate: 2021-04-30
+    eol: true
+  - cycle: 9
+    eolDate: 2018-06-30
+    eol: true
+  - cycle: 8
+    eolDate: 2019-12-31
+    eol: true
+  - cycle: 7
+    eolDate: 2017-06-30
+    eol: true
+  - cycle: 6
+    eolDate: 2019-04-30
+    eol: true
+  - cycle: 5
+    eolDate: 2016-06-30
+    eol: true
+  - cycle: 4
+    eolDate: 2018-04-30
+    eol: true
+  - cycle: 3
+    eolDate: null
+    eol: true
+  - cycle: 2
+    eolDate: null
+    eol: true
+  - cycle: 1
+    eolDate: null
+    eol: true
+- name: openjdk
+  label: Java (Eclipse Temurin)
+  coordinates:
+  - pkg:generic/openjdk
+  cycles:
+  - cycle: 25
+    eolDate: 2031-09-30
+    eol: false
+  - cycle: 24
+    eolDate: 2025-09-16
+    eol: true
+  - cycle: 23
+    eolDate: 2025-03-18
+    eol: true
+  - cycle: 22
+    eolDate: 2024-09-17
+    eol: true
+  - cycle: 21
+    eolDate: 2029-12-31
+    eol: false
+  - cycle: 20
+    eolDate: 2023-09-19
+    eol: true
+  - cycle: 19
+    eolDate: 2023-03-31
+    eol: true
+  - cycle: 18
+    eolDate: 2022-09-30
+    eol: true
+  - cycle: 17
+    eolDate: 2027-10-31
+    eol: false
+  - cycle: 11
+    eolDate: 2027-10-31
+    eol: false
+  - cycle: 16
+    eolDate: 2021-09-30
+    eol: true
+  - cycle: 8
+    eolDate: 2030-12-31
+    eol: false
+- name: python
+  label: Python
+  coordinates:
+  - pkg:docker/bitnami/python
+  - pkg:docker/circleci/python
+  - pkg:docker/library/python
+  - pkg:generic/python
+  cycles:
+  - cycle: 3.14
+    eolDate: 2030-10-31
+    eol: false
+  - cycle: 3.13
+    eolDate: 2029-10-31
+    eol: false
+  - cycle: 3.12
+    eolDate: 2028-10-31
+    eol: false
+  - cycle: 3.11
+    eolDate: 2027-10-31
+    eol: false
+  - cycle: 3.10
+    eolDate: 2026-10-31
+    eol: false
+  - cycle: 3.9
+    eolDate: 2025-10-31
+    eol: true
+  - cycle: 3.8
+    eolDate: 2024-10-07
+    eol: true
+  - cycle: 3.7
+    eolDate: 2023-06-27
+    eol: true
+  - cycle: 3.6
+    eolDate: 2021-12-23
+    eol: true
+  - cycle: 3.5
+    eolDate: 2020-09-30
+    eol: true
+  - cycle: 3.4
+    eolDate: 2019-03-18
+    eol: true
+  - cycle: 3.3
+    eolDate: 2017-09-29
+    eol: true
+  - cycle: 3.2
+    eolDate: 2016-02-20
+    eol: true
+  - cycle: 2.7
+    eolDate: 2020-01-01
+    eol: true
+  - cycle: 3.1
+    eolDate: 2012-04-09
+    eol: true
+  - cycle: 3.0
+    eolDate: 2009-06-27
+    eol: true
+  - cycle: 2.6
+    eolDate: 2013-10-29
+    eol: true

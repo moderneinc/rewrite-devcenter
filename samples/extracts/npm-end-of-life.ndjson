@@ -1,0 +1,2 @@
+{"ecosystem":"npm","kind":"dependency","name":"express","version":"4.18.2","product":"express","cycle":"4","eolDate":"","status":"Supported"}
+{"ecosystem":"npm","kind":"dependency","name":"vue","version":"2.7.0","product":"vue","cycle":"2.7","eolDate":"2023-12-31","status":"EndOfLife"}

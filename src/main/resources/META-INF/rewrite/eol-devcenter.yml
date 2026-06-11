@@ -1,0 +1,62 @@
+#
+# Copyright 2026 the original author or authors.
+# <p>
+# Licensed under the Moderne Source Available License (the "License");
+# you may not use this file except in compliance with the License.
+# You may obtain a copy of the License at
+# <p>
+# https://docs.moderne.io/licensing/moderne-source-available-license
+# <p>
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an "AS IS" BASIS,
+# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+# See the License for the specific language governing permissions and
+# limitations under the License.
+#
+
+type: specs.openrewrite.org/v1beta/recipe
+name: io.moderne.devcenter.eol.DevCenterEndOfLife
+displayName: 'DevCenter: end of life (all stacks)'
+description: >-
+  A DevCenter configuration that tracks the end-of-life status of dependencies and language runtimes
+  across major tech stacks (JVM, npm, NuGet, and Java/Node.js/.NET runtimes), sourced from a Moderne
+  EOL feed. Each card buckets every repository by its worst end-of-life status. Supply your own feed
+  with the `feed` option on any card to track internal products — see `FEED-FORMAT.md`. Copy this
+  recipe to your own repository to customize card names, the approaching window, or the feed.
+recipeList:
+  - io.moderne.devcenter.eol.DependencyEndOfLife:
+      cardName: JVM dependency end of life
+      approachingDays: 180
+  - io.moderne.devcenter.eol.NpmDependencyEndOfLife:
+      cardName: npm dependency end of life
+      approachingDays: 180
+  - io.moderne.devcenter.eol.NuGetDependencyEndOfLife:
+      cardName: NuGet dependency end of life
+      approachingDays: 180
+  # One card per runtime, so the runtime is visible in the card title. The `runtime` option narrows
+  # each card to its own ecosystem's files (no cross-ecosystem scanning).
+  - io.moderne.devcenter.eol.RuntimeEndOfLife:
+      cardName: .NET runtime end of life
+      approachingDays: 180
+      runtime: DotNet
+      # Defaults fixRecipe to OpenRewrite.Recipes.CSharp.Migration.Dotnet.Net10.UpgradeToDotNet10;
+      # set fixRecipe here to override.
+  - io.moderne.devcenter.eol.RuntimeEndOfLife:
+      cardName: Java runtime end of life
+      approachingDays: 180
+      runtime: Java
+      # The Java card defaults fixRecipe to org.openrewrite.java.migrate.UpgradeToJava25 (current
+      # LTS); set fixRecipe here to override.
+  - io.moderne.devcenter.eol.RuntimeEndOfLife:
+      cardName: Node.js runtime end of life
+      approachingDays: 180
+      runtime: NodeJs
+  - io.moderne.devcenter.eol.RuntimeEndOfLife:
+      cardName: Python runtime end of life
+      approachingDays: 180
+      runtime: Python
+  - io.moderne.devcenter.eol.DockerImageEndOfLife:
+      cardName: Docker base image end of life
+      approachingDays: 180
+  - io.moderne.devcenter.FindOrganizationStatistics
+  - org.openrewrite.search.FindCommitters

@@ -1,0 +1,73 @@
+schemaVersion: 1
+metadata:
+  source: test fixture
+products:
+  # Fixed Spring Boot cycles so DependencyEndOfLifeTest assertions are stable regardless of how the
+  # bundled feed's real dates drift when it is regenerated. (These dates are fixtures, not current.)
+  - name: spring-boot
+    label: Spring Boot
+    coordinates:
+      - pkg:maven/org.springframework.boot
+    cycles:
+      - { cycle: "3.4", eolDate: 2025-12-31, eol: true }
+      - { cycle: "3.5", eolDate: 2026-06-30, eol: false }
+      - { cycle: "4.0", eolDate: 2026-12-31, eol: false }
+  - name: express
+    label: Express
+    coordinates:
+      - pkg:npm/express
+    cycles:
+      - { cycle: "4", eolDate: 2024-01-01, eol: true }
+      - { cycle: "5", eolDate: 2030-01-01, eol: false }
+  - name: newtonsoft-json
+    label: Json.NET
+    coordinates:
+      - pkg:nuget/Newtonsoft.Json
+    cycles:
+      - { cycle: "12", eolDate: 2020-01-01, eol: true }
+      - { cycle: "13", eolDate: 2031-01-01, eol: false }
+  - name: openjdk
+    label: Java (OpenJDK)
+    coordinates:
+      - pkg:generic/openjdk
+    cycles:
+      - { cycle: "8", eolDate: 2022-03-31, eol: true }
+      - { cycle: "17", eolDate: 2027-09-30, eol: false }
+  - name: nodejs
+    label: Node.js
+    coordinates:
+      - pkg:generic/node
+      - pkg:docker/library/node
+    cycles:
+      - { cycle: "16", eolDate: 2023-09-11, eol: true }
+      - { cycle: "20", eolDate: 2026-04-30, eol: false }
+  - name: python
+    label: Python
+    coordinates:
+      - pkg:generic/python
+      - pkg:docker/library/python
+    cycles:
+      - { cycle: "3.8", eolDate: 2024-10-07, eol: true }
+      - { cycle: "3.12", eolDate: 2028-10-31, eol: false }
+  - name: dotnet
+    label: Microsoft .NET
+    coordinates:
+      - pkg:generic/dotnet
+    cycles:
+      - { cycle: "6.0", eolDate: 2024-11-12, eol: true }
+      - { cycle: "8.0", eolDate: 2026-11-10, eol: false }
+  - name: acme-platform
+    label: Acme Internal Platform
+    coordinates:
+      - pkg:maven/com.acme.platform
+    cycles:
+      - { cycle: "1", eolDate: 2020-01-01, eol: true }
+      - { cycle: "2", eolDate: 2030-01-01, eol: false }
+  # A real Maven group that the bundled endoflife.date snapshot does not track, used to
+  # demonstrate the `feed` override end-to-end against a resolvable dependency.
+  - name: guava
+    label: Google Guava
+    coordinates:
+      - pkg:maven/com.google.guava
+    cycles:
+      - { cycle: "33", eolDate: 2020-01-01, eol: true }

@@ -1,0 +1,2 @@
+{"ecosystem":"Docker","kind":"image","name":"node:16.20-alpine","version":"16.20","product":"nodejs","cycle":"16","eolDate":"2023-09-11","status":"EndOfLife"}
+{"ecosystem":"Docker","kind":"image","name":"python:3.8-slim","version":"3.8","product":"python","cycle":"3.8","eolDate":"2024-10-07","status":"EndOfLife"}

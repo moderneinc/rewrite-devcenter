@@ -1,0 +1,5301 @@
+schemaVersion: 1
+metadata:
+  source: https://endoflife.date/api/v1/products/full/
+  generatedAt: 2026-06-09T17:04:38.218817Z
+  productCount: 120
+  javaRuntimeSource: eclipse-temurin
+products:
+- name: adonisjs
+  label: AdonisJS
+  coordinates:
+  - pkg:npm/@adonisjs/core
+  cycles:
+  - cycle: 7
+    eolDate: null
+    eol: false
+  - cycle: 6
+    eolDate: null
+    eol: false
+  - cycle: 5
+    eolDate: 2023-02-20
+    eol: true
+- name: alibaba-dragonwell
+  label: Alibaba Dragonwell
+  coordinates:
+  - pkg:docker/alibabadragonwell/dragonwell
+  cycles:
+  - cycle: 25
+    eolDate: 2029-09-30
+    eol: false
+  - cycle: 21
+    eolDate: 2029-11-30
+    eol: false
+  - cycle: 17
+    eolDate: 2027-09-30
+    eol: false
+  - cycle: 11
+    eolDate: 2027-09-30
+    eol: false
+  - cycle: 8
+    eolDate: 2026-06-30
+    eol: false
+- name: amazon-cdk
+  label: Amazon CDK
+  coordinates:
+  - pkg:npm/aws-cdk
+  cycles:
+  - cycle: 2
+    eolDate: null
+    eol: false
+- name: amazon-corretto
+  label: Amazon Corretto
+  coordinates:
+  - pkg:docker/library/amazoncorretto
+  cycles:
+  - cycle: 26
+    eolDate: 2026-10-31
+    eol: false
+  - cycle: 25
+    eolDate: 2032-10-31
+    eol: false
+  - cycle: 24
+    eolDate: 2025-10-31
+    eol: true
+  - cycle: 23
+    eolDate: 2025-04-30
+    eol: true
+  - cycle: 22
+    eolDate: 2024-10-15
+    eol: true
+  - cycle: 21
+    eolDate: 2030-10-31
+    eol: false
+  - cycle: 20
+    eolDate: 2023-10-17
+    eol: true
+  - cycle: 19
+    eolDate: 2023-04-19
+    eol: true
+  - cycle: 18
+    eolDate: 2022-10-18
+    eol: true
+  - cycle: 17
+    eolDate: 2029-10-31
+    eol: false
+  - cycle: 16
+    eolDate: 2021-10-19
+    eol: true
+  - cycle: 15
+    eolDate: 2021-04-20
+    eol: true
+  - cycle: 11
+    eolDate: 2032-01-31
+    eol: false
+  - cycle: 8
+    eolDate: 2030-12-31
+    eol: false
+- name: amazon-linux
+  label: Amazon Linux
+  coordinates:
+  - pkg:docker/library/amazonlinux
+  cycles:
+  - cycle: 2023
+    eolDate: 2029-06-30
+    eol: false
+  - cycle: 2
+    eolDate: 2026-06-30
+    eol: false
+  - cycle: 2018.03
+    eolDate: 2023-12-31
+    eol: true
+  - cycle: 2017.09
+    eolDate: 2023-12-31
+    eol: true
+  - cycle: 2017.03
+    eolDate: 2023-12-31
+    eol: true
+  - cycle: 2016.09
+    eolDate: 2023-12-31
+    eol: true
+  - cycle: 2016.03
+    eolDate: 2023-12-31
+    eol: true
+  - cycle: 2015.09
+    eolDate: 2023-12-31
+    eol: true
+  - cycle: 2015.03
+    eolDate: 2023-12-31
+    eol: true
+  - cycle: 2014.09
+    eolDate: 2023-12-31
+    eol: true
+  - cycle: 2014.03
+    eolDate: 2023-12-31
+    eol: true
+  - cycle: 2013.09
+    eolDate: 2023-12-31
+    eol: true
+  - cycle: 2013.03
+    eolDate: 2023-12-31
+    eol: true
+  - cycle: 2012.09
+    eolDate: 2023-12-31
+    eol: true
+  - cycle: 2012.03
+    eolDate: 2023-12-31
+    eol: true
+  - cycle: 2011.09
+    eolDate: 2023-12-31
+    eol: true
+  - cycle: 2010.11
+    eolDate: 2023-12-31
+    eol: true
+- name: angular
+  label: Angular
+  coordinates:
+  - pkg:npm/@angular/core
+  cycles:
+  - cycle: 22
+    eolDate: null
+    eol: false
+  - cycle: 21
+    eolDate: 2027-05-19
+    eol: false
+  - cycle: 20
+    eolDate: 2026-11-28
+    eol: false
+  - cycle: 19
+    eolDate: 2026-05-19
+    eol: true
+  - cycle: 18
+    eolDate: 2025-11-21
+    eol: true
+  - cycle: 17
+    eolDate: 2025-05-15
+    eol: true
+  - cycle: 16
+    eolDate: 2024-11-08
+    eol: true
+  - cycle: 15
+    eolDate: 2024-05-18
+    eol: true
+  - cycle: 14
+    eolDate: 2023-11-18
+    eol: true
+  - cycle: 13
+    eolDate: 2023-05-04
+    eol: true
+  - cycle: 12
+    eolDate: 2022-11-12
+    eol: true
+  - cycle: 11
+    eolDate: 2022-05-11
+    eol: true
+  - cycle: 10
+    eolDate: 2021-12-24
+    eol: true
+  - cycle: 9
+    eolDate: 2021-08-06
+    eol: true
+- name: angularjs
+  label: AngularJS
+  coordinates:
+  - pkg:npm/angular
+  cycles:
+  - cycle: 1.8
+    eolDate: 2021-12-31
+    eol: true
+  - cycle: 1.7
+    eolDate: 2021-12-31
+    eol: true
+  - cycle: 1.6
+    eolDate: 2021-12-31
+    eol: true
+  - cycle: 1.5
+    eolDate: 2021-12-31
+    eol: true
+  - cycle: 1.4
+    eolDate: 2021-12-31
+    eol: true
+  - cycle: 1.3
+    eolDate: 2021-12-31
+    eol: true
+  - cycle: 1.2
+    eolDate: 2021-12-31
+    eol: true
+  - cycle: 1.1
+    eolDate: 2021-12-31
+    eol: true
+  - cycle: 1.0
+    eolDate: 2021-12-31
+    eol: true
+- name: ant
+  label: Apache Ant
+  coordinates:
+  - pkg:maven/org.apache.ant
+  cycles:
+  - cycle: 1.10
+    eolDate: null
+    eol: false
+  - cycle: 1.9
+    eolDate: 2024-06-19
+    eol: true
+  - cycle: 1.8
+    eolDate: 2013-03-07
+    eol: true
+- name: apache-activemq
+  label: Apache ActiveMQ Classic
+  coordinates:
+  - pkg:maven/org.apache.activemq
+  cycles:
+  - cycle: 6.2
+    eolDate: null
+    eol: false
+  - cycle: 5.19
+    eolDate: null
+    eol: false
+  - cycle: 6.1
+    eolDate: null
+    eol: false
+  - cycle: 6.0
+    eolDate: 2024-03-17
+    eol: true
+  - cycle: 5.18
+    eolDate: 2025-03-11
+    eol: true
+  - cycle: 5.17
+    eolDate: 2024-04-12
+    eol: true
+  - cycle: 5.16
+    eolDate: 2023-03-18
+    eol: true
+  - cycle: 5.15
+    eolDate: 2022-03-09
+    eol: true
+  - cycle: 5.14
+    eolDate: 2017-06-27
+    eol: true
+  - cycle: 5.13
+    eolDate: 2016-12-16
+    eol: true
+  - cycle: 5.12
+    eolDate: 2016-02-03
+    eol: true
+  - cycle: 5.11
+    eolDate: 2016-02-03
+    eol: true
+  - cycle: 5.10
+    eolDate: 2015-02-13
+    eol: true
+  - cycle: 5.9
+    eolDate: 2014-06-05
+    eol: true
+  - cycle: 5.8
+    eolDate: 2013-10-14
+    eol: true
+  - cycle: 5.7
+    eolDate: 2013-02-06
+    eol: true
+  - cycle: 5.6
+    eolDate: 2012-10-02
+    eol: true
+  - cycle: 5.5
+    eolDate: 2012-05-02
+    eol: true
+  - cycle: 5.4
+    eolDate: 2011-10-12
+    eol: true
+  - cycle: 5.3
+    eolDate: 2010-08-13
+    eol: true
+  - cycle: 5.2
+    eolDate: 2009-10-23
+    eol: true
+  - cycle: 5.1
+    eolDate: 2009-06-30
+    eol: true
+  - cycle: 5.0
+    eolDate: 2008-05-01
+    eol: true
+- name: apache-airflow
+  label: Apache Airflow
+  coordinates:
+  - pkg:docker/apache/airflow
+  - pkg:docker/bitnami/airflow
+  cycles:
+  - cycle: 3
+    eolDate: null
+    eol: false
+  - cycle: 2
+    eolDate: 2026-04-22
+    eol: true
+  - cycle: 1.10
+    eolDate: 2021-06-17
+    eol: true
+  - cycle: 1.9
+    eolDate: 2018-08-27
+    eol: true
+  - cycle: 1.8
+    eolDate: 2018-01-03
+    eol: true
+  - cycle: 1.7
+    eolDate: 2017-03-19
+    eol: true
+- name: apache-camel
+  label: Apache Camel
+  coordinates:
+  - pkg:docker/apache/camel
+  - pkg:maven/org.apache.camel
+  cycles:
+  - cycle: 4.20
+    eolDate: null
+    eol: false
+  - cycle: 4.19
+    eolDate: 2026-04-23
+    eol: true
+  - cycle: 4.18
+    eolDate: 2027-02-17
+    eol: false
+  - cycle: 4.17
+    eolDate: 2026-02-17
+    eol: true
+  - cycle: 4.16
+    eolDate: 2026-01-12
+    eol: true
+  - cycle: 4.15
+    eolDate: 2025-11-05
+    eol: true
+  - cycle: 4.14
+    eolDate: 2026-08-20
+    eol: false
+  - cycle: 4.13
+    eolDate: 2025-08-20
+    eol: true
+  - cycle: 4.12
+    eolDate: 2025-07-04
+    eol: true
+  - cycle: 4.11
+    eolDate: 2025-05-29
+    eol: true
+  - cycle: 4.10
+    eolDate: 2026-02-11
+    eol: true
+  - cycle: 4.9
+    eolDate: 2025-02-11
+    eol: true
+  - cycle: 4.8
+    eolDate: 2025-09-10
+    eol: true
+  - cycle: 4.7
+    eolDate: 2024-09-10
+    eol: true
+  - cycle: 4.6
+    eolDate: 2024-07-13
+    eol: true
+  - cycle: 4.5
+    eolDate: 2024-05-10
+    eol: true
+  - cycle: 4.4
+    eolDate: 2025-02-12
+    eol: true
+  - cycle: 3.22
+    eolDate: 2024-12-26
+    eol: true
+  - cycle: 4.3
+    eolDate: 2024-02-12
+    eol: true
+  - cycle: 4.2
+    eolDate: 2023-12-18
+    eol: true
+  - cycle: 4.1
+    eolDate: 2023-11-15
+    eol: true
+  - cycle: 4.0
+    eolDate: 2024-08-10
+    eol: true
+  - cycle: 3.21
+    eolDate: 2024-06-23
+    eol: true
+  - cycle: 3.20
+    eolDate: 2023-12-31
+    eol: true
+  - cycle: 3.19
+    eolDate: 2022-12-16
+    eol: true
+  - cycle: 3.18
+    eolDate: 2023-07-31
+    eol: true
+  - cycle: 3.17
+    eolDate: 2022-07-02
+    eol: true
+  - cycle: 3.16
+    eolDate: 2022-05-15
+    eol: true
+  - cycle: 3.15
+    eolDate: 2022-03-22
+    eol: true
+  - cycle: 3.14
+    eolDate: 2022-12-31
+    eol: true
+  - cycle: 3.13
+    eolDate: 2021-12-12
+    eol: true
+  - cycle: 3.12
+    eolDate: 2021-11-08
+    eol: true
+  - cycle: 3.11
+    eolDate: 2022-06-30
+    eol: true
+  - cycle: 3.10
+    eolDate: 2021-06-23
+    eol: true
+  - cycle: 3.9
+    eolDate: 2021-05-15
+    eol: true
+  - cycle: 3.8
+    eolDate: 2021-03-22
+    eol: true
+  - cycle: 3.7
+    eolDate: 2021-12-31
+    eol: true
+  - cycle: 3.6
+    eolDate: 2020-12-11
+    eol: true
+  - cycle: 3.5
+    eolDate: 2020-10-16
+    eol: true
+  - cycle: 3.4
+    eolDate: 2021-06-30
+    eol: true
+  - cycle: 3.3
+    eolDate: 2020-06-14
+    eol: true
+  - cycle: 3.2
+    eolDate: 2020-05-10
+    eol: true
+  - cycle: 3.1
+    eolDate: 2020-04-01
+    eol: true
+  - cycle: 2.25
+    eolDate: 2022-01-31
+    eol: true
+  - cycle: 3.0
+    eolDate: 2020-02-20
+    eol: true
+- name: apache-cassandra
+  label: Apache Cassandra
+  coordinates:
+  - pkg:maven/org.apache.cassandra
+  cycles:
+  - cycle: 5.0
+    eolDate: null
+    eol: false
+  - cycle: 4.1
+    eolDate: null
+    eol: false
+  - cycle: 4.0
+    eolDate: null
+    eol: false
+  - cycle: 3.11
+    eolDate: 2024-09-05
+    eol: true
+  - cycle: 3.0
+    eolDate: 2024-09-05
+    eol: true
+- name: apache-couchdb
+  label: Apache CouchDB
+  coordinates:
+  - pkg:docker/apache/couchdb
+  - pkg:docker/bitnami/couchdb
+  - pkg:docker/library/couchdb
+  - pkg:docker/rapidfort/couchdb-official
+  cycles:
+  - cycle: 3.5
+    eolDate: null
+    eol: false
+  - cycle: 3.4
+    eolDate: null
+    eol: false
+  - cycle: 3.3
+    eolDate: 2025-05-05
+    eol: true
+  - cycle: 3.2
+    eolDate: 2024-09-20
+    eol: true
+- name: apache-flink
+  label: Apache Flink
+  coordinates:
+  - pkg:docker/apache/flink
+  - pkg:docker/library/flink
+  cycles:
+  - cycle: 2.2
+    eolDate: null
+    eol: false
+  - cycle: 2.1
+    eolDate: null
+    eol: false
+  - cycle: 2.0
+    eolDate: null
+    eol: false
+  - cycle: 1.20
+    eolDate: null
+    eol: false
+  - cycle: 1.19
+    eolDate: null
+    eol: false
+  - cycle: 1.18
+    eolDate: 2025-03-24
+    eol: true
+  - cycle: 1.17
+    eolDate: 2024-08-01
+    eol: true
+- name: apache-groovy
+  label: Apache Groovy
+  coordinates:
+  - pkg:maven/org.apache.groovy
+  - pkg:maven/org.codehaus.groovy
+  cycles:
+  - cycle: 5.0
+    eolDate: null
+    eol: false
+  - cycle: 4.0
+    eolDate: null
+    eol: false
+  - cycle: 3.0
+    eolDate: null
+    eol: false
+  - cycle: 2.5
+    eolDate: 2026-04-30
+    eol: true
+  - cycle: 2.4
+    eolDate: null
+    eol: true
+- name: apache-hadoop
+  label: Apache Hadoop
+  coordinates:
+  - pkg:docker/apache/hadoop
+  - pkg:maven/org.apache.hadoop
+  cycles:
+  - cycle: 3.5
+    eolDate: null
+    eol: false
+  - cycle: 3.4
+    eolDate: null
+    eol: false
+  - cycle: 3.3
+    eolDate: null
+    eol: false
+  - cycle: 2.10
+    eolDate: null
+    eol: false
+  - cycle: 3.2
+    eolDate: 2023-12-21
+    eol: true
+  - cycle: 3.1
+    eolDate: 2020-08-18
+    eol: true
+  - cycle: 3.0
+    eolDate: 2018-06-10
+    eol: true
+  - cycle: 2.9
+    eolDate: 2018-11-20
+    eol: true
+  - cycle: 2.8
+    eolDate: 2018-09-18
+    eol: true
+  - cycle: 2.7
+    eolDate: 2018-07-18
+    eol: true
+  - cycle: 2.6
+    eolDate: 2016-10-10
+    eol: true
+  - cycle: 2.5
+    eolDate: 2015-11-19
+    eol: true
+  - cycle: 2.4
+    eolDate: 2014-06-30
+    eol: true
+  - cycle: 2.3
+    eolDate: 2014-02-24
+    eol: true
+  - cycle: 2.2
+    eolDate: 2013-10-16
+    eol: true
+  - cycle: 1.2
+    eolDate: 2013-08-04
+    eol: true
+  - cycle: 1.1
+    eolDate: 2013-03-06
+    eol: true
+  - cycle: 1.0
+    eolDate: 2012-10-12
+    eol: true
+- name: apache-maven
+  label: Apache Maven
+  coordinates:
+  - pkg:maven/org.apache.maven
+  cycles:
+  - cycle: 3.9
+    eolDate: null
+    eol: false
+  - cycle: 3.8
+    eolDate: 2025-06-14
+    eol: true
+  - cycle: 3.6
+    eolDate: 2021-03-30
+    eol: true
+  - cycle: 3.5
+    eolDate: 2018-10-24
+    eol: true
+  - cycle: 3.3
+    eolDate: 2017-04-03
+    eol: true
+  - cycle: 3.2
+    eolDate: 2015-03-13
+    eol: true
+  - cycle: 3.1
+    eolDate: 2014-02-14
+    eol: true
+  - cycle: 3.0
+    eolDate: 2013-06-28
+    eol: true
+  - cycle: 2
+    eolDate: 2014-02-18
+    eol: true
+  - cycle: 1
+    eolDate: 2014-02-18
+    eol: true
+- name: apache-nifi
+  label: Apache NiFi
+  coordinates:
+  - pkg:docker/apache/nifi
+  - pkg:maven/org.apache.nifi
+  cycles:
+  - cycle: 2.9
+    eolDate: null
+    eol: false
+  - cycle: 2.8
+    eolDate: 2026-04-10
+    eol: true
+  - cycle: 2.7
+    eolDate: 2026-02-13
+    eol: true
+  - cycle: 2.6
+    eolDate: 2025-12-09
+    eol: true
+  - cycle: 2.5
+    eolDate: 2025-09-21
+    eol: true
+  - cycle: 2.4
+    eolDate: 2025-07-22
+    eol: true
+  - cycle: 2.3
+    eolDate: 2025-05-01
+    eol: true
+  - cycle: 2.2
+    eolDate: 2025-03-11
+    eol: true
+  - cycle: 2.1
+    eolDate: 2025-01-27
+    eol: true
+  - cycle: 2.0
+    eolDate: 2024-12-23
+    eol: true
+  - cycle: 1.28
+    eolDate: 2024-12-08
+    eol: true
+  - cycle: 1.27
+    eolDate: 2024-10-26
+    eol: true
+  - cycle: 1.26
+    eolDate: 2024-07-07
+    eol: true
+  - cycle: 1.25
+    eolDate: 2024-05-06
+    eol: true
+  - cycle: 1.24
+    eolDate: 2024-01-29
+    eol: true
+  - cycle: 1.23
+    eolDate: 2023-11-27
+    eol: true
+  - cycle: 1.22
+    eolDate: 2023-07-25
+    eol: true
+  - cycle: 1.21
+    eolDate: 2023-06-11
+    eol: true
+  - cycle: 1.20
+    eolDate: 2023-04-07
+    eol: true
+  - cycle: 1.19
+    eolDate: 2023-02-09
+    eol: true
+- name: apache-struts
+  label: Apache Struts
+  coordinates:
+  - pkg:maven/org.apache.struts
+  cycles:
+  - cycle: 7
+    eolDate: null
+    eol: false
+  - cycle: 6
+    eolDate: null
+    eol: false
+  - cycle: 2.5
+    eolDate: 2024-04-30
+    eol: true
+  - cycle: 2.3
+    eolDate: 2019-05-14
+    eol: true
+  - cycle: 2.2
+    eolDate: null
+    eol: true
+  - cycle: 2.1
+    eolDate: null
+    eol: true
+  - cycle: 2.0
+    eolDate: null
+    eol: true
+  - cycle: 1.3
+    eolDate: 2013-04-05
+    eol: true
+  - cycle: 1.2
+    eolDate: null
+    eol: true
+- name: argo-cd
+  label: Argo CD
+  coordinates:
+  - pkg:docker/argoproj/argocd
+  cycles:
+  - cycle: 3.4
+    eolDate: null
+    eol: false
+  - cycle: 3.3
+    eolDate: null
+    eol: false
+  - cycle: 3.2
+    eolDate: null
+    eol: false
+  - cycle: 3.1
+    eolDate: 2026-05-05
+    eol: true
+  - cycle: 3.0
+    eolDate: 2026-02-02
+    eol: true
+  - cycle: 2.14
+    eolDate: 2025-11-04
+    eol: true
+  - cycle: 2.13
+    eolDate: 2025-08-13
+    eol: true
+  - cycle: 2.12
+    eolDate: 2025-05-06
+    eol: true
+  - cycle: 2.11
+    eolDate: 2025-02-03
+    eol: true
+  - cycle: 2.10
+    eolDate: 2024-11-04
+    eol: true
+  - cycle: 2.9
+    eolDate: 2024-08-05
+    eol: true
+  - cycle: 2.8
+    eolDate: 2024-05-07
+    eol: true
+  - cycle: 2.7
+    eolDate: 2024-02-05
+    eol: true
+  - cycle: 2.6
+    eolDate: 2023-11-05
+    eol: true
+  - cycle: 2.5
+    eolDate: 2023-08-07
+    eol: true
+  - cycle: 2.4
+    eolDate: 2023-05-02
+    eol: true
+  - cycle: 2.3
+    eolDate: 2023-02-07
+    eol: true
+  - cycle: 2.2
+    eolDate: 2022-10-26
+    eol: true
+  - cycle: 2.1
+    eolDate: 2022-06-11
+    eol: true
+  - cycle: 2.0
+    eolDate: 2022-03-06
+    eol: true
+  - cycle: 1.8
+    eolDate: 2021-12-15
+    eol: true
+  - cycle: 1.7
+    eolDate: 2021-08-20
+    eol: true
+  - cycle: 1.6
+    eolDate: 2021-12-15
+    eol: true
+  - cycle: 1.5
+    eolDate: 2020-12-10
+    eol: true
+  - cycle: 1.4
+    eolDate: 2020-08-26
+    eol: true
+  - cycle: 1.3
+    eolDate: 2020-06-17
+    eol: true
+  - cycle: 1.2
+    eolDate: 2020-01-18
+    eol: true
+  - cycle: 1.1
+    eolDate: 2020-01-18
+    eol: true
+  - cycle: 1.0
+    eolDate: 2019-11-13
+    eol: true
+- name: argo-workflows
+  label: Argo Workflows
+  coordinates:
+  - pkg:docker/argoproj/argocli
+  - pkg:docker/argoproj/workflow-controller
+  cycles:
+  - cycle: 4.0
+    eolDate: null
+    eol: false
+  - cycle: 3.7
+    eolDate: null
+    eol: false
+  - cycle: 3.6
+    eolDate: 2026-02-04
+    eol: true
+  - cycle: 3.5
+    eolDate: 2025-07-23
+    eol: true
+  - cycle: 3.4
+    eolDate: 2024-11-14
+    eol: true
+  - cycle: 3.3
+    eolDate: 2023-10-13
+    eol: true
+- name: authentik
+  label: authentik
+  coordinates:
+  - pkg:docker/authentik/server
+  cycles:
+  - cycle: 2026.5
+    eolDate: null
+    eol: false
+  - cycle: 2026.2
+    eolDate: null
+    eol: false
+  - cycle: 2025.12
+    eolDate: 2026-05-22
+    eol: true
+  - cycle: 2025.10
+    eolDate: 2026-02-24
+    eol: true
+  - cycle: 2025.8
+    eolDate: 2026-01-13
+    eol: true
+  - cycle: 2025.6
+    eolDate: 2025-10-27
+    eol: true
+  - cycle: 2025.4
+    eolDate: 2025-08-20
+    eol: true
+  - cycle: 2024.12
+    eolDate: 2025-04-30
+    eol: true
+  - cycle: 2023.10
+    eolDate: 2024-04-24
+    eol: true
+  - cycle: 2022.12
+    eolDate: 2023-02-14
+    eol: true
+  - cycle: 2021.12
+    eolDate: 2022-02-16
+    eol: true
+- name: bellsoft-liberica
+  label: Bellsoft Liberica JDK
+  coordinates:
+  - pkg:docker/bellsoft/liberica-openjdk-alpine
+  - pkg:docker/bellsoft/liberica-openjdk-alpine-musl
+  - pkg:docker/bellsoft/liberica-openjdk-centos
+  - pkg:docker/bellsoft/liberica-openjdk-debian
+  - pkg:docker/bellsoft/liberica-openjre-alpine
+  - pkg:docker/bellsoft/liberica-openjre-alpine-musl
+  - pkg:docker/bellsoft/liberica-openjre-centos
+  - pkg:docker/bellsoft/liberica-openjre-debian
+  cycles:
+  - cycle: 26
+    eolDate: 2026-09-18
+    eol: false
+  - cycle: 25
+    eolDate: 2031-09-30
+    eol: false
+  - cycle: 24
+    eolDate: 2025-09-16
+    eol: true
+  - cycle: 23
+    eolDate: 2025-03-18
+    eol: true
+  - cycle: 22
+    eolDate: 2024-09-17
+    eol: true
+  - cycle: 21
+    eolDate: null
+    eol: false
+  - cycle: 20
+    eolDate: 2023-09-19
+    eol: true
+  - cycle: 19
+    eolDate: 2023-03-21
+    eol: true
+  - cycle: 18
+    eolDate: 2022-09-20
+    eol: true
+  - cycle: 17
+    eolDate: 2027-10-31
+    eol: false
+  - cycle: 16
+    eolDate: 2021-09-14
+    eol: true
+  - cycle: 15
+    eolDate: 2021-03-16
+    eol: true
+  - cycle: 14
+    eolDate: 2020-09-16
+    eol: true
+  - cycle: 13
+    eolDate: 2020-03-17
+    eol: true
+  - cycle: 12
+    eolDate: 2019-09-17
+    eol: true
+  - cycle: 11
+    eolDate: 2024-10-31
+    eol: true
+  - cycle: 10
+    eolDate: 2018-09-25
+    eol: true
+  - cycle: 8
+    eolDate: 2026-11-30
+    eol: false
+  - cycle: 7
+    eolDate: 2022-07-31
+    eol: true
+  - cycle: 6
+    eolDate: 2018-12-31
+    eol: true
+- name: bootstrap
+  label: Bootstrap
+  coordinates:
+  - pkg:npm/bootstrap
+  - pkg:nuget/bootstrap
+  cycles:
+  - cycle: 5
+    eolDate: null
+    eol: false
+  - cycle: 4
+    eolDate: 2023-01-01
+    eol: true
+  - cycle: 3
+    eolDate: 2019-07-24
+    eol: true
+  - cycle: 2
+    eolDate: 2013-08-19
+    eol: true
+- name: bun
+  label: Bun
+  coordinates:
+  - pkg:docker/oven/bun
+  - pkg:npm/bun
+  cycles:
+  - cycle: 1
+    eolDate: null
+    eol: false
+- name: caddy
+  label: Caddy
+  coordinates:
+  - pkg:docker/library/caddy
+  cycles:
+  - cycle: 2
+    eolDate: null
+    eol: false
+  - cycle: 1
+    eolDate: 2020-07-01
+    eol: true
+- name: calico
+  label: Calico
+  coordinates:
+  - pkg:docker/calico/cni
+  cycles:
+  - cycle: 3.32
+    eolDate: null
+    eol: false
+  - cycle: 3.31
+    eolDate: null
+    eol: false
+  - cycle: 3.30
+    eolDate: 2026-04-30
+    eol: true
+  - cycle: 3.29
+    eolDate: 2025-10-21
+    eol: true
+  - cycle: 3.28
+    eolDate: 2025-05-05
+    eol: true
+  - cycle: 3.27
+    eolDate: 2024-10-29
+    eol: true
+  - cycle: 3.26
+    eolDate: 2024-05-11
+    eol: true
+  - cycle: 3.25
+    eolDate: 2023-12-15
+    eol: true
+- name: cilium
+  label: Cilium
+  coordinates:
+  - pkg:docker/cilium/cilium
+  cycles:
+  - cycle: 1.19
+    eolDate: null
+    eol: false
+  - cycle: 1.18
+    eolDate: null
+    eol: false
+  - cycle: 1.17
+    eolDate: null
+    eol: false
+  - cycle: 1.16
+    eolDate: 2026-02-03
+    eol: true
+  - cycle: 1.15
+    eolDate: 2025-07-29
+    eol: true
+  - cycle: 1.14
+    eolDate: 2025-02-04
+    eol: true
+  - cycle: 1.13
+    eolDate: 2024-07-24
+    eol: true
+- name: clear-linux
+  label: Clear Linux
+  coordinates:
+  - pkg:docker/library/clearlinux
+  cycles:
+  - cycle: current
+    eolDate: 2025-07-21
+    eol: true
+- name: clickhouse
+  label: ClickHouse
+  coordinates:
+  - pkg:docker/library/clickhouse
+  cycles:
+  - cycle: 26.5
+    eolDate: null
+    eol: false
+  - cycle: 26.4
+    eolDate: null
+    eol: false
+  - cycle: 26.3
+    eolDate: 2027-03-26
+    eol: false
+  - cycle: 26.2
+    eolDate: 2026-05-21
+    eol: true
+  - cycle: 26.1
+    eolDate: 2026-05-05
+    eol: true
+  - cycle: 25.12
+    eolDate: 2026-03-26
+    eol: true
+  - cycle: 25.11
+    eolDate: 2026-02-27
+    eol: true
+  - cycle: 25.10
+    eolDate: 2026-01-30
+    eol: true
+  - cycle: 25.9
+    eolDate: 2025-12-18
+    eol: true
+  - cycle: 25.8
+    eolDate: 2026-08-29
+    eol: false
+  - cycle: 25.7
+    eolDate: 2025-11-01
+    eol: true
+  - cycle: 25.6
+    eolDate: 2025-09-27
+    eol: true
+  - cycle: 25.5
+    eolDate: 2025-08-29
+    eol: true
+  - cycle: 25.4
+    eolDate: 2025-07-29
+    eol: true
+  - cycle: 25.3
+    eolDate: 2026-03-20
+    eol: true
+  - cycle: 25.2
+    eolDate: 2025-05-22
+    eol: true
+  - cycle: 25.1
+    eolDate: 2025-04-22
+    eol: true
+- name: cnspec
+  label: cnspec
+  coordinates:
+  - pkg:docker/mondoo/cnspec
+  cycles:
+  - cycle: 13
+    eolDate: null
+    eol: false
+  - cycle: 12
+    eolDate: null
+    eol: false
+  - cycle: 11
+    eolDate: 2026-03-10
+    eol: true
+  - cycle: 10
+    eolDate: 2025-09-05
+    eol: true
+  - cycle: 9
+    eolDate: 2024-04-17
+    eol: true
+  - cycle: 8
+    eolDate: 2024-01-23
+    eol: true
+  - cycle: 7
+    eolDate: 2023-10-05
+    eol: true
+  - cycle: 6
+    eolDate: 2023-03-09
+    eol: true
+- name: composer
+  label: Composer
+  coordinates:
+  - pkg:docker/library/composer
+  cycles:
+  - cycle: 2.10
+    eolDate: null
+    eol: false
+  - cycle: 2.9
+    eolDate: 2026-05-28
+    eol: true
+  - cycle: 2.8
+    eolDate: 2025-11-13
+    eol: true
+  - cycle: 2.7
+    eolDate: 2024-10-02
+    eol: true
+  - cycle: 2.6
+    eolDate: 2024-02-08
+    eol: true
+  - cycle: 2.5
+    eolDate: 2023-09-01
+    eol: true
+  - cycle: 2.4
+    eolDate: 2022-12-20
+    eol: true
+  - cycle: 2.3
+    eolDate: 2022-08-16
+    eol: true
+  - cycle: 2.2
+    eolDate: null
+    eol: false
+  - cycle: 2.1
+    eolDate: 2021-12-22
+    eol: true
+  - cycle: 2.0
+    eolDate: 2021-06-03
+    eol: true
+  - cycle: 1
+    eolDate: 2020-10-24
+    eol: true
+- name: concrete-cms
+  label: Concrete CMS
+  coordinates:
+  - pkg:docker/fehrenbacher/concrete5
+  cycles:
+  - cycle: 9
+    eolDate: null
+    eol: false
+  - cycle: 8
+    eolDate: 2025-08-05
+    eol: true
+  - cycle: 5.7
+    eolDate: 2019-10-23
+    eol: true
+  - cycle: 5.6
+    eolDate: 2019-02-26
+    eol: true
+- name: consul
+  label: Hashicorp Consul
+  coordinates:
+  - pkg:docker/library/consul
+  cycles:
+  - cycle: 2.0
+    eolDate: null
+    eol: false
+  - cycle: 1.22
+    eolDate: null
+    eol: false
+  - cycle: 1.21
+    eolDate: null
+    eol: false
+  - cycle: 1.20
+    eolDate: 2026-05-24
+    eol: true
+  - cycle: 1.19
+    eolDate: 2025-10-27
+    eol: true
+  - cycle: 1.18
+    eolDate: 2025-05-06
+    eol: true
+  - cycle: 1.17
+    eolDate: 2024-10-14
+    eol: true
+  - cycle: 1.16
+    eolDate: 2024-06-12
+    eol: true
+  - cycle: 1.15
+    eolDate: 2024-02-27
+    eol: true
+  - cycle: 1.14
+    eolDate: 2023-11-03
+    eol: true
+  - cycle: 1.13
+    eolDate: 2023-06-26
+    eol: true
+  - cycle: 1.12
+    eolDate: 2023-02-23
+    eol: true
+  - cycle: 1.11
+    eolDate: 2022-11-15
+    eol: true
+  - cycle: 1.10
+    eolDate: 2022-08-09
+    eol: true
+  - cycle: 1.9
+    eolDate: 2022-04-19
+    eol: true
+  - cycle: 1.8
+    eolDate: 2021-12-14
+    eol: true
+  - cycle: 1.7
+    eolDate: 2021-06-22
+    eol: true
+  - cycle: 1.6
+    eolDate: 2020-11-24
+    eol: true
+- name: contour
+  label: Contour
+  coordinates:
+  - pkg:docker/bitnami/contour
+  - pkg:docker/projectcontour/contour
+  cycles:
+  - cycle: 1.33
+    eolDate: null
+    eol: false
+  - cycle: 1.32
+    eolDate: null
+    eol: false
+  - cycle: 1.31
+    eolDate: null
+    eol: false
+  - cycle: 1.30
+    eolDate: 2025-09-08
+    eol: true
+  - cycle: 1.29
+    eolDate: 2025-05-15
+    eol: true
+  - cycle: 1.28
+    eolDate: 2025-05-06
+    eol: true
+  - cycle: 1.27
+    eolDate: 2024-07-31
+    eol: true
+  - cycle: 1.26
+    eolDate: 2024-05-07
+    eol: true
+  - cycle: 1.25
+    eolDate: 2024-02-12
+    eol: true
+  - cycle: 1.24
+    eolDate: 2023-10-30
+    eol: true
+- name: couchbase-server
+  label: Couchbase Server
+  coordinates:
+  - pkg:docker/couchbase/server
+  - pkg:docker/library/couchbase
+  cycles:
+  - cycle: 8.0
+    eolDate: 2028-10-31
+    eol: false
+  - cycle: 7.6
+    eolDate: 2027-03-31
+    eol: false
+  - cycle: 7.2
+    eolDate: 2026-07-31
+    eol: false
+  - cycle: 7.1
+    eolDate: 2024-01-31
+    eol: true
+  - cycle: 7.0
+    eolDate: 2023-01-31
+    eol: true
+  - cycle: 6.6
+    eolDate: 2023-01-31
+    eol: true
+  - cycle: 6.5
+    eolDate: 2021-02-28
+    eol: true
+  - cycle: 6.0
+    eolDate: 2020-07-31
+    eol: true
+  - cycle: 5.5
+    eolDate: 2020-07-31
+    eol: true
+  - cycle: 5.1
+    eolDate: 2019-01-31
+    eol: true
+  - cycle: 5.0
+    eolDate: 2018-08-31
+    eol: true
+  - cycle: 4.6
+    eolDate: 2018-08-31
+    eol: true
+  - cycle: 4.5
+    eolDate: 2018-04-30
+    eol: true
+  - cycle: 4.1
+    eolDate: 2018-04-30
+    eol: true
+  - cycle: 4.0
+    eolDate: 2017-04-30
+    eol: true
+  - cycle: 3.1
+    eolDate: 2017-02-28
+    eol: true
+  - cycle: 3.0
+    eolDate: 2016-04-30
+    eol: true
+  - cycle: 2.5
+    eolDate: 2015-12-31
+    eol: true
+  - cycle: 2.2
+    eolDate: 2015-03-31
+    eol: true
+  - cycle: 2.1
+    eolDate: 2014-12-31
+    eol: true
+  - cycle: 2.0
+    eolDate: 2014-06-30
+    eol: true
+  - cycle: 1.8
+    eolDate: 2014-01-31
+    eol: true
+- name: deno
+  label: Deno
+  coordinates:
+  - pkg:docker/denoland/deno
+  cycles:
+  - cycle: 2.8
+    eolDate: null
+    eol: false
+  - cycle: 2.7
+    eolDate: 2026-05-22
+    eol: true
+  - cycle: 2.6
+    eolDate: 2026-02-25
+    eol: true
+  - cycle: 2.5
+    eolDate: 2026-04-30
+    eol: true
+  - cycle: 2.4
+    eolDate: 2025-09-10
+    eol: true
+  - cycle: 2.3
+    eolDate: 2025-07-01
+    eol: true
+  - cycle: 2.2
+    eolDate: 2025-10-31
+    eol: true
+  - cycle: 2.1
+    eolDate: 2025-04-30
+    eol: true
+  - cycle: 2.0
+    eolDate: 2024-11-21
+    eol: true
+  - cycle: 1
+    eolDate: 2024-10-09
+    eol: true
+- name: discourse
+  label: Discourse
+  coordinates:
+  - pkg:docker/bitnami/discourse
+  - pkg:docker/discourse/base
+  cycles:
+  - cycle: 2026.5
+    eolDate: 2026-07-31
+    eol: false
+  - cycle: 2026.4
+    eolDate: 2026-06-30
+    eol: false
+  - cycle: 2026.3
+    eolDate: 2026-05-28
+    eol: true
+  - cycle: 2026.2
+    eolDate: 2026-04-28
+    eol: true
+  - cycle: 2026.1
+    eolDate: 2026-09-30
+    eol: false
+  - cycle: 2025.12
+    eolDate: 2026-02-26
+    eol: true
+  - cycle: 2025.11
+    eolDate: 2026-01-28
+    eol: true
+  - cycle: 3.5
+    eolDate: 2026-01-28
+    eol: true
+  - cycle: 3.4
+    eolDate: 2025-08-19
+    eol: true
+- name: dotnet
+  label: Microsoft .NET
+  coordinates:
+  - pkg:docker/dotnet/aspnet
+  - pkg:docker/dotnet/runtime
+  - pkg:docker/dotnet/runtime-deps
+  - pkg:docker/dotnet/sdk
+  - pkg:generic/dotnet
+  - pkg:nuget/Microsoft.NETCore.App
+  - pkg:nuget/Microsoft.NETCore.App.Runtime.linux-arm
+  - pkg:nuget/Microsoft.NETCore.App.Runtime.linux-arm64
+  - pkg:nuget/Microsoft.NETCore.App.Runtime.linux-bionic-arm64
+  - pkg:nuget/Microsoft.NETCore.App.Runtime.linux-bionic-x64
+  - pkg:nuget/Microsoft.NETCore.App.Runtime.linux-musl-arm
+  - pkg:nuget/Microsoft.NETCore.App.Runtime.linux-musl-arm64
+  - pkg:nuget/Microsoft.NETCore.App.Runtime.linux-musl-x64
+  - pkg:nuget/Microsoft.NETCore.App.Runtime.linux-x64
+  - pkg:nuget/Microsoft.NETCore.App.Runtime.osx-arm64
+  - pkg:nuget/Microsoft.NETCore.App.Runtime.osx-x64
+  - pkg:nuget/Microsoft.NETCore.App.Runtime.win-arm
+  - pkg:nuget/Microsoft.NETCore.App.Runtime.win-arm64
+  - pkg:nuget/Microsoft.NETCore.App.Runtime.win-x64
+  - pkg:nuget/Microsoft.NETCore.App.Runtime.win-x86
+  cycles:
+  - cycle: 10
+    eolDate: 2028-11-14
+    eol: false
+  - cycle: 9
+    eolDate: 2026-11-10
+    eol: false
+  - cycle: 8
+    eolDate: 2026-11-10
+    eol: false
+  - cycle: 7
+    eolDate: 2024-05-14
+    eol: true
+  - cycle: 6
+    eolDate: 2024-11-12
+    eol: true
+  - cycle: 5
+    eolDate: 2022-05-10
+    eol: true
+  - cycle: 3.1
+    eolDate: 2022-12-13
+    eol: true
+  - cycle: 3.0
+    eolDate: 2020-03-03
+    eol: true
+  - cycle: 2.2
+    eolDate: 2019-12-23
+    eol: true
+  - cycle: 2.1
+    eolDate: 2021-08-21
+    eol: true
+  - cycle: 2.0
+    eolDate: 2018-10-01
+    eol: true
+  - cycle: 1.1
+    eolDate: 2019-06-27
+    eol: true
+  - cycle: 1.0
+    eolDate: 2019-06-27
+    eol: true
+- name: dotnetfx
+  label: Microsoft .NET Framework
+  coordinates:
+  - pkg:generic/dotnetfx
+  cycles:
+  - cycle: 4.8.1
+    eolDate: null
+    eol: false
+  - cycle: 4.8
+    eolDate: null
+    eol: false
+  - cycle: 4.7.2
+    eolDate: null
+    eol: false
+  - cycle: 4.7.1
+    eolDate: null
+    eol: false
+  - cycle: 4.7
+    eolDate: null
+    eol: false
+  - cycle: 4.6.2
+    eolDate: 2027-01-12
+    eol: false
+  - cycle: 4.6.1
+    eolDate: 2022-04-26
+    eol: true
+  - cycle: 4.6
+    eolDate: 2022-04-26
+    eol: true
+  - cycle: 4.5.2
+    eolDate: 2022-04-26
+    eol: true
+  - cycle: 4.5.1
+    eolDate: 2016-01-12
+    eol: true
+  - cycle: 4.5
+    eolDate: 2016-01-12
+    eol: true
+  - cycle: 4.0
+    eolDate: 2016-01-12
+    eol: true
+  - cycle: 3.5-sp1
+    eolDate: 2029-01-09
+    eol: false
+- name: drupal
+  label: Drupal
+  coordinates:
+  - pkg:docker/bitnami/drupal
+  - pkg:docker/library/drupal
+  cycles:
+  - cycle: 11.3
+    eolDate: 2026-12-16
+    eol: false
+  - cycle: 10.6
+    eolDate: 2026-12-16
+    eol: false
+  - cycle: 11.2
+    eolDate: 2026-06-17
+    eol: false
+  - cycle: 10.5
+    eolDate: 2026-06-17
+    eol: false
+  - cycle: 10.4
+    eolDate: 2025-12-10
+    eol: true
+  - cycle: 11.1
+    eolDate: 2025-12-10
+    eol: true
+  - cycle: 11.0
+    eolDate: 2025-06-16
+    eol: true
+  - cycle: 10.3
+    eolDate: 2025-06-16
+    eol: true
+  - cycle: 10.2
+    eolDate: 2024-12-17
+    eol: true
+  - cycle: 10.1
+    eolDate: 2024-06-20
+    eol: true
+  - cycle: 10.0
+    eolDate: 2023-12-15
+    eol: true
+  - cycle: 9.5
+    eolDate: 2023-11-01
+    eol: true
+  - cycle: 9.4
+    eolDate: 2023-06-21
+    eol: true
+  - cycle: 9.3
+    eolDate: 2022-12-14
+    eol: true
+  - cycle: 9.2
+    eolDate: 2022-06-15
+    eol: true
+  - cycle: 9.1
+    eolDate: 2021-12-08
+    eol: true
+  - cycle: 9.0
+    eolDate: 2021-06-16
+    eol: true
+  - cycle: 8.9
+    eolDate: 2021-11-02
+    eol: true
+  - cycle: 8.8
+    eolDate: 2020-12-01
+    eol: true
+  - cycle: 7
+    eolDate: 2025-01-05
+    eol: true
+- name: eclipse-jetty
+  label: Eclipse Jetty
+  coordinates:
+  - pkg:maven/org.eclipse.jetty
+  cycles:
+  - cycle: 12.1
+    eolDate: null
+    eol: false
+  - cycle: 12.0
+    eolDate: null
+    eol: false
+  - cycle: 11
+    eolDate: 2025-01-01
+    eol: true
+  - cycle: 10
+    eolDate: 2025-01-01
+    eol: true
+  - cycle: 9.4
+    eolDate: 2025-08-14
+    eol: true
+  - cycle: 9.3
+    eolDate: 2020-12-07
+    eol: true
+  - cycle: 9.2
+    eolDate: 2018-03-08
+    eol: true
+  - cycle: 9.1
+    eolDate: 2014-12-31
+    eol: true
+  - cycle: 9.0
+    eolDate: 2013-12-31
+    eol: true
+  - cycle: 8
+    eolDate: 2014-12-31
+    eol: true
+  - cycle: 7
+    eolDate: 2014-12-31
+    eol: true
+- name: elasticsearch
+  label: Elasticsearch
+  coordinates:
+  - pkg:maven/org.elasticsearch
+  cycles:
+  - cycle: 9.4
+    eolDate: null
+    eol: false
+  - cycle: 9.3
+    eolDate: 2026-05-26
+    eol: true
+  - cycle: 9.2
+    eolDate: 2026-05-05
+    eol: true
+  - cycle: 9.1
+    eolDate: 2026-02-03
+    eol: true
+  - cycle: 8.19
+    eolDate: 2027-07-15
+    eol: false
+  - cycle: 8.18
+    eolDate: 2025-10-21
+    eol: true
+  - cycle: 9.0
+    eolDate: 2025-10-02
+    eol: true
+  - cycle: 8.17
+    eolDate: 2025-08-05
+    eol: true
+  - cycle: 8.16
+    eolDate: 2025-04-15
+    eol: true
+  - cycle: 7
+    eolDate: 2026-01-15
+    eol: true
+  - cycle: 6
+    eolDate: 2022-02-10
+    eol: true
+- name: emberjs
+  label: Ember
+  coordinates:
+  - pkg:npm/ember-source
+  cycles:
+  - cycle: 7.0
+    eolDate: null
+    eol: false
+  - cycle: 6.12
+    eolDate: 2027-05-25
+    eol: false
+  - cycle: 6.11
+    eolDate: 2026-05-01
+    eol: true
+  - cycle: 6.10
+    eolDate: 2026-03-06
+    eol: true
+  - cycle: 6.9
+    eolDate: 2026-02-06
+    eol: true
+  - cycle: 6.8
+    eolDate: 2026-12-08
+    eol: false
+  - cycle: 6.7
+    eolDate: 2025-10-25
+    eol: true
+  - cycle: 6.6
+    eolDate: 2025-09-03
+    eol: true
+  - cycle: 6.5
+    eolDate: 2025-09-01
+    eol: true
+  - cycle: 6.4
+    eolDate: 2026-06-22
+    eol: false
+  - cycle: 6.3
+    eolDate: 2025-05-26
+    eol: true
+  - cycle: 6.2
+    eolDate: 2025-03-28
+    eol: true
+  - cycle: 6.1
+    eolDate: 2025-02-22
+    eol: true
+  - cycle: 6.0
+    eolDate: 2024-12-28
+    eol: true
+  - cycle: 5.12
+    eolDate: 2025-10-13
+    eol: true
+  - cycle: 5.11
+    eolDate: 2024-10-04
+    eol: true
+  - cycle: 5.10
+    eolDate: 2024-08-19
+    eol: true
+  - cycle: 5.9
+    eolDate: 2024-07-08
+    eol: true
+  - cycle: 5.8
+    eolDate: 2025-06-16
+    eol: true
+  - cycle: 5.7
+    eolDate: 2024-04-20
+    eol: true
+  - cycle: 5.6
+    eolDate: 2024-03-04
+    eol: true
+  - cycle: 5.5
+    eolDate: 2024-01-22
+    eol: true
+  - cycle: 5.4
+    eolDate: 2024-12-23
+    eol: true
+  - cycle: 5.3
+    eolDate: 2024-12-22
+    eol: true
+  - cycle: 5.2
+    eolDate: 2023-09-21
+    eol: true
+  - cycle: 5.1
+    eolDate: 2023-08-07
+    eol: true
+  - cycle: 5.0
+    eolDate: 2023-07-08
+    eol: true
+  - cycle: 4.12
+    eolDate: 2024-05-26
+    eol: true
+  - cycle: 4.8
+    eolDate: 2023-12-21
+    eol: true
+  - cycle: 4.4
+    eolDate: 2023-07-26
+    eol: true
+  - cycle: 3.28
+    eolDate: 2023-01-02
+    eol: true
+  - cycle: 3.24
+    eolDate: 2022-03-10
+    eol: true
+  - cycle: 3.20
+    eolDate: 2021-09-15
+    eol: true
+  - cycle: 3.16
+    eolDate: 2021-03-29
+    eol: true
+  - cycle: 3.12
+    eolDate: 2020-10-07
+    eol: true
+  - cycle: 3.8
+    eolDate: 2020-04-22
+    eol: true
+  - cycle: 3.4
+    eolDate: 2019-10-28
+    eol: true
+  - cycle: 2.18
+    eolDate: 2019-02-27
+    eol: true
+  - cycle: 2.16
+    eolDate: 2018-12-03
+    eol: true
+  - cycle: 2.12
+    eolDate: 2018-05-12
+    eol: true
+  - cycle: 2.8
+    eolDate: 2017-10-30
+    eol: true
+  - cycle: 2.4
+    eolDate: 2017-04-24
+    eol: true
+- name: envoy
+  label: Envoy
+  coordinates:
+  - pkg:docker/bitnami/envoy
+  - pkg:docker/envoyproxy/envoy
+  - pkg:docker/envoyproxy/envoy-alpine
+  - pkg:docker/envoyproxy/envoy-alpine-debug
+  - pkg:docker/envoyproxy/envoy-distroless
+  - pkg:docker/hashicorp/envoy-fips
+  - pkg:docker/rapidfort/envoy-official
+  cycles:
+  - cycle: 1.38
+    eolDate: 2027-04-23
+    eol: false
+  - cycle: 1.37
+    eolDate: 2027-01-13
+    eol: false
+  - cycle: 1.36
+    eolDate: 2026-10-14
+    eol: false
+  - cycle: 1.35
+    eolDate: 2026-07-23
+    eol: false
+  - cycle: 1.34
+    eolDate: 2026-04-15
+    eol: true
+  - cycle: 1.33
+    eolDate: 2026-01-14
+    eol: true
+  - cycle: 1.32
+    eolDate: 2025-10-15
+    eol: true
+  - cycle: 1.31
+    eolDate: 2025-07-19
+    eol: true
+  - cycle: 1.30
+    eolDate: 2025-04-16
+    eol: true
+  - cycle: 1.29
+    eolDate: 2025-01-16
+    eol: true
+  - cycle: 1.28
+    eolDate: 2024-10-19
+    eol: true
+  - cycle: 1.27
+    eolDate: 2024-07-27
+    eol: true
+  - cycle: 1.26
+    eolDate: 2024-04-18
+    eol: true
+  - cycle: 1.25
+    eolDate: 2024-01-18
+    eol: true
+  - cycle: 1.24
+    eolDate: 2023-10-19
+    eol: true
+  - cycle: 1.23
+    eolDate: 2023-07-15
+    eol: true
+  - cycle: 1.22
+    eolDate: 2023-04-15
+    eol: true
+  - cycle: 1.21
+    eolDate: 2023-01-12
+    eol: true
+  - cycle: 1.20
+    eolDate: 2022-10-05
+    eol: true
+  - cycle: 1.19
+    eolDate: 2022-07-13
+    eol: true
+  - cycle: 1.18
+    eolDate: 2022-04-15
+    eol: true
+  - cycle: 1.17
+    eolDate: 2022-01-11
+    eol: true
+  - cycle: 1.16
+    eolDate: 2021-10-08
+    eol: true
+  - cycle: 1.15
+    eolDate: 2021-07-07
+    eol: true
+  - cycle: 1.14
+    eolDate: 2021-04-08
+    eol: true
+  - cycle: 1.13
+    eolDate: 2021-01-20
+    eol: true
+  - cycle: 1.12
+    eolDate: 2020-10-31
+    eol: true
+  - cycle: 1.11
+    eolDate: 2019-10-31
+    eol: true
+  - cycle: 1.10
+    eolDate: 2019-07-11
+    eol: true
+  - cycle: 1.9
+    eolDate: 2019-04-05
+    eol: true
+  - cycle: 1.8
+    eolDate: 2018-12-20
+    eol: true
+  - cycle: 1.7
+    eolDate: 2018-10-04
+    eol: true
+  - cycle: 1.6
+    eolDate: 2018-06-21
+    eol: true
+  - cycle: 1.5
+    eolDate: 2018-03-20
+    eol: true
+  - cycle: 1.4
+    eolDate: 2017-12-04
+    eol: true
+  - cycle: 1.3
+    eolDate: 2017-08-24
+    eol: true
+  - cycle: 1.2
+    eolDate: 2017-05-17
+    eol: true
+  - cycle: 1.1
+    eolDate: 2017-03-07
+    eol: true
+  - cycle: 1.0
+    eolDate: 2016-11-30
+    eol: true
+- name: etcd
+  label: etcd
+  coordinates:
+  - pkg:docker/bitnami/etcd
+  cycles:
+  - cycle: 3.6
+    eolDate: null
+    eol: false
+  - cycle: 3.5
+    eolDate: null
+    eol: false
+  - cycle: 3.4
+    eolDate: 2025-05-15
+    eol: true
+  - cycle: 3.3
+    eolDate: 2021-10-15
+    eol: true
+  - cycle: 3.2
+    eolDate: 2021-03-28
+    eol: true
+  - cycle: 3.1
+    eolDate: 2018-10-10
+    eol: true
+  - cycle: 3.0
+    eolDate: 2017-01-20
+    eol: true
+- name: express
+  label: Express
+  coordinates:
+  - pkg:npm/express
+  cycles:
+  - cycle: 5
+    eolDate: null
+    eol: false
+  - cycle: 4
+    eolDate: null
+    eol: false
+  - cycle: 3
+    eolDate: 2015-07-05
+    eol: true
+  - cycle: 2
+    eolDate: 2012-07-01
+    eol: true
+  - cycle: 1
+    eolDate: 2011-03-01
+    eol: true
+- name: fluent-bit
+  label: Fluent Bit
+  coordinates:
+  - pkg:docker/fluent/fluent-bit
+  cycles:
+  - cycle: 5.0
+    eolDate: null
+    eol: false
+  - cycle: 4.2
+    eolDate: 2026-06-30
+    eol: false
+  - cycle: 4.1
+    eolDate: 2026-02-11
+    eol: true
+  - cycle: 4.0
+    eolDate: 2025-12-24
+    eol: true
+  - cycle: 3.2
+    eolDate: 2025-06-29
+    eol: true
+  - cycle: 3.1
+    eolDate: 2025-02-12
+    eol: true
+  - cycle: 3.0
+    eolDate: 2024-10-08
+    eol: true
+  - cycle: 2.2
+    eolDate: 2024-06-21
+    eol: true
+  - cycle: 2.1
+    eolDate: 2024-02-06
+    eol: true
+  - cycle: 2.0
+    eolDate: 2023-07-19
+    eol: true
+  - cycle: 1.9
+    eolDate: 2022-12-05
+    eol: true
+  - cycle: 1.8
+    eolDate: 2022-12-05
+    eol: true
+  - cycle: 1.7
+    eolDate: null
+    eol: true
+  - cycle: 1.6
+    eolDate: null
+    eol: true
+  - cycle: 1.5
+    eolDate: null
+    eol: true
+  - cycle: 1.4
+    eolDate: null
+    eol: true
+  - cycle: 1.3
+    eolDate: null
+    eol: true
+  - cycle: 1.2
+    eolDate: null
+    eol: true
+  - cycle: 1.1
+    eolDate: null
+    eol: true
+  - cycle: 1.0
+    eolDate: null
+    eol: true
+  - cycle: 0.14
+    eolDate: null
+    eol: true
+  - cycle: 0.13
+    eolDate: null
+    eol: true
+  - cycle: 0.12
+    eolDate: null
+    eol: true
+  - cycle: 0.11
+    eolDate: null
+    eol: true
+  - cycle: 0.10
+    eolDate: null
+    eol: true
+- name: font-awesome
+  label: Font Awesome
+  coordinates:
+  - pkg:npm/@fortawesome/fontawesome-svg-core
+  cycles:
+  - cycle: 7
+    eolDate: null
+    eol: false
+  - cycle: 6
+    eolDate: null
+    eol: false
+  - cycle: 5
+    eolDate: null
+    eol: false
+  - cycle: 4
+    eolDate: null
+    eol: true
+  - cycle: 3
+    eolDate: null
+    eol: true
+  - cycle: 2
+    eolDate: null
+    eol: true
+  - cycle: 1
+    eolDate: null
+    eol: true
+- name: gatekeeper
+  label: Gatekeeper
+  coordinates:
+  - pkg:docker/openpolicyagent/gatekeeper
+  cycles:
+  - cycle: 3.22
+    eolDate: null
+    eol: false
+  - cycle: 3.21
+    eolDate: null
+    eol: false
+  - cycle: 3.20
+    eolDate: 2026-03-09
+    eol: true
+  - cycle: 3.19
+    eolDate: 2025-11-19
+    eol: true
+  - cycle: 3.18
+    eolDate: 2025-07-24
+    eol: true
+  - cycle: 3.17
+    eolDate: 2025-04-09
+    eol: true
+  - cycle: 3.16
+    eolDate: 2024-12-12
+    eol: true
+  - cycle: 3.15
+    eolDate: 2024-08-21
+    eol: true
+  - cycle: 3.14
+    eolDate: 2024-05-09
+    eol: true
+  - cycle: 3.13
+    eolDate: 2024-02-05
+    eol: true
+  - cycle: 3.12
+    eolDate: 2023-11-01
+    eol: true
+  - cycle: 3.11
+    eolDate: 2023-08-08
+    eol: true
+- name: gerrit
+  label: Gerrit
+  coordinates:
+  - pkg:docker/gerritcodereview/gerrit
+  cycles:
+  - cycle: 3.14
+    eolDate: null
+    eol: false
+  - cycle: 3.13
+    eolDate: null
+    eol: false
+  - cycle: 3.12
+    eolDate: null
+    eol: false
+  - cycle: 3.11
+    eolDate: 2026-05-15
+    eol: true
+  - cycle: 3.10
+    eolDate: 2025-11-10
+    eol: true
+  - cycle: 3.9
+    eolDate: 2025-05-19
+    eol: true
+  - cycle: 3.8
+    eolDate: 2024-12-02
+    eol: true
+  - cycle: 3.7
+    eolDate: 2024-05-17
+    eol: true
+  - cycle: 3.6
+    eolDate: 2023-11-25
+    eol: true
+  - cycle: 3.5
+    eolDate: 2023-05-19
+    eol: true
+  - cycle: 3.4
+    eolDate: 2022-11-09
+    eol: true
+  - cycle: 3.3
+    eolDate: 2022-05-24
+    eol: true
+  - cycle: 3.2
+    eolDate: 2021-12-07
+    eol: true
+  - cycle: 3.1
+    eolDate: 2021-05-19
+    eol: true
+  - cycle: 3.0
+    eolDate: 2020-12-01
+    eol: true
+  - cycle: 2.16
+    eolDate: 2020-06-01
+    eol: true
+  - cycle: 2.15
+    eolDate: 2019-11-15
+    eol: true
+  - cycle: 2.14
+    eolDate: 2019-05-31
+    eol: true
+  - cycle: 2.13
+    eolDate: null
+    eol: true
+- name: go
+  label: Go
+  coordinates:
+  - pkg:docker/bitnami/golang
+  - pkg:docker/cimg/go
+  - pkg:docker/circleci/golang
+  - pkg:docker/library/golang
+  cycles:
+  - cycle: 1.26
+    eolDate: null
+    eol: false
+  - cycle: 1.25
+    eolDate: null
+    eol: false
+  - cycle: 1.24
+    eolDate: 2026-02-11
+    eol: true
+  - cycle: 1.23
+    eolDate: 2025-08-12
+    eol: true
+  - cycle: 1.22
+    eolDate: 2025-02-11
+    eol: true
+  - cycle: 1.21
+    eolDate: 2024-08-13
+    eol: true
+  - cycle: 1.20
+    eolDate: 2024-02-06
+    eol: true
+  - cycle: 1.19
+    eolDate: 2023-09-06
+    eol: true
+  - cycle: 1.18
+    eolDate: 2023-02-01
+    eol: true
+  - cycle: 1.17
+    eolDate: 2022-08-02
+    eol: true
+  - cycle: 1.16
+    eolDate: 2022-03-15
+    eol: true
+  - cycle: 1.15
+    eolDate: 2021-08-16
+    eol: true
+  - cycle: 1.14
+    eolDate: 2021-02-16
+    eol: true
+  - cycle: 1.13
+    eolDate: 2020-08-11
+    eol: true
+  - cycle: 1.12
+    eolDate: 2020-02-25
+    eol: true
+  - cycle: 1.11
+    eolDate: 2019-09-03
+    eol: true
+  - cycle: 1.10
+    eolDate: 2019-02-25
+    eol: true
+- name: goaccess
+  label: GoAccess
+  coordinates:
+  - pkg:docker/allinurl/goaccess
+  cycles:
+  - cycle: 1
+    eolDate: null
+    eol: false
+- name: grafana-loki
+  label: Grafana Loki
+  coordinates:
+  - pkg:docker/bitnami/grafana-loki
+  - pkg:docker/grafana/loki
+  - pkg:docker/ubuntu/loki
+  cycles:
+  - cycle: 3.7
+    eolDate: null
+    eol: false
+  - cycle: 3.6
+    eolDate: null
+    eol: false
+  - cycle: 3.5
+    eolDate: 2026-03-26
+    eol: true
+  - cycle: 3.4
+    eolDate: 2025-11-17
+    eol: true
+  - cycle: 3.3
+    eolDate: 2025-04-17
+    eol: true
+  - cycle: 3.2
+    eolDate: 2025-02-12
+    eol: true
+  - cycle: 3.1
+    eolDate: 2024-11-19
+    eol: true
+  - cycle: 3.0
+    eolDate: 2024-09-18
+    eol: true
+  - cycle: 2.9
+    eolDate: null
+    eol: false
+  - cycle: 2.8
+    eolDate: 2024-04-08
+    eol: true
+  - cycle: 2.7
+    eolDate: 2023-09-06
+    eol: true
+  - cycle: 2.6
+    eolDate: 2022-11-10
+    eol: true
+  - cycle: 2.5
+    eolDate: 2022-07-08
+    eol: true
+  - cycle: 2.4
+    eolDate: 2022-04-07
+    eol: true
+  - cycle: 2.3
+    eolDate: 2021-11-05
+    eol: true
+  - cycle: 2.2
+    eolDate: 2021-08-06
+    eol: true
+  - cycle: 2.1
+    eolDate: 2021-03-11
+    eol: true
+  - cycle: 2.0
+    eolDate: 2020-12-24
+    eol: true
+  - cycle: 1.6
+    eolDate: 2020-10-26
+    eol: true
+  - cycle: 1.5
+    eolDate: 2020-08-13
+    eol: true
+  - cycle: 1.4
+    eolDate: 2020-05-20
+    eol: true
+  - cycle: 1.3
+    eolDate: 2020-04-01
+    eol: true
+  - cycle: 1.2
+    eolDate: 2020-01-22
+    eol: true
+  - cycle: 1.1
+    eolDate: 2019-12-09
+    eol: true
+  - cycle: 1.0
+    eolDate: 2019-12-04
+    eol: true
+- name: grails
+  label: Apache Grails Framework
+  coordinates:
+  - pkg:maven/org.apache.grails
+  cycles:
+  - cycle: 7
+    eolDate: null
+    eol: false
+  - cycle: 6
+    eolDate: 2025-10-19
+    eol: true
+  - cycle: 5
+    eolDate: 2025-01-09
+    eol: true
+  - cycle: 4
+    eolDate: 2023-03-31
+    eol: true
+  - cycle: 3
+    eolDate: 2021-09-30
+    eol: true
+  - cycle: 2
+    eolDate: 2021-06-30
+    eol: true
+  - cycle: 1
+    eolDate: 2012-05-01
+    eol: true
+- name: grunt
+  label: Grunt
+  coordinates:
+  - pkg:npm/grunt
+  cycles:
+  - cycle: 1.6
+    eolDate: null
+    eol: false
+  - cycle: 1.5
+    eolDate: 2023-01-28
+    eol: true
+  - cycle: 1.4
+    eolDate: 2022-04-10
+    eol: true
+  - cycle: 1.3
+    eolDate: 2021-04-22
+    eol: true
+  - cycle: 1.2
+    eolDate: 2020-08-18
+    eol: true
+  - cycle: 1.1
+    eolDate: 2020-07-03
+    eol: true
+  - cycle: 1.0
+    eolDate: 2020-03-16
+    eol: true
+- name: harbor
+  label: Harbor
+  coordinates:
+  - pkg:docker/bitnami/harbor-core
+  - pkg:docker/bitnami/harbor-exporter
+  - pkg:docker/bitnami/harbor-jobservice
+  - pkg:docker/bitnami/harbor-portal
+  - pkg:docker/bitnami/harbor-registry
+  - pkg:docker/bitnami/harbor-registryctl
+  - pkg:docker/goharbor/harbor-core
+  - pkg:docker/goharbor/harbor-exporter
+  - pkg:docker/goharbor/harbor-jobservice
+  - pkg:docker/goharbor/harbor-portal
+  - pkg:docker/goharbor/harbor-registryctl
+  - pkg:docker/goharbor/registry-photon
+  cycles:
+  - cycle: 2.15
+    eolDate: null
+    eol: false
+  - cycle: 2.14
+    eolDate: null
+    eol: false
+  - cycle: 2.13
+    eolDate: null
+    eol: false
+  - cycle: 2.12
+    eolDate: 2026-03-20
+    eol: true
+  - cycle: 2.11
+    eolDate: 2025-09-17
+    eol: true
+  - cycle: 2.10
+    eolDate: 2025-04-09
+    eol: true
+  - cycle: 2.9
+    eolDate: 2024-11-08
+    eol: true
+  - cycle: 2.8
+    eolDate: 2024-06-04
+    eol: true
+  - cycle: 2.7
+    eolDate: 2023-12-14
+    eol: true
+  - cycle: 2.6
+    eolDate: 2023-08-31
+    eol: true
+  - cycle: 2.5
+    eolDate: 2023-04-13
+    eol: true
+  - cycle: 2.4
+    eolDate: 2022-12-16
+    eol: true
+  - cycle: 2.3
+    eolDate: 2022-08-28
+    eol: true
+  - cycle: 2.2
+    eolDate: 2022-04-07
+    eol: true
+  - cycle: 2.1
+    eolDate: 2021-10-25
+    eol: true
+  - cycle: 2.0
+    eolDate: 2021-06-17
+    eol: true
+  - cycle: 1.10
+    eolDate: 2021-02-23
+    eol: true
+  - cycle: 1.9
+    eolDate: 2020-09-18
+    eol: true
+- name: hibernate-orm
+  label: Hibernate ORM
+  coordinates:
+  - pkg:maven/org.hibernate
+  - pkg:maven/org.hibernate.orm
+  cycles:
+  - cycle: 7.3
+    eolDate: null
+    eol: false
+  - cycle: 7.2
+    eolDate: 2026-03-16
+    eol: true
+  - cycle: 7.1
+    eolDate: 2025-10-08
+    eol: true
+  - cycle: 7.0
+    eolDate: 2025-08-08
+    eol: true
+  - cycle: 6.6
+    eolDate: null
+    eol: true
+  - cycle: 6.5
+    eolDate: null
+    eol: true
+  - cycle: 6.4
+    eolDate: null
+    eol: true
+  - cycle: 6.3
+    eolDate: null
+    eol: true
+  - cycle: 6.2
+    eolDate: null
+    eol: true
+  - cycle: 6.1
+    eolDate: null
+    eol: true
+  - cycle: 6.0
+    eolDate: null
+    eol: true
+  - cycle: 5.6
+    eolDate: null
+    eol: true
+  - cycle: 5.5
+    eolDate: null
+    eol: true
+  - cycle: 5.4
+    eolDate: null
+    eol: true
+  - cycle: 5.3
+    eolDate: null
+    eol: true
+- name: icinga
+  label: Icinga
+  coordinates:
+  - pkg:docker/icinga/icinga2
+  cycles:
+  - cycle: 2.16
+    eolDate: null
+    eol: false
+  - cycle: 2.15
+    eolDate: null
+    eol: false
+  - cycle: 2.14
+    eolDate: 2026-04-23
+    eol: true
+  - cycle: 2.13
+    eolDate: 2025-06-17
+    eol: true
+  - cycle: 2.12
+    eolDate: 2023-07-12
+    eol: true
+  - cycle: 2.11
+    eolDate: 2021-08-02
+    eol: true
+  - cycle: 2.10
+    eolDate: 2020-08-03
+    eol: true
+  - cycle: 2.9
+    eolDate: 2018-10-11
+    eol: true
+  - cycle: 2.8
+    eolDate: 2018-07-17
+    eol: true
+  - cycle: 2.7
+    eolDate: 2017-11-16
+    eol: true
+  - cycle: 2.6
+    eolDate: 2017-08-02
+    eol: true
+  - cycle: 2.5
+    eolDate: 2016-12-13
+    eol: true
+  - cycle: 2.4
+    eolDate: 2016-08-22
+    eol: true
+  - cycle: 2.3
+    eolDate: 2015-11-16
+    eol: true
+  - cycle: 2.2
+    eolDate: 2015-03-09
+    eol: true
+  - cycle: 2.1
+    eolDate: 2014-11-17
+    eol: true
+  - cycle: 2.0
+    eolDate: 2014-08-29
+    eol: true
+  - cycle: 1
+    eolDate: 2018-12-31
+    eol: true
+- name: icinga-web
+  label: Icinga Web
+  coordinates:
+  - pkg:docker/icinga/icingaweb2
+  cycles:
+  - cycle: 2.13
+    eolDate: null
+    eol: false
+  - cycle: 2.12
+    eolDate: null
+    eol: false
+  - cycle: 2.11
+    eolDate: 2026-03-27
+    eol: true
+  - cycle: 2.10
+    eolDate: 2023-09-21
+    eol: true
+  - cycle: 2.9
+    eolDate: 2022-06-30
+    eol: true
+  - cycle: 2.8
+    eolDate: 2022-03-23
+    eol: true
+  - cycle: 2.7
+    eolDate: 2021-07-12
+    eol: true
+  - cycle: 2.6
+    eolDate: 2020-06-08
+    eol: true
+  - cycle: 2.5
+    eolDate: 2018-07-19
+    eol: true
+  - cycle: 2.4
+    eolDate: 2017-11-27
+    eol: true
+  - cycle: 2.3
+    eolDate: 2016-12-13
+    eol: true
+  - cycle: 2.2
+    eolDate: 2016-04-13
+    eol: true
+  - cycle: 2.1
+    eolDate: 2016-02-29
+    eol: true
+  - cycle: 2.0
+    eolDate: 2015-11-16
+    eol: true
+  - cycle: 1
+    eolDate: 2018-12-31
+    eol: true
+- name: ionic
+  label: Ionic Framework
+  coordinates:
+  - pkg:npm/@ionic/core
+  cycles:
+  - cycle: 8
+    eolDate: null
+    eol: false
+  - cycle: 7
+    eolDate: 2024-10-17
+    eol: true
+  - cycle: 6
+    eolDate: 2023-09-29
+    eol: true
+  - cycle: 5
+    eolDate: 2022-06-08
+    eol: true
+  - cycle: 4
+    eolDate: 2020-08-11
+    eol: true
+  - cycle: 3
+    eolDate: 2019-10-30
+    eol: true
+  - cycle: 2
+    eolDate: 2017-04-05
+    eol: true
+  - cycle: 1
+    eolDate: 2017-01-25
+    eol: true
+- name: isc-dhcp
+  label: ISC DHCP
+  coordinates:
+  - pkg:docker/networkboot/dhcpd
+  cycles:
+  - cycle: 4.4
+    eolDate: 2022-10-05
+    eol: true
+  - cycle: 4.3
+    eolDate: 2018-02-28
+    eol: true
+  - cycle: 4.2
+    eolDate: 2015-03-05
+    eol: true
+  - cycle: 4.1
+    eolDate: 2022-10-05
+    eol: true
+- name: istio
+  label: Istio
+  coordinates:
+  - pkg:docker/istio/app
+  - pkg:docker/istio/base
+  - pkg:docker/istio/distroless
+  - pkg:docker/istio/install-cni
+  - pkg:docker/istio/operator
+  - pkg:docker/istio/pilot
+  - pkg:docker/istio/proxyv2
+  cycles:
+  - cycle: 1.30
+    eolDate: 2026-11-30
+    eol: false
+  - cycle: 1.29
+    eolDate: 2026-08-31
+    eol: false
+  - cycle: 1.28
+    eolDate: 2026-06-28
+    eol: false
+  - cycle: 1.27
+    eolDate: 2026-04-07
+    eol: true
+  - cycle: 1.26
+    eolDate: 2025-12-22
+    eol: true
+  - cycle: 1.25
+    eolDate: 2025-09-30
+    eol: true
+  - cycle: 1.24
+    eolDate: 2025-06-24
+    eol: true
+  - cycle: 1.23
+    eolDate: 2025-04-16
+    eol: true
+  - cycle: 1.22
+    eolDate: 2025-01-22
+    eol: true
+  - cycle: 1.21
+    eolDate: 2024-09-27
+    eol: true
+  - cycle: 1.20
+    eolDate: 2024-06-25
+    eol: true
+  - cycle: 1.19
+    eolDate: 2024-04-24
+    eol: true
+  - cycle: 1.18
+    eolDate: 2024-01-04
+    eol: true
+  - cycle: 1.17
+    eolDate: 2023-10-27
+    eol: true
+  - cycle: 1.16
+    eolDate: 2023-07-25
+    eol: true
+  - cycle: 1.15
+    eolDate: 2023-04-04
+    eol: true
+  - cycle: 1.14
+    eolDate: 2022-12-27
+    eol: true
+  - cycle: 1.13
+    eolDate: 2022-10-12
+    eol: true
+  - cycle: 1.12
+    eolDate: 2022-07-12
+    eol: true
+  - cycle: 1.11
+    eolDate: 2022-03-25
+    eol: true
+  - cycle: 1.10
+    eolDate: 2022-01-07
+    eol: true
+  - cycle: 1.9
+    eolDate: 2021-10-08
+    eol: true
+  - cycle: 1.8
+    eolDate: 2021-05-12
+    eol: true
+  - cycle: 1.7
+    eolDate: 2021-02-25
+    eol: true
+- name: jquery
+  label: jQuery
+  coordinates:
+  - pkg:maven/org.webjars
+  - pkg:npm/jquery
+  - pkg:nuget/jQuery
+  cycles:
+  - cycle: 4
+    eolDate: null
+    eol: false
+  - cycle: 3
+    eolDate: null
+    eol: false
+  - cycle: 2
+    eolDate: null
+    eol: true
+  - cycle: 1
+    eolDate: null
+    eol: true
+- name: jquery-ui
+  label: jQuery UI
+  coordinates:
+  - pkg:maven/org.webjars
+  - pkg:npm/jquery-ui
+  - pkg:nuget/jQuery.UI.Combined
+  cycles:
+  - cycle: 1.14
+    eolDate: null
+    eol: false
+  - cycle: 1.13
+    eolDate: 2024-08-05
+    eol: true
+  - cycle: 1.12
+    eolDate: 2021-10-07
+    eol: true
+  - cycle: 1.11
+    eolDate: 2016-04-21
+    eol: true
+  - cycle: 1.10
+    eolDate: 2014-06-26
+    eol: true
+  - cycle: 1.9
+    eolDate: 2013-01-17
+    eol: true
+  - cycle: 1.8
+    eolDate: 2012-10-08
+    eol: true
+  - cycle: 1.7
+    eolDate: 2010-03-23
+    eol: true
+- name: jruby
+  label: JRuby
+  coordinates:
+  - pkg:maven/org.jruby
+  cycles:
+  - cycle: 10.1
+    eolDate: null
+    eol: false
+  - cycle: 10.0
+    eolDate: 2028-04-01
+    eol: false
+  - cycle: 9.4
+    eolDate: null
+    eol: false
+  - cycle: 9.3
+    eolDate: 2024-06-26
+    eol: true
+  - cycle: 9.2
+    eolDate: 2022-06-27
+    eol: true
+  - cycle: 9.1
+    eolDate: 2018-04-20
+    eol: true
+  - cycle: 9.0
+    eolDate: 2016-01-30
+    eol: true
+- name: keycloak
+  label: Keycloak
+  coordinates:
+  - pkg:maven/org.keycloak
+  cycles:
+  - cycle: 26.6
+    eolDate: null
+    eol: false
+  - cycle: 26.5
+    eolDate: 2026-04-08
+    eol: true
+  - cycle: 26.4
+    eolDate: 2026-01-06
+    eol: true
+  - cycle: 26.3
+    eolDate: 2025-09-30
+    eol: true
+  - cycle: 26.2
+    eolDate: 2025-07-02
+    eol: true
+  - cycle: 26.1
+    eolDate: 2025-04-11
+    eol: true
+  - cycle: 26.0
+    eolDate: 2025-01-15
+    eol: true
+  - cycle: 25.0
+    eolDate: 2024-10-04
+    eol: true
+  - cycle: 24.0
+    eolDate: 2024-06-10
+    eol: true
+  - cycle: 23.0
+    eolDate: 2024-03-04
+    eol: true
+  - cycle: 22.0
+    eolDate: 2023-11-23
+    eol: true
+  - cycle: 21.1
+    eolDate: 2023-07-11
+    eol: true
+  - cycle: 21.0
+    eolDate: 2023-04-19
+    eol: true
+  - cycle: 20.0
+    eolDate: 2023-02-23
+    eol: true
+  - cycle: 19.0
+    eolDate: 2022-11-01
+    eol: true
+  - cycle: 18.0
+    eolDate: 2022-07-27
+    eol: true
+  - cycle: 17.0
+    eolDate: 2022-04-20
+    eol: true
+  - cycle: 16.1
+    eolDate: 2022-03-11
+    eol: true
+  - cycle: 16.0
+    eolDate: 2021-12-20
+    eol: true
+  - cycle: 15.1
+    eolDate: 2021-12-17
+    eol: true
+  - cycle: 15.0
+    eolDate: 2021-12-10
+    eol: true
+  - cycle: 14.0
+    eolDate: 2021-07-15
+    eol: true
+  - cycle: 13.0
+    eolDate: 2021-06-18
+    eol: true
+  - cycle: 12.0
+    eolDate: 2021-05-06
+    eol: true
+  - cycle: 11.0
+    eolDate: 2020-12-16
+    eol: true
+  - cycle: 10.0
+    eolDate: 2020-07-22
+    eol: true
+- name: kyverno
+  label: Kyverno
+  coordinates:
+  - pkg:docker/nirmata/kyverno
+  cycles:
+  - cycle: 1.17
+    eolDate: null
+    eol: false
+  - cycle: 1.16
+    eolDate: null
+    eol: false
+  - cycle: 1.15
+    eolDate: null
+    eol: false
+  - cycle: 1.14
+    eolDate: 2026-02-02
+    eol: true
+  - cycle: 1.13
+    eolDate: 2025-11-10
+    eol: true
+  - cycle: 1.12
+    eolDate: 2025-07-31
+    eol: true
+  - cycle: 1.11
+    eolDate: 2025-04-25
+    eol: true
+  - cycle: 1.10
+    eolDate: 2024-10-29
+    eol: true
+  - cycle: 1.9
+    eolDate: 2024-04-26
+    eol: true
+  - cycle: 1.8
+    eolDate: 2023-11-10
+    eol: true
+- name: laravel
+  label: Laravel
+  coordinates:
+  - pkg:docker/bitnami/laravel
+  cycles:
+  - cycle: 13
+    eolDate: 2028-03-17
+    eol: false
+  - cycle: 12
+    eolDate: 2027-02-24
+    eol: false
+  - cycle: 11
+    eolDate: 2026-03-12
+    eol: true
+  - cycle: 10
+    eolDate: 2025-02-04
+    eol: true
+  - cycle: 9
+    eolDate: 2024-02-06
+    eol: true
+  - cycle: 8
+    eolDate: 2023-01-24
+    eol: true
+  - cycle: 7
+    eolDate: 2021-03-03
+    eol: true
+  - cycle: 6
+    eolDate: 2022-09-06
+    eol: true
+  - cycle: 5.8
+    eolDate: 2020-02-26
+    eol: true
+  - cycle: 5.5
+    eolDate: 2020-08-30
+    eol: true
+- name: log4j
+  label: Apache Log4j
+  coordinates:
+  - pkg:maven/log4j
+  - pkg:maven/org.apache.logging.log4j
+  cycles:
+  - cycle: 2
+    eolDate: null
+    eol: false
+  - cycle: 2.12
+    eolDate: 2021-12-14
+    eol: true
+  - cycle: 2.3
+    eolDate: 2015-09-20
+    eol: true
+  - cycle: 1
+    eolDate: 2015-10-15
+    eol: true
+- name: mariadb
+  label: MariaDB
+  coordinates:
+  - pkg:docker/bitnami/mariadb
+  - pkg:docker/bitnami/mariadb-galera
+  - pkg:docker/library/mariadb
+  cycles:
+  - cycle: 12.3
+    eolDate: 2029-06-30
+    eol: false
+  - cycle: 12.2
+    eolDate: 2026-05-13
+    eol: true
+  - cycle: 12.1
+    eolDate: 2026-02-13
+    eol: true
+  - cycle: 12.0
+    eolDate: 2025-11-18
+    eol: true
+  - cycle: 11.8
+    eolDate: 2028-06-04
+    eol: false
+  - cycle: 11.7
+    eolDate: 2025-05-12
+    eol: true
+  - cycle: 11.6
+    eolDate: 2025-02-13
+    eol: true
+  - cycle: 11.5
+    eolDate: 2024-11-21
+    eol: true
+  - cycle: 11.4
+    eolDate: 2029-05-29
+    eol: false
+  - cycle: 11.3
+    eolDate: 2024-05-29
+    eol: true
+  - cycle: 11.2
+    eolDate: 2024-11-21
+    eol: true
+  - cycle: 11.1
+    eolDate: 2024-08-21
+    eol: true
+  - cycle: 11.0
+    eolDate: 2024-06-06
+    eol: true
+  - cycle: 10.11
+    eolDate: 2028-02-16
+    eol: false
+  - cycle: 10.10
+    eolDate: 2023-11-17
+    eol: true
+  - cycle: 10.9
+    eolDate: 2023-08-22
+    eol: true
+  - cycle: 10.8
+    eolDate: 2023-05-20
+    eol: true
+  - cycle: 10.7
+    eolDate: 2023-02-09
+    eol: true
+  - cycle: 10.6
+    eolDate: 2026-07-06
+    eol: false
+  - cycle: 10.5
+    eolDate: 2025-06-24
+    eol: true
+  - cycle: 10.4
+    eolDate: 2024-06-18
+    eol: true
+  - cycle: 10.3
+    eolDate: 2023-05-25
+    eol: true
+  - cycle: 10.2
+    eolDate: 2022-05-23
+    eol: true
+  - cycle: 10.1
+    eolDate: 2020-10-17
+    eol: true
+  - cycle: 10.0
+    eolDate: 2019-03-31
+    eol: true
+  - cycle: 5.5
+    eolDate: 2020-04-11
+    eol: true
+  - cycle: 5.3
+    eolDate: 2017-03-01
+    eol: true
+  - cycle: 5.2
+    eolDate: 2015-11-10
+    eol: true
+  - cycle: 5.1
+    eolDate: 2015-02-01
+    eol: true
+- name: mastodon
+  label: Mastodon
+  coordinates:
+  - pkg:docker/bitnami/mastodon
+  - pkg:docker/linuxserver/mastodon
+  - pkg:docker/tootsuite/mastodon
+  cycles:
+  - cycle: 4.5
+    eolDate: null
+    eol: false
+  - cycle: 4.4
+    eolDate: null
+    eol: false
+  - cycle: 4.3
+    eolDate: 2026-05-06
+    eol: true
+  - cycle: 4.2
+    eolDate: 2026-01-08
+    eol: true
+  - cycle: 4.1
+    eolDate: 2025-04-08
+    eol: true
+  - cycle: 4.0
+    eolDate: 2023-10-31
+    eol: true
+  - cycle: 3.5
+    eolDate: 2023-12-31
+    eol: true
+  - cycle: 3.4
+    eolDate: 2022-11-06
+    eol: true
+  - cycle: 3.3
+    eolDate: 2022-05-26
+    eol: true
+  - cycle: 3.2
+    eolDate: null
+    eol: true
+  - cycle: 3.1
+    eolDate: null
+    eol: true
+  - cycle: 3.0
+    eolDate: null
+    eol: true
+  - cycle: 2
+    eolDate: null
+    eol: true
+  - cycle: 1
+    eolDate: null
+    eol: true
+- name: matomo
+  label: Matomo
+  coordinates:
+  - pkg:docker/bitnami/matomo
+  - pkg:docker/library/matomo
+  cycles:
+  - cycle: 5
+    eolDate: null
+    eol: false
+  - cycle: 4
+    eolDate: 2024-12-19
+    eol: true
+  - cycle: 3
+    eolDate: 2021-12-01
+    eol: true
+  - cycle: 2
+    eolDate: 2017-12-18
+    eol: true
+  - cycle: 1
+    eolDate: 2013-12-17
+    eol: true
+- name: memcached
+  label: Memcached
+  coordinates:
+  - pkg:docker/library/memcached
+  cycles:
+  - cycle: 1.6
+    eolDate: null
+    eol: false
+  - cycle: 1.5
+    eolDate: 2020-03-09
+    eol: true
+  - cycle: 1.4
+    eolDate: 2017-07-21
+    eol: true
+- name: micronaut
+  label: Micronaut Framework
+  coordinates:
+  - pkg:maven/io.micronaut
+  cycles:
+  - cycle: 5
+    eolDate: null
+    eol: false
+  - cycle: 4
+    eolDate: null
+    eol: false
+  - cycle: 3
+    eolDate: null
+    eol: false
+  - cycle: 2
+    eolDate: 2023-03-01
+    eol: true
+  - cycle: 1
+    eolDate: 2021-12-31
+    eol: true
+- name: mysql
+  label: MySQL
+  coordinates:
+  - pkg:docker/library/mysql
+  cycles:
+  - cycle: 9.7
+    eolDate: 2034-04-21
+    eol: false
+  - cycle: 9.6
+    eolDate: 2026-04-21
+    eol: true
+  - cycle: 9.5
+    eolDate: 2026-01-20
+    eol: true
+  - cycle: 9.4
+    eolDate: 2025-10-21
+    eol: true
+  - cycle: 9.3
+    eolDate: 2025-07-22
+    eol: true
+  - cycle: 9.2
+    eolDate: 2025-04-15
+    eol: true
+  - cycle: 9.1
+    eolDate: 2025-01-21
+    eol: true
+  - cycle: 9.0
+    eolDate: 2024-10-15
+    eol: true
+  - cycle: 8.4
+    eolDate: 2032-04-30
+    eol: false
+  - cycle: 8.3
+    eolDate: 2024-04-10
+    eol: true
+  - cycle: 8.2
+    eolDate: 2023-12-14
+    eol: true
+  - cycle: 8.1
+    eolDate: 2023-10-25
+    eol: true
+  - cycle: 8.0
+    eolDate: 2026-04-30
+    eol: true
+  - cycle: 5.7
+    eolDate: 2023-10-31
+    eol: true
+  - cycle: 5.6
+    eolDate: 2021-02-28
+    eol: true
+  - cycle: 5.5
+    eolDate: 2018-12-31
+    eol: true
+- name: nextjs
+  label: Next.js
+  coordinates:
+  - pkg:npm/next
+  cycles:
+  - cycle: 16
+    eolDate: null
+    eol: false
+  - cycle: 15
+    eolDate: 2026-10-21
+    eol: false
+  - cycle: 14
+    eolDate: 2025-10-26
+    eol: true
+  - cycle: 13
+    eolDate: 2024-12-21
+    eol: true
+  - cycle: 12
+    eolDate: 2022-11-21
+    eol: true
+  - cycle: 11
+    eolDate: 2022-01-27
+    eol: true
+  - cycle: 10
+    eolDate: 2021-06-15
+    eol: true
+  - cycle: 9
+    eolDate: 2020-10-27
+    eol: true
+- name: nodejs
+  label: Node.js
+  coordinates:
+  - pkg:docker/bitnami/node
+  - pkg:docker/cimg/node
+  - pkg:docker/circleci/node
+  - pkg:docker/library/node
+  - pkg:generic/node
+  cycles:
+  - cycle: 26
+    eolDate: 2029-04-30
+    eol: false
+  - cycle: 25
+    eolDate: 2026-06-01
+    eol: true
+  - cycle: 24
+    eolDate: 2028-04-30
+    eol: false
+  - cycle: 23
+    eolDate: 2025-06-01
+    eol: true
+  - cycle: 22
+    eolDate: 2027-04-30
+    eol: false
+  - cycle: 21
+    eolDate: 2024-06-01
+    eol: true
+  - cycle: 20
+    eolDate: 2026-04-30
+    eol: true
+  - cycle: 19
+    eolDate: 2023-06-01
+    eol: true
+  - cycle: 18
+    eolDate: 2025-04-30
+    eol: true
+  - cycle: 17
+    eolDate: 2022-06-01
+    eol: true
+  - cycle: 16
+    eolDate: 2023-09-11
+    eol: true
+  - cycle: 15
+    eolDate: 2021-06-01
+    eol: true
+  - cycle: 14
+    eolDate: 2023-04-30
+    eol: true
+  - cycle: 13
+    eolDate: 2020-06-01
+    eol: true
+  - cycle: 12
+    eolDate: 2022-04-30
+    eol: true
+  - cycle: 11
+    eolDate: 2019-06-30
+    eol: true
+  - cycle: 10
+    eolDate: 2021-04-30
+    eol: true
+  - cycle: 9
+    eolDate: 2018-06-30
+    eol: true
+  - cycle: 8
+    eolDate: 2019-12-31
+    eol: true
+  - cycle: 7
+    eolDate: 2017-06-30
+    eol: true
+  - cycle: 6
+    eolDate: 2019-04-30
+    eol: true
+  - cycle: 5
+    eolDate: 2016-06-30
+    eol: true
+  - cycle: 4
+    eolDate: 2018-04-30
+    eol: true
+  - cycle: 3
+    eolDate: null
+    eol: true
+  - cycle: 2
+    eolDate: null
+    eol: true
+  - cycle: 1
+    eolDate: null
+    eol: true
+- name: nuxt
+  label: Nuxt
+  coordinates:
+  - pkg:npm/nuxt
+  cycles:
+  - cycle: 4
+    eolDate: null
+    eol: false
+  - cycle: 3
+    eolDate: 2026-07-31
+    eol: false
+  - cycle: 2
+    eolDate: 2024-06-30
+    eol: true
+  - cycle: 1
+    eolDate: 2019-09-21
+    eol: true
+- name: openbao
+  label: OpenBao
+  coordinates:
+  - pkg:docker/openbao/openbao
+  - pkg:docker/openbao/openbao-ubi
+  cycles:
+  - cycle: 2.5
+    eolDate: null
+    eol: false
+  - cycle: 2.4
+    eolDate: 2026-02-05
+    eol: true
+  - cycle: 2.3
+    eolDate: 2025-08-29
+    eol: true
+  - cycle: 2.2
+    eolDate: 2025-06-26
+    eol: true
+  - cycle: 2.1
+    eolDate: 2025-03-06
+    eol: true
+  - cycle: 2.0
+    eolDate: 2024-11-30
+    eol: true
+- name: openjdk
+  label: Java (Eclipse Temurin)
+  coordinates:
+  - pkg:generic/openjdk
+  cycles:
+  - cycle: 25
+    eolDate: 2031-09-30
+    eol: false
+  - cycle: 24
+    eolDate: 2025-09-16
+    eol: true
+  - cycle: 23
+    eolDate: 2025-03-18
+    eol: true
+  - cycle: 22
+    eolDate: 2024-09-17
+    eol: true
+  - cycle: 21
+    eolDate: 2029-12-31
+    eol: false
+  - cycle: 20
+    eolDate: 2023-09-19
+    eol: true
+  - cycle: 19
+    eolDate: 2023-03-31
+    eol: true
+  - cycle: 18
+    eolDate: 2022-09-30
+    eol: true
+  - cycle: 17
+    eolDate: 2027-10-31
+    eol: false
+  - cycle: 11
+    eolDate: 2027-10-31
+    eol: false
+  - cycle: 16
+    eolDate: 2021-09-30
+    eol: true
+  - cycle: 8
+    eolDate: 2030-12-31
+    eol: false
+- name: opensearch
+  label: OpenSearch
+  coordinates:
+  - pkg:docker/opensearchproject/opensearch
+  cycles:
+  - cycle: 3
+    eolDate: null
+    eol: false
+  - cycle: 2
+    eolDate: null
+    eol: false
+  - cycle: 1
+    eolDate: 2025-05-06
+    eol: true
+- name: oracle-linux
+  label: Oracle Linux
+  coordinates:
+  - pkg:docker/library/oraclelinux
+  cycles:
+  - cycle: 10
+    eolDate: null
+    eol: false
+  - cycle: 9
+    eolDate: 2032-06-30
+    eol: false
+  - cycle: 8
+    eolDate: 2029-07-31
+    eol: false
+  - cycle: 7
+    eolDate: 2024-12-31
+    eol: true
+  - cycle: 6
+    eolDate: 2021-03-31
+    eol: true
+- name: phpmyadmin
+  label: phpMyAdmin
+  coordinates:
+  - pkg:docker/library/phpmyadmin
+  cycles:
+  - cycle: 5.2
+    eolDate: null
+    eol: false
+  - cycle: 5.1
+    eolDate: 2022-05-11
+    eol: true
+  - cycle: 5.0
+    eolDate: 2021-02-24
+    eol: true
+  - cycle: 4.9
+    eolDate: null
+    eol: false
+  - cycle: 4.8
+    eolDate: 2019-06-04
+    eol: true
+  - cycle: 4.7
+    eolDate: 2018-04-07
+    eol: true
+  - cycle: 4.6
+    eolDate: 2017-04-01
+    eol: true
+  - cycle: 4.5
+    eolDate: 2016-04-01
+    eol: true
+  - cycle: 4.4
+    eolDate: 2016-10-01
+    eol: true
+  - cycle: 4.3
+    eolDate: 2015-10-01
+    eol: true
+  - cycle: 4.2
+    eolDate: 2015-07-01
+    eol: true
+  - cycle: 4.1
+    eolDate: 2015-01-01
+    eol: true
+  - cycle: 4.0
+    eolDate: 2017-04-01
+    eol: true
+- name: plesk
+  label: Plesk
+  coordinates:
+  - pkg:docker/plesk/plesk
+  cycles:
+  - cycle: 18.0.78
+    eolDate: 2026-08-04
+    eol: false
+  - cycle: 18.0.77
+    eolDate: 2026-06-23
+    eol: false
+  - cycle: 18.0.76
+    eolDate: 2026-05-11
+    eol: true
+  - cycle: 18.0.75
+    eolDate: 2026-03-31
+    eol: true
+  - cycle: 18.0.74
+    eolDate: 2026-02-03
+    eol: true
+  - cycle: 18.0.73
+    eolDate: 2025-12-23
+    eol: true
+  - cycle: 18.0.72
+    eolDate: 2025-11-11
+    eol: true
+  - cycle: 18.0.71
+    eolDate: 2025-09-30
+    eol: true
+  - cycle: 18.0.70
+    eolDate: 2025-08-19
+    eol: true
+  - cycle: 18.0.69
+    eolDate: 2025-07-08
+    eol: true
+  - cycle: 18.0.68
+    eolDate: 2025-05-27
+    eol: true
+  - cycle: 18.0.67
+    eolDate: 2025-04-15
+    eol: true
+  - cycle: 18.0.66
+    eolDate: 2025-03-04
+    eol: true
+  - cycle: 18.0.65
+    eolDate: 2025-01-21
+    eol: true
+  - cycle: 18.0.64
+    eolDate: 2024-12-10
+    eol: true
+  - cycle: 18.0.63
+    eolDate: 2024-10-29
+    eol: true
+  - cycle: 18.0.62
+    eolDate: 2024-09-17
+    eol: true
+  - cycle: 18.0.61
+    eolDate: 2024-08-06
+    eol: true
+  - cycle: 18.0.60
+    eolDate: 2024-06-25
+    eol: true
+  - cycle: 18.0.59
+    eolDate: 2024-05-15
+    eol: true
+  - cycle: 18.0.58
+    eolDate: 2024-04-02
+    eol: true
+  - cycle: 18.0.57
+    eolDate: 2024-02-13
+    eol: true
+  - cycle: 18.0.56
+    eolDate: 2024-01-02
+    eol: true
+  - cycle: 18.0.55
+    eolDate: 2023-11-21
+    eol: true
+  - cycle: 18.0.54
+    eolDate: 2023-10-10
+    eol: true
+  - cycle: 18.0.53
+    eolDate: 2023-09-04
+    eol: true
+  - cycle: 18.0.52
+    eolDate: 2023-07-18
+    eol: true
+  - cycle: 18.0.51
+    eolDate: 2023-06-06
+    eol: true
+  - cycle: 18.0.50
+    eolDate: 2023-04-23
+    eol: true
+  - cycle: 18.0.49
+    eolDate: 2023-03-12
+    eol: true
+  - cycle: 17
+    eolDate: 2021-04-20
+    eol: true
+- name: pnpm
+  label: pnpm
+  coordinates:
+  - pkg:npm/pnpm
+  cycles:
+  - cycle: 11
+    eolDate: null
+    eol: false
+  - cycle: 10
+    eolDate: null
+    eol: false
+  - cycle: 9
+    eolDate: 2026-04-30
+    eol: true
+  - cycle: 8
+    eolDate: 2025-04-30
+    eol: true
+  - cycle: 7
+    eolDate: 2024-04-16
+    eol: true
+  - cycle: 6
+    eolDate: 2023-03-20
+    eol: true
+  - cycle: 5
+    eolDate: 2022-04-29
+    eol: true
+  - cycle: 4
+    eolDate: 2021-04-24
+    eol: true
+- name: postgresql
+  label: PostgreSQL
+  coordinates:
+  - pkg:docker/library/postgres
+  cycles:
+  - cycle: 18
+    eolDate: 2030-11-14
+    eol: false
+  - cycle: 17
+    eolDate: 2029-11-08
+    eol: false
+  - cycle: 16
+    eolDate: 2028-11-09
+    eol: false
+  - cycle: 15
+    eolDate: 2027-11-11
+    eol: false
+  - cycle: 14
+    eolDate: 2026-11-12
+    eol: false
+  - cycle: 13
+    eolDate: 2025-11-13
+    eol: true
+  - cycle: 12
+    eolDate: 2024-11-21
+    eol: true
+  - cycle: 11
+    eolDate: 2023-11-09
+    eol: true
+  - cycle: 10
+    eolDate: 2022-11-10
+    eol: true
+  - cycle: 9.6
+    eolDate: 2021-11-11
+    eol: true
+  - cycle: 9.5
+    eolDate: 2021-02-11
+    eol: true
+  - cycle: 9.4
+    eolDate: 2020-02-13
+    eol: true
+  - cycle: 9.3
+    eolDate: 2018-11-08
+    eol: true
+  - cycle: 9.2
+    eolDate: 2017-11-09
+    eol: true
+  - cycle: 9.1
+    eolDate: 2016-10-27
+    eol: true
+  - cycle: 9.0
+    eolDate: 2015-10-08
+    eol: true
+  - cycle: 8.4
+    eolDate: 2014-07-24
+    eol: true
+  - cycle: 8.3
+    eolDate: 2013-02-07
+    eol: true
+  - cycle: 8.2
+    eolDate: 2011-12-05
+    eol: true
+  - cycle: 8.1
+    eolDate: 2010-11-08
+    eol: true
+  - cycle: 8.0
+    eolDate: 2010-10-01
+    eol: true
+  - cycle: 7.4
+    eolDate: 2010-10-01
+    eol: true
+  - cycle: 7.3
+    eolDate: 2007-11-27
+    eol: true
+  - cycle: 7.2
+    eolDate: 2007-02-04
+    eol: true
+  - cycle: 7.1
+    eolDate: 2006-04-13
+    eol: true
+  - cycle: 7.0
+    eolDate: 2005-05-08
+    eol: true
+  - cycle: 6.5
+    eolDate: 2004-06-09
+    eol: true
+  - cycle: 6.4
+    eolDate: 2003-10-30
+    eol: true
+  - cycle: 6.3
+    eolDate: 2003-03-01
+    eol: true
+- name: prometheus
+  label: Prometheus
+  coordinates:
+  - pkg:docker/bitnami/prometheus
+  - pkg:docker/prom/prometheus
+  - pkg:docker/rapidfort/prometheus-official
+  cycles:
+  - cycle: 3.12
+    eolDate: 2026-07-09
+    eol: false
+  - cycle: 3.11
+    eolDate: 2026-05-14
+    eol: true
+  - cycle: 3.10
+    eolDate: 2026-04-08
+    eol: true
+  - cycle: 3.9
+    eolDate: 2026-02-17
+    eol: true
+  - cycle: 3.8
+    eolDate: 2026-01-09
+    eol: true
+  - cycle: 3.7
+    eolDate: 2025-11-26
+    eol: true
+  - cycle: 3.6
+    eolDate: 2025-11-02
+    eol: true
+  - cycle: 3.5
+    eolDate: 2026-07-31
+    eol: false
+  - cycle: 3.4
+    eolDate: 2025-06-28
+    eol: true
+  - cycle: 3.3
+    eolDate: 2025-05-27
+    eol: true
+  - cycle: 3.2
+    eolDate: 2025-03-31
+    eol: true
+  - cycle: 3.1
+    eolDate: 2025-02-13
+    eol: true
+  - cycle: 3.0
+    eolDate: 2024-12-26
+    eol: true
+  - cycle: 2.55
+    eolDate: 2024-12-03
+    eol: true
+  - cycle: 2.54
+    eolDate: 2024-09-20
+    eol: true
+  - cycle: 2.53
+    eolDate: 2025-07-31
+    eol: true
+  - cycle: 2.52
+    eolDate: 2024-06-19
+    eol: true
+  - cycle: 2.51
+    eolDate: 2024-04-30
+    eol: true
+  - cycle: 2.50
+    eolDate: 2024-04-04
+    eol: true
+  - cycle: 2.49
+    eolDate: 2024-02-26
+    eol: true
+  - cycle: 2.48
+    eolDate: 2023-12-28
+    eol: true
+  - cycle: 2.47
+    eolDate: 2023-10-18
+    eol: true
+  - cycle: 2.46
+    eolDate: 2023-09-05
+    eol: true
+  - cycle: 2.45
+    eolDate: 2024-07-31
+    eol: true
+  - cycle: 2.44
+    eolDate: 2023-08-06
+    eol: true
+  - cycle: 2.43
+    eolDate: 2023-05-02
+    eol: true
+  - cycle: 2.42
+    eolDate: 2023-03-14
+    eol: true
+  - cycle: 2.41
+    eolDate: 2023-01-31
+    eol: true
+  - cycle: 2.40
+    eolDate: 2022-12-19
+    eol: true
+  - cycle: 2.39
+    eolDate: 2022-11-16
+    eol: true
+  - cycle: 2.38
+    eolDate: 2022-09-27
+    eol: true
+  - cycle: 2.37
+    eolDate: 2023-07-31
+    eol: true
+  - cycle: 2.36
+    eolDate: 2022-07-11
+    eol: true
+- name: protractor
+  label: Protractor
+  coordinates:
+  - pkg:npm/protractor
+  cycles:
+  - cycle: 7.0
+    eolDate: 2023-08-31
+    eol: true
+  - cycle: 6.0
+    eolDate: 2023-08-31
+    eol: true
+  - cycle: 5.0
+    eolDate: 2023-08-31
+    eol: true
+  - cycle: 4.0
+    eolDate: 2023-08-31
+    eol: true
+  - cycle: 3.0
+    eolDate: 2023-08-31
+    eol: true
+  - cycle: 2.0
+    eolDate: 2023-08-31
+    eol: true
+  - cycle: 1.0
+    eolDate: 2023-08-31
+    eol: true
+- name: python
+  label: Python
+  coordinates:
+  - pkg:docker/bitnami/python
+  - pkg:docker/circleci/python
+  - pkg:docker/library/python
+  - pkg:generic/python
+  cycles:
+  - cycle: 3.14
+    eolDate: 2030-10-31
+    eol: false
+  - cycle: 3.13
+    eolDate: 2029-10-31
+    eol: false
+  - cycle: 3.12
+    eolDate: 2028-10-31
+    eol: false
+  - cycle: 3.11
+    eolDate: 2027-10-31
+    eol: false
+  - cycle: 3.10
+    eolDate: 2026-10-31
+    eol: false
+  - cycle: 3.9
+    eolDate: 2025-10-31
+    eol: true
+  - cycle: 3.8
+    eolDate: 2024-10-07
+    eol: true
+  - cycle: 3.7
+    eolDate: 2023-06-27
+    eol: true
+  - cycle: 3.6
+    eolDate: 2021-12-23
+    eol: true
+  - cycle: 3.5
+    eolDate: 2020-09-30
+    eol: true
+  - cycle: 3.4
+    eolDate: 2019-03-18
+    eol: true
+  - cycle: 3.3
+    eolDate: 2017-09-29
+    eol: true
+  - cycle: 3.2
+    eolDate: 2016-02-20
+    eol: true
+  - cycle: 2.7
+    eolDate: 2020-01-01
+    eol: true
+  - cycle: 3.1
+    eolDate: 2012-04-09
+    eol: true
+  - cycle: 3.0
+    eolDate: 2009-06-27
+    eol: true
+  - cycle: 2.6
+    eolDate: 2013-10-29
+    eol: true
+- name: quarkus-framework
+  label: Quarkus
+  coordinates:
+  - pkg:maven/io.quarkus.platform
+  cycles:
+  - cycle: 3.36
+    eolDate: null
+    eol: false
+  - cycle: 3.35
+    eolDate: 2026-05-27
+    eol: true
+  - cycle: 3.34
+    eolDate: 2026-05-01
+    eol: true
+  - cycle: 3.33
+    eolDate: 2027-03-25
+    eol: false
+  - cycle: 3.32
+    eolDate: 2026-03-25
+    eol: true
+  - cycle: 3.31
+    eolDate: 2026-02-26
+    eol: true
+  - cycle: 3.30
+    eolDate: 2026-01-28
+    eol: true
+  - cycle: 3.29
+    eolDate: 2025-11-26
+    eol: true
+  - cycle: 3.28
+    eolDate: 2025-10-29
+    eol: true
+  - cycle: 3.27
+    eolDate: 2026-09-24
+    eol: false
+  - cycle: 3.26
+    eolDate: 2025-09-24
+    eol: true
+  - cycle: 3.25
+    eolDate: 2025-08-28
+    eol: true
+  - cycle: 3.24
+    eolDate: 2025-07-30
+    eol: true
+  - cycle: 3.23
+    eolDate: 2025-06-25
+    eol: true
+  - cycle: 3.22
+    eolDate: 2025-05-28
+    eol: true
+  - cycle: 3.21
+    eolDate: 2025-04-30
+    eol: true
+  - cycle: 3.20
+    eolDate: 2026-03-28
+    eol: true
+  - cycle: 3.19
+    eolDate: 2025-03-28
+    eol: true
+  - cycle: 3.18
+    eolDate: 2025-02-26
+    eol: true
+  - cycle: 3.17
+    eolDate: 2025-01-29
+    eol: true
+  - cycle: 3.16
+    eolDate: 2024-11-27
+    eol: true
+  - cycle: 3.15
+    eolDate: 2025-09-25
+    eol: true
+  - cycle: 3.14
+    eolDate: 2024-09-25
+    eol: true
+  - cycle: 3.13
+    eolDate: 2024-08-28
+    eol: true
+  - cycle: 3.12
+    eolDate: 2024-07-31
+    eol: true
+  - cycle: 3.11
+    eolDate: 2024-06-26
+    eol: true
+  - cycle: 3.10
+    eolDate: 2024-05-29
+    eol: true
+  - cycle: 3.9
+    eolDate: 2024-04-30
+    eol: true
+  - cycle: 3.8
+    eolDate: 2025-02-28
+    eol: true
+  - cycle: 3.7
+    eolDate: 2024-02-28
+    eol: true
+  - cycle: 3.6
+    eolDate: 2024-01-31
+    eol: true
+  - cycle: 3.5
+    eolDate: 2023-11-29
+    eol: true
+  - cycle: 3.4
+    eolDate: 2023-10-25
+    eol: true
+  - cycle: 3.3
+    eolDate: 2023-09-20
+    eol: true
+  - cycle: 3.2
+    eolDate: 2024-07-05
+    eol: true
+  - cycle: 3.1
+    eolDate: 2023-07-05
+    eol: true
+  - cycle: 3.0
+    eolDate: 2023-05-31
+    eol: true
+  - cycle: 2.16
+    eolDate: 2023-10-31
+    eol: true
+  - cycle: 2.15
+    eolDate: 2023-01-25
+    eol: true
+  - cycle: 2.14
+    eolDate: 2022-12-14
+    eol: true
+  - cycle: 2.13
+    eolDate: 2022-11-07
+    eol: true
+  - cycle: 2.12
+    eolDate: 2022-09-21
+    eol: true
+  - cycle: 2.11
+    eolDate: 2022-08-24
+    eol: true
+  - cycle: 2.10
+    eolDate: 2022-07-26
+    eol: true
+  - cycle: 2.9
+    eolDate: 2022-06-15
+    eol: true
+  - cycle: 2.8
+    eolDate: 2022-05-06
+    eol: true
+  - cycle: 2.7
+    eolDate: 2022-05-30
+    eol: true
+  - cycle: 2.6
+    eolDate: 2022-01-26
+    eol: true
+  - cycle: 2.5
+    eolDate: 2021-12-17
+    eol: true
+  - cycle: 2.4
+    eolDate: 2021-11-17
+    eol: true
+  - cycle: 2.3
+    eolDate: 2021-10-20
+    eol: true
+  - cycle: 2.2
+    eolDate: 2021-12-21
+    eol: true
+  - cycle: 2.1
+    eolDate: 2021-08-26
+    eol: true
+  - cycle: 2.0
+    eolDate: 2021-07-22
+    eol: true
+  - cycle: 1
+    eolDate: 2021-06-23
+    eol: true
+  - cycle: 0
+    eolDate: 2019-11-25
+    eol: true
+- name: quasar
+  label: Quasar
+  coordinates:
+  - pkg:npm/quasar
+  cycles:
+  - cycle: 2
+    eolDate: null
+    eol: false
+  - cycle: 1
+    eolDate: 2023-06-30
+    eol: true
+- name: rancher
+  label: Rancher
+  coordinates:
+  - pkg:docker/rancher/rancher
+  cycles:
+  - cycle: 2.14
+    eolDate: 2027-10-10
+    eol: false
+  - cycle: 2.13
+    eolDate: 2027-06-17
+    eol: false
+  - cycle: 2.12
+    eolDate: 2027-02-28
+    eol: false
+  - cycle: 2.11
+    eolDate: 2026-10-24
+    eol: false
+  - cycle: 2.10
+    eolDate: 2026-06-19
+    eol: false
+  - cycle: 2.9
+    eolDate: 2026-02-26
+    eol: true
+  - cycle: 2.8
+    eolDate: 2025-07-22
+    eol: true
+  - cycle: 2.7
+    eolDate: 2024-11-18
+    eol: true
+  - cycle: 2.6
+    eolDate: 2024-04-30
+    eol: true
+  - cycle: 2.5
+    eolDate: 2023-01-31
+    eol: true
+  - cycle: 2.4
+    eolDate: 2022-03-31
+    eol: true
+  - cycle: 2.3
+    eolDate: 2021-04-07
+    eol: true
+  - cycle: 2.2
+    eolDate: 2020-10-15
+    eol: true
+  - cycle: 2.1
+    eolDate: 2020-04-19
+    eol: true
+  - cycle: 2.0
+    eolDate: 2019-11-01
+    eol: true
+  - cycle: 1.6
+    eolDate: 2020-06-30
+    eol: true
+- name: react
+  label: React
+  coordinates:
+  - pkg:npm/react
+  cycles:
+  - cycle: 19
+    eolDate: null
+    eol: false
+  - cycle: 18
+    eolDate: null
+    eol: false
+  - cycle: 17
+    eolDate: null
+    eol: false
+  - cycle: 16
+    eolDate: null
+    eol: false
+  - cycle: 15
+    eolDate: null
+    eol: false
+- name: react-native
+  label: React Native
+  coordinates:
+  - pkg:npm/react-native
+  cycles:
+  - cycle: 0.85
+    eolDate: null
+    eol: false
+  - cycle: 0.84
+    eolDate: null
+    eol: false
+  - cycle: 0.83
+    eolDate: null
+    eol: false
+  - cycle: 0.82
+    eolDate: 2026-04-07
+    eol: true
+  - cycle: 0.81
+    eolDate: 2026-02-11
+    eol: true
+  - cycle: 0.80
+    eolDate: 2025-12-10
+    eol: true
+  - cycle: 0.79
+    eolDate: 2025-10-08
+    eol: true
+  - cycle: 0.78
+    eolDate: 2025-08-12
+    eol: true
+  - cycle: 0.77
+    eolDate: 2025-06-12
+    eol: true
+  - cycle: 0.76
+    eolDate: 2025-04-08
+    eol: true
+  - cycle: 0.75
+    eolDate: 2025-02-19
+    eol: true
+  - cycle: 0.74
+    eolDate: 2025-01-27
+    eol: true
+  - cycle: 0.73
+    eolDate: 2024-10-23
+    eol: true
+  - cycle: 0.72
+    eolDate: 2024-08-14
+    eol: true
+  - cycle: 0.71
+    eolDate: 2024-04-23
+    eol: true
+  - cycle: 0.70
+    eolDate: 2023-12-07
+    eol: true
+  - cycle: 0.69
+    eolDate: 2023-06-22
+    eol: true
+  - cycle: 0.68
+    eolDate: 2023-01-13
+    eol: true
+  - cycle: 0.67
+    eolDate: 2022-11-06
+    eol: true
+  - cycle: 0.66
+    eolDate: 2022-06-23
+    eol: true
+  - cycle: 0.65
+    eolDate: 2022-03-30
+    eol: true
+  - cycle: 0.64
+    eolDate: 2022-01-19
+    eol: true
+  - cycle: 0.63
+    eolDate: 2021-10-02
+    eol: true
+  - cycle: 0.62
+    eolDate: 2021-08-18
+    eol: true
+  - cycle: 0.61
+    eolDate: 2021-03-13
+    eol: true
+  - cycle: 0.60
+    eolDate: 2020-07-09
+    eol: true
+- name: redis
+  label: Redis
+  coordinates:
+  - pkg:docker/bitnami/redis
+  - pkg:docker/cimg/redis
+  - pkg:docker/circleci/redis
+  - pkg:docker/library/redis
+  - pkg:docker/redislabs/redis
+  - pkg:docker/ubuntu/redis
+  cycles:
+  - cycle: 8.8
+    eolDate: null
+    eol: false
+  - cycle: 8.6
+    eolDate: null
+    eol: false
+  - cycle: 8.4
+    eolDate: null
+    eol: false
+  - cycle: 8.2
+    eolDate: 2026-05-25
+    eol: true
+  - cycle: 8.0
+    eolDate: 2026-02-11
+    eol: true
+  - cycle: 7.4
+    eolDate: null
+    eol: false
+  - cycle: 7.2
+    eolDate: null
+    eol: false
+  - cycle: 7.0
+    eolDate: 2024-07-29
+    eol: true
+  - cycle: 6.2
+    eolDate: null
+    eol: false
+  - cycle: 6.0
+    eolDate: 2022-05-31
+    eol: true
+  - cycle: 5.0
+    eolDate: 2022-04-27
+    eol: true
+- name: renovate
+  label: Renovate CLI
+  coordinates:
+  - pkg:docker/renovate/renovate
+  - pkg:npm/renovate
+  cycles:
+  - cycle: 43
+    eolDate: null
+    eol: false
+  - cycle: 42
+    eolDate: 2026-01-29
+    eol: true
+  - cycle: 41
+    eolDate: 2025-08-14
+    eol: true
+  - cycle: 40
+    eolDate: 2025-08-14
+    eol: true
+- name: ruby
+  label: Ruby
+  coordinates:
+  - pkg:docker/library/ruby
+  cycles:
+  - cycle: 4.0
+    eolDate: 2029-03-31
+    eol: false
+  - cycle: 3.4
+    eolDate: 2028-03-31
+    eol: false
+  - cycle: 3.3
+    eolDate: 2027-03-31
+    eol: false
+  - cycle: 3.2
+    eolDate: 2026-03-31
+    eol: true
+  - cycle: 3.1
+    eolDate: 2025-03-31
+    eol: true
+  - cycle: 3.0
+    eolDate: 2024-04-23
+    eol: true
+  - cycle: 2.7
+    eolDate: 2023-03-31
+    eol: true
+  - cycle: 2.6
+    eolDate: 2022-03-31
+    eol: true
+  - cycle: 2.5
+    eolDate: 2021-03-31
+    eol: true
+  - cycle: 2.4
+    eolDate: 2020-03-31
+    eol: true
+  - cycle: 2.3
+    eolDate: 2019-03-31
+    eol: true
+  - cycle: 2.2
+    eolDate: 2018-03-31
+    eol: true
+  - cycle: 2.1
+    eolDate: 2017-03-31
+    eol: true
+  - cycle: 2.0.0
+    eolDate: 2016-02-24
+    eol: true
+  - cycle: 1.9.3
+    eolDate: 2015-02-23
+    eol: true
+- name: salt
+  label: Salt
+  coordinates:
+  - pkg:docker/saltstack/salt
+  cycles:
+  - cycle: 3007
+    eolDate: 2026-07-31
+    eol: false
+  - cycle: 3006
+    eolDate: 2027-06-30
+    eol: false
+  - cycle: 3005
+    eolDate: 2024-02-25
+    eol: true
+  - cycle: 3004
+    eolDate: 2023-04-18
+    eol: true
+  - cycle: 3003
+    eolDate: 2022-09-30
+    eol: true
+  - cycle: 3002
+    eolDate: 2022-04-21
+    eol: true
+  - cycle: 3001
+    eolDate: 2021-12-31
+    eol: true
+  - cycle: 3000
+    eolDate: 2021-08-31
+    eol: true
+  - cycle: 2019.2
+    eolDate: 2020-09-30
+    eol: true
+  - cycle: 2018.3
+    eolDate: 2019-10-31
+    eol: true
+  - cycle: 2017.7
+    eolDate: 2019-08-30
+    eol: true
+  - cycle: 2016.3
+    eolDate: 2017-11-30
+    eol: true
+  - cycle: 2015.8
+    eolDate: 2017-03-31
+    eol: true
+  - cycle: 2015.5
+    eolDate: 2016-11-30
+    eol: true
+  - cycle: 2014.7
+    eolDate: 2016-05-31
+    eol: true
+- name: sourcegraph
+  label: Sourcegraph
+  coordinates:
+  - pkg:docker/sourcegraph/sg
+  cycles:
+  - cycle: 7
+    eolDate: null
+    eol: false
+  - cycle: 6
+    eolDate: null
+    eol: false
+  - cycle: 5
+    eolDate: 2025-01-29
+    eol: true
+  - cycle: 4
+    eolDate: 2023-05-22
+    eol: true
+- name: spring-boot
+  label: Spring Boot
+  coordinates:
+  - pkg:maven/org.springframework.boot
+  cycles:
+  - cycle: 4.0
+    eolDate: 2026-12-31
+    eol: false
+  - cycle: 3.5
+    eolDate: 2026-06-30
+    eol: false
+  - cycle: 3.4
+    eolDate: 2025-12-31
+    eol: true
+  - cycle: 3.3
+    eolDate: 2025-06-30
+    eol: true
+  - cycle: 3.2
+    eolDate: 2024-12-31
+    eol: true
+  - cycle: 3.1
+    eolDate: 2024-06-30
+    eol: true
+  - cycle: 3.0
+    eolDate: 2023-12-31
+    eol: true
+  - cycle: 2.7
+    eolDate: 2023-06-30
+    eol: true
+  - cycle: 2.6
+    eolDate: 2022-11-24
+    eol: true
+  - cycle: 2.5
+    eolDate: 2022-05-19
+    eol: true
+  - cycle: 2.4
+    eolDate: 2021-11-18
+    eol: true
+  - cycle: 2.3
+    eolDate: 2021-05-20
+    eol: true
+  - cycle: 2.2
+    eolDate: 2020-10-16
+    eol: true
+  - cycle: 2.1
+    eolDate: 2019-10-30
+    eol: true
+  - cycle: 2.0
+    eolDate: 2019-03-01
+    eol: true
+  - cycle: 1.5
+    eolDate: 2019-08-06
+    eol: true
+- name: spring-cloud
+  label: Spring Cloud
+  coordinates:
+  - pkg:maven/org.springframework.cloud
+  cycles:
+  - cycle: 2025.1
+    eolDate: 2026-12-31
+    eol: false
+  - cycle: 2025.0
+    eolDate: 2026-06-30
+    eol: false
+  - cycle: 2024.0
+    eolDate: 2025-12-31
+    eol: true
+  - cycle: 2023.0
+    eolDate: 2025-06-30
+    eol: true
+  - cycle: 2022.0
+    eolDate: 2024-06-30
+    eol: true
+  - cycle: 2021.0
+    eolDate: 2023-06-30
+    eol: true
+  - cycle: 2020.0
+    eolDate: 2022-05-31
+    eol: true
+- name: spring-framework
+  label: Spring Framework
+  coordinates:
+  - pkg:maven/org.springframework
+  cycles:
+  - cycle: 7.0
+    eolDate: 2027-06-30
+    eol: false
+  - cycle: 6.2
+    eolDate: 2026-06-30
+    eol: false
+  - cycle: 6.1
+    eolDate: 2025-06-30
+    eol: true
+  - cycle: 6.0
+    eolDate: 2024-06-30
+    eol: true
+  - cycle: 5.3
+    eolDate: 2024-08-31
+    eol: true
+  - cycle: 5.2
+    eolDate: 2021-12-31
+    eol: true
+  - cycle: 5.1
+    eolDate: 2020-12-31
+    eol: true
+  - cycle: 5.0
+    eolDate: 2020-12-31
+    eol: true
+  - cycle: 4.3
+    eolDate: 2020-12-31
+    eol: true
+  - cycle: 3.2
+    eolDate: 2016-12-31
+    eol: true
+- name: spring-security
+  label: Spring Security
+  coordinates:
+  - pkg:maven/org.springframework.security
+  cycles:
+  - cycle: 7.0
+    eolDate: 2026-12-31
+    eol: false
+  - cycle: 6.5
+    eolDate: 2026-06-30
+    eol: false
+  - cycle: 6.4
+    eolDate: 2025-12-31
+    eol: true
+  - cycle: 6.3
+    eolDate: 2025-06-30
+    eol: true
+  - cycle: 6.2
+    eolDate: 2024-12-31
+    eol: true
+  - cycle: 6.1
+    eolDate: 2024-06-30
+    eol: true
+  - cycle: 6.0
+    eolDate: 2023-12-31
+    eol: true
+  - cycle: 5.8
+    eolDate: 2023-12-31
+    eol: true
+  - cycle: 5.7
+    eolDate: 2023-06-30
+    eol: true
+  - cycle: 5.6
+    eolDate: 2022-11-30
+    eol: true
+  - cycle: 5.5
+    eolDate: 2022-05-31
+    eol: true
+  - cycle: 5.4
+    eolDate: 2021-11-30
+    eol: true
+  - cycle: 5.3
+    eolDate: 2021-05-31
+    eol: true
+  - cycle: 5.2
+    eolDate: 2020-10-31
+    eol: true
+  - cycle: 5.1
+    eolDate: 2019-10-31
+    eol: true
+  - cycle: 5.0
+    eolDate: 2019-03-31
+    eol: true
+  - cycle: 4.2
+    eolDate: 2019-08-31
+    eol: true
+- name: svelte
+  label: Svelte
+  coordinates:
+  - pkg:npm/svelte
+  cycles:
+  - cycle: 5
+    eolDate: null
+    eol: false
+  - cycle: 4
+    eolDate: 2024-10-19
+    eol: true
+  - cycle: 3
+    eolDate: 2023-06-22
+    eol: true
+  - cycle: 2
+    eolDate: 2019-04-21
+    eol: true
+  - cycle: 1
+    eolDate: 2018-04-19
+    eol: true
+- name: tailwind-css
+  label: Tailwind CSS
+  coordinates:
+  - pkg:npm/tailwindcss
+  cycles:
+  - cycle: 4.3
+    eolDate: null
+    eol: false
+  - cycle: 4.2
+    eolDate: 2026-05-08
+    eol: true
+  - cycle: 4.1
+    eolDate: 2026-02-18
+    eol: true
+  - cycle: 4.0
+    eolDate: 2025-04-01
+    eol: true
+  - cycle: 3.4
+    eolDate: 2027-02-28
+    eol: false
+  - cycle: 3.3
+    eolDate: 2023-12-18
+    eol: true
+  - cycle: 3.2
+    eolDate: 2023-03-28
+    eol: true
+  - cycle: 3.1
+    eolDate: 2022-10-19
+    eol: true
+  - cycle: 3.0
+    eolDate: 2022-06-08
+    eol: true
+  - cycle: 2.2
+    eolDate: 2021-12-09
+    eol: true
+  - cycle: 2.1
+    eolDate: 2021-06-17
+    eol: true
+  - cycle: 2.0
+    eolDate: 2021-04-05
+    eol: true
+  - cycle: 1.9
+    eolDate: 2020-11-18
+    eol: true
+  - cycle: 1.8
+    eolDate: 2020-10-12
+    eol: true
+  - cycle: 1.7
+    eolDate: 2020-09-04
+    eol: true
+  - cycle: 1.6
+    eolDate: 2020-08-18
+    eol: true
+  - cycle: 1.5
+    eolDate: 2020-07-28
+    eol: true
+  - cycle: 1.4
+    eolDate: 2020-07-15
+    eol: true
+  - cycle: 1.3
+    eolDate: 2020-04-29
+    eol: true
+  - cycle: 1.2
+    eolDate: 2020-04-20
+    eol: true
+  - cycle: 1.1
+    eolDate: 2020-02-05
+    eol: true
+  - cycle: 1.0
+    eolDate: 2019-08-06
+    eol: true
+- name: tarteaucitron
+  label: tarteaucitron
+  coordinates:
+  - pkg:npm/tarteaucitronjs
+  cycles:
+  - cycle: 1
+    eolDate: null
+    eol: false
+- name: tomcat
+  label: Apache Tomcat
+  coordinates:
+  - pkg:maven/org.apache.tomcat
+  cycles:
+  - cycle: 11.0
+    eolDate: null
+    eol: false
+  - cycle: 10.1
+    eolDate: null
+    eol: false
+  - cycle: 10.0
+    eolDate: 2022-10-31
+    eol: true
+  - cycle: 9.0
+    eolDate: 2027-03-31
+    eol: false
+  - cycle: 8.5
+    eolDate: 2024-03-31
+    eol: true
+  - cycle: 8.0
+    eolDate: 2018-06-30
+    eol: true
+  - cycle: 7
+    eolDate: 2021-03-31
+    eol: true
+  - cycle: 6
+    eolDate: 2016-12-31
+    eol: true
+  - cycle: 5
+    eolDate: 2012-09-30
+    eol: true
+- name: traefik
+  label: Traefik
+  coordinates:
+  - pkg:docker/library/traefik
+  cycles:
+  - cycle: 3.7
+    eolDate: null
+    eol: false
+  - cycle: 3.6
+    eolDate: null
+    eol: false
+  - cycle: 3.5
+    eolDate: 2025-11-07
+    eol: true
+  - cycle: 3.4
+    eolDate: 2025-07-23
+    eol: true
+  - cycle: 3.3
+    eolDate: 2025-05-05
+    eol: true
+  - cycle: 3.2
+    eolDate: 2025-01-06
+    eol: true
+  - cycle: 3.1
+    eolDate: 2024-10-28
+    eol: true
+  - cycle: 3.0
+    eolDate: 2024-07-15
+    eol: true
+  - cycle: 2.11
+    eolDate: 2026-02-01
+    eol: true
+  - cycle: 2.10
+    eolDate: 2024-02-12
+    eol: true
+  - cycle: 2.9
+    eolDate: 2023-04-24
+    eol: true
+  - cycle: 2.8
+    eolDate: 2022-10-03
+    eol: true
+  - cycle: 2.7
+    eolDate: 2022-06-29
+    eol: true
+  - cycle: 2.6
+    eolDate: 2022-05-24
+    eol: true
+  - cycle: 2.5
+    eolDate: 2022-01-24
+    eol: true
+  - cycle: 2.4
+    eolDate: 2021-08-17
+    eol: true
+  - cycle: 2.3
+    eolDate: 2021-01-19
+    eol: true
+  - cycle: 2.2
+    eolDate: 2020-09-23
+    eol: true
+  - cycle: 2.1
+    eolDate: 2020-03-25
+    eol: true
+  - cycle: 2.0
+    eolDate: 2019-12-11
+    eol: true
+  - cycle: 1.7
+    eolDate: 2021-12-31
+    eol: true
+- name: unrealircd
+  label: UnrealIRCd
+  coordinates:
+  - pkg:docker/bbriggs/unrealircd
+  cycles:
+  - cycle: 6
+    eolDate: null
+    eol: false
+  - cycle: 5
+    eolDate: 2023-07-01
+    eol: true
+  - cycle: 4
+    eolDate: 2020-12-31
+    eol: true
+  - cycle: 3.2
+    eolDate: 2016-12-31
+    eol: true
+- name: valkey
+  label: Valkey
+  coordinates:
+  - pkg:docker/valkey/valkey
+  cycles:
+  - cycle: 9.1
+    eolDate: null
+    eol: false
+  - cycle: 9.0
+    eolDate: 2028-10-21
+    eol: false
+  - cycle: 8.1
+    eolDate: 2030-03-31
+    eol: false
+  - cycle: 8.0
+    eolDate: 2027-09-15
+    eol: false
+  - cycle: 7.2
+    eolDate: 2029-04-16
+    eol: false
+- name: vinyl-cache
+  label: Vinyl Cache
+  coordinates:
+  - pkg:docker/library/varnish
+  cycles:
+  - cycle: 9.0
+    eolDate: 2027-03-16
+    eol: false
+  - cycle: 8.0
+    eolDate: 2026-09-15
+    eol: false
+  - cycle: 7.7
+    eolDate: 2026-03-15
+    eol: true
+  - cycle: 7.6
+    eolDate: 2025-09-15
+    eol: true
+  - cycle: 7.5
+    eolDate: 2025-03-15
+    eol: true
+  - cycle: 7.4
+    eolDate: 2024-09-15
+    eol: true
+  - cycle: 7.3
+    eolDate: 2024-03-15
+    eol: true
+  - cycle: 7.2
+    eolDate: 2023-09-15
+    eol: true
+  - cycle: 7.1
+    eolDate: 2023-03-15
+    eol: true
+  - cycle: 7.0
+    eolDate: 2022-09-15
+    eol: true
+  - cycle: 6.0
+    eolDate: null
+    eol: false
+- name: vitess
+  label: Vitess
+  coordinates:
+  - pkg:docker/vitess/lite
+  cycles:
+  - cycle: 24
+    eolDate: 2027-05-07
+    eol: false
+  - cycle: 23
+    eolDate: 2026-11-04
+    eol: false
+  - cycle: 22
+    eolDate: 2026-04-29
+    eol: true
+  - cycle: 21
+    eolDate: 2025-10-29
+    eol: true
+  - cycle: 20
+    eolDate: 2025-06-27
+    eol: true
+  - cycle: 19
+    eolDate: 2025-03-06
+    eol: true
+  - cycle: 18
+    eolDate: 2024-11-07
+    eol: true
+  - cycle: 17
+    eolDate: 2024-06-27
+    eol: true
+  - cycle: 16
+    eolDate: 2024-02-28
+    eol: true
+  - cycle: 15
+    eolDate: 2023-10-25
+    eol: true
+  - cycle: 14
+    eolDate: 2023-06-28
+    eol: true
+  - cycle: 13
+    eolDate: 2023-02-22
+    eol: true
+- name: vue
+  label: Vue
+  coordinates:
+  - pkg:npm/vue
+  cycles:
+  - cycle: 3.5
+    eolDate: null
+    eol: false
+  - cycle: 3.4
+    eolDate: 2024-09-03
+    eol: true
+  - cycle: 3.3
+    eolDate: 2023-12-29
+    eol: true
+  - cycle: 2.7
+    eolDate: 2023-12-31
+    eol: true
+  - cycle: 3.2
+    eolDate: 2023-05-11
+    eol: true
+  - cycle: 3.1
+    eolDate: 2021-08-09
+    eol: true
+  - cycle: 3.0
+    eolDate: 2021-06-07
+    eol: true
+  - cycle: 2.6
+    eolDate: 2022-07-01
+    eol: true
+  - cycle: 2.5
+    eolDate: 2019-02-04
+    eol: true
+  - cycle: 2.4
+    eolDate: 2017-10-13
+    eol: true
+  - cycle: 2.3
+    eolDate: 2017-07-13
+    eol: true
+  - cycle: 2.2
+    eolDate: 2017-04-27
+    eol: true
+  - cycle: 2.1
+    eolDate: 2017-02-26
+    eol: true
+  - cycle: 2.0
+    eolDate: 2016-11-22
+    eol: true
+  - cycle: 1
+    eolDate: null
+    eol: true
+- name: vuetify
+  label: Vuetify
+  coordinates:
+  - pkg:npm/vuetify
+  cycles:
+  - cycle: 4
+    eolDate: null
+    eol: false
+  - cycle: 3
+    eolDate: null
+    eol: false
+  - cycle: 2
+    eolDate: 2025-01-23
+    eol: true
+  - cycle: 1
+    eolDate: 2020-07-31
+    eol: true
+- name: windows-nano-server
+  label: Microsoft Nano Server
+  coordinates:
+  - pkg:docker/microsoft/windows-nanoserver
+  cycles:
+  - cycle: 2025
+    eolDate: 2034-10-10
+    eol: false
+  - cycle: 2022
+    eolDate: 2031-10-14
+    eol: false
+  - cycle: 20h2
+    eolDate: 2022-08-09
+    eol: true
+  - cycle: 2004
+    eolDate: 2021-12-14
+    eol: true
+  - cycle: 1909
+    eolDate: 2021-05-11
+    eol: true
+  - cycle: 1903
+    eolDate: 2020-12-08
+    eol: true
+  - cycle: 1809
+    eolDate: 2020-11-10
+    eol: true
+  - cycle: 2019
+    eolDate: 2029-01-09
+    eol: false
+  - cycle: 1803
+    eolDate: 2019-11-12
+    eol: true
+  - cycle: 1709
+    eolDate: 2019-04-09
+    eol: true
+  - cycle: 1607
+    eolDate: 2018-09-10
+    eol: true
+- name: wireshark
+  label: Wireshark
+  coordinates:
+  - pkg:docker/linuxserver/wireshark
+  - pkg:docker/linuxserver/wireshark?repository_url=lscr.io
+  cycles:
+  - cycle: 4.6
+    eolDate: null
+    eol: false
+  - cycle: 4.4
+    eolDate: null
+    eol: false
+  - cycle: 4.2
+    eolDate: 2025-10-08
+    eol: true
+  - cycle: 4.0
+    eolDate: 2024-08-28
+    eol: true
+  - cycle: 3.6
+    eolDate: 2024-05-22
+    eol: true
+  - cycle: 3.4
+    eolDate: 2022-09-07
+    eol: true
+  - cycle: 3.2
+    eolDate: 2021-11-22
+    eol: true
+  - cycle: 3.0
+    eolDate: 2020-10-29
+    eol: true
+  - cycle: 2.6
+    eolDate: 2020-10-18
+    eol: true
+  - cycle: 2.4
+    eolDate: 2019-07-19
+    eol: true
+  - cycle: 2.2
+    eolDate: 2018-09-07
+    eol: true
+  - cycle: 2.0
+    eolDate: 2017-11-18
+    eol: true
+  - cycle: 1.12
+    eolDate: 2016-07-31
+    eol: true
+  - cycle: 1.10
+    eolDate: 2015-06-05
+    eol: true
+  - cycle: 1.8
+    eolDate: 2014-06-21
+    eol: true
+  - cycle: 1.6
+    eolDate: 2013-06-07
+    eol: true
+  - cycle: 1.4
+    eolDate: 2012-08-30
+    eol: true
+  - cycle: 1.2
+    eolDate: 2011-06-30
+    eol: true
+  - cycle: 1.0
+    eolDate: 2011-06-30
+    eol: true
+- name: wordpress
+  label: WordPress
+  coordinates:
+  - pkg:docker/bitnami/wordpress
+  - pkg:docker/bitnami/wordpress-nginx
+  - pkg:docker/library/wordpress
+  cycles:
+  - cycle: 7.0
+    eolDate: null
+    eol: false
+  - cycle: 6.9
+    eolDate: 2026-05-20
+    eol: true
+  - cycle: 6.8
+    eolDate: 2025-12-02
+    eol: true
+  - cycle: 6.7
+    eolDate: 2025-04-15
+    eol: true
+  - cycle: 6.6
+    eolDate: 2024-11-12
+    eol: true
+  - cycle: 6.5
+    eolDate: 2024-07-16
+    eol: true
+  - cycle: 6.4
+    eolDate: 2024-04-02
+    eol: true
+  - cycle: 6.3
+    eolDate: 2023-11-07
+    eol: true
+  - cycle: 6.2
+    eolDate: 2023-08-08
+    eol: true
+  - cycle: 6.1
+    eolDate: 2023-03-29
+    eol: true
+  - cycle: 6.0
+    eolDate: 2022-11-01
+    eol: true
+  - cycle: 5.9
+    eolDate: 2022-05-24
+    eol: true
+  - cycle: 5.8
+    eolDate: 2022-01-25
+    eol: true
+  - cycle: 5.7
+    eolDate: 2021-07-20
+    eol: true
+  - cycle: 5.6
+    eolDate: 2021-03-09
+    eol: true
+  - cycle: 5.5
+    eolDate: 2020-12-08
+    eol: true
+  - cycle: 5.4
+    eolDate: 2020-08-11
+    eol: true
+  - cycle: 5.3
+    eolDate: 2020-03-31
+    eol: true
+  - cycle: 5.2
+    eolDate: 2019-11-12
+    eol: true
+  - cycle: 5.1
+    eolDate: 2019-05-07
+    eol: true
+  - cycle: 5.0
+    eolDate: 2019-02-21
+    eol: true
+  - cycle: 4.9
+    eolDate: 2018-12-06
+    eol: true
+  - cycle: 4.8
+    eolDate: 2017-11-16
+    eol: true
+  - cycle: 4.7
+    eolDate: 2017-06-08
+    eol: true
+  - cycle: 4.6
+    eolDate: 2016-12-06
+    eol: true
+  - cycle: 4.5
+    eolDate: 2016-08-16
+    eol: true
+  - cycle: 4.4
+    eolDate: 2016-04-12
+    eol: true
+  - cycle: 4.3
+    eolDate: 2015-12-08
+    eol: true
+  - cycle: 4.2
+    eolDate: 2015-08-18
+    eol: true
+  - cycle: 4.1
+    eolDate: 2015-04-23
+    eol: true
+  - cycle: 4.0
+    eolDate: 2014-12-18
+    eol: true
+  - cycle: 3.9
+    eolDate: 2014-09-04
+    eol: true
+  - cycle: 3.8
+    eolDate: 2014-04-16
+    eol: true
+  - cycle: 3.7
+    eolDate: 2013-12-12
+    eol: true
+  - cycle: 3.6
+    eolDate: 2013-10-24
+    eol: true
+- name: yarn
+  label: Yarn
+  coordinates:
+  - pkg:npm/yarn
+  cycles:
+  - cycle: 4
+    eolDate: null
+    eol: false
+  - cycle: 3
+    eolDate: 2024-12-04
+    eol: true
+  - cycle: 2
+    eolDate: 2021-09-06
+    eol: true
+  - cycle: 1
+    eolDate: null
+    eol: false
+- name: zookeeper
+  label: Apache ZooKeeper
+  coordinates:
+  - pkg:docker/library/zookeeper
+  - pkg:maven/org.apache.zookeeper
+  cycles:
+  - cycle: 3.9
+    eolDate: null
+    eol: false
+  - cycle: 3.8
+    eolDate: null
+    eol: false
+  - cycle: 3.7
+    eolDate: 2024-01-19
+    eol: true
+  - cycle: 3.6
+    eolDate: 2022-12-30
+    eol: true
+  - cycle: 3.5
+    eolDate: 2022-06-01
+    eol: true
+  - cycle: 3.4
+    eolDate: 2020-06-01
+    eol: true

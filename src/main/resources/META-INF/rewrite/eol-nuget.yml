@@ -1,0 +1,29 @@
+#
+# Copyright 2026 the original author or authors.
+# <p>
+# Licensed under the Moderne Source Available License (the "License");
+# you may not use this file except in compliance with the License.
+# You may obtain a copy of the License at
+# <p>
+# https://docs.moderne.io/licensing/moderne-source-available-license
+# <p>
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an "AS IS" BASIS,
+# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+# See the License for the specific language governing permissions and
+# limitations under the License.
+#
+
+type: specs.openrewrite.org/v1beta/recipe
+name: io.moderne.devcenter.eol.DevCenterNuGetEndOfLife
+displayName: 'DevCenter: NuGet dependency end of life'
+description: >-
+  A DevCenter configuration that tracks the end-of-life status of NuGet dependencies declared in
+  .csproj project files, sourced from a Moderne EOL feed. Supply your own feed with the `feed`
+  option to track internal products — see `FEED-FORMAT.md`.
+recipeList:
+  - io.moderne.devcenter.eol.NuGetDependencyEndOfLife:
+      cardName: NuGet dependency end of life
+      approachingDays: 180
+  - io.moderne.devcenter.FindOrganizationStatistics
+  - org.openrewrite.search.FindCommitters

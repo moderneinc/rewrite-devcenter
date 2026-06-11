@@ -1,0 +1,2 @@
+{"ecosystem":"JVM","kind":"dependency","name":"org.springframework.boot:spring-boot","version":"2.7.18","product":"spring-boot","cycle":"2.7","eolDate":"2023-06-30","status":"EndOfLife"}
+{"ecosystem":"JVM","kind":"dependency","name":"org.springframework:spring-core","version":"5.3.31","product":"spring-framework","cycle":"5.3","eolDate":"2024-08-31","status":"EndOfLife"}

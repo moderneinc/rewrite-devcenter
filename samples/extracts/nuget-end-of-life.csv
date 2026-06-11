@@ -1,0 +1,2 @@
+ecosystem,kind,name,version,product,cycle,eolDate,status
+NuGet,dependency,bootstrap,4.6.0,bootstrap,4,2023-01-01,EndOfLife

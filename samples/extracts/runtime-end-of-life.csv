@@ -1,0 +1,5 @@
+ecosystem,kind,name,version,product,cycle,eolDate,status
+.NET,runtime,.NET,6.0,dotnet,6,2024-11-12,EndOfLife
+Java,runtime,Java,8,openjdk,8,2030-12-31,Supported
+Node.js,runtime,Node.js,16.0.0,nodejs,16,2023-09-11,EndOfLife
+Python,runtime,Python,3.8.18,python,3.8,2024-10-07,EndOfLife

@@ -7,7 +7,6 @@ src/main/generated/
 .vscode/
 *.iml
 license.txt
-samples/
 
 # Moderne CLI
 .moderne/*

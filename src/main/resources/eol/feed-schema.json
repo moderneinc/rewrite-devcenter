@@ -1,0 +1,80 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://docs.moderne.io/schemas/eol-feed-v1.json",
+  "title": "Moderne EOL feed",
+  "description": "A vendor-neutral, package-URL-keyed description of products and their release-cycle end-of-life dates, consumed by the end-of-life DevCenter cards (io.moderne.devcenter.eol). YAML is canonical; JSON validates against this same schema.",
+  "type": "object",
+  "required": ["schemaVersion", "products"],
+  "additionalProperties": false,
+  "properties": {
+    "schemaVersion": {
+      "const": 1,
+      "description": "Feed schema version. Currently always 1."
+    },
+    "metadata": {
+      "type": "object",
+      "description": "Optional, free-form provenance.",
+      "additionalProperties": true,
+      "properties": {
+        "source": { "type": "string", "description": "Where this feed was derived from." },
+        "generatedAt": { "type": "string", "description": "ISO-8601 timestamp the feed was produced." },
+        "productCount": { "type": "integer" }
+      }
+    },
+    "products": {
+      "type": "array",
+      "items": { "$ref": "#/$defs/product" }
+    }
+  },
+  "$defs": {
+    "product": {
+      "type": "object",
+      "required": ["name", "coordinates", "cycles"],
+      "additionalProperties": false,
+      "properties": {
+        "name": {
+          "type": "string",
+          "description": "Stable product slug used in the `products` allow-list and in reports, e.g. `spring-boot`."
+        },
+        "label": {
+          "type": "string",
+          "description": "Human-readable product name, e.g. `Spring Boot`."
+        },
+        "coordinates": {
+          "type": "array",
+          "minItems": 1,
+          "description": "package-URL coordinates that map a detected artifact or runtime to this product.",
+          "items": {
+            "type": "string",
+            "pattern": "^pkg:(maven|npm|nuget|generic|docker)/.+",
+            "description": "pkg:maven/<groupId> (artifact is a wildcard), pkg:npm/<package>, pkg:nuget/<package>, pkg:generic/<runtime> (openjdk, node, dotnet, dotnetfx, python), or pkg:docker/<namespace>/<name>."
+          }
+        },
+        "cycles": {
+          "type": "array",
+          "description": "Release cycles, each matched to a version by longest dot-boundary prefix.",
+          "items": { "$ref": "#/$defs/cycle" }
+        }
+      }
+    },
+    "cycle": {
+      "type": "object",
+      "required": ["cycle"],
+      "additionalProperties": false,
+      "properties": {
+        "cycle": {
+          "type": "string",
+          "description": "Release cycle name, e.g. `3.2`. Matches a version when it equals the version or is a dot-prefix of it (`3.2` matches `3.2.4`)."
+        },
+        "eolDate": {
+          "type": ["string", "null"],
+          "description": "ISO-8601 end-of-life date for the cycle, or null/omitted when unknown."
+        },
+        "eol": {
+          "type": "boolean",
+          "description": "Fallback flag used only when eolDate is absent: true means the cycle is end-of-life regardless of date."
+        }
+      }
+    }
+  }
+}

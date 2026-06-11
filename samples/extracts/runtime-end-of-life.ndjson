@@ -1,0 +1,4 @@
+{"ecosystem":".NET","kind":"runtime","name":".NET","version":"6.0","product":"dotnet","cycle":"6","eolDate":"2024-11-12","status":"EndOfLife"}
+{"ecosystem":"Java","kind":"runtime","name":"Java","version":"8","product":"openjdk","cycle":"8","eolDate":"2030-12-31","status":"Supported"}
+{"ecosystem":"Node.js","kind":"runtime","name":"Node.js","version":"16.0.0","product":"nodejs","cycle":"16","eolDate":"2023-09-11","status":"EndOfLife"}
+{"ecosystem":"Python","kind":"runtime","name":"Python","version":"3.8.18","product":"python","cycle":"3.8","eolDate":"2024-10-07","status":"EndOfLife"}

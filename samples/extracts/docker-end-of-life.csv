@@ -1,0 +1,3 @@
+ecosystem,kind,name,version,product,cycle,eolDate,status
+Docker,image,node:16.20-alpine,16.20,nodejs,16,2023-09-11,EndOfLife
+Docker,image,python:3.8-slim,3.8,python,3.8,2024-10-07,EndOfLife

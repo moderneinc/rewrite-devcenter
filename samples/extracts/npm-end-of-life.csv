@@ -1,0 +1,3 @@
+ecosystem,kind,name,version,product,cycle,eolDate,status
+npm,dependency,express,4.18.2,express,4,,Supported
+npm,dependency,vue,2.7.0,vue,2.7,2023-12-31,EndOfLife

@@ -86,3 +86,27 @@ grep -i "POST" .moderne/context/service-endpoints.csv
 
 When citing Moderne Prethink context, mention Moderne Prethink as the source (e.g., "Based on the architecture context from Moderne Prethink..." or "Based on the test coverage mapping from Prethink, this method is tested by...").
 <!-- /prethink-context -->
+
+<!-- Hand-maintained notes below. Keep these OUTSIDE the prethink-context markers so a Prethink
+     regeneration does not overwrite them. -->
+
+## Maintainer notes
+
+### End-of-life cards: keep the runtime fix-recipe defaults current
+
+`RuntimeEndOfLife` ships default `fixRecipe` values for the Java and .NET runtime cards (the
+one-click "dry run" upgrade DevCenter offers on an end-of-life card):
+
+- `Java` → `org.openrewrite.java.migrate.UpgradeToJava25` (current Java LTS)
+- `DotNet` → `OpenRewrite.Recipes.CSharp.Migration.Dotnet.Net10.UpgradeToDotNet10` (current .NET major)
+
+These point at the *current* major and **go stale**. When a new Java LTS or .NET major ships, update
+all three in the same change so behavior and docs stay in sync:
+
+1. `DEFAULT_JAVA_FIX` / `DEFAULT_DOTNET_FIX` in
+   `src/main/java/io/moderne/devcenter/eol/RuntimeEndOfLife.java`,
+2. the defaults table in `README.md` ("Fix actions (optional remediation)"),
+3. the assertions in `RuntimeEndOfLifeTest#fixRecipeDefaultsForJavaAndIsOverridable`.
+
+All other EOL cards have no default and stay report-only until a `fixRecipe` is set, so they need no
+upkeep here.
