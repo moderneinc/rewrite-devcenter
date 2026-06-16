@@ -24,11 +24,7 @@ import org.openrewrite.test.RewriteTest;
 import java.util.List;
 import java.util.stream.Stream;
 
-import static io.moderne.devcenter.JavaVersionUpgrade.Measure.Completed;
-import static io.moderne.devcenter.JavaVersionUpgrade.Measure.Java11Plus;
-import static io.moderne.devcenter.JavaVersionUpgrade.Measure.Java17Plus;
-import static io.moderne.devcenter.JavaVersionUpgrade.Measure.Java21Plus;
-import static io.moderne.devcenter.JavaVersionUpgrade.Measure.Java8Plus;
+import static io.moderne.devcenter.JavaVersionUpgrade.Measure.*;
 import static org.assertj.core.api.AssertionsForInterfaceTypes.assertThat;
 import static org.openrewrite.java.Assertions.java;
 import static org.openrewrite.java.Assertions.version;

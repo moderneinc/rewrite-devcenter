@@ -38,7 +38,7 @@ import static org.openrewrite.java.Assertions.java;
 class AngularVersionUpgradeTest implements RewriteTest {
 
     private static NodeResolutionResult angularMarker(String constraint, @Nullable String resolvedVersion) {
-        List<Dependency> deps = List.of(new Dependency("@angular/core", constraint, null));
+        var deps = List.of(new Dependency("@angular/core", constraint, null));
         List<ResolvedDependency> resolved = resolvedVersion == null ?
           List.of() :
           List.of(new ResolvedDependency("@angular/core", resolvedVersion,
@@ -70,7 +70,7 @@ class AngularVersionUpgradeTest implements RewriteTest {
     @Test
     void skipsAngularJsLegacyPackage() {
         var recipe = new AngularVersionUpgrade(21, null);
-        List<Dependency> deps = List.of(new Dependency("angular", "^1.8.0", null));
+        var deps = List.of(new Dependency("angular", "^1.8.0", null));
         rewriteRun(
           spec -> spec.recipe(recipe),
           java(

@@ -23,9 +23,7 @@ import org.openrewrite.test.RewriteTest;
 
 import java.nio.file.Path;
 
-import static io.moderne.devcenter.SemverMeasure.Major;
-import static io.moderne.devcenter.SemverMeasure.Minor;
-import static io.moderne.devcenter.SemverMeasure.Patch;
+import static io.moderne.devcenter.SemverMeasure.*;
 import static io.moderne.devcenter.table.UpgradesAndMigrations.bestRow;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.openrewrite.maven.Assertions.pomXml;
