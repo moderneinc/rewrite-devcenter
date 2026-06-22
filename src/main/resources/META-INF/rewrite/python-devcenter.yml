@@ -23,6 +23,7 @@ description: >-
   Track Python version adoption across your organization.
 recipeList:
   - io.moderne.devcenter.PythonVersionUpgrade:
-      minorVersion: 13
+      minorVersion: 14
+      upgradeRecipe: org.openrewrite.python.migrate.UpgradeToPython314
   - io.moderne.devcenter.FindOrganizationStatistics
   - org.openrewrite.search.FindCommitters
