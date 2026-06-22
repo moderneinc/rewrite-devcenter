@@ -23,6 +23,7 @@ description: >-
   Track Node.js version adoption across your organization.
 recipeList:
   - io.moderne.devcenter.NodeVersionUpgrade:
-      majorVersion: 22
+      majorVersion: 24
+      upgradeRecipe: org.openrewrite.node.migrate.upgrade-node-24
   - io.moderne.devcenter.FindOrganizationStatistics
   - org.openrewrite.search.FindCommitters

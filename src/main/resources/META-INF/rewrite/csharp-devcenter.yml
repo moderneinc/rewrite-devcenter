@@ -24,5 +24,6 @@ description: >-
 recipeList:
   - io.moderne.devcenter.CSharpVersionUpgrade:
       majorVersion: 10
+      upgradeRecipe: OpenRewrite.Recipes.CSharp.Migration.Dotnet.Net10.UpgradeToDotNet10
   - io.moderne.devcenter.FindOrganizationStatistics
   - org.openrewrite.search.FindCommitters
