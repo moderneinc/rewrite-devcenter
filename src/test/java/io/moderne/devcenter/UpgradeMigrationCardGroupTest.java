@@ -48,6 +48,9 @@ class UpgradeMigrationCardGroupTest {
                 "Move to JUnit 6", 0, "JUnit 4", "4.13"));
         gradleCard.upgradesAndMigrations.insertRow(ctx, new UpgradesAndMigrations.Row(
                 "Upgrade to Gradle 9", 0, "Major", "8.5.0"));
+        javaCard.upgradesAndMigrations.flushBestRow(ctx, "Move to Java 25");
+        junitCard.upgradesAndMigrations.flushBestRow(ctx, "Move to JUnit 6");
+        gradleCard.upgradesAndMigrations.flushBestRow(ctx, "Upgrade to Gradle 9");
 
         // All three cards wrote to the same bucket because they share a group
         assertThat(store.getDataTables()).hasSize(1);

@@ -32,18 +32,15 @@ class UpgradesAndMigrationsTest implements RewriteTest {
 
     @DocumentExample
     @Test
-    void singleRowAtSameOrdinalRegardlessOfOrder() {
+    void singleRowPerCardKeepsWorstOrdinal() {
         rewriteRun(
           spec -> spec
             .recipe(new LibraryUpgrade("Spring Boot",
               "org.springframework.boot", "*", "3.4.5", null))
-            .dataTable(UpgradesAndMigrations.Row.class, rows -> {
-                assertThat(rows).hasSize(3);
-                assertThat(rows)
-                  .extracting(UpgradesAndMigrations.Row::getOrdinal)
-                  .containsExactlyInAnyOrder(
-                    Patch.ordinal(), Minor.ordinal(), Major.ordinal());
-            }),
+            .dataTable(UpgradesAndMigrations.Row.class, rows ->
+              assertThat(rows).containsExactly(
+                new UpgradesAndMigrations.Row("Spring Boot", Major.ordinal(), "Major", "2.4.0")
+              )),
           pomXml(pairPom("3.4.3", "3.4.2"), spec -> spec.path(Path.of("patch-pair/pom.xml"))),
           pomXml(pairPom("3.2.0", "3.1.0"), spec -> spec.path(Path.of("minor-pair/pom.xml"))),
           pomXml(pairPom("2.5.0", "2.4.0"), spec -> spec.path(Path.of("major-pair/pom.xml")))

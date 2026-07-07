@@ -16,6 +16,7 @@
 package io.moderne.devcenter;
 
 import io.moderne.devcenter.table.UpgradesAndMigrations;
+import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.Arguments;
 import org.junit.jupiter.params.provider.MethodSource;
@@ -56,6 +57,54 @@ class JavaVersionUpgradeTest implements RewriteTest {
             //language=java
             java("class Test {}"),
             actualVersion
+          )
+        );
+    }
+
+    @Test
+    void multiModuleWorstVersionFirst() {
+        UpgradeMigrationCard recipe = new JavaVersionUpgrade(21, null);
+        rewriteRun(
+          spec -> spec
+            .recipe(recipe)
+            .dataTable(UpgradesAndMigrations.Row.class, rows ->
+              assertThat(rows).containsExactly(
+                new UpgradesAndMigrations.Row("Move to Java 21",
+                  recipe.ordinal(Java17Plus), Java17Plus.getName(), "17")
+              )),
+          version(
+            //language=java
+            java("class A {}"),
+            17
+          ),
+          version(
+            //language=java
+            java("class B {}"),
+            21
+          )
+        );
+    }
+
+    @Test
+    void multiModuleBestVersionFirst() {
+        UpgradeMigrationCard recipe = new JavaVersionUpgrade(21, null);
+        rewriteRun(
+          spec -> spec
+            .recipe(recipe)
+            .dataTable(UpgradesAndMigrations.Row.class, rows ->
+              assertThat(rows).containsExactly(
+                new UpgradesAndMigrations.Row("Move to Java 21",
+                  recipe.ordinal(Java17Plus), Java17Plus.getName(), "17")
+              )),
+          version(
+            //language=java
+            java("class A {}"),
+            21
+          ),
+          version(
+            //language=java
+            java("class B {}"),
+            17
           )
         );
     }

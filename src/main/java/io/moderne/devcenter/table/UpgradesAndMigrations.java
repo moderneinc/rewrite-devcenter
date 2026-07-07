@@ -94,20 +94,13 @@ public class UpgradesAndMigrations extends DataTable<UpgradesAndMigrations.Row> 
 
     @Override
     public void insertRow(ExecutionContext ctx, Row row) {
-        boolean[] improved = {false};
-        getBestRows(ctx).compute(row.getCard(), (card, prev) -> {
-            if (prev == null) {
-                improved[0] = true;
-                return row;
-            }
-            Row best = bestRow(prev, row);
-            if (best != prev && best.getOrdinal() < prev.getOrdinal()) {
-                improved[0] = true;
-            }
-            return best;
-        });
-        if (improved[0]) {
-            super.insertRow(ctx, row);
+        getBestRows(ctx).merge(row.getCard(), row, UpgradesAndMigrations::bestRow);
+    }
+
+    public void flushBestRow(ExecutionContext ctx, String card) {
+        Row best = getBestRows(ctx).remove(card);
+        if (best != null) {
+            super.insertRow(ctx, best);
         }
     }
 
