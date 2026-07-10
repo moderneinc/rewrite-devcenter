@@ -37,6 +37,7 @@ dependencies {
     implementation("org.openrewrite:rewrite-python")
     implementation("org.openrewrite:rewrite-javascript")
     implementation("org.openrewrite:rewrite-csharp")
+    implementation("org.openrewrite:rewrite-go")
     runtimeOnly("org.openrewrite:rewrite-java-17")
 
     // Provides the Prethink recipes referenced by code-quality-devcenter.yml
