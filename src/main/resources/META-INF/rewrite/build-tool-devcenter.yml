@@ -21,6 +21,8 @@ displayName: DevCenter for Gradle and Maven
 description: >-
   Track and automate upgrades for Gradle, Maven, and Java versions.
 recipeList:
+  - io.moderne.devcenter.FindOrganizationStatistics
+  - org.openrewrite.search.FindCommitters
   - io.moderne.devcenter.BuildToolCard:
       cardName: Upgrade to Gradle 9
       buildTool: Gradle

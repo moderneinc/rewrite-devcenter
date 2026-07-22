@@ -23,6 +23,9 @@ description: |
   and buckets the average LCOM4 (Lack of Cohesion of Methods, version 4)
   into HIGH / MEDIUM / LOW cohesion categories.
 recipeList:
+  - io.moderne.devcenter.FindOrganizationStatistics
+  - org.openrewrite.search.FindCommitters
+
   # 1. Populate ClassQualityMetrics by running Prethink's class metrics recipe.
   - io.moderne.prethink.quality.FindClassMetrics
   - io.moderne.prethink.testing.coverage.FindTestGaps

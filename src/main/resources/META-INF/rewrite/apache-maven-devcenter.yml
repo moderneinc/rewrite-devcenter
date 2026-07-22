@@ -21,6 +21,8 @@ displayName: DevCenter for Apache
 description: >-
   A DevCenter that tracks the latest Apache Maven parent POM versions and applies best practices.
 recipeList:
+  - io.moderne.devcenter.FindOrganizationStatistics
+  - org.openrewrite.search.FindCommitters
   - io.moderne.devcenter.ParentPomUpgrade:
       cardName: Move to the latest `apache` parent POM
       groupIdPattern: org.apache
@@ -43,6 +45,8 @@ description: >-
   This DevCenter includes recipes to upgrade the parent POMs of Apache Maven, as well as a collection of
   best practices for Maven POMs.
 recipeList:
+  - io.moderne.devcenter.FindOrganizationStatistics
+  - org.openrewrite.search.FindCommitters
   - io.moderne.devcenter.ParentPomUpgrade:
       cardName: Move to the latest `maven-parent`
       groupIdPattern: org.apache.maven
