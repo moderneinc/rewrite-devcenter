@@ -23,6 +23,8 @@ description: >-
   This DevCenter includes recipes to upgrade Quarkus versions, migrate from deprecated APIs,
   and ensure compatibility with the latest Java versions and testing frameworks.
 recipeList:
+  - io.moderne.devcenter.FindOrganizationStatistics
+  - org.openrewrite.search.FindCommitters
   - io.moderne.devcenter.LibraryUpgrade:
       cardName: Move to Quarkus 3.26
       groupIdPattern: io.quarkus
