@@ -15,6 +15,7 @@
  */
 package io.moderne.devcenter;
 
+import io.moderne.devcenter.internal.LineCounters;
 import io.moderne.devcenter.table.OrganizationStatistics;
 import lombok.EqualsAndHashCode;
 import lombok.Value;
@@ -51,14 +52,10 @@ public class FindOrganizationStatistics extends ScanningRecipe<AtomicLong> {
     public TreeVisitor<?, ExecutionContext> getScanner(AtomicLong acc) {
         return new TreeVisitor<Tree, ExecutionContext>() {
             @Override
-            public @Nullable Tree visit(@Nullable Tree tree, ExecutionContext ctx) {
+            public @Nullable Tree preVisit(@Nullable Tree tree, ExecutionContext ctx) {
                 if (tree instanceof SourceFile && !(tree instanceof Quark) && !(tree instanceof Binary)) {
-                    String printed = ((SourceFile) tree).printAll();
-                    if (!printed.isEmpty()) {
-                        long lines = printed.chars().filter(c -> c == '\n').count() +
-                                     (printed.endsWith("\n") ? 0 : 1);
-                        acc.addAndGet(lines);
-                    }
+                    acc.addAndGet(LineCounters.count((SourceFile) tree));
+                    stopAfterPreVisit();
                 }
                 return tree;
             }
