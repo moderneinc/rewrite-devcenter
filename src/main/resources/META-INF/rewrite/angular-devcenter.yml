@@ -26,4 +26,4 @@ recipeList:
       majorVersion: 21
       upgradeRecipe: org.openrewrite.angular.UpgradeToAngular21
   - io.moderne.devcenter.FindOrganizationStatistics
-  - org.openrewrite.search.FindCommitters
+  - io.moderne.devcenter.FindActiveCommitters

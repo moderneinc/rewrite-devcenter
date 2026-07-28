@@ -26,4 +26,4 @@ recipeList:
       majorVersion: 24
       upgradeRecipe: org.openrewrite.node.migrate.upgrade-node-24
   - io.moderne.devcenter.FindOrganizationStatistics
-  - org.openrewrite.search.FindCommitters
+  - io.moderne.devcenter.FindActiveCommitters

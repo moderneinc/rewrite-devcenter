@@ -22,7 +22,7 @@ description: >-
   A DevCenter that tracks the latest Apache Maven parent POM versions and applies best practices.
 recipeList:
   - io.moderne.devcenter.FindOrganizationStatistics
-  - org.openrewrite.search.FindCommitters
+  - io.moderne.devcenter.FindActiveCommitters
   - io.moderne.devcenter.ParentPomUpgrade:
       cardName: Move to the latest `apache` parent POM
       groupIdPattern: org.apache
@@ -46,7 +46,7 @@ description: >-
   best practices for Maven POMs.
 recipeList:
   - io.moderne.devcenter.FindOrganizationStatistics
-  - org.openrewrite.search.FindCommitters
+  - io.moderne.devcenter.FindActiveCommitters
   - io.moderne.devcenter.ParentPomUpgrade:
       cardName: Move to the latest `maven-parent`
       groupIdPattern: org.apache.maven
