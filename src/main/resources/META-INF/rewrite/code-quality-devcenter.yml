@@ -24,7 +24,7 @@ description: |
   into HIGH / MEDIUM / LOW cohesion categories.
 recipeList:
   - io.moderne.devcenter.FindOrganizationStatistics
-  - org.openrewrite.search.FindCommitters
+  - io.moderne.devcenter.FindActiveCommitters
 
   # 1. Populate ClassQualityMetrics by running Prethink's class metrics recipe.
   - io.moderne.prethink.quality.FindClassMetrics

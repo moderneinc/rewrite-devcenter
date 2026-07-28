@@ -26,4 +26,4 @@ recipeList:
       minorVersion: 26
       upgradeRecipe: org.openrewrite.golang.migration.UpgradeGoTo126
   - io.moderne.devcenter.FindOrganizationStatistics
-  - org.openrewrite.search.FindCommitters
+  - io.moderne.devcenter.FindActiveCommitters
