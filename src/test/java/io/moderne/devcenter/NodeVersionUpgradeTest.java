@@ -30,7 +30,7 @@ import java.util.UUID;
 import java.util.stream.Stream;
 
 import static io.moderne.devcenter.NodeVersionUpgrade.Measure.*;
-import static org.assertj.core.api.AssertionsForInterfaceTypes.assertThat;
+import static org.assertj.core.api.Assertions.assertThat;
 import static org.openrewrite.java.Assertions.java;
 
 class NodeVersionUpgradeTest implements RewriteTest {

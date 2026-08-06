@@ -80,12 +80,12 @@ class FindOrganizationStatisticsTest implements RewriteTest {
     }
 
     private long lineCount(SourceSpecs source) {
-        AtomicLong lineCount = new AtomicLong(-1);
+        var lineCount = new AtomicLong(-1);
         rewriteRun(
           spec -> spec
             .recipe(new FindOrganizationStatistics())
             .dataTable(OrganizationStatistics.Row.class, rows ->
-              lineCount.set(rows.get(0).getLineCount())),
+              lineCount.set(rows.getFirst().getLineCount())),
           source
         );
         return lineCount.get();

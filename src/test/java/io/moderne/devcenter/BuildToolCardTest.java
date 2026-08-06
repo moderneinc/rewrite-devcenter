@@ -22,7 +22,7 @@ import org.openrewrite.test.RewriteTest;
 
 import java.util.UUID;
 
-import static org.assertj.core.api.AssertionsForInterfaceTypes.assertThat;
+import static org.assertj.core.api.Assertions.assertThat;
 import static org.openrewrite.java.Assertions.java;
 
 class BuildToolCardTest implements RewriteTest {
