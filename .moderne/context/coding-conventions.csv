@@ -24,7 +24,7 @@ imports,Static imports from org.openrewrite.test,org.openrewrite.test.SourceSpec
 imports,Static imports from io.moderne.devcenter.GoVersionUpgrade,io.moderne.devcenter.GoVersionUpgrade.Measure.*,,project-wide
 imports,Static imports from io.moderne.devcenter.GroovyVersionUpgrade,io.moderne.devcenter.GroovyVersionUpgrade.Measure.*,,project-wide
 imports,Static imports from io.moderne.devcenter.KotlinVersionUpgrade,io.moderne.devcenter.KotlinVersionUpgrade.Measure.*,,project-wide
-imports,Static imports from io.moderne.devcenter,io.moderne.devcenter.SemverMeasure.*,,project-wide
+imports,Static imports from io.moderne.devcenter,io.moderne.devcenter.SemverMeasure.Completed,,project-wide
 imports,Static imports from io.moderne.devcenter.NodeVersionUpgrade,io.moderne.devcenter.NodeVersionUpgrade.Measure.*,,project-wide
 imports,Static imports from io.moderne.devcenter.PythonVersionUpgrade,io.moderne.devcenter.PythonVersionUpgrade.Measure.*,,project-wide
 imports,Static imports from io.moderne.devcenter.ScalaVersionUpgrade,io.moderne.devcenter.ScalaVersionUpgrade.Measure.*,,project-wide
