@@ -45,7 +45,7 @@ Gradle,build.gradle.kts,io.moderne.recipe,rewrite-devcenter,1.32.0-SNAPSHOT,org.
 Gradle,build.gradle.kts,io.moderne.recipe,rewrite-devcenter,1.32.0-SNAPSHOT,org.openrewrite,rewrite-java-17,8.90.0-SNAPSHOT,true,
 Gradle,build.gradle.kts,io.moderne.recipe,rewrite-devcenter,1.32.0-SNAPSHOT,org.openrewrite,rewrite-java-lombok,8.90.0-SNAPSHOT,false,
 Gradle,build.gradle.kts,io.moderne.recipe,rewrite-devcenter,1.32.0-SNAPSHOT,org.projectlombok,lombok,1.18.46,false,
-Gradle,build.gradle.kts,io.moderne.recipe,rewrite-devcenter,1.32.0-SNAPSHOT,io.github.classgraph,classgraph,4.8.190,false,
+Gradle,build.gradle.kts,io.moderne.recipe,rewrite-devcenter,1.32.0-SNAPSHOT,io.github.classgraph,classgraph,4.8.191,false,
 Gradle,build.gradle.kts,io.moderne.recipe,rewrite-devcenter,1.32.0-SNAPSHOT,org.ow2.asm,asm,9.10.1,false,
 Gradle,build.gradle.kts,io.moderne.recipe,rewrite-devcenter,1.32.0-SNAPSHOT,org.openrewrite,rewrite-gradle,8.90.0-SNAPSHOT,true,
 Gradle,build.gradle.kts,io.moderne.recipe,rewrite-devcenter,1.32.0-SNAPSHOT,org.openrewrite,rewrite-groovy,8.90.0-SNAPSHOT,false,
