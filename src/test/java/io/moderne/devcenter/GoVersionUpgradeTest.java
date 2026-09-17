@@ -21,6 +21,7 @@ import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.Arguments;
 import org.junit.jupiter.params.provider.MethodSource;
 import org.openrewrite.golang.marker.GoResolutionResult;
+import org.openrewrite.golang.marker.GoResolutionResult.ResolutionStatus;
 import org.openrewrite.test.RewriteTest;
 
 import java.util.List;
@@ -36,7 +37,8 @@ class GoVersionUpgradeTest implements RewriteTest {
     private static GoResolutionResult goMarker(String goVersion) {
         return new GoResolutionResult(
                 UUID.randomUUID(), "github.com/test/project", goVersion, null, ".",
-                List.of(), List.of(), List.of(), List.of(), List.of(), List.of()
+                List.of(), List.of(), List.of(), List.of(), List.of(), List.of(),
+                ResolutionStatus.RESOLVED
         );
     }
 
