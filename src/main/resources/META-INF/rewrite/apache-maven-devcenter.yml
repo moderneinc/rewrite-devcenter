@@ -27,7 +27,7 @@ recipeList:
       cardName: Move to the latest `apache` parent POM
       groupIdPattern: org.apache
       artifactIdPattern: apache
-      version: 38
+      version: 40
       upgradeRecipe: io.moderne.devcenter.UpgradeApacheParent
   - io.moderne.devcenter.JavaVersionUpgrade:
       majorVersion: 25
@@ -51,19 +51,19 @@ recipeList:
       cardName: Move to the latest `maven-parent`
       groupIdPattern: org.apache.maven
       artifactIdPattern: maven-parent
-      version: 48
+      version: 50
       upgradeRecipe: io.moderne.devcenter.UpgradeMavenParent
   - io.moderne.devcenter.ParentPomUpgrade:
       cardName: Move to the latest `maven-plugins`
       groupIdPattern: org.apache.maven.plugins
       artifactIdPattern: maven-plugins
-      version: 48
+      version: 50
       upgradeRecipe: io.moderne.devcenter.UpgradeMavenPluginsParent
   - io.moderne.devcenter.ParentPomUpgrade:
       cardName: Move to the latest `maven-shared-components`
       groupIdPattern: org.apache.maven.shared
       artifactIdPattern: maven-shared-components
-      version: 48
+      version: 50
       upgradeRecipe: io.moderne.devcenter.UpgradeMavenSharedParent
   - io.moderne.devcenter.JavaVersionUpgrade:
       majorVersion: 17
