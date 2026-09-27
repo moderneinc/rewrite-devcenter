@@ -18,6 +18,8 @@ package io.moderne.devcenter.internal;
 import org.openrewrite.SourceFile;
 import org.openrewrite.csharp.tree.Cs;
 import org.openrewrite.golang.tree.Go;
+import org.openrewrite.golang.tree.GoMod;
+import org.openrewrite.golang.tree.GoSum;
 import org.openrewrite.java.tree.J;
 import org.openrewrite.javascript.tree.JS;
 import org.openrewrite.python.tree.Py;
@@ -25,8 +27,8 @@ import org.openrewrite.python.tree.Py;
 /**
  * Counts lines of code in a source file without materializing its printed form.
  * <p>
- * Languages whose printer runs out-of-process over RPC (JavaScript/TypeScript, Python, C#, Go) are the
- * expensive ones to {@code printAll()}, so each gets a dedicated in-process visitor that walks the LST
+ * Languages whose printer runs out-of-process over RPC (JavaScript/TypeScript, Python, C#, Go, go.mod, go.sum)
+ * are the expensive ones to {@code printAll()}, so each gets a dedicated in-process visitor that walks the LST
  * directly. Everything else falls back to {@link LineCountingOutputCapture}, which drives the source file's
  * own (in-process) printer but discards the output, tallying newlines as they stream by. Both paths
  * reproduce the exact line count of {@link SourceFile#printAll()}.
@@ -51,6 +53,12 @@ public final class LineCounters {
         }
         if (sourceFile instanceof Go.CompilationUnit) {
             return GoLineCounter.count((Go.CompilationUnit) sourceFile);
+        }
+        if (sourceFile instanceof GoMod) {
+            return GoModLineCounter.count((GoMod) sourceFile);
+        }
+        if (sourceFile instanceof GoSum) {
+            return GoSumLineCounter.count((GoSum) sourceFile);
         }
         return printingCount(sourceFile);
     }
