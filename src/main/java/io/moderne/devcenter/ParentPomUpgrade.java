@@ -15,11 +15,11 @@
  */
 package io.moderne.devcenter;
 
+import io.moderne.devcenter.internal.IsMavenProject;
 import lombok.EqualsAndHashCode;
 import lombok.Value;
 import org.jspecify.annotations.Nullable;
 import org.openrewrite.*;
-import org.openrewrite.maven.search.FindMavenProject;
 import org.openrewrite.maven.tree.MavenResolutionResult;
 import org.openrewrite.maven.tree.Parent;
 
@@ -70,21 +70,20 @@ public class ParentPomUpgrade extends UpgradeMigrationCard {
 
     @Override
     public TreeVisitor<?, ExecutionContext> getVisitor() {
-        return Preconditions.check(Preconditions.or(new FindMavenProject().getVisitor()), new TreeVisitor<Tree, ExecutionContext>() {
+        return Preconditions.check(new IsMavenProject<>(), new TreeVisitor<Tree, ExecutionContext>() {
             @Override
             public Tree preVisit(Tree tree, ExecutionContext ctx) {
                 stopAfterPreVisit();
                 if (!(tree instanceof SourceFile)) {
                     return tree;
                 }
-                SemverRowBuilder rowBuilder = new SemverRowBuilder(cardName, version);
                 ((SourceFile) tree).getMarkers().findFirst(MavenResolutionResult.class).ifPresent(mrr -> {
                     Parent parent = mrr.getPom().getRequested().getParent();
                     if (parent != null &&
                         matchesGlob(parent.getGroupId(), groupIdPattern) &&
                         matchesGlob(parent.getArtifactId(), artifactIdPattern) &&
                         parent.getVersion() != null) {
-                        upgradesAndMigrations.insertRow(ctx, rowBuilder.getRow(parent.getVersion()));
+                        upgradesAndMigrations.insertRow(ctx, new SemverRowBuilder(cardName, version).getRow(parent.getVersion()));
                     }
                 });
                 return tree;

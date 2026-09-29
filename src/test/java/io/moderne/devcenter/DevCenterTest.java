@@ -59,6 +59,12 @@ import static org.openrewrite.java.Assertions.java;
 import static org.openrewrite.java.Assertions.version;
 
 class DevCenterTest implements RewriteTest {
+    private static final String[] OWASP_MEASURES = {
+      "Remediate OWASP A01:2021 Broken access control",
+      "Remediate OWASP A02:2021 Cryptographic failures",
+      "Remediate OWASP A03:2021 Injection",
+      "Remediate OWASP A08:2021 Software and data integrity failures"
+    };
 
     Environment environment = Environment.builder()
       .scanRuntimeClasspath("org.openrewrite")
@@ -102,10 +108,10 @@ class DevCenterTest implements RewriteTest {
           .containsExactly("Major", "Minor", "Patch", "Completed");
 
         assertThat(devCenter.getSecurity()).isNotNull();
+        // ZipSlip, ReDoS and SecureTempFileCreation run within OwaspA01/A03/A08, so they are not measures of their own
         assertThat(devCenter.getSecurity().getMeasures().stream())
           .map(DevCenterMeasure::getName)
-          .contains("Zip slip")
-          .doesNotContain("Security DevCenter");
+          .containsExactly(OWASP_MEASURES);
     }
 
     @Test
@@ -157,7 +163,7 @@ class DevCenterTest implements RewriteTest {
         assertThat(security.get("name").asText()).isEqualTo(devCenter.getSecurity().getName());
         var securityMeasures = new ArrayList<String>();
         security.get("measures").forEach(m -> securityMeasures.add(m.asText()));
-        assertThat(securityMeasures).contains("Zip slip");
+        assertThat(securityMeasures).containsExactly(OWASP_MEASURES);
     }
 
     @Test
@@ -235,12 +241,6 @@ class DevCenterTest implements RewriteTest {
               """
                 public class MyTest {
                     @org.junit.Test
-                    public void mine() {}
-                }
-                """,
-              """
-                public class MyTest {
-                    /*~~>*/@org.junit.Test
                     public void mine() {}
                 }
                 """

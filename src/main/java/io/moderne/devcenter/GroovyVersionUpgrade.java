@@ -15,6 +15,7 @@
  */
 package io.moderne.devcenter;
 
+import io.moderne.devcenter.internal.IsMavenProject;
 import io.moderne.devcenter.internal.ResolvedDependencyVersions;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
@@ -24,7 +25,6 @@ import org.intellij.lang.annotations.Language;
 import org.jspecify.annotations.Nullable;
 import org.openrewrite.*;
 import org.openrewrite.gradle.IsBuildGradle;
-import org.openrewrite.maven.search.FindMavenProject;
 
 import java.util.List;
 import java.util.stream.Stream;
@@ -58,7 +58,7 @@ public class GroovyVersionUpgrade extends UpgradeMigrationCard {
 
     @Override
     public TreeVisitor<?, ExecutionContext> getVisitor() {
-        return Preconditions.check(Preconditions.or(new IsBuildGradle<>(), new FindMavenProject().getVisitor()), new TreeVisitor<Tree, ExecutionContext>() {
+        return Preconditions.check(Preconditions.or(new IsBuildGradle<>(), new IsMavenProject<>()), new TreeVisitor<Tree, ExecutionContext>() {
             @Override
             public Tree preVisit(Tree tree, ExecutionContext ctx) {
                 stopAfterPreVisit();

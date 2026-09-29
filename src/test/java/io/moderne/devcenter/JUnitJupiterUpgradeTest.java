@@ -24,8 +24,13 @@ import org.openrewrite.test.RecipeSpec;
 import org.openrewrite.test.RewriteTest;
 import org.openrewrite.test.SourceSpecs;
 
+import java.util.HashMap;
+import java.util.Set;
+import java.util.concurrent.atomic.AtomicInteger;
+
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.openrewrite.java.Assertions.java;
+import static org.openrewrite.kotlin.Assertions.kotlin;
 
 class JUnitJupiterUpgradeTest implements RewriteTest {
 
@@ -34,14 +39,6 @@ class JUnitJupiterUpgradeTest implements RewriteTest {
       """
         import junit.framework.TestCase;
         class TestWith3 extends TestCase {
-          void test() {
-              fail("Not yet implemented");
-          }
-        }
-        """,
-      """
-        import junit.framework.TestCase;
-        class /*~~>*/TestWith3 extends /*~~>*/TestCase {
           void test() {
               fail("Not yet implemented");
           }
@@ -58,14 +55,6 @@ class JUnitJupiterUpgradeTest implements RewriteTest {
           void test() {
           }
         }
-        """,
-      """
-        import org.junit.Test;
-        class TestWith4 {
-          /*~~>*/@Test
-          void test() {
-          }
-        }
         """
     );
 
@@ -78,14 +67,6 @@ class JUnitJupiterUpgradeTest implements RewriteTest {
           void test() {
           }
         }
-        """,
-      """
-        import org.junit.jupiter.api.Test;
-        class TestWith5 {
-          /*~~>*/@Test
-          void test() {
-          }
-        }
         """
     );
 
@@ -95,14 +76,6 @@ class JUnitJupiterUpgradeTest implements RewriteTest {
         import org.junit.jupiter.api.Test;
         class TestWith6 {
           @Test
-          void test() {
-          }
-        }
-        """,
-      """
-        import org.junit.jupiter.api.Test;
-        class TestWith6 {
-          /*~~>*/@Test
           void test() {
           }
         }
@@ -154,6 +127,146 @@ class JUnitJupiterUpgradeTest implements RewriteTest {
           spec -> assertUpgradeStatus(JUnitJupiterUpgrade.Measure.JUnit4, "JUnit 4", spec),
           junit4Source,
           junit5Source
+        );
+    }
+
+    @Test
+    void junit4AfterJUnit5() {
+        rewriteRun(
+          spec -> assertUpgradeStatus(JUnitJupiterUpgrade.Measure.JUnit4, "JUnit 4", spec),
+          junit5Source,
+          junit4Source
+        );
+    }
+
+    @Test
+    void junit5AfterJUnit6() {
+        rewriteRun(
+          spec -> assertUpgradeStatus(JUnitJupiterUpgrade.Measure.JUnit5, "JUnit 5", spec),
+          junit6Source,
+          junit5Source
+        );
+    }
+
+    @Test
+    void scansSourceSetClasspathOncePerRun() {
+        JavaSourceSet jupiter6 = JavaSourceSet.build("test",
+          JavaParser.dependenciesFromResources(new InMemoryExecutionContext(), "junit-jupiter-api-6"));
+        AtomicInteger scans = new AtomicInteger();
+        JavaSourceSet counting = jupiter6.withGavToTypes(new HashMap<>(jupiter6.getGavToTypes()) {
+            @Override
+            public Set<String> keySet() {
+                scans.incrementAndGet();
+                return super.keySet();
+            }
+        });
+        rewriteRun(
+          spec -> assertUpgradeStatus(JUnitJupiterUpgrade.Measure.Completed, "JUnit 6", spec)
+            .afterRecipe(run -> assertThat(scans).hasValue(1)),
+          jupiterTest("TestA", counting),
+          jupiterTest("TestB", counting),
+          jupiterTest("TestC", counting)
+        );
+    }
+
+    @Test
+    void junit4TypeReferenceWithoutAnnotationIsNotJUnit4() {
+        rewriteRun(
+          spec -> assertUpgradeStatus(JUnitJupiterUpgrade.Measure.JUnit5, "JUnit 5", spec),
+          //language=java
+          java(
+            """
+              import org.junit.Test;
+              import java.lang.reflect.Method;
+              class JUnit4Support {
+                boolean isJUnit4Test(Method method) {
+                  return method.isAnnotationPresent(Test.class);
+                }
+              }
+              """
+          ),
+          junit5Source
+        );
+    }
+
+    @Test
+    void metaAnnotatedJupiterTest() {
+        rewriteRun(
+          spec -> assertUpgradeStatus(JUnitJupiterUpgrade.Measure.JUnit5, "JUnit 5", spec)
+            .parser(JavaParser.fromJavaVersion().classpath("junit-jupiter-api").dependsOn(
+              //language=java
+              """
+                package com.example;
+                import java.lang.annotation.Retention;
+                import java.lang.annotation.RetentionPolicy;
+                @org.junit.jupiter.api.Test
+                @Retention(RetentionPolicy.RUNTIME)
+                public @interface MyTest {
+                }
+                """
+            )),
+          //language=java
+          java(
+            """
+              import com.example.MyTest;
+              class TestWithMeta {
+                @MyTest
+                void test() {
+                }
+              }
+              """
+          )
+        );
+    }
+
+    @Test
+    void kotlinJUnit4() {
+        rewriteRun(
+          spec -> assertUpgradeStatus(JUnitJupiterUpgrade.Measure.JUnit4, "JUnit 4", spec),
+          //language=kotlin
+          kotlin(
+            """
+              import org.junit.Test
+              class TestWith4 {
+                @Test
+                fun test() {
+                }
+              }
+              """
+          )
+        );
+    }
+
+    @Test
+    void noTests() {
+        rewriteRun(
+          spec -> spec.afterRecipe(run ->
+            assertThat(run.getDataTableRows(UpgradesAndMigrations.class, UpgradesAndMigrations.GROUP)).isEmpty()),
+          //language=java
+          java(
+            """
+              class NotATest {
+                @Deprecated
+                void method() {
+                }
+              }
+              """
+          )
+        );
+    }
+
+    private static SourceSpecs jupiterTest(String className, JavaSourceSet sourceSet) {
+        //language=java
+        return java(
+          """
+            import org.junit.jupiter.api.Test;
+            class %s {
+              @Test
+              void test() {
+              }
+            }
+            """.formatted(className),
+          spec -> spec.markers(sourceSet)
         );
     }
 

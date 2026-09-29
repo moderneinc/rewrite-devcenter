@@ -34,8 +34,23 @@ public class SemverRowBuilder {
     private long minor;
     private long patch;
 
+    private final VersionComparator majorComparator;
+    private final VersionComparator minorComparator;
+    private final VersionComparator patchComparator;
+
     public SemverRowBuilder(String cardName, String version) {
         this.cardName = cardName;
+        parseTargetVersion(version);
+        this.majorComparator = comparator(0 + "-" + (major - 1) + ".999");
+        this.minorComparator = comparator(major + "-" + major + "." + (minor - 1) + ".999");
+        this.patchComparator = comparator((major + "." + minor + ".0") + "-" + (major + "." + minor + "." + (patch - 1)));
+    }
+
+    private static VersionComparator comparator(String selector) {
+        return requireNonNull(Semver.validate(selector, null).getValue());
+    }
+
+    private void parseTargetVersion(String version) {
         Version parsed = ParserHolder.INSTANCE.transform(version);
         Long[] numericParts = parsed.getNumericParts();
         for (int i = 0; i < numericParts.length; i++) {
@@ -61,22 +76,12 @@ public class SemverRowBuilder {
     }
 
     public UpgradesAndMigrations.Row getRow(String v) {
-        VersionComparator majorComparator = requireNonNull(Semver.validate(0 + "-" + (major - 1) + ".999", null)
-                .getValue());
         if (majorComparator.isValid(null, v)) {
             return new UpgradesAndMigrations.Row(cardName, SemverMeasure.Major.ordinal(), SemverMeasure.Major.toString(), v);
         }
-
-        VersionComparator minorComparator = requireNonNull(Semver.validate(
-                major + "-" + major + "." + (minor - 1) + ".999",
-                null).getValue());
         if (minorComparator.isValid(null, v)) {
             return new UpgradesAndMigrations.Row(cardName, SemverMeasure.Minor.ordinal(), SemverMeasure.Minor.toString(), v);
         }
-
-        VersionComparator patchComparator = requireNonNull(Semver.validate(
-                (major + "." + minor + ".0") + "-" + (major + "." + minor + "." + (patch - 1)),
-                null).getValue());
         if (patchComparator.isValid(null, v)) {
             return new UpgradesAndMigrations.Row(cardName, SemverMeasure.Patch.ordinal(), SemverMeasure.Patch.toString(), v);
         }

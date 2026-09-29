@@ -15,13 +15,13 @@
  */
 package io.moderne.devcenter;
 
+import io.moderne.devcenter.internal.IsMavenProject;
 import io.moderne.devcenter.internal.ResolvedDependencyVersions;
 import lombok.EqualsAndHashCode;
 import lombok.Value;
 import org.jspecify.annotations.Nullable;
 import org.openrewrite.*;
 import org.openrewrite.gradle.IsBuildGradle;
-import org.openrewrite.maven.search.FindMavenProject;
 
 import java.util.Arrays;
 import java.util.List;
@@ -68,16 +68,19 @@ public class LibraryUpgrade extends UpgradeMigrationCard {
 
     @Override
     public TreeVisitor<?, ExecutionContext> getVisitor() {
-        return Preconditions.check(Preconditions.or(new IsBuildGradle<>(), new FindMavenProject().getVisitor()), new TreeVisitor<Tree, ExecutionContext>() {
+        return Preconditions.check(Preconditions.or(new IsBuildGradle<>(), new IsMavenProject<>()), new TreeVisitor<Tree, ExecutionContext>() {
             @Override
             public Tree preVisit(Tree tree, ExecutionContext ctx) {
                 stopAfterPreVisit();
                 if (!(tree instanceof SourceFile)) {
                     return tree;
                 }
-                SemverRowBuilder rowBuilder = new SemverRowBuilder(cardName, version);
-                for (String found : ResolvedDependencyVersions.findVersions((SourceFile) tree, groupIdPattern, artifactIdPattern)) {
-                    upgradesAndMigrations.insertRow(ctx, rowBuilder.getRow(found));
+                List<String> versions = ResolvedDependencyVersions.findVersions((SourceFile) tree, groupIdPattern, artifactIdPattern);
+                if (!versions.isEmpty()) {
+                    SemverRowBuilder rowBuilder = new SemverRowBuilder(cardName, version);
+                    for (String found : versions) {
+                        upgradesAndMigrations.insertRow(ctx, rowBuilder.getRow(found));
+                    }
                 }
                 return tree;
             }

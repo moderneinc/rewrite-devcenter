@@ -19,19 +19,33 @@ import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 import org.intellij.lang.annotations.Language;
 import org.jspecify.annotations.Nullable;
-import org.openrewrite.ExecutionContext;
-import org.openrewrite.Option;
-import org.openrewrite.TreeVisitor;
+import org.openrewrite.*;
+import org.openrewrite.csharp.tree.Cs;
+import org.openrewrite.golang.tree.Go;
+import org.openrewrite.java.AnnotationMatcher;
 import org.openrewrite.java.JavaIsoVisitor;
 import org.openrewrite.java.marker.JavaSourceSet;
-import org.openrewrite.java.search.FindAnnotations;
 import org.openrewrite.java.tree.J;
+import org.openrewrite.java.tree.JavaSourceFile;
+import org.openrewrite.java.tree.JavaType;
+import org.openrewrite.java.tree.TypeUtils;
+import org.openrewrite.javascript.tree.JS;
+import org.openrewrite.python.tree.Py;
 
 import java.util.Arrays;
 import java.util.List;
+import java.util.Map;
 import java.util.Optional;
+import java.util.UUID;
+import java.util.concurrent.ConcurrentHashMap;
+import java.util.concurrent.atomic.AtomicBoolean;
 
 public class JUnitJupiterUpgrade extends UpgradeMigrationCard {
+    // org.junit.Test is @Target(METHOD), so unlike Jupiter's @Test it can't be a meta-annotation
+    private static final AnnotationMatcher JUNIT4_TEST = new AnnotationMatcher("@org.junit.Test", false);
+    private static final AnnotationMatcher JUPITER_TEST = new AnnotationMatcher("@org.junit.jupiter.api.Test", true);
+    private static final String JUPITER_6_BY_SOURCE_SET = JUnitJupiterUpgrade.class.getName() + ".jupiter6BySourceSet";
+
     @Option(displayName = "Upgrade recipe",
             description = "The recipe to use to upgrade.",
             example = "org.openrewrite.java.testing.junit5.JUnit4to5Migration",
@@ -46,36 +60,99 @@ public class JUnitJupiterUpgrade extends UpgradeMigrationCard {
     final String description = "Move to JUnit Jupiter.";
 
     @Override
+    public String getInstanceName() {
+        return displayName;
+    }
+
+    @Override
     public TreeVisitor<?, ExecutionContext> getVisitor() {
-        return new JavaIsoVisitor<ExecutionContext>() {
+        return new TreeVisitor<Tree, ExecutionContext>() {
             @Override
-            public J preVisit(J tree, ExecutionContext ctx) {
+            public boolean isAcceptable(SourceFile sourceFile, ExecutionContext ctx) {
+                // Adapting a Java visitor to these languages is costly, and their tests can't use JUnit
+                return sourceFile instanceof JavaSourceFile &&
+                       !(sourceFile instanceof JS.CompilationUnit || sourceFile instanceof Py.CompilationUnit ||
+                         sourceFile instanceof Cs.CompilationUnit || sourceFile instanceof Go.CompilationUnit);
+            }
+
+            @Override
+            public Tree preVisit(Tree tree, ExecutionContext ctx) {
                 stopAfterPreVisit();
+                // The best row is the lowest ordinal, and all rows of an ordinal are equal, so only
+                // look for measures that could still improve on what this repository already reported
+                int best = upgradesAndMigrations.bestOrdinal(ctx, getInstanceName());
+                if (best <= Measure.JUnit4.ordinal()) {
+                    return tree;
+                }
 
-                J j1 = tree;
-//                = (J) new FindTypes("junit.framework.TestCase", true).getVisitor().visitNonNull(tree, ctx);
-//                if (tree != j1) {
-//                    upgradesAndMigrations.insertRow(ctx, JUnitJupiterUpgrade.this, Measure.JUnit3, "JUnit 3");
-//                }
-
-                J j2 = (J) new FindAnnotations("@org.junit.Test", true).getVisitor().visitNonNull(j1, ctx);
-                if (tree != j2) {
+                JavaSourceFile cu = (JavaSourceFile) tree;
+                if (containsAnnotation(cu, JUNIT4_TEST)) {
                     upgradesAndMigrations.insertRow(ctx, JUnitJupiterUpgrade.this, Measure.JUnit4, "JUnit 4");
+                    return tree;
+                }
+                if (best <= Measure.JUnit5.ordinal()) {
+                    return tree;
                 }
 
-                J j3 = (J) new FindAnnotations("@org.junit.jupiter.api.Test", true).getVisitor().visitNonNull(j2, ctx);
-                if (j2 != j3) {
-                    Optional<JavaSourceSet> first = j3.getMarkers().findFirst(JavaSourceSet.class);
-                    if (first.isPresent() && first.get().getGavToTypes().keySet().stream()
-                            .anyMatch(gav -> gav.startsWith("org.junit.jupiter:junit-jupiter-api:6"))) {
-                        upgradesAndMigrations.insertRow(ctx, JUnitJupiterUpgrade.this, Measure.Completed, "JUnit 6");
-                        return j3;
-                    }
-                    upgradesAndMigrations.insertRow(ctx, JUnitJupiterUpgrade.this, Measure.JUnit5, "JUnit 5");
+                if (best <= Measure.Completed.ordinal() && isOnJupiter6(cu, ctx)) {
+                    return tree;
                 }
-                return j3;
+                if (containsAnnotation(cu, JUPITER_TEST)) {
+                    if (isOnJupiter6(cu, ctx)) {
+                        upgradesAndMigrations.insertRow(ctx, JUnitJupiterUpgrade.this, Measure.Completed, "JUnit 6");
+                    } else {
+                        upgradesAndMigrations.insertRow(ctx, JUnitJupiterUpgrade.this, Measure.JUnit5, "JUnit 5");
+                    }
+                }
+                return tree;
             }
         };
+    }
+
+    private static boolean containsAnnotation(JavaSourceFile cu, AnnotationMatcher matcher) {
+        if (!usesMatchingType(cu, matcher)) {
+            return false;
+        }
+        AtomicBoolean found = new AtomicBoolean();
+        new JavaIsoVisitor<AtomicBoolean>() {
+            @Override
+            public J preVisit(J tree, AtomicBoolean found) {
+                if (found.get()) {
+                    stopAfterPreVisit();
+                }
+                return tree;
+            }
+
+            @Override
+            public J.Annotation visitAnnotation(J.Annotation annotation, AtomicBoolean found) {
+                if (matcher.matches(annotation)) {
+                    found.set(true);
+                    return annotation;
+                }
+                return super.visitAnnotation(annotation, found);
+            }
+        }.visit(cu, found);
+        return found.get();
+    }
+
+    private static boolean usesMatchingType(JavaSourceFile cu, AnnotationMatcher matcher) {
+        for (JavaType type : cu.getTypesInUse().getTypesInUse()) {
+            if (matcher.matchesAnnotationOrMetaAnnotation(TypeUtils.asFullyQualified(type))) {
+                return true;
+            }
+        }
+        return false;
+    }
+
+    private static boolean isOnJupiter6(JavaSourceFile cu, ExecutionContext ctx) {
+        Optional<JavaSourceSet> sourceSet = cu.getMarkers().findFirst(JavaSourceSet.class);
+        if (!sourceSet.isPresent()) {
+            return false;
+        }
+        // Every file of a source set shares its classpath, so scan its GAVs once per run
+        Map<UUID, Boolean> jupiter6BySourceSet = ctx.computeMessageIfAbsent(JUPITER_6_BY_SOURCE_SET, k -> new ConcurrentHashMap<>());
+        return jupiter6BySourceSet.computeIfAbsent(sourceSet.get().getId(), id -> sourceSet.get().getGavToTypes().keySet().stream()
+                .anyMatch(gav -> gav.startsWith("org.junit.jupiter:junit-jupiter-api:6")));
     }
 
     @Override

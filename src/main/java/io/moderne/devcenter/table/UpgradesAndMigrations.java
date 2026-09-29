@@ -97,6 +97,13 @@ public class UpgradesAndMigrations extends DataTable<UpgradesAndMigrations.Row> 
         getBestRows(ctx).merge(row.getCard(), row, UpgradesAndMigrations::bestRow);
     }
 
+    /** Lowest ordinal recorded so far for {@code card}, or Integer.MAX_VALUE. */
+    public int bestOrdinal(ExecutionContext ctx, String card) {
+        Map<String, Row> bestRows = ctx.getMessage(BEST_ROWS_KEY);
+        Row best = bestRows == null ? null : bestRows.get(card);
+        return best == null ? Integer.MAX_VALUE : best.getOrdinal();
+    }
+
     public void flushBestRow(ExecutionContext ctx, String card) {
         Row best = getBestRows(ctx).remove(card);
         if (best != null) {
