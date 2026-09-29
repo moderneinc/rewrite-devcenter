@@ -16,7 +16,6 @@
 package io.moderne.devcenter.internal;
 
 import io.moderne.devcenter.internal.Newlines.Counter;
-import org.openrewrite.Cursor;
 import org.openrewrite.golang.GoModVisitor;
 import org.openrewrite.golang.tree.GoMod;
 import org.openrewrite.golang.tree.GoModTree;
@@ -54,6 +53,6 @@ final class GoModLineCounter extends GoModVisitor<Counter> {
     static long count(GoMod goMod) {
         Counter c = new Counter();
         new GoModLineCounter().visit(goMod, c);
-        return Newlines.lineCount(c, goMod.getEof(), new Cursor(null, goMod));
+        return Newlines.lineCount(c, goMod.getEof());
     }
 }

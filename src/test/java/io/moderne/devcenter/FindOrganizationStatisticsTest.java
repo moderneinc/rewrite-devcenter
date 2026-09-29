@@ -17,24 +17,42 @@ package io.moderne.devcenter;
 
 import io.moderne.devcenter.internal.LineCounters;
 import io.moderne.devcenter.table.OrganizationStatistics;
+import lombok.Value;
+import lombok.With;
+import org.jspecify.annotations.Nullable;
 import org.junit.jupiter.api.Test;
+import org.openrewrite.Checksum;
+import org.openrewrite.ExecutionContext;
+import org.openrewrite.FileAttributes;
+import org.openrewrite.InMemoryExecutionContext;
+import org.openrewrite.SourceFile;
+import org.openrewrite.TreeVisitor;
+import org.openrewrite.binary.Binary;
 import org.openrewrite.golang.rpc.GoRewriteRpc;
 import org.openrewrite.golang.tree.GoMod;
 import org.openrewrite.golang.tree.GoSum;
 import org.openrewrite.java.tree.JRightPadded;
 import org.openrewrite.java.tree.Space;
 import org.openrewrite.marker.Markers;
+import org.openrewrite.marker.Markup;
+import org.openrewrite.quark.Quark;
+import org.openrewrite.remote.Remote;
 import org.openrewrite.test.RewriteTest;
 import org.openrewrite.test.SourceSpecs;
 
+import java.net.URI;
+import java.nio.charset.Charset;
 import java.nio.file.Path;
 import java.util.List;
+import java.util.UUID;
 import java.util.concurrent.atomic.AtomicLong;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.openrewrite.Tree.randomId;
 import static org.openrewrite.java.Assertions.java;
+import static org.openrewrite.kotlin.Assertions.kotlin;
 import static org.openrewrite.test.SourceSpecs.text;
+import static org.openrewrite.xml.Assertions.xml;
 
 class FindOrganizationStatisticsTest implements RewriteTest {
 
@@ -90,6 +108,53 @@ class FindOrganizationStatisticsTest implements RewriteTest {
     }
 
     @Test
+    void countsEveryTypeWithoutMarkingIt() {
+        rewriteRun(
+          spec -> spec
+            .recipe(new FindOrganizationStatistics())
+            .dataTable(OrganizationStatistics.Row.class, rows ->
+              assertThat(rows).singleElement().extracting(OrganizationStatistics.Row::getLineCount).isEqualTo(9L)),
+          java("class A {\n}\n"),
+          text("one\ntwo\n"),
+          xml("<a>\n    <b/>\n</a>\n"),
+          kotlin("class A {\n}\n")
+        );
+    }
+
+    @Test
+    void unknownTypeIsWarnedOnceAndNotCounted() {
+        FindOrganizationStatistics recipe = new FindOrganizationStatistics();
+        ExecutionContext ctx = new InMemoryExecutionContext();
+        AtomicLong acc = recipe.getInitialValue(ctx);
+        UnknownSource unknown = new UnknownSource(randomId(), Path.of("schema.graphql"), Markers.EMPTY, null, false, null, null);
+
+        recipe.getScanner(acc).visit(unknown, ctx);
+        SourceFile warned = (SourceFile) recipe.getVisitor(acc).visitNonNull(unknown, ctx);
+
+        assertThat(acc).hasValue(0);
+        assertThat(warned.getMarkers().findAll(Markup.Warn.class)).singleElement().satisfies(warn -> {
+            assertThat(warn.getMessage()).isEqualTo("No line counter for " + UnknownSource.class.getName() + "; lines not counted");
+            assertThat(warn.getDetail()).isNull();
+        });
+        assertThat(((SourceFile) recipe.getVisitor(acc).visitNonNull(warned, ctx)).getMarkers().findAll(Markup.Warn.class)).hasSize(1);
+    }
+
+    @Test
+    void filesWithoutSourceTextAreNeitherCountedNorWarned() {
+        FindOrganizationStatistics recipe = new FindOrganizationStatistics();
+        ExecutionContext ctx = new InMemoryExecutionContext();
+        AtomicLong acc = recipe.getInitialValue(ctx);
+        for (SourceFile sourceFile : List.of(
+          new Quark(randomId(), Path.of("lib.jar"), Markers.EMPTY, null, null),
+          new Binary(randomId(), Path.of("logo.png"), Markers.EMPTY, null, null, new byte[]{1, 2}),
+          Remote.builder(Path.of("gradle-wrapper.jar")).build(URI.create("https://example.com/gradle-wrapper.jar")))) {
+            recipe.getScanner(acc).visit(sourceFile, ctx);
+            assertThat(recipe.getVisitor(acc).visit(sourceFile, ctx)).isSameAs(sourceFile);
+        }
+        assertThat(acc).hasValue(0);
+    }
+
+    @Test
     void countsGoModWithoutStartingGoEngine() {
         var goMod = new GoMod(randomId(), Space.EMPTY, Markers.EMPTY, Path.of("go.mod"), null, false, null, null,
           List.of(
@@ -135,6 +200,30 @@ class FindOrganizationStatisticsTest implements RewriteTest {
 
     private static GoSum.Line sumLine(String prefix, boolean goMod, String hash) {
         return new GoSum.Line(randomId(), Space.format(prefix), Markers.EMPTY, "github.com/a/b", "v1.0.0", goMod, hash);
+    }
+
+    @Value
+    @With
+    static class UnknownSource implements SourceFile {
+        UUID id;
+        Path sourcePath;
+        Markers markers;
+
+        @Nullable
+        Charset charset;
+
+        boolean charsetBomMarked;
+
+        @Nullable
+        Checksum checksum;
+
+        @Nullable
+        FileAttributes fileAttributes;
+
+        @Override
+        public <P> boolean isAcceptable(TreeVisitor<?, P> v, P p) {
+            return true;
+        }
     }
 
     private long lineCount(SourceSpecs source) {

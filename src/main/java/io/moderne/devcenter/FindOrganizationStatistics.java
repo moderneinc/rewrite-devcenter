@@ -22,7 +22,9 @@ import lombok.Value;
 import org.jspecify.annotations.Nullable;
 import org.openrewrite.*;
 import org.openrewrite.binary.Binary;
+import org.openrewrite.marker.Markup;
 import org.openrewrite.quark.Quark;
+import org.openrewrite.remote.Remote;
 
 import java.util.Collection;
 import java.util.concurrent.atomic.AtomicLong;
@@ -36,7 +38,7 @@ public class FindOrganizationStatistics extends ScanningRecipe<AtomicLong> {
 
     String displayName = "Find organization statistics";
 
-    String description = "Counts lines of code per repository for organization-level statistics.";
+    String description = "Counts lines of code per repository for organization-level statistics. Source files of a type without a line counter are not counted and are marked with a warning.";
 
     @Override
     public int maxCycles() {
@@ -53,9 +55,26 @@ public class FindOrganizationStatistics extends ScanningRecipe<AtomicLong> {
         return new TreeVisitor<Tree, ExecutionContext>() {
             @Override
             public @Nullable Tree preVisit(@Nullable Tree tree, ExecutionContext ctx) {
-                if (tree instanceof SourceFile && !(tree instanceof Quark) && !(tree instanceof Binary)) {
+                stopAfterPreVisit();
+                if (tree instanceof SourceFile && LineCounters.supports((SourceFile) tree)) {
                     acc.addAndGet(LineCounters.count((SourceFile) tree));
-                    stopAfterPreVisit();
+                }
+                return tree;
+            }
+        };
+    }
+
+    @Override
+    public TreeVisitor<?, ExecutionContext> getVisitor(AtomicLong acc) {
+        return new TreeVisitor<Tree, ExecutionContext>() {
+            @Override
+            public @Nullable Tree preVisit(@Nullable Tree tree, ExecutionContext ctx) {
+                stopAfterPreVisit();
+                // Quarks, binaries and recipe-generated remote files have no source text
+                if (tree instanceof SourceFile && !(tree instanceof Quark) && !(tree instanceof Binary) &&
+                    !(tree instanceof Remote) && !LineCounters.supports((SourceFile) tree)) {
+                    return Markup.markup(tree, new Markup.Warn(Tree.randomId(),
+                            "No line counter for " + tree.getClass().getName() + "; lines not counted", null));
                 }
                 return tree;
             }
