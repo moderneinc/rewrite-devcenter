@@ -38,7 +38,7 @@ class GoVersionUpgradeTest implements RewriteTest {
         return new GoResolutionResult(
                 UUID.randomUUID(), "github.com/test/project", goVersion, null, ".",
                 List.of(), List.of(), List.of(), List.of(), List.of(), List.of(),
-                ResolutionStatus.RESOLVED
+                ResolutionStatus.RESOLVED, List.of(), null
         );
     }
 
