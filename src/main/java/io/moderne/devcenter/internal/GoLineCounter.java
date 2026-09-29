@@ -16,7 +16,6 @@
 package io.moderne.devcenter.internal;
 
 import io.moderne.devcenter.internal.Newlines.Counter;
-import org.openrewrite.Cursor;
 import org.openrewrite.golang.GolangVisitor;
 import org.openrewrite.golang.tree.Go;
 import org.openrewrite.java.tree.J;
@@ -49,6 +48,6 @@ final class GoLineCounter extends GolangVisitor<Counter> {
     static long count(Go.CompilationUnit cu) {
         Counter c = new Counter();
         new GoLineCounter().visit(cu, c);
-        return Newlines.lineCount(c, cu.getEof(), new Cursor(null, cu));
+        return Newlines.lineCount(c, cu.getEof());
     }
 }

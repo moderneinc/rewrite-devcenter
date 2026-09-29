@@ -46,12 +46,30 @@ dependencies {
 
     implementation("org.slf4j:slf4j-api:1.7.+")
 
+    // Line counting compiles against these; the first four reach the runtime classpath through rewrite-prethink
+    // and rewrite-java-security, and the Moderne CLI bundles HCL and protobuf
+    compileOnly("org.openrewrite:rewrite-docker")
+    compileOnly("org.openrewrite:rewrite-properties")
+    compileOnly("org.openrewrite:rewrite-ruby")
+    compileOnly("org.openrewrite:rewrite-scala")
+    compileOnly("org.openrewrite:rewrite-hcl")
+    compileOnly("org.openrewrite:rewrite-protobuf")
+    // The Scala markers are case classes; pinned to the version rewrite-scala's compiler uses
+    compileOnly("org.scala-lang:scala-library:3.9.0")
+
     testImplementation("io.moderne:moderne-organizations-format:latest.release")
     testImplementation("org.openrewrite:rewrite-test")
     testImplementation("org.openrewrite:rewrite-java-21")
+    testImplementation("org.openrewrite:rewrite-docker")
+    testImplementation("org.openrewrite:rewrite-properties")
+    testImplementation("org.openrewrite:rewrite-ruby")
+    testImplementation("org.openrewrite:rewrite-scala")
+    testImplementation("org.openrewrite:rewrite-hcl")
+    testImplementation("org.openrewrite:rewrite-protobuf")
     testImplementation(gradleApi())
     testImplementation("org.openrewrite.gradle.tooling:model")
     testImplementation("de.siegmar:fastcsv:3.+")
+    testImplementation("io.github.classgraph:classgraph:latest.release")
     testRuntimeOnly("junit:junit:4.+")
 }
 

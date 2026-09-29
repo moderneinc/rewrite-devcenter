@@ -16,7 +16,6 @@
 package io.moderne.devcenter.internal;
 
 import io.moderne.devcenter.internal.Newlines.Counter;
-import org.openrewrite.Cursor;
 import org.openrewrite.golang.GoSumVisitor;
 import org.openrewrite.golang.tree.GoSum;
 import org.openrewrite.golang.tree.GoSumTree;
@@ -42,6 +41,6 @@ final class GoSumLineCounter extends GoSumVisitor<Counter> {
     static long count(GoSum goSum) {
         Counter c = new Counter();
         new GoSumLineCounter().visit(goSum, c);
-        return Newlines.lineCount(c, goSum.getEof(), new Cursor(null, goSum));
+        return Newlines.lineCount(c, goSum.getEof());
     }
 }

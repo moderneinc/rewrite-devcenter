@@ -16,7 +16,6 @@
 package io.moderne.devcenter.internal;
 
 import org.jspecify.annotations.Nullable;
-import org.openrewrite.Cursor;
 import org.openrewrite.csharp.CSharpVisitor;
 import org.openrewrite.csharp.CsDocCommentVisitor;
 import org.openrewrite.csharp.tree.CsDocComment;
@@ -99,8 +98,8 @@ final class Newlines {
             new CsDocCommentNewlineCounter().visit((CsDocComment) comment, n);
             return n[0];
         }
-        // No other Comment type exists in practice; render defensively if one ever does.
-        return countNewlines(comment.printComment(new Cursor(null, "root")));
+        // The counted languages have no other comment types
+        return 0;
     }
 
     private static final class JavadocNewlineCounter extends JavadocVisitor<int[]> {
@@ -141,30 +140,59 @@ final class Newlines {
 
     /**
      * Apply {@code FindOrganizationStatistics}' line-count formula: newline count plus one for a final
-     * line not terminated by a newline, or zero for a source file that prints to nothing.
+     * line not terminated by a newline, or zero for a source file with no text.
      *
-     * @param eof the source file's trailing space (last thing printed)
+     * @param eof the source file's trailing space (its last source text)
      */
-    static long lineCount(Counter c, @Nullable Space eof, Cursor cursor) {
-        String trailing = eof == null ? "" : trailingText(eof, cursor);
-        boolean endsWithNewline = !trailing.isEmpty() && trailing.charAt(trailing.length() - 1) == '\n';
-        if (endsWithNewline) {
+    static long lineCount(Counter c, @Nullable Space eof) {
+        if (eof != null && endsWithNewline(eof)) {
             return c.newlines;
         }
-        if (c.newlines == 0 && !c.sawText && trailing.isEmpty()) {
+        if (c.newlines == 0 && !c.sawText && (eof == null || eof.getWhitespace().isEmpty() && eof.getComments().isEmpty())) {
             return 0;
         }
         return c.newlines + 1;
     }
 
-    /** The effective trailing text of a source file's final space: enough to know its last character. */
-    private static String trailingText(Space eof, Cursor cursor) {
-        List<Comment> comments = eof.getComments();
-        if (!comments.isEmpty()) {
-            Comment last = comments.get(comments.size() - 1);
-            String suffix = last.getSuffix();
-            return suffix.isEmpty() ? last.printComment(cursor) : suffix;
+    /** The same formula, for counters that track whether their source text ends with a newline. */
+    static long lineCount(Counter c, boolean endsWithNewline) {
+        if (endsWithNewline) {
+            return c.newlines;
         }
-        return eof.getWhitespace();
+        return c.newlines == 0 && !c.sawText ? 0 : c.newlines + 1;
+    }
+
+    /** The same formula, applied to a whole source text. */
+    static long lineCount(String text) {
+        if (text.isEmpty()) {
+            return 0;
+        }
+        return countNewlines(text) + (text.charAt(text.length() - 1) == '\n' ? 0 : 1);
+    }
+
+    static boolean endsWithNewline(Space space) {
+        List<Comment> comments = space.getComments();
+        if (comments.isEmpty()) {
+            return space.getWhitespace().endsWith("\n");
+        }
+        Comment last = comments.get(comments.size() - 1);
+        if (!last.getSuffix().isEmpty()) {
+            return last.getSuffix().endsWith("\n");
+        }
+        // Parsers leave the newline after a comment in its suffix, though a C# doc comment's body may end with one
+        if (last instanceof TextComment) {
+            return !last.isMultiline() && ((TextComment) last).getText().endsWith("\n");
+        }
+        if (last instanceof PyComment) {
+            return ((PyComment) last).getText().endsWith("\n");
+        }
+        if (last instanceof CsDocComment.DocComment) {
+            List<CsDocComment> body = ((CsDocComment.DocComment) last).getBody();
+            CsDocComment tail = body.isEmpty() ? null : body.get(body.size() - 1);
+            return tail instanceof CsDocComment.LineBreak && ((CsDocComment.LineBreak) tail).getMargin().endsWith("\n") ||
+                   tail instanceof CsDocComment.XmlText && ((CsDocComment.XmlText) tail).getText().endsWith("\n");
+        }
+        // Block Javadoc ends with "*/", and markdown Javadoc with its last line's text
+        return false;
     }
 }

@@ -16,7 +16,6 @@
 package io.moderne.devcenter.internal;
 
 import io.moderne.devcenter.internal.Newlines.Counter;
-import org.openrewrite.Cursor;
 import org.openrewrite.csharp.CSharpVisitor;
 import org.openrewrite.csharp.tree.Cs;
 import org.openrewrite.java.tree.J;
@@ -49,6 +48,6 @@ final class CSharpLineCounter extends CSharpVisitor<Counter> {
     static long count(Cs.CompilationUnit cu) {
         Counter c = new Counter();
         new CSharpLineCounter().visit(cu, c);
-        return Newlines.lineCount(c, cu.getEof(), new Cursor(null, cu));
+        return Newlines.lineCount(c, cu.getEof());
     }
 }

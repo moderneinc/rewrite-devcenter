@@ -16,7 +16,6 @@
 package io.moderne.devcenter.internal;
 
 import io.moderne.devcenter.internal.Newlines.Counter;
-import org.openrewrite.Cursor;
 import org.openrewrite.java.tree.J;
 import org.openrewrite.java.tree.Space;
 import org.openrewrite.python.PythonVisitor;
@@ -49,6 +48,6 @@ final class PythonLineCounter extends PythonVisitor<Counter> {
     static long count(Py.CompilationUnit cu) {
         Counter c = new Counter();
         new PythonLineCounter().visit(cu, c);
-        return Newlines.lineCount(c, cu.getEof(), new Cursor(null, cu));
+        return Newlines.lineCount(c, cu.getEof());
     }
 }
