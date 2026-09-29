@@ -48,9 +48,6 @@ recipeList:
   - org.openrewrite.java.security.OwaspA02
   - org.openrewrite.java.security.OwaspA03
   - org.openrewrite.java.security.OwaspA08
-  - org.openrewrite.java.security.RegularExpressionDenialOfService
-  - org.openrewrite.java.security.ZipSlip
-  - org.openrewrite.java.security.SecureTempFileCreation
   # Changes made by recipes above this one in the recipe list are reported as occurrences
   # in the Security DevCenter card.
   - io.moderne.devcenter.ReportAsSecurityIssues:

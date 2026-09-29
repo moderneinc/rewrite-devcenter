@@ -16,21 +16,103 @@
 package io.moderne.devcenter;
 
 import io.moderne.devcenter.table.UpgradesAndMigrations;
+import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.Arguments;
 import org.junit.jupiter.params.provider.MethodSource;
+import org.openrewrite.gradle.marker.GradleDependencyConfiguration;
+import org.openrewrite.gradle.marker.GradleProject;
+import org.openrewrite.maven.tree.Dependency;
+import org.openrewrite.maven.tree.GroupArtifactVersion;
+import org.openrewrite.maven.tree.ResolvedDependency;
+import org.openrewrite.maven.tree.ResolvedGroupArtifactVersion;
 import org.openrewrite.test.RewriteTest;
+import org.openrewrite.test.SourceSpecs;
 
+import java.util.LinkedHashMap;
+import java.util.List;
+import java.util.Map;
 import java.util.stream.Stream;
 
 import static io.moderne.devcenter.SemverMeasure.Completed;
 import static io.moderne.devcenter.SemverMeasure.Major;
 import static io.moderne.devcenter.SemverMeasure.Minor;
 import static io.moderne.devcenter.SemverMeasure.Patch;
+import static java.util.Collections.emptyList;
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.openrewrite.gradle.Assertions.buildGradle;
 import static org.openrewrite.maven.Assertions.pomXml;
 
 class LibraryUpgradeTest implements RewriteTest {
+
+    @Test
+    void springBootArtifactsSharingOneVersion() {
+        ResolvedDependency springBoot = dependency("org.springframework.boot", "spring-boot", "3.1.2");
+        ResolvedDependency starter = dependency("org.springframework.boot", "spring-boot-starter", "3.1.2",
+          springBoot, dependency("org.springframework.boot", "spring-boot-autoconfigure", "3.1.2", springBoot));
+        ResolvedDependency web = dependency("org.springframework.boot", "spring-boot-starter-web", "3.1.2",
+          starter, dependency("org.springframework.boot", "spring-boot-starter-json", "3.1.2", starter));
+        List<ResolvedDependency> roots = List.of(web, dependency("commons-lang", "commons-lang", "2.6"));
+        rewriteRun(
+          spec -> spec
+            .recipe(new LibraryUpgrade("Move to Spring Boot 4.0", "org.springframework.boot", "*", "4.0.0", null))
+            .dataTable(UpgradesAndMigrations.Row.class, rows -> assertThat(rows).containsExactly(
+              new UpgradesAndMigrations.Row("Move to Spring Boot 4.0", Major.ordinal(), Major.name(), "3.1.2"))),
+          buildGradleWith(project(roots, roots))
+        );
+    }
+
+    @Test
+    void lowestVersionOfTheBestMeasure() {
+        rewriteRun(
+          spec -> spec
+            .recipe(new LibraryUpgrade("Move to Spring Boot 3.5", "org.springframework.boot", "*", "3.5.0", null))
+            .dataTable(UpgradesAndMigrations.Row.class, rows -> assertThat(rows).containsExactly(
+              new UpgradesAndMigrations.Row("Move to Spring Boot 3.5", Minor.ordinal(), Minor.name(), "3.3.0"))),
+          buildGradleWith(project(
+            List.of(dependency("org.springframework.boot", "spring-boot", "3.5.0")),
+            List.of(dependency("org.springframework.boot", "spring-boot", "3.4.1")),
+            List.of(dependency("org.springframework.boot", "spring-boot", "3.3.0")),
+            List.of(dependency("org.springframework.boot", "spring-boot", "3.5.1"))
+          ))
+        );
+    }
+
+    private static SourceSpecs buildGradleWith(GradleProject project) {
+        //language=groovy
+        return buildGradle(
+          """
+            plugins {
+                id "java"
+            }
+            """,
+          spec -> spec.markers(project)
+        );
+    }
+
+    @SafeVarargs
+    private static GradleProject project(List<ResolvedDependency>... directResolvedByConfiguration) {
+        Map<String, GradleDependencyConfiguration> configurations = new LinkedHashMap<>();
+        for (List<ResolvedDependency> directResolved : directResolvedByConfiguration) {
+            String name = "configuration" + configurations.size();
+            configurations.put(name, GradleDependencyConfiguration.builder()
+              .name(name)
+              .extendsFrom(emptyList())
+              .requested(emptyList())
+              .directResolved(directResolved)
+              .build());
+        }
+        return GradleProject.builder().nameToConfiguration(configurations).build();
+    }
+
+    private static ResolvedDependency dependency(String groupId, String artifactId, String version,
+                                                 ResolvedDependency... dependencies) {
+        return ResolvedDependency.builder()
+          .gav(new ResolvedGroupArtifactVersion(null, groupId, artifactId, version, null))
+          .requested(Dependency.builder().gav(new GroupArtifactVersion(groupId, artifactId, version)).build())
+          .dependencies(List.of(dependencies))
+          .build();
+    }
 
     private static Stream<Arguments> jacksonVersions() {
         return Stream.of(
