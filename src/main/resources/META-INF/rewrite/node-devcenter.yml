@@ -17,13 +17,15 @@
 ---
 type: specs.openrewrite.org/v1beta/recipe
 name: io.moderne.devcenter.DevCenterNodeStarter
-displayName: DevCenter for Node.js
+displayName: DevCenter for JavaScript and TypeScript
 description: >-
-  A default DevCenter configuration for Node.js repositories.
-  Track Node.js version adoption across your organization.
+  A default DevCenter configuration for JavaScript and TypeScript repositories, both frontend and backend.
+  Track Node.js version adoption and the move to ECMAScript 6 across your organization.
 recipeList:
   - io.moderne.devcenter.NodeVersionUpgrade:
       majorVersion: 24
       upgradeRecipe: org.openrewrite.node.migrate.upgrade-node-24
+  - io.moderne.devcenter.EcmaScriptModernization:
+      upgradeRecipe: org.openrewrite.javascript.migrate.es6.ModernizeToES6
   - io.moderne.devcenter.FindOrganizationStatistics
   - io.moderne.devcenter.FindActiveCommitters
