@@ -23,11 +23,7 @@ import org.openrewrite.maven.tree.GroupArtifact;
 import org.openrewrite.maven.tree.MavenResolutionResult;
 import org.openrewrite.maven.tree.ResolvedDependency;
 
-import java.util.ArrayList;
-import java.util.IdentityHashMap;
-import java.util.LinkedHashSet;
-import java.util.List;
-import java.util.Set;
+import java.util.*;
 
 import static java.util.Collections.newSetFromMap;
 import static org.openrewrite.internal.StringUtils.matchesGlob;

@@ -153,7 +153,7 @@ final class RubyLineCounter extends RubyVisitor<Counter> {
 
     // RubyVisitor sends Ruby containers straight to JavaVisitor's implementation
     @Override
-    public <J2 extends J> JContainer<J2> visitContainer(@Nullable JContainer<J2> container, RubyContainer.Location loc, Counter c) {
+    public <J2 extends J> @Nullable JContainer<J2> visitContainer(@Nullable JContainer<J2> container, RubyContainer.Location loc, Counter c) {
         return visitContainer(container, JContainer.Location.LANGUAGE_EXTENSION, c);
     }
 

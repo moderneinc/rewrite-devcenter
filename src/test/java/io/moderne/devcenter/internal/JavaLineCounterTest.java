@@ -193,13 +193,13 @@ class JavaLineCounterTest {
         assertMarkersNotCounted(cu, new JavaIsoVisitor<Integer>() {
             @Override
             public Space visitSpace(Space space, Space.Location loc, Integer p) {
-                return space.withComments(ListUtils.map(space.getComments(), c -> c instanceof Javadoc ?
+                return space.withComments(ListUtils.map(space.getComments(), c -> c instanceof Javadoc j ?
                   (Comment) new JavadocVisitor<Integer>(new JavaVisitor<>()) {
                       @Override
                       public Javadoc visitReference(Javadoc.Reference reference, Integer p) {
                           return reference.withMarkers(reference.getMarkers().add(new MultilineMarker(randomId())));
                       }
-                  }.visitNonNull((Javadoc) c, 0) : c));
+                  }.visitNonNull(j, 0) : c));
             }
         }.visitNonNull(cu, 0));
     }

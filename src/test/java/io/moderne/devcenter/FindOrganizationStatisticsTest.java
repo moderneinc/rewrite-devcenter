@@ -123,13 +123,13 @@ class FindOrganizationStatisticsTest implements RewriteTest {
 
     @Test
     void unknownTypeIsWarnedOnceAndNotCounted() {
-        FindOrganizationStatistics recipe = new FindOrganizationStatistics();
+        var recipe = new FindOrganizationStatistics();
         ExecutionContext ctx = new InMemoryExecutionContext();
         AtomicLong acc = recipe.getInitialValue(ctx);
-        UnknownSource unknown = new UnknownSource(randomId(), Path.of("schema.graphql"), Markers.EMPTY, null, false, null, null);
+        var unknown = new UnknownSource(randomId(), Path.of("schema.graphql"), Markers.EMPTY, null, false, null, null);
 
         recipe.getScanner(acc).visit(unknown, ctx);
-        SourceFile warned = (SourceFile) recipe.getVisitor(acc).visitNonNull(unknown, ctx);
+        var warned = (SourceFile) recipe.getVisitor(acc).visitNonNull(unknown, ctx);
 
         assertThat(acc).hasValue(0);
         assertThat(warned.getMarkers().findAll(Markup.Warn.class)).singleElement().satisfies(warn -> {
@@ -141,7 +141,7 @@ class FindOrganizationStatisticsTest implements RewriteTest {
 
     @Test
     void filesWithoutSourceTextAreNeitherCountedNorWarned() {
-        FindOrganizationStatistics recipe = new FindOrganizationStatistics();
+        var recipe = new FindOrganizationStatistics();
         ExecutionContext ctx = new InMemoryExecutionContext();
         AtomicLong acc = recipe.getInitialValue(ctx);
         for (SourceFile sourceFile : List.of(

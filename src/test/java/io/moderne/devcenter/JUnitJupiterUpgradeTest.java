@@ -152,7 +152,7 @@ class JUnitJupiterUpgradeTest implements RewriteTest {
     void scansSourceSetClasspathOncePerRun() {
         JavaSourceSet jupiter6 = JavaSourceSet.build("test",
           JavaParser.dependenciesFromResources(new InMemoryExecutionContext(), "junit-jupiter-api-6"));
-        AtomicInteger scans = new AtomicInteger();
+        var scans = new AtomicInteger();
         JavaSourceSet counting = jupiter6.withGavToTypes(new HashMap<>(jupiter6.getGavToTypes()) {
             @Override
             public Set<String> keySet() {

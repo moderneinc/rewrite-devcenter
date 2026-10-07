@@ -23,10 +23,7 @@ import org.openrewrite.test.RewriteTest;
 
 import java.util.stream.Stream;
 
-import static io.moderne.devcenter.SemverMeasure.Completed;
-import static io.moderne.devcenter.SemverMeasure.Major;
-import static io.moderne.devcenter.SemverMeasure.Minor;
-import static io.moderne.devcenter.SemverMeasure.Patch;
+import static io.moderne.devcenter.SemverMeasure.*;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.openrewrite.maven.Assertions.pomXml;
 

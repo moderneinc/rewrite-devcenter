@@ -33,14 +33,14 @@ class EcmaScriptModernizationTest implements RewriteTest {
 
     private final EcmaScriptModernization recipe = new EcmaScriptModernization(null);
 
-    @Override
-    public void defaults(RecipeSpec spec) {
-        spec.recipe(recipe);
-    }
-
     @AfterEach
     void after() {
         JavaScriptRewriteRpc.shutdownCurrent();
+    }
+
+    @Override
+    public void defaults(RecipeSpec spec) {
+        spec.recipe(recipe);
     }
 
     private void expect(RecipeSpec spec, EcmaScriptModernization.Measure measure, String share) {
