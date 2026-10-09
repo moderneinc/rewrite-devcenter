@@ -1,0 +1,2 @@
+Source path,Owner class FQN,Field name,Serialized name,Serialized name source,Type FQN,Type resolution,Is collection,Is map,Is optional,Format,Required,Validations JSON,Example value
+src/test/java/io/moderne/devcenter/internal/LineCountAssertions.java,io.moderne.devcenter.internal.LineCountAssertions$MultilineMarker,id,id,java-name,java.util.UUID,resolved,false,false,false,uuid,false,{},

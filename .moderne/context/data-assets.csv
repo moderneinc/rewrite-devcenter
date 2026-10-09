@@ -1,0 +1,2 @@
+Source path,Class name,Simple name,Asset type,Description,Fields
+src/test/java/io/moderne/devcenter/internal/LineCountAssertions.java,io.moderne.devcenter.internal.LineCountAssertions$MultilineMarker,MultilineMarker,Record,Record multiline marker with fields: id,id

@@ -7,4 +7,61 @@ src/test/java/io/moderne/devcenter/DevCenterTest.java,io.moderne.devcenter.DevCe
 src/test/java/io/moderne/devcenter/JUnitJupiterUpgradeTest.java,io.moderne.devcenter.JUnitJupiterUpgradeTest,junit4,poor test name,low,java,"Test method junit4() has a non-descriptive name. Good test names describe what is being verified, e.g., testUserLoginReturns403WhenPasswordExpired()."
 src/test/java/io/moderne/devcenter/JUnitJupiterUpgradeTest.java,io.moderne.devcenter.JUnitJupiterUpgradeTest,junit5,poor test name,low,java,"Test method junit5() has a non-descriptive name. Good test names describe what is being verified, e.g., testUserLoginReturns403WhenPasswordExpired()."
 src/test/java/io/moderne/devcenter/JUnitJupiterUpgradeTest.java,io.moderne.devcenter.JUnitJupiterUpgradeTest,junit6,poor test name,low,java,"Test method junit6() has a non-descriptive name. Good test names describe what is being verified, e.g., testUserLoginReturns403WhenPasswordExpired()."
+src/test/java/io/moderne/devcenter/JUnitJupiterUpgradeTest.java,io.moderne.devcenter.JUnitJupiterUpgradeTest,noTests,poor test name,low,java,"Test method noTests() has a non-descriptive name. Good test names describe what is being verified, e.g., testUserLoginReturns403WhenPasswordExpired()."
 src/test/java/io/moderne/devcenter/JavaVersionUpgradeTest.java,io.moderne.devcenter.JavaVersionUpgradeTest,java8,poor test name,low,java,"Test method java8() has a non-descriptive name. Good test names describe what is being verified, e.g., testUserLoginReturns403WhenPasswordExpired()."
+src/test/java/io/moderne/devcenter/internal/DockerLineCounterTest.java,io.moderne.devcenter.internal.DockerLineCounterTest,countsMatchSource,hardcoded port/path,low,java,"Hardcoded port/path '# syntax=docker/dockerfile:1
+ARG BASE=eclipse-temurin
+ARG VERSION=21
+
+FROM ${BASE}:${VERSION}-jdk AS build
+WORKDIR /app
+COPY --chown=app:app gradle/ gradle/
+RUN apt-get update \
+    && apt-get install -y \
+      curl \
+
+      git \
+    # a comment inside the continuation
+    && rm -rf /var/lib/apt/lists/*
+ENV JAVA_OPTS=""-Xmx512m"" \
+    APP_HOME=/app
+ENV OLD_STYLE value with spaces
+LABEL org.opencontainers.image.title=""demo"" \
+      version=""1.0""
+
+FROM eclipse-temurin:21-jre@sha256:0123456789abcdef AS runtime
+COPY --from=build /app/build/libs/*.jar /app/app.jar
+EXPOSE 8080 8443/tcp 9000-9010/udp
+USER app:app
+VOLUME [""/data"",
+        ""/logs""]
+VOLUME /tmp /cache
+HEALTHCHECK --interval=30s --timeout=3s \
+  CMD curl -f http://localhost:8080/ || exit 1
+STOPSIGNAL SIGTERM
+ONBUILD RUN echo onbuild
+SHELL [""/bin/bash"", ""-c""]
+ENTRYPOINT [""java"",
+            ""-jar"",
+            ""/app/app.jar""]
+CMD [""--spring.profiles.active=prod""]
+' in test. Use dynamic port allocation or temp directories to avoid conflicts."
+src/test/java/io/moderne/devcenter/internal/ResolvedDependencyVersionsTest.java,io.moderne.devcenter.internal.ResolvedDependencyVersionsTest,cycles,poor test name,low,java,"Test method cycles() has a non-descriptive name. Good test names describe what is being verified, e.g., testUserLoginReturns403WhenPasswordExpired()."
+src/test/java/io/moderne/devcenter/internal/RubyLineCounterTest.java,io.moderne.devcenter.internal.RubyLineCounterTest,heredocs,poor test name,low,java,"Test method heredocs() has a non-descriptive name. Good test names describe what is being verified, e.g., testUserLoginReturns403WhenPasswordExpired()."
+src/test/java/io/moderne/devcenter/internal/RubyLineCounterTest.java,io.moderne.devcenter.internal.RubyLineCounterTest,edgeCases,poor test name,low,java,"Test method edgeCases() has a non-descriptive name. Good test names describe what is being verified, e.g., testUserLoginReturns403WhenPasswordExpired()."
+src/test/java/io/moderne/devcenter/internal/YamlLineCounterTest.java,io.moderne.devcenter.internal.YamlLineCounterTest,countsMatchSource,hardcoded port/path,low,java,"Hardcoded port/path '# Spring Boot configuration
+spring:
+  application:
+    name: demo # trailing comment
+  datasource:
+    url: jdbc:postgresql://localhost:5432/demo
+    username: ${DB_USER:demo}
+
+  jpa:
+    hibernate.ddl-auto: validate
+server:
+  port: 8080
+logging.level:
+  root: INFO
+  org.springframework: DEBUG
+' in test. Use dynamic port allocation or temp directories to avoid conflicts."
