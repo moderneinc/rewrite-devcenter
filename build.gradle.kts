@@ -70,7 +70,7 @@ dependencies {
     testImplementation(gradleApi())
     testImplementation("org.openrewrite.gradle.tooling:model")
     testImplementation("de.siegmar:fastcsv:3.+")
-    testImplementation("io.github.classgraph:classgraph:latest.release")
+    testImplementation("io.github.classgraph:classgraph:4.+")
     testRuntimeOnly("junit:junit:4.+")
 }
 
