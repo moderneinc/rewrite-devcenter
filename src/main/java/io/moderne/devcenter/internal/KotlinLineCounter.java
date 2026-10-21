@@ -53,8 +53,7 @@ final class KotlinLineCounter extends KotlinVisitor<Counter> {
     }
 
     static long count(K.CompilationUnit cu) {
-        Counter c = new Counter();
-        new KotlinLineCounter().visit(cu, c);
+        Counter c = new KotlinLineCounter().reduce(cu, new Counter());
         return Newlines.lineCount(c, cu.getEof());
     }
 

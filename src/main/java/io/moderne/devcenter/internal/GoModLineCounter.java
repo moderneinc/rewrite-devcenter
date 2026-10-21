@@ -51,8 +51,7 @@ final class GoModLineCounter extends GoModVisitor<Counter> {
     }
 
     static long count(GoMod goMod) {
-        Counter c = new Counter();
-        new GoModLineCounter().visit(goMod, c);
+        Counter c = new GoModLineCounter().reduce(goMod, new Counter());
         return Newlines.lineCount(c, goMod.getEof());
     }
 }

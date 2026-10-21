@@ -46,8 +46,7 @@ final class PythonLineCounter extends PythonVisitor<Counter> {
     }
 
     static long count(Py.CompilationUnit cu) {
-        Counter c = new Counter();
-        new PythonLineCounter().visit(cu, c);
+        Counter c = new PythonLineCounter().reduce(cu, new Counter());
         return Newlines.lineCount(c, cu.getEof());
     }
 }

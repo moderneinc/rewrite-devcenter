@@ -46,8 +46,7 @@ final class CSharpLineCounter extends CSharpVisitor<Counter> {
     }
 
     static long count(Cs.CompilationUnit cu) {
-        Counter c = new Counter();
-        new CSharpLineCounter().visit(cu, c);
+        Counter c = new CSharpLineCounter().reduce(cu, new Counter());
         return Newlines.lineCount(c, cu.getEof());
     }
 }

@@ -109,8 +109,7 @@ public class JUnitJupiterUpgrade extends UpgradeMigrationCard {
         if (!usesMatchingType(cu, matcher)) {
             return false;
         }
-        AtomicBoolean found = new AtomicBoolean();
-        new JavaIsoVisitor<AtomicBoolean>() {
+        return new JavaIsoVisitor<AtomicBoolean>() {
             @Override
             public J preVisit(J tree, AtomicBoolean found) {
                 if (found.get()) {
@@ -127,8 +126,7 @@ public class JUnitJupiterUpgrade extends UpgradeMigrationCard {
                 }
                 return super.visitAnnotation(annotation, found);
             }
-        }.visit(cu, found);
-        return found.get();
+        }.reduce(cu, new AtomicBoolean()).get();
     }
 
     private static boolean usesMatchingType(JavaSourceFile cu, AnnotationMatcher matcher) {

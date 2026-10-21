@@ -49,9 +49,7 @@ public final class JavaScriptModules {
                 return true;
             }
         }
-        AtomicBoolean commonJs = new AtomicBoolean();
-        new CommonJsFinder().visit(cu, commonJs);
-        return commonJs.get();
+        return new CommonJsFinder().reduce(cu, new AtomicBoolean()).get();
     }
 
     private static boolean isEsModuleStatement(Statement statement) {

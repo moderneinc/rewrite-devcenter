@@ -34,9 +34,7 @@ import java.util.List;
 final class ProtoLineCounter extends ProtoVisitor<PrintOrderLineCounter> {
 
     static long count(Proto.Document document) {
-        PrintOrderLineCounter counter = new PrintOrderLineCounter();
-        new ProtoLineCounter().visit(document, counter);
-        return counter.lineCount();
+        return new ProtoLineCounter().reduce(document, new PrintOrderLineCounter()).lineCount();
     }
 
     @Override

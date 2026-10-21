@@ -39,8 +39,7 @@ final class GoSumLineCounter extends GoSumVisitor<Counter> {
     }
 
     static long count(GoSum goSum) {
-        Counter c = new Counter();
-        new GoSumLineCounter().visit(goSum, c);
+        Counter c = new GoSumLineCounter().reduce(goSum, new Counter());
         return Newlines.lineCount(c, goSum.getEof());
     }
 }

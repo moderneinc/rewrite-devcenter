@@ -79,8 +79,7 @@ final class JavaLineCounter extends JavaVisitor<Counter> {
     }
 
     static long count(J.CompilationUnit cu) {
-        Counter c = new Counter();
-        new JavaLineCounter().visit(cu, c);
+        Counter c = new JavaLineCounter().reduce(cu, new Counter());
         return Newlines.lineCount(c, trailingSpace(cu));
     }
 

@@ -194,8 +194,7 @@ final class GroovyLineCounter extends GroovyVisitor<Counter> {
     }
 
     static long count(G.CompilationUnit cu) {
-        Counter c = new Counter();
-        new GroovyLineCounter().visit(cu, c);
+        Counter c = new GroovyLineCounter().reduce(cu, new Counter());
         return Newlines.lineCount(c, cu.getEof());
     }
 }

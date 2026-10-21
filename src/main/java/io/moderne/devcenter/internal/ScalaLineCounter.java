@@ -67,8 +67,7 @@ final class ScalaLineCounter extends ScalaVisitor<Counter> {
     }
 
     static long count(S.CompilationUnit cu) {
-        Counter c = new Counter();
-        new ScalaLineCounter().visit(cu, c);
+        Counter c = new ScalaLineCounter().reduce(cu, new Counter());
         Space eof = cu.getEof();
         if (!eof.getWhitespace().isEmpty() || !eof.getComments().isEmpty()) {
             return Newlines.lineCount(c, eof);

@@ -46,8 +46,7 @@ final class GoLineCounter extends GolangVisitor<Counter> {
     }
 
     static long count(Go.CompilationUnit cu) {
-        Counter c = new Counter();
-        new GoLineCounter().visit(cu, c);
+        Counter c = new GoLineCounter().reduce(cu, new Counter());
         return Newlines.lineCount(c, cu.getEof());
     }
 }

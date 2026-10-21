@@ -37,9 +37,7 @@ import java.util.List;
 final class HclLineCounter extends HclVisitor<PrintOrderLineCounter> {
 
     static long count(Hcl.ConfigFile configFile) {
-        PrintOrderLineCounter counter = new PrintOrderLineCounter();
-        new HclLineCounter().visit(configFile, counter);
-        return counter.lineCount();
+        return new HclLineCounter().reduce(configFile, new PrintOrderLineCounter()).lineCount();
     }
 
     @Override
