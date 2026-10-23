@@ -23,12 +23,12 @@ description: |-
   This DevCenter includes recipes to upgrade Quarkus versions, migrate from deprecated APIs,
   and ensure compatibility with the latest Java versions.
 
-  **Move to Quarkus 3.40**<br/>
-  The lowest version of any `io.quarkus:quarkus-*` dependency in each repository, compared to 3.40.x.<br/>
-  `Major` → `Minor` → `Patch` → `Completed` · fix with [`UpgradeQuarkus3_x`](https://codegenomeproject.org/recipes/io.moderne.devcenter.UpgradeQuarkus3_x)
+  **Move to Quarkus 4.0**<br/>
+  The lowest version of any `io.quarkus:quarkus-*` dependency in each repository, compared to 4.0.x.<br/>
+  `Major` → `Minor` → `Patch` → `Completed` · fix with [`UpgradeQuarkus4_x`](https://codegenomeproject.org/recipes/io.moderne.devcenter.UpgradeQuarkus4_x)
 
   **Move to the latest Quarkus Universe BOM**<br/>
-  The version of the `io.quarkus:quarkus-universe-bom` parent POM, compared to 3.40.x.<br/>
+  The version of the `io.quarkus:quarkus-universe-bom` parent POM, compared to 4.0.x.<br/>
   `Major` → `Minor` → `Patch` → `Completed` · fix with [`UpgradeQuarkusUniverseBom`](https://codegenomeproject.org/recipes/io.moderne.devcenter.UpgradeQuarkusUniverseBom)
 
   **Move to Java 25**<br/>
@@ -44,21 +44,38 @@ recipeList:
   - io.moderne.devcenter.FindOrganizationStatistics
   - io.moderne.devcenter.FindActiveCommitters
   - io.moderne.devcenter.LibraryUpgrade:
-      cardName: Move to Quarkus 3.40
+      cardName: Move to Quarkus 4.0
       groupIdPattern: io.quarkus
       artifactIdPattern: quarkus-*
-      version: 3.40.x
-      upgradeRecipe: io.moderne.devcenter.UpgradeQuarkus3_x
+      version: 4.0.x
+      upgradeRecipe: io.moderne.devcenter.UpgradeQuarkus4_x
   - io.moderne.devcenter.ParentPomUpgrade:
       cardName: Move to the latest Quarkus Universe BOM
       groupIdPattern: io.quarkus
       artifactIdPattern: quarkus-universe-bom
-      version: 3.40.x
+      version: 4.0.x
       upgradeRecipe: io.moderne.devcenter.UpgradeQuarkusUniverseBom
   - io.moderne.devcenter.JavaVersionUpgrade:
       majorVersion: 25
       upgradeRecipe: org.openrewrite.java.migrate.UpgradeToJava25
   - io.moderne.devcenter.SecurityStarter
+---
+type: specs.openrewrite.org/v1beta/recipe
+name: io.moderne.devcenter.UpgradeQuarkus4_x
+displayName: Upgrade to Quarkus 4.0
+description: >-
+  Applies the Quarkus update recipes up to Quarkus 4.0, then upgrades Quarkus dependencies to version 4.0.x,
+  including core, extensions, and tooling.
+recipeList:
+  - org.openrewrite.quarkus.MigrateToQuarkus_v4_0_0
+  - org.openrewrite.maven.UpgradeDependencyVersion:
+      groupId: io.quarkus
+      artifactId: '*'
+      newVersion: 4.0.x
+  - org.openrewrite.maven.UpgradeDependencyVersion:
+      groupId: io.quarkus.platform
+      artifactId: '*'
+      newVersion: 4.0.x
 ---
 type: specs.openrewrite.org/v1beta/recipe
 name: io.moderne.devcenter.UpgradeQuarkus3_x
