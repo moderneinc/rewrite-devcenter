@@ -18,12 +18,18 @@
 type: specs.openrewrite.org/v1beta/recipe
 name: io.moderne.devcenter.DevCenterAngularStarter
 displayName: DevCenter for Angular
-description: >-
+description: |-
   A default DevCenter configuration for Angular repositories.
   Track Angular version adoption across your organization.
+
+  **Move to Angular 22**<br/>
+  The `@angular/core` version each repository depends on.<br/>
+  `10+ major versions behind` → `5-9 major versions behind` → `2-4 major versions behind` → `1 major version behind` → `Completed` · fix with [`UpgradeToAngular22`](https://codegenomeproject.org/recipes/org.openrewrite.angular.UpgradeToAngular22)
+
+  The DevCenter also counts lines of code per repository and committers active in the last 90 days. See the [DevCenter documentation](https://docs.moderne.io/administrator-documentation/moderne-platform/how-to-guides/recipe-based-devcenter/) to customize.
 recipeList:
   - io.moderne.devcenter.AngularVersionUpgrade:
-      majorVersion: 21
-      upgradeRecipe: org.openrewrite.angular.UpgradeToAngular21
+      majorVersion: 22
+      upgradeRecipe: org.openrewrite.angular.UpgradeToAngular22
   - io.moderne.devcenter.FindOrganizationStatistics
   - io.moderne.devcenter.FindActiveCommitters

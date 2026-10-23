@@ -18,8 +18,26 @@
 type: specs.openrewrite.org/v1beta/recipe
 name: io.moderne.devcenter.ApacheDevCenter
 displayName: DevCenter for Apache
-description: >-
-  A DevCenter that tracks the latest Apache Maven parent POM versions and applies best practices.
+description: |-
+  A DevCenter that tracks the latest Apache parent POM version and applies best practices.
+
+  **Move to the latest `apache` parent POM**<br/>
+  The version of the `org.apache:apache` parent POM, compared to version 40.<br/>
+  `Major` → `Minor` → `Patch` → `Completed` · fix with [`UpgradeApacheParent`](https://codegenomeproject.org/recipes/io.moderne.devcenter.UpgradeApacheParent)
+
+  **Move to Java 25**<br/>
+  The Java version each repository compiles for.<br/>
+  `Java 8+` → `Java 11+` → `Java 17+` → `Java 21+` → `Completed` · fix with [`UpgradeToJava25`](https://codegenomeproject.org/recipes/org.openrewrite.java.migrate.UpgradeToJava25)
+
+  **Move to JUnit 6**<br/>
+  The test framework each repository uses.<br/>
+  `JUnit 4` → `JUnit 5` → `Completed` · fix with [`JUnit5to6Migration`](https://codegenomeproject.org/recipes/org.openrewrite.java.testing.junit6.JUnit5to6Migration)
+
+  **OWASP top ten**<br/>
+  Issue occurrences per category, counted across all repositories.<br/>
+  `A01 Broken access control` · `A02 Cryptographic failures` · `A03 Injection` · `A08 Software and data integrity failures` · fix with [`OwaspTopTen`](https://codegenomeproject.org/recipes/org.openrewrite.java.security.OwaspTopTen)
+
+  The DevCenter also counts lines of code per repository and committers active in the last 90 days. See the [DevCenter documentation](https://docs.moderne.io/administrator-documentation/moderne-platform/how-to-guides/recipe-based-devcenter/) to customize.
 recipeList:
   - io.moderne.devcenter.FindOrganizationStatistics
   - io.moderne.devcenter.FindActiveCommitters
@@ -33,17 +51,39 @@ recipeList:
       majorVersion: 25
       upgradeRecipe: org.openrewrite.java.migrate.UpgradeToJava25
   - io.moderne.devcenter.JUnitJupiterUpgrade:
-      upgradeRecipe: org.openrewrite.java.testing.junit5.JUnit4to5Migration
+      upgradeRecipe: org.openrewrite.java.testing.junit6.JUnit5to6Migration
   - io.moderne.devcenter.SecurityStarter
 ---
 # An example DevCenter tracking Parent POM versions, illustrated by using the Apache Maven parent POM
 type: specs.openrewrite.org/v1beta/recipe
 name: io.moderne.devcenter.ApacheMavenDevCenter
 displayName: DevCenter for Apache Maven
-description: >-
+description: |-
   A DevCenter that tracks the latest Apache Maven parent POM versions and applies best practices.
   This DevCenter includes recipes to upgrade the parent POMs of Apache Maven, as well as a collection of
   best practices for Maven POMs.
+
+  **Move to the latest `maven-parent`**<br/>
+  The version of the `org.apache.maven:maven-parent` parent POM, compared to version 50.<br/>
+  `Major` → `Minor` → `Patch` → `Completed` · fix with [`UpgradeMavenParent`](https://codegenomeproject.org/recipes/io.moderne.devcenter.UpgradeMavenParent)
+
+  **Move to the latest `maven-plugins`**<br/>
+  The version of the `org.apache.maven.plugins:maven-plugins` parent POM, compared to version 50.<br/>
+  `Major` → `Minor` → `Patch` → `Completed` · fix with [`UpgradeMavenPluginsParent`](https://codegenomeproject.org/recipes/io.moderne.devcenter.UpgradeMavenPluginsParent)
+
+  **Move to the latest `maven-shared-components`**<br/>
+  The version of the `org.apache.maven.shared:maven-shared-components` parent POM, compared to version 50.<br/>
+  `Major` → `Minor` → `Patch` → `Completed` · fix with [`UpgradeMavenSharedParent`](https://codegenomeproject.org/recipes/io.moderne.devcenter.UpgradeMavenSharedParent)
+
+  **Move to Java 17**<br/>
+  The Java version each repository compiles for.<br/>
+  `Java 8+` → `Java 11+` → `Completed` · fix with [`UpgradeToJava17`](https://codegenomeproject.org/recipes/org.openrewrite.java.migrate.UpgradeToJava17)
+
+  **Apache Maven best practices**<br/>
+  POM issue occurrences per check, counted across all repositories.<br/>
+  `Add explicit groupId to Maven plugins` · `Add explicit plugin versions` · `Drop prefixless expressions in POM` · `Order POM elements` · `Remove duplicate Maven dependencies` · `Remove redundant explicit dependency and plugin versions` · `Remove redundant properties` · `Migrate to maven-dependency-plugin goal resolve-sources` · `Update SCM with Git origin` · fix with [`BestPractices`](https://codegenomeproject.org/recipes/org.openrewrite.maven.BestPractices)
+
+  The DevCenter also counts lines of code per repository and committers active in the last 90 days. See the [DevCenter documentation](https://docs.moderne.io/administrator-documentation/moderne-platform/how-to-guides/recipe-based-devcenter/) to customize.
 recipeList:
   - io.moderne.devcenter.FindOrganizationStatistics
   - io.moderne.devcenter.FindActiveCommitters
