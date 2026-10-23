@@ -18,10 +18,23 @@
 type: specs.openrewrite.org/v1beta/recipe
 name: io.moderne.devcenter.ClassCohesionDevCenter
 displayName: Class cohesion DevCenter
-description: |
-  A DevCenter that finds class quality metrics for repositories
-  and buckets the average LCOM4 (Lack of Cohesion of Methods, version 4)
-  into HIGH / MEDIUM / LOW cohesion categories.
+description: |-
+  A DevCenter that grades the maintainability, cohesion, and test gaps of each repository,
+  based on the class quality metrics and test gaps computed by Moderne Prethink.
+
+  **Average Class Maintainability**<br/>
+  The maintainability index (0-100) averaged across all classes in each repository.<br/>
+  `F` (0+) → `D` (20+) → `C` (40+) → `B` (60+) → `A` (80+)
+
+  **Average Class Cohesion**<br/>
+  LCOM4 (Lack of Cohesion of Methods, version 4) averaged across all classes in each repository; lower is more cohesive.<br/>
+  `LOW` (10+) → `MEDIUM` (3+) → `HIGH` (0+)
+
+  **Test Gaps Risk**<br/>
+  The risk scores of public, non-trivial methods without tests, summed per repository.<br/>
+  `LOW` (0+) → `MEDIUM` (3+) → `HIGH` (10+)
+
+  The DevCenter also counts lines of code per repository and committers active in the last 90 days. See the [DevCenter documentation](https://docs.moderne.io/administrator-documentation/moderne-platform/how-to-guides/recipe-based-devcenter/) to customize.
 recipeList:
   - io.moderne.devcenter.FindOrganizationStatistics
   - io.moderne.devcenter.FindActiveCommitters

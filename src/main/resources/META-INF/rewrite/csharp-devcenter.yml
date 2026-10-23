@@ -18,9 +18,15 @@
 type: specs.openrewrite.org/v1beta/recipe
 name: io.moderne.devcenter.DevCenterCSharpStarter
 displayName: DevCenter for C#
-description: >-
+description: |-
   A default DevCenter configuration for C# repositories.
   Track .NET version adoption across your organization.
+
+  **Move to .NET 10**<br/>
+  The lowest target framework across the projects in each repository.<br/>
+  `.NET Framework` → `.NET 6+` → `.NET 7+` → `.NET 8+` → `.NET 9+` → `Completed` · fix with [`UpgradeToDotNet10`](https://codegenomeproject.org/recipes/OpenRewrite.Recipes.CSharp.Migration.Dotnet.Net10.UpgradeToDotNet10)
+
+  The DevCenter also counts lines of code per repository and committers active in the last 90 days. See the [DevCenter documentation](https://docs.moderne.io/administrator-documentation/moderne-platform/how-to-guides/recipe-based-devcenter/) to customize.
 recipeList:
   - io.moderne.devcenter.CSharpVersionUpgrade:
       majorVersion: 10

@@ -16,13 +16,28 @@
 
 type: specs.openrewrite.org/v1beta/recipe
 name: io.moderne.devcenter.DevCenterStarter
-displayName: DevCenter
-description: >-
-  This is a default DevCenter configuration that can be used as a starting point for your own DevCenter configuration.
-  It includes a combination of upgrades, migrations, and security fixes.
-  You can customize this configuration to suit your needs.
-  
-  For more information on how to customize your DevCenter configuration, see the [DevCenter documentation](https://docs.moderne.io/administrator-documentation/moderne-platform/how-to-guides/recipe-based-devcenter/).
+displayName: DevCenter Starter
+description: |-
+  A starting point for your own DevCenter, combining upgrades, migrations, and security fixes.
+  Run it as-is for a first overview of your organization, then copy and customize the configuration.
+
+  **Move to Spring Boot 4.1**<br/>
+  The lowest version of any `org.springframework.boot` dependency in each repository, compared to 4.1.0.<br/>
+  `Major` → `Minor` → `Patch` → `Completed` · fix with [`UpgradeSpringBoot_4_1`](https://codegenomeproject.org/recipes/io.moderne.java.spring.boot4.UpgradeSpringBoot_4_1)
+
+  **Move to Java 25**<br/>
+  The Java version each repository compiles for.<br/>
+  `Java 8+` → `Java 11+` → `Java 17+` → `Java 21+` → `Completed` · fix with [`UpgradeToJava25`](https://codegenomeproject.org/recipes/org.openrewrite.java.migrate.UpgradeToJava25)
+
+  **Move to JUnit 6**<br/>
+  The test framework each repository uses.<br/>
+  `JUnit 4` → `JUnit 5` → `Completed` · fix with [`JUnit5to6Migration`](https://codegenomeproject.org/recipes/org.openrewrite.java.testing.junit6.JUnit5to6Migration)
+
+  **OWASP top ten**<br/>
+  Issue occurrences per category, counted across all repositories.<br/>
+  `A01 Broken access control` · `A02 Cryptographic failures` · `A03 Injection` · `A08 Software and data integrity failures` · fix with [`OwaspTopTen`](https://codegenomeproject.org/recipes/org.openrewrite.java.security.OwaspTopTen)
+
+  The DevCenter also counts lines of code per repository and committers active in the last 90 days. See the [DevCenter documentation](https://docs.moderne.io/administrator-documentation/moderne-platform/how-to-guides/recipe-based-devcenter/) to customize.
 recipeList:
   - io.moderne.devcenter.LibraryUpgrade:
       cardName: Move to Spring Boot 4.1

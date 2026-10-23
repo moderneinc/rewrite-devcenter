@@ -18,8 +18,23 @@
 type: specs.openrewrite.org/v1beta/recipe
 name: io.moderne.devcenter.VulnerabilitiesDevCenter
 displayName: DevCenter for Vulnerability Management
-description: >-
-  Recipes to analyze and manage dependency vulnerabilities using Moderne DevCenter.
+description: |-
+  Analyze and manage dependency vulnerabilities across your organization.
+  Each card looks at known vulnerabilities with an available fix, in direct and transitive dependencies.
+
+  **Vulnerabilities status by Severity**<br/>
+  The most severe vulnerability in each repository.<br/>
+  `Critical` → `High` → `Moderate` → `Low` → `No fixable vulnerabilities` · fix with [`DependencyVulnerabilityCheck`](https://codegenomeproject.org/recipes/org.openrewrite.java.dependencies.DependencyVulnerabilityCheck)
+
+  **Vulnerabilities status by UpgradeDelta**<br/>
+  The largest version bump needed to fix the vulnerable dependencies in each repository.<br/>
+  `Major` → `Minor` → `Patch` → `No vulnerabilities` · fix with [`DependencyVulnerabilityCheck`](https://codegenomeproject.org/recipes/org.openrewrite.java.dependencies.DependencyVulnerabilityCheck)
+
+  **Vulnerabilities status by RiskScore**<br/>
+  The highest EPSS score, the probability of exploitation in the next 30 days, in each repository.<br/>
+  `Critical` (>50%) → `High` (10-50%) → `Medium` (1-10%) → `Low` (<1%) → `No vulnerability scores` · fix with [`DependencyVulnerabilityCheck`](https://codegenomeproject.org/recipes/org.openrewrite.java.dependencies.DependencyVulnerabilityCheck)
+
+  The DevCenter also counts lines of code per repository and committers active in the last 90 days. See the [DevCenter documentation](https://docs.moderne.io/administrator-documentation/moderne-platform/how-to-guides/recipe-based-devcenter/) to customize.
 recipeList:
   - io.moderne.devcenter.FindOrganizationStatistics
   - io.moderne.devcenter.FindActiveCommitters

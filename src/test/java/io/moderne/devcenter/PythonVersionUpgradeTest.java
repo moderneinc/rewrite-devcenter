@@ -53,6 +53,10 @@ class PythonVersionUpgradeTest implements RewriteTest {
           Arguments.of(13, ">=3.12", "3.12", Python312Plus),
           Arguments.of(13, ">=3.13", "3.13", Completed),
           Arguments.of(13, ">=3.14", "3.14", Completed),
+          Arguments.of(15, ">=3.13", "3.13", Python313Plus),
+          Arguments.of(15, ">=3.14", "3.14", Python314Plus),
+          Arguments.of(15, ">=3.15", "3.15", Completed),
+          Arguments.of(16, ">=3.15", "3.15", Python315Plus),
           Arguments.of(12, ">=3.12", "3.12", Completed),
           Arguments.of(13, "~=3.10", "3.10", Python310Plus),
           Arguments.of(13, ">=3.8,<4", "3.8", Python38Plus)
@@ -105,7 +109,11 @@ class PythonVersionUpgradeTest implements RewriteTest {
           Arguments.of(13, List.of(Python2, Python38Plus, Python39Plus, Python310Plus,
             Python311Plus, Python312Plus, Completed), 6),
           Arguments.of(14, List.of(Python2, Python38Plus, Python39Plus, Python310Plus,
-            Python311Plus, Python312Plus, Python313Plus, Completed), 7)
+            Python311Plus, Python312Plus, Python313Plus, Completed), 7),
+          Arguments.of(15, List.of(Python2, Python38Plus, Python39Plus, Python310Plus,
+            Python311Plus, Python312Plus, Python313Plus, Python314Plus, Completed), 8),
+          Arguments.of(16, List.of(Python2, Python38Plus, Python39Plus, Python310Plus,
+            Python311Plus, Python312Plus, Python313Plus, Python314Plus, Python315Plus, Completed), 9)
         );
     }
 
