@@ -61,22 +61,6 @@ recipeList:
   - io.moderne.devcenter.SecurityStarter
 ---
 type: specs.openrewrite.org/v1beta/recipe
-name: io.moderne.devcenter.UpgradeQuarkus3_x
-displayName: Upgrade to Quarkus 3.40
-description: >-
-  Upgrades Quarkus dependencies to version 3.40.x, including core, extensions, and tooling.
-recipeList:
-  - org.openrewrite.quarkus.quarkus2.Quarkus1to2Migration
-  - org.openrewrite.maven.UpgradeDependencyVersion:
-      groupId: io.quarkus
-      artifactId: '*'
-      newVersion: 3.40.x
-  - org.openrewrite.maven.UpgradeDependencyVersion:
-      groupId: io.quarkus.platform
-      artifactId: '*'
-      newVersion: 3.40.x
----
-type: specs.openrewrite.org/v1beta/recipe
 name: io.moderne.devcenter.UpgradeQuarkusUniverseBom
 displayName: Upgrade Quarkus Universe BOM
 description: >-
