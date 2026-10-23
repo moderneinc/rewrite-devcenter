@@ -22,14 +22,14 @@ description: |-
   A default DevCenter configuration for Python repositories.
   Track Python version adoption across your organization.
 
-  **Move to Python 3.14**<br/>
+  **Move to Python 3.15**<br/>
   The minimum Python version each repository declares in `requires-python`.<br/>
-  `Python 2` → `Python 3.8+` → … → `Python 3.13+` → `Completed` · fix with [`UpgradeToPython314`](https://codegenomeproject.org/recipes/org.openrewrite.python.migrate.UpgradeToPython314)
+  `Python 2` → `Python 3.8+` → … → `Python 3.14+` → `Completed` · fix with [`UpgradeToPython315`](https://codegenomeproject.org/recipes/org.openrewrite.python.migrate.UpgradeToPython315)
 
   The DevCenter also counts lines of code per repository and committers active in the last 90 days. See the [DevCenter documentation](https://docs.moderne.io/administrator-documentation/moderne-platform/how-to-guides/recipe-based-devcenter/) to customize.
 recipeList:
   - io.moderne.devcenter.PythonVersionUpgrade:
-      minorVersion: 14
-      upgradeRecipe: org.openrewrite.python.migrate.UpgradeToPython314
+      minorVersion: 15
+      upgradeRecipe: org.openrewrite.python.migrate.UpgradeToPython315
   - io.moderne.devcenter.FindOrganizationStatistics
   - io.moderne.devcenter.FindActiveCommitters
