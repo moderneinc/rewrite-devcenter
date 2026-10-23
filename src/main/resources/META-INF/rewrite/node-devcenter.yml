@@ -18,13 +18,23 @@
 type: specs.openrewrite.org/v1beta/recipe
 name: io.moderne.devcenter.DevCenterNodeStarter
 displayName: DevCenter for JavaScript and TypeScript
-description: >-
+description: |-
   A default DevCenter configuration for JavaScript and TypeScript repositories, both frontend and backend.
   Track Node.js version adoption and the move to ECMAScript 6 across your organization.
+
+  **Move to Node.js 26**<br/>
+  The Node.js version each repository declares under `engines` in `package.json`.<br/>
+  `Node.js 14+` → `Node.js 16+` → `Node.js 18+` → `Node.js 20+` → `Node.js 22+` → `Node.js 24+` → `Completed` · fix with [`upgrade-node-26`](https://codegenomeproject.org/recipes/org.openrewrite.node.migrate.upgrade-node-26)
+
+  **Move to ECMAScript 6**<br/>
+  The share of JavaScript and TypeScript variable declarations that still use `var`.<br/>
+  `Mostly var` → `Partly var` → `Little var` → `Completed` · fix with [`ModernizeToES6`](https://codegenomeproject.org/recipes/org.openrewrite.javascript.migrate.es6.ModernizeToES6)
+
+  The DevCenter also counts lines of code per repository and committers active in the last 90 days. See the [DevCenter documentation](https://docs.moderne.io/administrator-documentation/moderne-platform/how-to-guides/recipe-based-devcenter/) to customize.
 recipeList:
   - io.moderne.devcenter.NodeVersionUpgrade:
-      majorVersion: 24
-      upgradeRecipe: org.openrewrite.node.migrate.upgrade-node-24
+      majorVersion: 26
+      upgradeRecipe: org.openrewrite.node.migrate.upgrade-node-26
   - io.moderne.devcenter.EcmaScriptModernization:
       upgradeRecipe: org.openrewrite.javascript.migrate.es6.ModernizeToES6
   - io.moderne.devcenter.FindOrganizationStatistics

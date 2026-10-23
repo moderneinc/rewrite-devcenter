@@ -78,6 +78,10 @@ public class PythonVersionUpgrade extends UpgradeMigrationCard {
                                 if (major < 3 || (major == 3 && minor < minorVersion)) {
                                     if (major < 3) {
                                         measure = Measure.Python2;
+                                    } else if (minor >= 15) {
+                                        measure = Measure.Python315Plus;
+                                    } else if (minor >= 14) {
+                                        measure = Measure.Python314Plus;
                                     } else if (minor >= 13) {
                                         measure = Measure.Python313Plus;
                                     } else if (minor >= 12) {
@@ -138,6 +142,8 @@ public class PythonVersionUpgrade extends UpgradeMigrationCard {
         Python311Plus("Python 3.11+", "Python 3.11 and later", 11),
         Python312Plus("Python 3.12+", "Python 3.12 and later", 12),
         Python313Plus("Python 3.13+", "Python 3.13 and later", 13),
+        Python314Plus("Python 3.14+", "Python 3.14 and later", 14),
+        Python315Plus("Python 3.15+", "Python 3.15 and later", 15),
         Completed("Completed", "The upgrade to the desired Python version is already complete.", 0);
 
         private final @Language("markdown") String name;
