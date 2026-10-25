@@ -20,16 +20,34 @@ name: io.moderne.devcenter.DevCenterCSharpStarter
 displayName: DevCenter for C#
 description: |-
   A default DevCenter configuration for C# repositories.
-  Track .NET version adoption across your organization.
+  Track .NET version adoption and package migrations across your organization.
 
   **Move to .NET 10**<br/>
   The lowest target framework across the projects in each repository.<br/><img src="data:image/svg+xml;base64,PHN2ZyB4bWxucz0naHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmcnIHdpZHRoPScyODAnIGhlaWdodD0nOCc+PHJlY3QgeD0nMCcgd2lkdGg9JzQ1JyBoZWlnaHQ9JzgnIHJ4PScyJyBmaWxsPScjRkY2RjYxJy8+PHJlY3QgeD0nNDcnIHdpZHRoPSc0NScgaGVpZ2h0PSc4JyByeD0nMicgZmlsbD0nI0ZGOEY1MicvPjxyZWN0IHg9Jzk0JyB3aWR0aD0nNDUnIGhlaWdodD0nOCcgcng9JzInIGZpbGw9JyNGRjlCNDgnLz48cmVjdCB4PScxNDEnIHdpZHRoPSc0NScgaGVpZ2h0PSc4JyByeD0nMicgZmlsbD0nI0ZGQzA0NScvPjxyZWN0IHg9JzE4OCcgd2lkdGg9JzQ1JyBoZWlnaHQ9JzgnIHJ4PScyJyBmaWxsPScjRkZEMzREJy8+PHJlY3QgeD0nMjM1JyB3aWR0aD0nNDUnIGhlaWdodD0nOCcgcng9JzInIGZpbGw9JyMzMEYyODQnLz48L3N2Zz4=" alt=".NET Framework to Completed" /><br/>
   `.NET Framework` → `.NET 6+` → `.NET 7+` → `.NET 8+` → `.NET 9+` → `Completed` · fix with [`UpgradeToDotNet10`](https://codegenomeproject.org/recipes/OpenRewrite.Recipes.CSharp.Migration.Dotnet.Net10.UpgradeToDotNet10)
+
+  **Move from xUnit to TUnit**<br/>
+  Whether each project references xUnit, TUnit or both.<br/><img src="data:image/svg+xml;base64,PHN2ZyB4bWxucz0naHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmcnIHdpZHRoPScyODAnIGhlaWdodD0nOCc+PHJlY3QgeD0nMCcgd2lkdGg9JzkyJyBoZWlnaHQ9JzgnIHJ4PScyJyBmaWxsPScjRkY2RjYxJy8+PHJlY3QgeD0nOTQnIHdpZHRoPSc5MicgaGVpZ2h0PSc4JyByeD0nMicgZmlsbD0nI0ZGQTgzRCcvPjxyZWN0IHg9JzE4OCcgd2lkdGg9JzkyJyBoZWlnaHQ9JzgnIHJ4PScyJyBmaWxsPScjMzBGMjg0Jy8+PC9zdmc+" alt="Not started to Completed" /><br/>
+  `Not started` → `In progress` → `Completed` · fix with [`MigrateFromXUnit`](https://codegenomeproject.org/recipes/OpenRewrite.Recipes.CSharp.Migration.TUnit.FromXUnit.MigrateFromXUnit)
+
+  **Move from Swashbuckle to built-in OpenAPI**<br/>
+  Whether each project references Swashbuckle, the built-in `Microsoft.AspNetCore.OpenApi` or both.<br/><img src="data:image/svg+xml;base64,PHN2ZyB4bWxucz0naHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmcnIHdpZHRoPScyODAnIGhlaWdodD0nOCc+PHJlY3QgeD0nMCcgd2lkdGg9JzkyJyBoZWlnaHQ9JzgnIHJ4PScyJyBmaWxsPScjRkY2RjYxJy8+PHJlY3QgeD0nOTQnIHdpZHRoPSc5MicgaGVpZ2h0PSc4JyByeD0nMicgZmlsbD0nI0ZGQTgzRCcvPjxyZWN0IHg9JzE4OCcgd2lkdGg9JzkyJyBoZWlnaHQ9JzgnIHJ4PScyJyBmaWxsPScjMzBGMjg0Jy8+PC9zdmc+" alt="Not started to Completed" /><br/>
+  `Not started` → `In progress` → `Completed` · fix with [`MigrateSwashbuckleToOpenApi`](https://codegenomeproject.org/recipes/OpenRewrite.Recipes.CSharp.Migration.Dotnet.Net9.MigrateSwashbuckleToOpenApi)
 
   The DevCenter also counts lines of code per repository and committers active in the last 90 days. See the [DevCenter documentation](https://docs.moderne.io/administrator-documentation/moderne-platform/how-to-guides/recipe-based-devcenter/) to customize.
 recipeList:
   - io.moderne.devcenter.CSharpVersionUpgrade:
       majorVersion: 10
       upgradeRecipe: OpenRewrite.Recipes.CSharp.Migration.Dotnet.Net10.UpgradeToDotNet10
+  - io.moderne.devcenter.PackageMigration:
+      cardName: Move from xUnit to TUnit
+      fromPackagePattern: 'xunit*'
+      toPackagePattern: 'TUnit*'
+      migrationRecipe: OpenRewrite.Recipes.CSharp.Migration.TUnit.FromXUnit.MigrateFromXUnit
+  - io.moderne.devcenter.PackageMigration:
+      cardName: Move from Swashbuckle to built-in OpenAPI
+      fromPackagePattern: 'Swashbuckle.AspNetCore*'
+      toPackagePattern: Microsoft.AspNetCore.OpenApi
+      migrationRecipe: OpenRewrite.Recipes.CSharp.Migration.Dotnet.Net9.MigrateSwashbuckleToOpenApi
   - io.moderne.devcenter.FindOrganizationStatistics
   - io.moderne.devcenter.FindActiveCommitters
