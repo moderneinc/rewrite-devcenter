@@ -20,16 +20,43 @@ name: io.moderne.devcenter.DevCenterGoStarter
 displayName: DevCenter for Go
 description: |-
   A default DevCenter configuration for Go repositories.
-  Track Go version adoption across your organization.
+  Track Go version adoption and module migrations across your organization.
 
   **Move to Go 1.26**<br/>
   The Go version declared in each repository's `go.mod`.<br/><img src="data:image/svg+xml;base64,PHN2ZyB4bWxucz0naHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmcnIHdpZHRoPScyODAnIGhlaWdodD0nOCc+PHJlY3QgeD0nMCcgd2lkdGg9JzI2JyBoZWlnaHQ9JzgnIHJ4PScyJyBmaWxsPScjRkY2RjYxJy8+PHJlY3QgeD0nMjgnIHdpZHRoPScyNicgaGVpZ2h0PSc4JyByeD0nMicgZmlsbD0nI0ZGN0Y1QScvPjxyZWN0IHg9JzU2JyB3aWR0aD0nMjcnIGhlaWdodD0nOCcgcng9JzInIGZpbGw9JyNGRjhGNTInLz48cmVjdCB4PSc4NScgd2lkdGg9JzI2JyBoZWlnaHQ9JzgnIHJ4PScyJyBmaWxsPScjRkY5QjQ4Jy8+PHJlY3QgeD0nMTEzJyB3aWR0aD0nMjYnIGhlaWdodD0nOCcgcng9JzInIGZpbGw9JyNGRkE4M0QnLz48cmVjdCB4PScxNDEnIHdpZHRoPScyNicgaGVpZ2h0PSc4JyByeD0nMicgZmlsbD0nI0ZGQTgzRCcvPjxyZWN0IHg9JzE2OScgd2lkdGg9JzI2JyBoZWlnaHQ9JzgnIHJ4PScyJyBmaWxsPScjRkZDMDQ1Jy8+PHJlY3QgeD0nMTk3JyB3aWR0aD0nMjcnIGhlaWdodD0nOCcgcng9JzInIGZpbGw9JyNGRkQzNEQnLz48cmVjdCB4PScyMjYnIHdpZHRoPScyNicgaGVpZ2h0PSc4JyByeD0nMicgZmlsbD0nIzMwRjI4NCcvPjxyZWN0IHg9JzI1NCcgd2lkdGg9JzI2JyBoZWlnaHQ9JzgnIHJ4PScyJyBmaWxsPScjMzBGMjg0Jy8+PC9zdmc+" alt="Go 1.17 or earlier to Completed" /><br/>
   `Go 1.17 or earlier` → `Go 1.18+` → … → `Go 1.25+` → `Completed` · fix with [`UpgradeGoTo126`](https://codegenomeproject.org/recipes/org.openrewrite.golang.migration.UpgradeGoTo126)
+
+  **Move to `go.uber.org/mock`**<br/>
+  Whether each module requires `github.com/golang/mock`, which Google archived in 2023, its maintained fork `go.uber.org/mock` or both.<br/><img src="data:image/svg+xml;base64,PHN2ZyB4bWxucz0naHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmcnIHdpZHRoPScyODAnIGhlaWdodD0nOCc+PHJlY3QgeD0nMCcgd2lkdGg9JzkyJyBoZWlnaHQ9JzgnIHJ4PScyJyBmaWxsPScjRkY2RjYxJy8+PHJlY3QgeD0nOTQnIHdpZHRoPSc5MicgaGVpZ2h0PSc4JyByeD0nMicgZmlsbD0nI0ZGQTgzRCcvPjxyZWN0IHg9JzE4OCcgd2lkdGg9JzkyJyBoZWlnaHQ9JzgnIHJ4PScyJyBmaWxsPScjMzBGMjg0Jy8+PC9zdmc+" alt="Not started to Completed" /><br/>
+  `Not started` → `In progress` → `Completed` · fix with [`MigrateToUberMock`](https://codegenomeproject.org/recipes/org.openrewrite.golang.migration.MigrateToUberMock)
+
+  **Move to AWS SDK for Go v2**<br/>
+  Whether each module requires `aws-sdk-go`, whose support ended in July 2025, `aws-sdk-go-v2` or both.<br/><img src="data:image/svg+xml;base64,PHN2ZyB4bWxucz0naHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmcnIHdpZHRoPScyODAnIGhlaWdodD0nOCc+PHJlY3QgeD0nMCcgd2lkdGg9JzkyJyBoZWlnaHQ9JzgnIHJ4PScyJyBmaWxsPScjRkY2RjYxJy8+PHJlY3QgeD0nOTQnIHdpZHRoPSc5MicgaGVpZ2h0PSc4JyByeD0nMicgZmlsbD0nI0ZGQTgzRCcvPjxyZWN0IHg9JzE4OCcgd2lkdGg9JzkyJyBoZWlnaHQ9JzgnIHJ4PScyJyBmaWxsPScjMzBGMjg0Jy8+PC9zdmc+" alt="Not started to Completed" /><br/>
+  `Not started` → `In progress` → `Completed` · fix with [`MigrateAwsSdkGoToV2`](https://codegenomeproject.org/recipes/org.openrewrite.golang.migration.MigrateAwsSdkGoToV2)
+
+  **Move to `go-viper/mapstructure`**<br/>
+  Whether each module requires `mitchellh/mapstructure`, unmaintained since 2023, its fork `go-viper/mapstructure/v2` or both.<br/><img src="data:image/svg+xml;base64,PHN2ZyB4bWxucz0naHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmcnIHdpZHRoPScyODAnIGhlaWdodD0nOCc+PHJlY3QgeD0nMCcgd2lkdGg9JzkyJyBoZWlnaHQ9JzgnIHJ4PScyJyBmaWxsPScjRkY2RjYxJy8+PHJlY3QgeD0nOTQnIHdpZHRoPSc5MicgaGVpZ2h0PSc4JyByeD0nMicgZmlsbD0nI0ZGQTgzRCcvPjxyZWN0IHg9JzE4OCcgd2lkdGg9JzkyJyBoZWlnaHQ9JzgnIHJ4PScyJyBmaWxsPScjMzBGMjg0Jy8+PC9zdmc+" alt="Not started to Completed" /><br/>
+  `Not started` → `In progress` → `Completed` · fix with [`MigrateToGoViperMapstructure`](https://codegenomeproject.org/recipes/org.openrewrite.golang.migration.MigrateToGoViperMapstructure)
 
   The DevCenter also counts lines of code per repository and committers active in the last 90 days. See the [DevCenter documentation](https://docs.moderne.io/administrator-documentation/moderne-platform/how-to-guides/recipe-based-devcenter/) to customize.
 recipeList:
   - io.moderne.devcenter.GoVersionUpgrade:
       minorVersion: 26
       upgradeRecipe: org.openrewrite.golang.migration.UpgradeGoTo126
+  - io.moderne.devcenter.PackageMigration:
+      cardName: Move to `go.uber.org/mock`
+      fromPackagePattern: github.com/golang/mock
+      toPackagePattern: go.uber.org/mock
+      migrationRecipe: org.openrewrite.golang.migration.MigrateToUberMock
+  - io.moderne.devcenter.PackageMigration:
+      cardName: Move to AWS SDK for Go v2
+      fromPackagePattern: github.com/aws/aws-sdk-go
+      toPackagePattern: 'github.com/aws/aws-sdk-go-v2*'
+      migrationRecipe: org.openrewrite.golang.migration.MigrateAwsSdkGoToV2
+  - io.moderne.devcenter.PackageMigration:
+      cardName: Move to `go-viper/mapstructure`
+      fromPackagePattern: github.com/mitchellh/mapstructure
+      toPackagePattern: github.com/go-viper/mapstructure/v2
+      migrationRecipe: org.openrewrite.golang.migration.MigrateToGoViperMapstructure
   - io.moderne.devcenter.FindOrganizationStatistics
   - io.moderne.devcenter.FindActiveCommitters

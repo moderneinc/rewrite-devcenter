@@ -20,16 +20,43 @@ name: io.moderne.devcenter.DevCenterPythonStarter
 displayName: DevCenter for Python
 description: |-
   A default DevCenter configuration for Python repositories.
-  Track Python version adoption across your organization.
+  Track Python version adoption and package upgrades across your organization.
 
   **Move to Python 3.15**<br/>
   The minimum Python version each repository declares in `requires-python`.<br/><img src="data:image/svg+xml;base64,PHN2ZyB4bWxucz0naHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmcnIHdpZHRoPScyODAnIGhlaWdodD0nOCc+PHJlY3QgeD0nMCcgd2lkdGg9JzI5JyBoZWlnaHQ9JzgnIHJ4PScyJyBmaWxsPScjRkY2RjYxJy8+PHJlY3QgeD0nMzEnIHdpZHRoPSczMCcgaGVpZ2h0PSc4JyByeD0nMicgZmlsbD0nI0ZGN0Y1QScvPjxyZWN0IHg9JzYzJyB3aWR0aD0nMjknIGhlaWdodD0nOCcgcng9JzInIGZpbGw9JyNGRjhGNTInLz48cmVjdCB4PSc5NCcgd2lkdGg9JzI5JyBoZWlnaHQ9JzgnIHJ4PScyJyBmaWxsPScjRkY5QjQ4Jy8+PHJlY3QgeD0nMTI1JyB3aWR0aD0nMzAnIGhlaWdodD0nOCcgcng9JzInIGZpbGw9JyNGRkE4M0QnLz48cmVjdCB4PScxNTcnIHdpZHRoPScyOScgaGVpZ2h0PSc4JyByeD0nMicgZmlsbD0nI0ZGQzA0NScvPjxyZWN0IHg9JzE4OCcgd2lkdGg9JzI5JyBoZWlnaHQ9JzgnIHJ4PScyJyBmaWxsPScjRkZEMzREJy8+PHJlY3QgeD0nMjE5JyB3aWR0aD0nMzAnIGhlaWdodD0nOCcgcng9JzInIGZpbGw9JyMzMEYyODQnLz48cmVjdCB4PScyNTEnIHdpZHRoPScyOScgaGVpZ2h0PSc4JyByeD0nMicgZmlsbD0nIzMwRjI4NCcvPjwvc3ZnPg==" alt="Python 2 to Completed" /><br/>
   `Python 2` → `Python 3.8+` → … → `Python 3.14+` → `Completed` · fix with [`UpgradeToPython315`](https://codegenomeproject.org/recipes/org.openrewrite.python.migrate.UpgradeToPython315)
+
+  **Move to Pydantic 2.14**<br/>
+  The `pydantic` version each project resolves, or the lower bound it declares.<br/><img src="data:image/svg+xml;base64,PHN2ZyB4bWxucz0naHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmcnIHdpZHRoPScyODAnIGhlaWdodD0nOCc+PHJlY3QgeD0nMCcgd2lkdGg9JzY4JyBoZWlnaHQ9JzgnIHJ4PScyJyBmaWxsPScjRkY2RjYxJy8+PHJlY3QgeD0nNzAnIHdpZHRoPSc2OScgaGVpZ2h0PSc4JyByeD0nMicgZmlsbD0nI0ZGOUI0OCcvPjxyZWN0IHg9JzE0MScgd2lkdGg9JzY5JyBoZWlnaHQ9JzgnIHJ4PScyJyBmaWxsPScjRkZDMDQ1Jy8+PHJlY3QgeD0nMjEyJyB3aWR0aD0nNjgnIGhlaWdodD0nOCcgcng9JzInIGZpbGw9JyMzMEYyODQnLz48L3N2Zz4=" alt="Major to Completed" /><br/>
+  `Major` → `Minor` → `Patch` → `Completed` · fix with [`UpgradeToPydantic214`](https://codegenomeproject.org/recipes/org.openrewrite.python.migrate.pydantic.UpgradeToPydantic214)
+
+  **Move to LangChain 1.0**<br/>
+  The `langchain` version each project resolves, or the lower bound it declares.<br/><img src="data:image/svg+xml;base64,PHN2ZyB4bWxucz0naHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmcnIHdpZHRoPScyODAnIGhlaWdodD0nOCc+PHJlY3QgeD0nMCcgd2lkdGg9JzY4JyBoZWlnaHQ9JzgnIHJ4PScyJyBmaWxsPScjRkY2RjYxJy8+PHJlY3QgeD0nNzAnIHdpZHRoPSc2OScgaGVpZ2h0PSc4JyByeD0nMicgZmlsbD0nI0ZGOUI0OCcvPjxyZWN0IHg9JzE0MScgd2lkdGg9JzY5JyBoZWlnaHQ9JzgnIHJ4PScyJyBmaWxsPScjRkZDMDQ1Jy8+PHJlY3QgeD0nMjEyJyB3aWR0aD0nNjgnIGhlaWdodD0nOCcgcng9JzInIGZpbGw9JyMzMEYyODQnLz48L3N2Zz4=" alt="Major to Completed" /><br/>
+  `Major` → `Minor` → `Patch` → `Completed` · fix with [`UpgradeToLangChain1`](https://codegenomeproject.org/recipes/org.openrewrite.python.migrate.langchain.UpgradeToLangChain1)
+
+  **Move from `backoff` to `tenacity`**<br/>
+  Whether each project depends on `backoff`, `tenacity` or both.<br/><img src="data:image/svg+xml;base64,PHN2ZyB4bWxucz0naHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmcnIHdpZHRoPScyODAnIGhlaWdodD0nOCc+PHJlY3QgeD0nMCcgd2lkdGg9JzkyJyBoZWlnaHQ9JzgnIHJ4PScyJyBmaWxsPScjRkY2RjYxJy8+PHJlY3QgeD0nOTQnIHdpZHRoPSc5MicgaGVpZ2h0PSc4JyByeD0nMicgZmlsbD0nI0ZGQTgzRCcvPjxyZWN0IHg9JzE4OCcgd2lkdGg9JzkyJyBoZWlnaHQ9JzgnIHJ4PScyJyBmaWxsPScjMzBGMjg0Jy8+PC9zdmc+" alt="Not started to Completed" /><br/>
+  `Not started` → `In progress` → `Completed` · fix with [`MigrateBackoffToTenacity`](https://codegenomeproject.org/recipes/org.openrewrite.python.migrate.MigrateBackoffToTenacity)
 
   The DevCenter also counts lines of code per repository and committers active in the last 90 days. See the [DevCenter documentation](https://docs.moderne.io/administrator-documentation/moderne-platform/how-to-guides/recipe-based-devcenter/) to customize.
 recipeList:
   - io.moderne.devcenter.PythonVersionUpgrade:
       minorVersion: 15
       upgradeRecipe: org.openrewrite.python.migrate.UpgradeToPython315
+  - io.moderne.devcenter.PackageUpgrade:
+      cardName: Move to Pydantic 2.14
+      packagePattern: pydantic
+      version: 2.14.0
+      upgradeRecipe: org.openrewrite.python.migrate.pydantic.UpgradeToPydantic214
+  - io.moderne.devcenter.PackageUpgrade:
+      cardName: Move to LangChain 1.0
+      packagePattern: langchain
+      version: 1.0.0
+      upgradeRecipe: org.openrewrite.python.migrate.langchain.UpgradeToLangChain1
+  - io.moderne.devcenter.PackageMigration:
+      cardName: Move from `backoff` to `tenacity`
+      fromPackagePattern: backoff
+      toPackagePattern: tenacity
+      migrationRecipe: org.openrewrite.python.migrate.MigrateBackoffToTenacity
   - io.moderne.devcenter.FindOrganizationStatistics
   - io.moderne.devcenter.FindActiveCommitters
