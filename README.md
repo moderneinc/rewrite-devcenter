@@ -25,10 +25,12 @@ The Java cards are `DependencyVulnerabilityCheck` cards with a `cardName`. The n
 vulnerability check earlier in the same recipe list, so keep the check before its cards when you copy the recipe.
 To drop an ecosystem, remove its check and its cards together: cards without their check report every scannable
 repository as having no vulnerabilities.
-A repository is only reported as having no vulnerabilities if the ecosystem's check could scan it, meaning a
-manifest carries the marker the check reads (`NodeResolutionResult` for npm, `PythonResolutionResult` for PyPI,
-`MSBuildProject` for NuGet). Without it, for example when the LST build couldn't install a repository's npm
-dependencies, the repository is not applicable rather than clean. The card's detail counts each
+A repository is only reported as having no vulnerabilities, or no fixable ones, if the ecosystem's check could scan
+every manifest in it, meaning each manifest carries the marker the check reads (`NodeResolutionResult` on
+`package.json` for npm; `PythonResolutionResult` on `requirements*.txt`, `requirements*.in`, `pyproject.toml`,
+`Pipfile`, or `setup.cfg` for PyPI; `MSBuildProject` on `.csproj`, `.vbproj`, or `.fsproj` for NuGet). When any
+manifest lacks it, for example when the LST build couldn't install one project's npm dependencies, the repository is
+not applicable rather than clean. Vulnerabilities found in the scanned manifests are still reported. The card's detail counts each
 vulnerability in a package version once, even when the report lists it for several projects.
 
 The npm and PyPI checks run report-only (`maximumUpgradeDelta: none`), so the DevCenter run proposes no changes.
