@@ -1,0 +1,54 @@
+#
+# Copyright 2026 the original author or authors.
+# <p>
+# Licensed under the Moderne Source Available License (the "License");
+# you may not use this file except in compliance with the License.
+# You may obtain a copy of the License at
+# <p>
+# https://docs.moderne.io/licensing/moderne-source-available-license
+# <p>
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an "AS IS" BASIS,
+# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+# See the License for the specific language governing permissions and
+# limitations under the License.
+#
+
+---
+type: specs.openrewrite.org/v1beta/recipe
+name: io.moderne.devcenter.DevCenterReactStarter
+displayName: DevCenter for React
+description: |-
+  A default DevCenter configuration for React repositories.
+  Track React version adoption and package migrations across your organization.
+
+  **Move to React 19**<br/>
+  The `react` version each project resolves, or the lower bound it declares.<br/><img src="data:image/svg+xml;base64,PHN2ZyB4bWxucz0naHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmcnIHdpZHRoPScyODAnIGhlaWdodD0nOCc+PHJlY3QgeD0nMCcgd2lkdGg9JzY4JyBoZWlnaHQ9JzgnIHJ4PScyJyBmaWxsPScjRkY2RjYxJy8+PHJlY3QgeD0nNzAnIHdpZHRoPSc2OScgaGVpZ2h0PSc4JyByeD0nMicgZmlsbD0nI0ZGOUI0OCcvPjxyZWN0IHg9JzE0MScgd2lkdGg9JzY5JyBoZWlnaHQ9JzgnIHJ4PScyJyBmaWxsPScjRkZDMDQ1Jy8+PHJlY3QgeD0nMjEyJyB3aWR0aD0nNjgnIGhlaWdodD0nOCcgcng9JzInIGZpbGw9JyMzMEYyODQnLz48L3N2Zz4=" alt="Major to Completed" /><br/>
+  `Major` → `Minor` → `Patch` → `Completed` · fix with [`upgrade-to-react-19`](https://codegenomeproject.org/recipes/org.openrewrite.react.migrate.upgrade-to-react-19)
+
+  **Move from `node-sass` to `sass`**<br/>
+  Whether each project depends on the deprecated `node-sass`, Dart Sass (`sass`) or both.<br/><img src="data:image/svg+xml;base64,PHN2ZyB4bWxucz0naHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmcnIHdpZHRoPScyODAnIGhlaWdodD0nOCc+PHJlY3QgeD0nMCcgd2lkdGg9JzkyJyBoZWlnaHQ9JzgnIHJ4PScyJyBmaWxsPScjRkY2RjYxJy8+PHJlY3QgeD0nOTQnIHdpZHRoPSc5MicgaGVpZ2h0PSc4JyByeD0nMicgZmlsbD0nI0ZGQTgzRCcvPjxyZWN0IHg9JzE4OCcgd2lkdGg9JzkyJyBoZWlnaHQ9JzgnIHJ4PScyJyBmaWxsPScjMzBGMjg0Jy8+PC9zdmc+" alt="Not started to Completed" /><br/>
+  `Not started` → `In progress` → `Completed` · fix with [`replace-node-sass-with-sass`](https://codegenomeproject.org/recipes/org.openrewrite.angular.migration.replace-node-sass-with-sass)
+
+  **Move from Jest to Vitest**<br/>
+  Whether each project depends on `jest`, `vitest` or both.<br/><img src="data:image/svg+xml;base64,PHN2ZyB4bWxucz0naHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmcnIHdpZHRoPScyODAnIGhlaWdodD0nOCc+PHJlY3QgeD0nMCcgd2lkdGg9JzkyJyBoZWlnaHQ9JzgnIHJ4PScyJyBmaWxsPScjRkY2RjYxJy8+PHJlY3QgeD0nOTQnIHdpZHRoPSc5MicgaGVpZ2h0PSc4JyByeD0nMicgZmlsbD0nI0ZGQTgzRCcvPjxyZWN0IHg9JzE4OCcgd2lkdGg9JzkyJyBoZWlnaHQ9JzgnIHJ4PScyJyBmaWxsPScjMzBGMjg0Jy8+PC9zdmc+" alt="Not started to Completed" /><br/>
+  `Not started` → `In progress` → `Completed`
+
+  The DevCenter also counts lines of code per repository and committers active in the last 90 days. See the [DevCenter documentation](https://docs.moderne.io/administrator-documentation/moderne-platform/how-to-guides/recipe-based-devcenter/) to customize.
+recipeList:
+  - io.moderne.devcenter.PackageUpgrade:
+      cardName: Move to React 19
+      packagePattern: react
+      version: 19.0.0
+      upgradeRecipe: org.openrewrite.react.migrate.upgrade-to-react-19
+  - io.moderne.devcenter.PackageMigration:
+      cardName: Move from `node-sass` to `sass`
+      fromPackagePattern: node-sass
+      toPackagePattern: sass
+      migrationRecipe: org.openrewrite.angular.migration.replace-node-sass-with-sass
+  - io.moderne.devcenter.PackageMigration:
+      cardName: Move from Jest to Vitest
+      fromPackagePattern: jest
+      toPackagePattern: vitest
+  - io.moderne.devcenter.FindOrganizationStatistics
+  - io.moderne.devcenter.FindActiveCommitters

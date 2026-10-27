@@ -20,16 +20,33 @@ name: io.moderne.devcenter.DevCenterAngularStarter
 displayName: DevCenter for Angular
 description: |-
   A default DevCenter configuration for Angular repositories.
-  Track Angular version adoption across your organization.
+  Track Angular version adoption and package migrations across your organization.
 
   **Move to Angular 22**<br/>
   The `@angular/core` version each repository depends on.<br/><img src="data:image/svg+xml;base64,PHN2ZyB4bWxucz0naHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmcnIHdpZHRoPScyODAnIGhlaWdodD0nOCc+PHJlY3QgeD0nMCcgd2lkdGg9JzU0JyBoZWlnaHQ9JzgnIHJ4PScyJyBmaWxsPScjRkY2RjYxJy8+PHJlY3QgeD0nNTYnIHdpZHRoPSc1NScgaGVpZ2h0PSc4JyByeD0nMicgZmlsbD0nI0ZGOEY1MicvPjxyZWN0IHg9JzExMycgd2lkdGg9JzU0JyBoZWlnaHQ9JzgnIHJ4PScyJyBmaWxsPScjRkZBODNEJy8+PHJlY3QgeD0nMTY5JyB3aWR0aD0nNTUnIGhlaWdodD0nOCcgcng9JzInIGZpbGw9JyNGRkQzNEQnLz48cmVjdCB4PScyMjYnIHdpZHRoPSc1NCcgaGVpZ2h0PSc4JyByeD0nMicgZmlsbD0nIzMwRjI4NCcvPjwvc3ZnPg==" alt="10+ major versions behind to Completed" /><br/>
   `10+ major versions behind` → `5-9 major versions behind` → `2-4 major versions behind` → `1 major version behind` → `Completed` · fix with [`UpgradeToAngular22`](https://codegenomeproject.org/recipes/org.openrewrite.angular.UpgradeToAngular22)
+
+  **Move from `node-sass` to `sass`**<br/>
+  Whether each project depends on the deprecated `node-sass`, Dart Sass (`sass`) or both.<br/><img src="data:image/svg+xml;base64,PHN2ZyB4bWxucz0naHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmcnIHdpZHRoPScyODAnIGhlaWdodD0nOCc+PHJlY3QgeD0nMCcgd2lkdGg9JzkyJyBoZWlnaHQ9JzgnIHJ4PScyJyBmaWxsPScjRkY2RjYxJy8+PHJlY3QgeD0nOTQnIHdpZHRoPSc5MicgaGVpZ2h0PSc4JyByeD0nMicgZmlsbD0nI0ZGQTgzRCcvPjxyZWN0IHg9JzE4OCcgd2lkdGg9JzkyJyBoZWlnaHQ9JzgnIHJ4PScyJyBmaWxsPScjMzBGMjg0Jy8+PC9zdmc+" alt="Not started to Completed" /><br/>
+  `Not started` → `In progress` → `Completed` · fix with [`replace-node-sass-with-sass`](https://codegenomeproject.org/recipes/org.openrewrite.angular.migration.replace-node-sass-with-sass)
+
+  **Move from Jest to Vitest**<br/>
+  Whether each project depends on `jest`, `vitest` or both.<br/><img src="data:image/svg+xml;base64,PHN2ZyB4bWxucz0naHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmcnIHdpZHRoPScyODAnIGhlaWdodD0nOCc+PHJlY3QgeD0nMCcgd2lkdGg9JzkyJyBoZWlnaHQ9JzgnIHJ4PScyJyBmaWxsPScjRkY2RjYxJy8+PHJlY3QgeD0nOTQnIHdpZHRoPSc5MicgaGVpZ2h0PSc4JyByeD0nMicgZmlsbD0nI0ZGQTgzRCcvPjxyZWN0IHg9JzE4OCcgd2lkdGg9JzkyJyBoZWlnaHQ9JzgnIHJ4PScyJyBmaWxsPScjMzBGMjg0Jy8+PC9zdmc+" alt="Not started to Completed" /><br/>
+  `Not started` → `In progress` → `Completed`
 
   The DevCenter also counts lines of code per repository and committers active in the last 90 days. See the [DevCenter documentation](https://docs.moderne.io/administrator-documentation/moderne-platform/how-to-guides/recipe-based-devcenter/) to customize.
 recipeList:
   - io.moderne.devcenter.AngularVersionUpgrade:
       majorVersion: 22
       upgradeRecipe: org.openrewrite.angular.UpgradeToAngular22
+  - io.moderne.devcenter.PackageMigration:
+      cardName: Move from `node-sass` to `sass`
+      fromPackagePattern: node-sass
+      toPackagePattern: sass
+      migrationRecipe: org.openrewrite.angular.migration.replace-node-sass-with-sass
+  - io.moderne.devcenter.PackageMigration:
+      cardName: Move from Jest to Vitest
+      fromPackagePattern: jest
+      toPackagePattern: vitest
   - io.moderne.devcenter.FindOrganizationStatistics
   - io.moderne.devcenter.FindActiveCommitters
