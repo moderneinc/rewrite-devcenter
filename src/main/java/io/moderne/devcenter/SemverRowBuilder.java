@@ -15,20 +15,15 @@
  */
 package io.moderne.devcenter;
 
+import io.moderne.devcenter.internal.VersionParts;
 import io.moderne.devcenter.table.UpgradesAndMigrations;
-import org.openrewrite.java.dependencies.internal.Version;
-import org.openrewrite.java.dependencies.internal.VersionParser;
+import org.jspecify.annotations.Nullable;
 import org.openrewrite.semver.Semver;
 import org.openrewrite.semver.VersionComparator;
 
 import static java.util.Objects.requireNonNull;
 
 public class SemverRowBuilder {
-    // Lazy initialization to avoid class loading failures poisoning SemverRowBuilder's static initialization
-    private static class ParserHolder {
-        static final VersionParser INSTANCE = new VersionParser();
-    }
-
     private final String cardName;
     private long major;
     private long minor;
@@ -51,11 +46,9 @@ public class SemverRowBuilder {
     }
 
     private void parseTargetVersion(String version) {
-        Version parsed = ParserHolder.INSTANCE.transform(version);
-        Long[] numericParts = parsed.getNumericParts();
+        @Nullable Long[] numericParts = VersionParts.numeric(version);
         for (int i = 0; i < numericParts.length; i++) {
             Long part = numericParts[i];
-            //noinspection ConstantValue
             if (part == null) {
                 return;
             }

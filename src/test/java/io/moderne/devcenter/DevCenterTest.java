@@ -28,6 +28,7 @@ import org.junit.jupiter.api.io.TempDir;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.Arguments;
 import org.junit.jupiter.params.provider.MethodSource;
+import org.junit.jupiter.params.provider.ValueSource;
 import org.openrewrite.CsvDataTableStore;
 import org.openrewrite.DataTableExecutionContextView;
 import org.openrewrite.DocumentExample;
@@ -133,6 +134,23 @@ class DevCenterTest implements RewriteTest {
           .activateRecipes("io.moderne.devcenter.JavaVersionNoFix");
         var devCenter = new DevCenter(r);
         devCenter.validate();
+    }
+
+    @ParameterizedTest
+    @ValueSource(strings = {
+      "io.moderne.devcenter.DevCenterAngularStarter",
+      "io.moderne.devcenter.DevCenterCSharpStarter",
+      "io.moderne.devcenter.DevCenterGoStarter",
+      "io.moderne.devcenter.DevCenterNodeStarter",
+      "io.moderne.devcenter.DevCenterPythonStarter",
+      "io.moderne.devcenter.DevCenterReactStarter"
+    })
+    void languageDevCentersAreValid(String name) throws Exception {
+        Recipe recipe = environment.activateRecipes(name);
+        var devCenter = new DevCenter(recipe);
+        devCenter.validate();
+        assertThat(devCenter.getUpgradesAndMigrations())
+          .allSatisfy(card -> assertThat(recipe.getDescription()).contains("**" + card.getName() + "**"));
     }
 
     @Test
