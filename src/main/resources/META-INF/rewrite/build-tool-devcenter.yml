@@ -41,12 +41,12 @@ recipeList:
       cardName: Upgrade to Gradle 9
       buildTool: Gradle
       targetVersion: 9.0.0
-      fixRecipeId: org.openrewrite.gradle.MigrateToGradle9
+      upgradeRecipe: org.openrewrite.gradle.MigrateToGradle9
   - io.moderne.devcenter.BuildToolCard:
       cardName: Upgrade to Maven 4
       buildTool: Maven
       targetVersion: 4.0.0
-      fixRecipeId: org.openrewrite.maven.UpdateMavenWrapper
+      upgradeRecipe: org.openrewrite.maven.UpdateMavenWrapper
   - io.moderne.devcenter.JavaVersionUpgrade:
       majorVersion: 25
       upgradeRecipe: org.openrewrite.java.migrate.UpgradeToJava25

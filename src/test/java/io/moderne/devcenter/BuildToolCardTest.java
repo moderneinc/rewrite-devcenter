@@ -17,9 +17,18 @@ package io.moderne.devcenter;
 
 import io.moderne.devcenter.table.UpgradesAndMigrations;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.params.ParameterizedTest;
+import org.junit.jupiter.params.provider.ValueSource;
+import org.openrewrite.Recipe;
+import org.openrewrite.config.Environment;
+import org.openrewrite.config.YamlResourceLoader;
 import org.openrewrite.marker.BuildTool;
 import org.openrewrite.test.RewriteTest;
 
+import java.io.ByteArrayInputStream;
+import java.net.URI;
+import java.nio.charset.StandardCharsets;
+import java.util.Properties;
 import java.util.UUID;
 
 import static org.assertj.core.api.Assertions.assertThat;
@@ -160,5 +169,32 @@ class BuildToolCardTest implements RewriteTest {
     void argFixRecipe() {
         var recipe = new BuildToolCard("Upgrade to Gradle 9", "Gradle", "9.0.0", "org.openrewrite.gradle.MigrateToGradle9");
         assertThat(recipe.getFixRecipeId()).isEqualTo("org.openrewrite.gradle.MigrateToGradle9");
+    }
+
+    @ParameterizedTest
+    @ValueSource(strings = {"upgradeRecipe", "fixRecipeId"})
+    void upgradeRecipeFromYaml(String optionName) {
+        //language=yaml
+        String yaml = """
+          type: specs.openrewrite.org/v1beta/recipe
+          name: io.moderne.devcenter.GradleDevCenter
+          displayName: Gradle DevCenter
+          description: Tracks Gradle versions.
+          recipeList:
+            - io.moderne.devcenter.BuildToolCard:
+                cardName: Upgrade to Gradle 9
+                buildTool: Gradle
+                targetVersion: 9.0.0
+                %s: org.openrewrite.gradle.MigrateToGradle9
+          """.formatted(optionName);
+        Recipe recipe = Environment.builder()
+          .load(new YamlResourceLoader(new ByteArrayInputStream(yaml.getBytes(StandardCharsets.UTF_8)),
+            URI.create("rewrite.yml"), new Properties()))
+          .build()
+          .activateRecipes("io.moderne.devcenter.GradleDevCenter");
+        assertThat(new DevCenter(recipe).getUpgradesAndMigrations())
+          .singleElement()
+          .extracting(DevCenter.Card::getFixRecipeId)
+          .isEqualTo("org.openrewrite.gradle.MigrateToGradle9");
     }
 }
