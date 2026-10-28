@@ -15,6 +15,7 @@
  */
 package io.moderne.devcenter;
 
+import com.fasterxml.jackson.annotation.JsonAlias;
 import lombok.EqualsAndHashCode;
 import lombok.Value;
 import org.jspecify.annotations.Nullable;
@@ -43,12 +44,13 @@ public class BuildToolCard extends UpgradeMigrationCard {
             example = "9.0.0")
     String targetVersion;
 
-    @Option(displayName = "Fix Recipe ID",
+    @Option(displayName = "Upgrade recipe",
             description = "The recipe to use to upgrade the build tool.",
             example = "org.openrewrite.gradle.MigrateToGradle9",
             required = false)
+    @JsonAlias("fixRecipeId")
     @Nullable
-    String fixRecipeId;
+    String upgradeRecipe;
 
     String displayName = "Build tool";
     String description = "Track build tool versions across repositories.";
@@ -74,6 +76,11 @@ public class BuildToolCard extends UpgradeMigrationCard {
                 return tree;
             }
         };
+    }
+
+    @Override
+    public @Nullable String getFixRecipeId() {
+        return upgradeRecipe;
     }
 
     @Override
