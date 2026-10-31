@@ -1,0 +1,105 @@
+#
+# Copyright 2026 the original author or authors.
+# <p>
+# Licensed under the Moderne Source Available License (the "License");
+# you may not use this file except in compliance with the License.
+# You may obtain a copy of the License at
+# <p>
+# https://docs.moderne.io/licensing/moderne-source-available-license
+# <p>
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an "AS IS" BASIS,
+# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+# See the License for the specific language governing permissions and
+# limitations under the License.
+#
+
+---
+type: specs.openrewrite.org/v1beta/recipe
+name: io.moderne.devcenter.VulnerabilitiesByEcosystemDevCenter
+displayName: DevCenter for Vulnerability Management by ecosystem
+description: |-
+  Track and fix vulnerable dependencies separately for each package ecosystem: Java (Maven and Gradle), npm, PyPI, and NuGet.
+  Each card looks at known vulnerabilities with an available fix, and its fix action runs that ecosystem's own vulnerability remediation recipe.
+  Copy this recipe to your own repository to drop ecosystems you don't use or rename the cards. Remove an ecosystem's check and its cards together.
+
+  **Java vulnerabilities by Severity**<br/>
+  The most severe vulnerability in the Maven and Gradle dependencies of each repository.<br/><img src="data:image/svg+xml;base64,PHN2ZyB4bWxucz0naHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmcnIHdpZHRoPScyODAnIGhlaWdodD0nOCc+PHJlY3QgeD0nMCcgd2lkdGg9JzU0JyBoZWlnaHQ9JzgnIHJ4PScyJyBmaWxsPScjRkY2RjYxJy8+PHJlY3QgeD0nNTYnIHdpZHRoPSc1NScgaGVpZ2h0PSc4JyByeD0nMicgZmlsbD0nI0ZGOEY1MicvPjxyZWN0IHg9JzExMycgd2lkdGg9JzU0JyBoZWlnaHQ9JzgnIHJ4PScyJyBmaWxsPScjRkZBODNEJy8+PHJlY3QgeD0nMTY5JyB3aWR0aD0nNTUnIGhlaWdodD0nOCcgcng9JzInIGZpbGw9JyNGRkQzNEQnLz48cmVjdCB4PScyMjYnIHdpZHRoPSc1NCcgaGVpZ2h0PSc4JyByeD0nMicgZmlsbD0nIzMwRjI4NCcvPjwvc3ZnPg==" alt="Critical to No fixable vulnerabilities" /><br/>
+  `Critical` → `High` → `Moderate` → `Low` → `No fixable vulnerabilities` · fix with [`DependencyVulnerabilityCheck`](https://codegenomeproject.org/recipes/org.openrewrite.java.dependencies.DependencyVulnerabilityCheck)
+
+  **Java vulnerabilities by UpgradeDelta**<br/>
+  The largest version bump needed to fix the vulnerable Maven and Gradle dependencies in each repository.<br/><img src="data:image/svg+xml;base64,PHN2ZyB4bWxucz0naHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmcnIHdpZHRoPScyODAnIGhlaWdodD0nOCc+PHJlY3QgeD0nMCcgd2lkdGg9JzY4JyBoZWlnaHQ9JzgnIHJ4PScyJyBmaWxsPScjRkY2RjYxJy8+PHJlY3QgeD0nNzAnIHdpZHRoPSc2OScgaGVpZ2h0PSc4JyByeD0nMicgZmlsbD0nI0ZGOUI0OCcvPjxyZWN0IHg9JzE0MScgd2lkdGg9JzY5JyBoZWlnaHQ9JzgnIHJ4PScyJyBmaWxsPScjRkZDMDQ1Jy8+PHJlY3QgeD0nMjEyJyB3aWR0aD0nNjgnIGhlaWdodD0nOCcgcng9JzInIGZpbGw9JyMzMEYyODQnLz48L3N2Zz4=" alt="Major to No vulnerabilities" /><br/>
+  `Major` → `Minor` → `Patch` → `No vulnerabilities` · fix with [`DependencyVulnerabilityCheck`](https://codegenomeproject.org/recipes/org.openrewrite.java.dependencies.DependencyVulnerabilityCheck)
+
+  **Java vulnerabilities by RiskScore**<br/>
+  The highest EPSS score, the probability of exploitation in the next 30 days, in the Maven and Gradle dependencies of each repository.<br/><img src="data:image/svg+xml;base64,PHN2ZyB4bWxucz0naHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmcnIHdpZHRoPScyODAnIGhlaWdodD0nOCc+PHJlY3QgeD0nMCcgd2lkdGg9JzU0JyBoZWlnaHQ9JzgnIHJ4PScyJyBmaWxsPScjRkY2RjYxJy8+PHJlY3QgeD0nNTYnIHdpZHRoPSc1NScgaGVpZ2h0PSc4JyByeD0nMicgZmlsbD0nI0ZGOEY1MicvPjxyZWN0IHg9JzExMycgd2lkdGg9JzU0JyBoZWlnaHQ9JzgnIHJ4PScyJyBmaWxsPScjRkZBODNEJy8+PHJlY3QgeD0nMTY5JyB3aWR0aD0nNTUnIGhlaWdodD0nOCcgcng9JzInIGZpbGw9JyNGRkQzNEQnLz48cmVjdCB4PScyMjYnIHdpZHRoPSc1NCcgaGVpZ2h0PSc4JyByeD0nMicgZmlsbD0nIzMwRjI4NCcvPjwvc3ZnPg==" alt="Critical to No vulnerability scores" /><br/>
+  `Critical` (>50%) → `High` (10-50%) → `Medium` (1-10%) → `Low` (<1%) → `No vulnerability scores` · fix with [`DependencyVulnerabilityCheck`](https://codegenomeproject.org/recipes/org.openrewrite.java.dependencies.DependencyVulnerabilityCheck)
+
+  **npm vulnerabilities by Severity**<br/>
+  The most severe vulnerability in the npm dependencies of each repository.<br/><img src="data:image/svg+xml;base64,PHN2ZyB4bWxucz0naHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmcnIHdpZHRoPScyODAnIGhlaWdodD0nOCc+PHJlY3QgeD0nMCcgd2lkdGg9JzU0JyBoZWlnaHQ9JzgnIHJ4PScyJyBmaWxsPScjRkY2RjYxJy8+PHJlY3QgeD0nNTYnIHdpZHRoPSc1NScgaGVpZ2h0PSc4JyByeD0nMicgZmlsbD0nI0ZGOEY1MicvPjxyZWN0IHg9JzExMycgd2lkdGg9JzU0JyBoZWlnaHQ9JzgnIHJ4PScyJyBmaWxsPScjRkZBODNEJy8+PHJlY3QgeD0nMTY5JyB3aWR0aD0nNTUnIGhlaWdodD0nOCcgcng9JzInIGZpbGw9JyNGRkQzNEQnLz48cmVjdCB4PScyMjYnIHdpZHRoPSc1NCcgaGVpZ2h0PSc4JyByeD0nMicgZmlsbD0nIzMwRjI4NCcvPjwvc3ZnPg==" alt="Critical to No fixable vulnerabilities" /><br/>
+  `Critical` → `High` → `Moderate` → `Low` → `No fixable vulnerabilities` · fix with [`DependencyVulnerabilityCheck`](https://codegenomeproject.org/recipes/org.openrewrite.nodejs.security.DependencyVulnerabilityCheck)
+
+  **npm vulnerabilities by UpgradeDelta**<br/>
+  The largest version bump needed to fix the vulnerable npm dependencies in each repository.<br/><img src="data:image/svg+xml;base64,PHN2ZyB4bWxucz0naHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmcnIHdpZHRoPScyODAnIGhlaWdodD0nOCc+PHJlY3QgeD0nMCcgd2lkdGg9JzY4JyBoZWlnaHQ9JzgnIHJ4PScyJyBmaWxsPScjRkY2RjYxJy8+PHJlY3QgeD0nNzAnIHdpZHRoPSc2OScgaGVpZ2h0PSc4JyByeD0nMicgZmlsbD0nI0ZGOUI0OCcvPjxyZWN0IHg9JzE0MScgd2lkdGg9JzY5JyBoZWlnaHQ9JzgnIHJ4PScyJyBmaWxsPScjRkZDMDQ1Jy8+PHJlY3QgeD0nMjEyJyB3aWR0aD0nNjgnIGhlaWdodD0nOCcgcng9JzInIGZpbGw9JyMzMEYyODQnLz48L3N2Zz4=" alt="Major to No vulnerabilities" /><br/>
+  `Major` → `Minor` → `Patch` → `No vulnerabilities` · fix with [`DependencyVulnerabilityCheck`](https://codegenomeproject.org/recipes/org.openrewrite.nodejs.security.DependencyVulnerabilityCheck)
+
+  **PyPI vulnerabilities by Severity**<br/>
+  The most severe vulnerability in the PyPI dependencies of each repository.<br/><img src="data:image/svg+xml;base64,PHN2ZyB4bWxucz0naHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmcnIHdpZHRoPScyODAnIGhlaWdodD0nOCc+PHJlY3QgeD0nMCcgd2lkdGg9JzU0JyBoZWlnaHQ9JzgnIHJ4PScyJyBmaWxsPScjRkY2RjYxJy8+PHJlY3QgeD0nNTYnIHdpZHRoPSc1NScgaGVpZ2h0PSc4JyByeD0nMicgZmlsbD0nI0ZGOEY1MicvPjxyZWN0IHg9JzExMycgd2lkdGg9JzU0JyBoZWlnaHQ9JzgnIHJ4PScyJyBmaWxsPScjRkZBODNEJy8+PHJlY3QgeD0nMTY5JyB3aWR0aD0nNTUnIGhlaWdodD0nOCcgcng9JzInIGZpbGw9JyNGRkQzNEQnLz48cmVjdCB4PScyMjYnIHdpZHRoPSc1NCcgaGVpZ2h0PSc4JyByeD0nMicgZmlsbD0nIzMwRjI4NCcvPjwvc3ZnPg==" alt="Critical to No fixable vulnerabilities" /><br/>
+  `Critical` → `High` → `Moderate` → `Low` → `No fixable vulnerabilities` · fix with [`DependencyVulnerabilityCheck`](https://codegenomeproject.org/recipes/org.openrewrite.python.dependencies.DependencyVulnerabilityCheck)
+
+  **PyPI vulnerabilities by UpgradeDelta**<br/>
+  The largest version bump needed to fix the vulnerable PyPI dependencies in each repository.<br/><img src="data:image/svg+xml;base64,PHN2ZyB4bWxucz0naHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmcnIHdpZHRoPScyODAnIGhlaWdodD0nOCc+PHJlY3QgeD0nMCcgd2lkdGg9JzY4JyBoZWlnaHQ9JzgnIHJ4PScyJyBmaWxsPScjRkY2RjYxJy8+PHJlY3QgeD0nNzAnIHdpZHRoPSc2OScgaGVpZ2h0PSc4JyByeD0nMicgZmlsbD0nI0ZGOUI0OCcvPjxyZWN0IHg9JzE0MScgd2lkdGg9JzY5JyBoZWlnaHQ9JzgnIHJ4PScyJyBmaWxsPScjRkZDMDQ1Jy8+PHJlY3QgeD0nMjEyJyB3aWR0aD0nNjgnIGhlaWdodD0nOCcgcng9JzInIGZpbGw9JyMzMEYyODQnLz48L3N2Zz4=" alt="Major to No vulnerabilities" /><br/>
+  `Major` → `Minor` → `Patch` → `No vulnerabilities` · fix with [`DependencyVulnerabilityCheck`](https://codegenomeproject.org/recipes/org.openrewrite.python.dependencies.DependencyVulnerabilityCheck)
+
+  **NuGet vulnerabilities by Severity**<br/>
+  The most severe vulnerability in the NuGet dependencies of each repository.<br/><img src="data:image/svg+xml;base64,PHN2ZyB4bWxucz0naHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmcnIHdpZHRoPScyODAnIGhlaWdodD0nOCc+PHJlY3QgeD0nMCcgd2lkdGg9JzU0JyBoZWlnaHQ9JzgnIHJ4PScyJyBmaWxsPScjRkY2RjYxJy8+PHJlY3QgeD0nNTYnIHdpZHRoPSc1NScgaGVpZ2h0PSc4JyByeD0nMicgZmlsbD0nI0ZGOEY1MicvPjxyZWN0IHg9JzExMycgd2lkdGg9JzU0JyBoZWlnaHQ9JzgnIHJ4PScyJyBmaWxsPScjRkZBODNEJy8+PHJlY3QgeD0nMTY5JyB3aWR0aD0nNTUnIGhlaWdodD0nOCcgcng9JzInIGZpbGw9JyNGRkQzNEQnLz48cmVjdCB4PScyMjYnIHdpZHRoPSc1NCcgaGVpZ2h0PSc4JyByeD0nMicgZmlsbD0nIzMwRjI4NCcvPjwvc3ZnPg==" alt="Critical to No fixable vulnerabilities" /><br/>
+  `Critical` → `High` → `Moderate` → `Low` → `No fixable vulnerabilities` · fix with [`DependencyVulnerabilityCheck`](https://codegenomeproject.org/recipes/org.openrewrite.csharp.dependencies.DependencyVulnerabilityCheck)
+
+  **NuGet vulnerabilities by UpgradeDelta**<br/>
+  The largest version bump needed to fix the vulnerable NuGet dependencies in each repository.<br/><img src="data:image/svg+xml;base64,PHN2ZyB4bWxucz0naHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmcnIHdpZHRoPScyODAnIGhlaWdodD0nOCc+PHJlY3QgeD0nMCcgd2lkdGg9JzY4JyBoZWlnaHQ9JzgnIHJ4PScyJyBmaWxsPScjRkY2RjYxJy8+PHJlY3QgeD0nNzAnIHdpZHRoPSc2OScgaGVpZ2h0PSc4JyByeD0nMicgZmlsbD0nI0ZGOUI0OCcvPjxyZWN0IHg9JzE0MScgd2lkdGg9JzY5JyBoZWlnaHQ9JzgnIHJ4PScyJyBmaWxsPScjRkZDMDQ1Jy8+PHJlY3QgeD0nMjEyJyB3aWR0aD0nNjgnIGhlaWdodD0nOCcgcng9JzInIGZpbGw9JyMzMEYyODQnLz48L3N2Zz4=" alt="Major to No vulnerabilities" /><br/>
+  `Major` → `Minor` → `Patch` → `No vulnerabilities` · fix with [`DependencyVulnerabilityCheck`](https://codegenomeproject.org/recipes/org.openrewrite.csharp.dependencies.DependencyVulnerabilityCheck)
+
+  The DevCenter also counts lines of code per repository and committers active in the last 90 days. See the [DevCenter documentation](https://docs.moderne.io/administrator-documentation/moderne-platform/how-to-guides/recipe-based-devcenter/) to customize.
+recipeList:
+  # Java cards scan Maven and Gradle dependencies themselves
+  - io.moderne.devcenter.DependencyVulnerabilityCheck:
+      measure: Severity
+      cardName: Java vulnerabilities by Severity
+  - io.moderne.devcenter.DependencyVulnerabilityCheck:
+      measure: UpgradeDelta
+      cardName: Java vulnerabilities by UpgradeDelta
+  - io.moderne.devcenter.DependencyVulnerabilityCheck:
+      measure: RiskScore
+      cardName: Java vulnerabilities by RiskScore
+
+  # Each ecosystem's check must run before its cards, which read its report
+  - org.openrewrite.nodejs.security.DependencyVulnerabilityCheck:
+      maximumUpgradeDelta: none
+      transitiveFixStrategy: report
+  - io.moderne.devcenter.EcosystemVulnerabilityCheck:
+      ecosystem: Npm
+      measure: Severity
+  - io.moderne.devcenter.EcosystemVulnerabilityCheck:
+      ecosystem: Npm
+      measure: UpgradeDelta
+
+  - org.openrewrite.python.dependencies.DependencyVulnerabilityCheck:
+      maximumUpgradeDelta: none
+  - io.moderne.devcenter.EcosystemVulnerabilityCheck:
+      ecosystem: PyPI
+      measure: Severity
+  - io.moderne.devcenter.EcosystemVulnerabilityCheck:
+      ecosystem: PyPI
+      measure: UpgradeDelta
+
+  # The NuGet check has no report-only mode, so the run also computes NuGet upgrades
+  - org.openrewrite.csharp.dependencies.DependencyVulnerabilityCheck
+  - io.moderne.devcenter.EcosystemVulnerabilityCheck:
+      ecosystem: NuGet
+      measure: Severity
+  - io.moderne.devcenter.EcosystemVulnerabilityCheck:
+      ecosystem: NuGet
+      measure: UpgradeDelta
+
+  - io.moderne.devcenter.FindOrganizationStatistics
+  - io.moderne.devcenter.FindActiveCommitters

@@ -33,6 +33,7 @@ dependencies {
     implementation("org.openrewrite:rewrite-java")
     implementation("org.openrewrite.recipe:rewrite-java-dependencies:${rewriteVersion}")
     implementation("org.openrewrite.recipe:rewrite-java-security:${rewriteVersion}")
+    implementation("org.openrewrite.recipe:rewrite-nodejs:${rewriteVersion}")
     implementation("org.openrewrite:rewrite-maven")
     implementation("org.openrewrite:rewrite-gradle")
     implementation("org.openrewrite:rewrite-python")

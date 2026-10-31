@@ -7,3 +7,4 @@ The core recipe building blocks to create Moderne DevCenter dashboards, along wi
 3. Copy [devcenter-starter.yml](https://github.com/moderneinc/rewrite-devcenter/blob/main/src/main/resources/META-INF/rewrite/devcenter-starter.yml) to your own repository and start editing.
 
 You may choose to reuse existing core DevCenter card recipes like `LibraryUpgrade` as is, or you may define your own.
+
