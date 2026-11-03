@@ -25,6 +25,8 @@ import org.intellij.lang.annotations.Language;
 import org.jspecify.annotations.Nullable;
 import org.openrewrite.*;
 import org.openrewrite.gradle.IsBuildGradle;
+import org.openrewrite.gradle.marker.GradleProject;
+import org.openrewrite.maven.tree.MavenResolutionResult;
 
 import java.util.List;
 import java.util.stream.Stream;
@@ -61,7 +63,7 @@ public class KotlinVersionUpgrade extends UpgradeMigrationCard {
             @Override
             public Tree preVisit(Tree tree, ExecutionContext ctx) {
                 stopAfterPreVisit();
-                if (!(tree instanceof SourceFile)) {
+                if (!(tree instanceof SourceFile) || !compilesKotlin((SourceFile) tree)) {
                     return tree;
                 }
                 int[] target = parseVersion(version);
@@ -87,6 +89,21 @@ public class KotlinVersionUpgrade extends UpgradeMigrationCard {
                 return tree;
             }
         });
+    }
+
+    /**
+     * Java projects resolve {@code kotlin-stdlib} too, through libraries like OkHttp 4, so only a build that
+     * compiles Kotlin of its own reports the version it is on.
+     */
+    private static boolean compilesKotlin(SourceFile sourceFile) {
+        return sourceFile.getMarkers().findFirst(GradleProject.class)
+                       .filter(gp -> gp.getPlugins().stream()
+                               .anyMatch(p -> p.getFullyQualifiedClassName().startsWith("org.jetbrains.kotlin.gradle.plugin.")))
+                       .isPresent() ||
+               sourceFile.getMarkers().findFirst(MavenResolutionResult.class)
+                       .filter(mrr -> mrr.getPom().getPlugins().stream()
+                               .anyMatch(p -> "org.jetbrains.kotlin".equals(p.getGroupId()) && "kotlin-maven-plugin".equals(p.getArtifactId())))
+                       .isPresent();
     }
 
     static int[] parseVersion(String version) {
