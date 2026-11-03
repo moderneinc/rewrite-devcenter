@@ -24,7 +24,7 @@ description: |-
   and ensure compatibility with the latest Java versions.
 
   **Move to Quarkus 4.0**<br/>
-  The lowest version of any `io.quarkus:quarkus-*` dependency in each repository, compared to 4.0.x.<br/><img src="data:image/svg+xml;base64,PHN2ZyB4bWxucz0naHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmcnIHdpZHRoPScyODAnIGhlaWdodD0nOCc+PHJlY3QgeD0nMCcgd2lkdGg9JzY4JyBoZWlnaHQ9JzgnIHJ4PScyJyBmaWxsPScjRkY2RjYxJy8+PHJlY3QgeD0nNzAnIHdpZHRoPSc2OScgaGVpZ2h0PSc4JyByeD0nMicgZmlsbD0nI0ZGOUI0OCcvPjxyZWN0IHg9JzE0MScgd2lkdGg9JzY5JyBoZWlnaHQ9JzgnIHJ4PScyJyBmaWxsPScjRkZDMDQ1Jy8+PHJlY3QgeD0nMjEyJyB3aWR0aD0nNjgnIGhlaWdodD0nOCcgcng9JzInIGZpbGw9JyMzMEYyODQnLz48L3N2Zz4=" alt="Major to Completed" /><br/>
+  The lowest version of `io.quarkus:quarkus-core` in each repository, compared to 4.0.x.<br/><img src="data:image/svg+xml;base64,PHN2ZyB4bWxucz0naHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmcnIHdpZHRoPScyODAnIGhlaWdodD0nOCc+PHJlY3QgeD0nMCcgd2lkdGg9JzY4JyBoZWlnaHQ9JzgnIHJ4PScyJyBmaWxsPScjRkY2RjYxJy8+PHJlY3QgeD0nNzAnIHdpZHRoPSc2OScgaGVpZ2h0PSc4JyByeD0nMicgZmlsbD0nI0ZGOUI0OCcvPjxyZWN0IHg9JzE0MScgd2lkdGg9JzY5JyBoZWlnaHQ9JzgnIHJ4PScyJyBmaWxsPScjRkZDMDQ1Jy8+PHJlY3QgeD0nMjEyJyB3aWR0aD0nNjgnIGhlaWdodD0nOCcgcng9JzInIGZpbGw9JyMzMEYyODQnLz48L3N2Zz4=" alt="Major to Completed" /><br/>
   `Major` → `Minor` → `Patch` → `Completed` · fix with [`MigrateToQuarkus_v4_0_0`](https://codegenomeproject.org/recipes/org.openrewrite.quarkus.MigrateToQuarkus_v4_0_0)
 
   **Move to the latest Quarkus Universe BOM**<br/>
@@ -46,7 +46,8 @@ recipeList:
   - io.moderne.devcenter.LibraryUpgrade:
       cardName: Move to Quarkus 4.0
       groupIdPattern: io.quarkus
-      artifactIdPattern: quarkus-*
+      # Not quarkus-*, which takes in quarkus-fs-util and other io.quarkus libraries on version lines of their own
+      artifactIdPattern: quarkus-core
       version: 4.0.x
       upgradeRecipe: org.openrewrite.quarkus.MigrateToQuarkus_v4_0_0
   - io.moderne.devcenter.ParentPomUpgrade:
