@@ -56,7 +56,10 @@ class CSharpVersionUpgradeTest implements RewriteTest {
           Arguments.of(9, "net9.0", "net9.0", Completed),
           Arguments.of(10, "netcoreapp3.1", "netcoreapp3.1", DotNetFramework),
           Arguments.of(10, "net48", "net48", DotNetFramework),
-          Arguments.of(10, "netstandard2.0", "netstandard2.0", DotNetFramework)
+          Arguments.of(10, "netstandard2.0", "netstandard2.0", DotNetFramework),
+          Arguments.of(10, "net8.0-windows", "net8.0-windows", DotNet8Plus),
+          Arguments.of(10, "net6.0-windows10.0.19041.0", "net6.0-windows10.0.19041.0", DotNet6Plus),
+          Arguments.of(10, "net10.0-android", "net10.0-android", Completed)
         );
     }
 
