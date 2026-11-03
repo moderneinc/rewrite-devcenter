@@ -20,6 +20,7 @@ import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.Arguments;
 import org.junit.jupiter.params.provider.MethodSource;
+import org.junit.jupiter.params.provider.ValueSource;
 import org.openrewrite.DocumentExample;
 import org.openrewrite.javascript.marker.NodeResolutionResult;
 import org.openrewrite.test.RewriteTest;
@@ -53,7 +54,20 @@ class NodeVersionUpgradeTest implements RewriteTest {
           Arguments.of(22, ">=24", 24, Completed),
           Arguments.of(20, ">=20", 20, Completed),
           Arguments.of(22, "~18.0.0", 18, Node18Plus),
-          Arguments.of(22, ">16", 16, Node16Plus)
+          // >16 admits nothing below 17.0.0
+          Arguments.of(22, ">16", 17, Node16Plus),
+          // The lowest of several alternatives, wherever it comes in the range
+          Arguments.of(26, "^26 || ^24 || ^23 || ^22 || ^20", 20, Node20Plus),
+          Arguments.of(26, "18 || 20 || >=22", 18, Node18Plus),
+          Arguments.of(26, "20 || >=22", 20, Node20Plus),
+          Arguments.of(26, "20.x || 22.x || >=24", 20, Node20Plus),
+          Arguments.of(26, "12.x || 14.x || >= 16", 12, Node14Plus),
+          Arguments.of(26, "14.* || 16.* || >= 18", 14, Node14Plus),
+          Arguments.of(26, "v16.14.0 || v17.1.0 || v18.20.0 || >=v20.10.0", 16, Node16Plus),
+          Arguments.of(26, "^14.17.0 || >=16.0.0", 14, Node14Plus),
+          Arguments.of(26, ">=18 <21", 18, Node18Plus),
+          Arguments.of(26, ">= 22.x", 22, Node22Plus),
+          Arguments.of(26, "20.19.6", 20, Node20Plus)
         );
     }
 
@@ -88,6 +102,21 @@ class NodeVersionUpgradeTest implements RewriteTest {
                 new UpgradesAndMigrations.Row("Move to Node.js " + targetMajor,
                   recipe.ordinal(measure), measure.getName(), String.valueOf(expectedVersion))
               )),
+          java(
+            "class Test {}",
+            spec -> spec.markers(nodeMarker(nodeConstraint))
+          )
+        );
+    }
+
+    @ParameterizedTest
+    @ValueSource(strings = {"*", "<=16", "<20", "current", "lts/*"})
+    void skipsWhenTheConstraintHasNoLowerBound(String nodeConstraint) {
+        rewriteRun(
+          spec -> spec
+            .recipe(new NodeVersionUpgrade(26, null))
+            .afterRecipe(run -> assertThat(run.<UpgradesAndMigrations.Row>getDataTableRows(
+              UpgradesAndMigrations.class.getName(), UpgradesAndMigrations.GROUP)).isEmpty()),
           java(
             "class Test {}",
             spec -> spec.markers(nodeMarker(nodeConstraint))
