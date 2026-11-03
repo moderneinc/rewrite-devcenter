@@ -15,6 +15,8 @@
  */
 package io.moderne.devcenter;
 
+import io.moderne.devcenter.internal.PackageDependencies;
+import io.moderne.devcenter.internal.VersionParts;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
@@ -26,8 +28,6 @@ import org.openrewrite.javascript.marker.NodeResolutionResult;
 
 import java.util.List;
 import java.util.Map;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
 import java.util.stream.Stream;
 
 import static java.util.stream.Collectors.toList;
@@ -35,11 +35,6 @@ import static java.util.stream.Collectors.toList;
 @Value
 @EqualsAndHashCode(callSuper = false)
 public class NodeVersionUpgrade extends UpgradeMigrationCard {
-
-    private static final Pattern VERSION_PATTERN =
-            Pattern.compile("(?:>=|[~^]|>)\\s*v?(\\d+)");
-    private static final Pattern BARE_VERSION_PATTERN =
-            Pattern.compile("v?(\\d+)");
 
     @Option(displayName = "Major version",
             description = "The major version of Node.js to upgrade to.",
@@ -104,16 +99,22 @@ public class NodeVersionUpgrade extends UpgradeMigrationCard {
         };
     }
 
+    /**
+     * @return the major version of the lowest Node.js release the constraint admits, across those of its {@code ||}
+     * alternatives that have a lower bound, or -1 when none has one, like {@code *} or {@code <=16}.
+     */
     static int parseMajorVersion(String nodeConstraint) {
-        Matcher m = VERSION_PATTERN.matcher(nodeConstraint);
-        if (m.find()) {
-            return Integer.parseInt(m.group(1));
+        int lowest = -1;
+        for (String alternative : nodeConstraint.split("\\|\\|")) {
+            String lowerBound = PackageDependencies.npmLowerBound(alternative.trim());
+            if (lowerBound != null) {
+                @Nullable Long[] parts = VersionParts.numeric(lowerBound);
+                if (parts.length > 0 && parts[0] != null && (lowest < 0 || parts[0] < lowest)) {
+                    lowest = parts[0].intValue();
+                }
+            }
         }
-        m = BARE_VERSION_PATTERN.matcher(nodeConstraint);
-        if (m.find()) {
-            return Integer.parseInt(m.group(1));
-        }
-        return -1;
+        return lowest;
     }
 
     @Override

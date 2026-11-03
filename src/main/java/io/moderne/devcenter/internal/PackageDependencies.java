@@ -128,7 +128,11 @@ public final class PackageDependencies {
         return packages;
     }
 
-    static @Nullable String npmLowerBound(@Nullable String constraint) {
+    /**
+     * @return the lowest version an npm range admits, such as {@code 18.0.0} for {@code 18 || 20 || >=22}, or
+     * {@code null} when it isn't a valid range or has no lower bound.
+     */
+    public static @Nullable String npmLowerBound(@Nullable String constraint) {
         if (constraint == null || NodeSemver.validRange(constraint, NodeSemver.Options.DEFAULT) == null) {
             return null;
         }
