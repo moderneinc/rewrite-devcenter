@@ -91,8 +91,8 @@ recipeList:
       ecosystem: PyPI
       measure: UpgradeDelta
 
-  # The NuGet check has no report-only mode, so the run also computes NuGet upgrades
-  - org.openrewrite.csharp.dependencies.DependencyVulnerabilityCheck
+  - org.openrewrite.csharp.dependencies.DependencyVulnerabilityCheck:
+      versionSelection: none
   - io.moderne.devcenter.PackageVulnerabilityCheck:
       ecosystem: NuGet
       measure: Severity
