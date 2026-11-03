@@ -25,7 +25,8 @@ import org.intellij.lang.annotations.Language;
 import org.jspecify.annotations.Nullable;
 import org.openrewrite.*;
 import org.openrewrite.gradle.IsBuildGradle;
-import org.openrewrite.marker.SearchResult;
+import org.openrewrite.gradle.marker.GradleProject;
+import org.openrewrite.maven.tree.MavenResolutionResult;
 
 import java.util.List;
 import java.util.stream.Stream;
@@ -35,8 +36,6 @@ import static java.util.stream.Collectors.toList;
 @Value
 @EqualsAndHashCode(callSuper = false)
 public class KotlinVersionUpgrade extends UpgradeMigrationCard {
-    private static final String KOTLIN_SOURCES = KotlinVersionUpgrade.class.getName() + ".kotlinSources";
-
 
     @Option(displayName = "Target Kotlin version",
             description = "The target Kotlin version to upgrade to, in major.minor format.",
@@ -60,15 +59,11 @@ public class KotlinVersionUpgrade extends UpgradeMigrationCard {
 
     @Override
     public TreeVisitor<?, ExecutionContext> getVisitor() {
-        return Preconditions.check(Preconditions.or(new IsBuildGradle<>(), new IsMavenProject<>(), new IsKotlinSource()), new TreeVisitor<Tree, ExecutionContext>() {
+        return Preconditions.check(Preconditions.or(new IsBuildGradle<>(), new IsMavenProject<>()), new TreeVisitor<Tree, ExecutionContext>() {
             @Override
             public Tree preVisit(Tree tree, ExecutionContext ctx) {
                 stopAfterPreVisit();
-                if (!(tree instanceof SourceFile)) {
-                    return tree;
-                }
-                if (isKotlinSource((SourceFile) tree)) {
-                    ctx.putMessage(KOTLIN_SOURCES, true);
+                if (!(tree instanceof SourceFile) || !compilesKotlin((SourceFile) tree)) {
                     return tree;
                 }
                 int[] target = parseVersion(version);
@@ -97,26 +92,18 @@ public class KotlinVersionUpgrade extends UpgradeMigrationCard {
     }
 
     /**
-     * Java projects resolve {@code kotlin-stdlib} too, through libraries like OkHttp 4, so only a repository with
-     * Kotlin sources of its own reports the version it is on.
+     * Java projects resolve {@code kotlin-stdlib} too, through libraries like OkHttp 4, so only a build that
+     * compiles Kotlin of its own reports the version it is on.
      */
-    @Override
-    public void onComplete(ExecutionContext ctx) {
-        if (ctx.pollMessage(KOTLIN_SOURCES) == null) {
-            upgradesAndMigrations.discardBestRow(ctx, getInstanceName());
-        }
-        super.onComplete(ctx);
-    }
-
-    private static boolean isKotlinSource(SourceFile sourceFile) {
-        return sourceFile.getSourcePath().toString().endsWith(".kt");
-    }
-
-    private static class IsKotlinSource extends TreeVisitor<Tree, ExecutionContext> {
-        @Override
-        public @Nullable Tree visit(@Nullable Tree tree, ExecutionContext ctx) {
-            return tree instanceof SourceFile && isKotlinSource((SourceFile) tree) ? SearchResult.found(tree) : tree;
-        }
+    private static boolean compilesKotlin(SourceFile sourceFile) {
+        return sourceFile.getMarkers().findFirst(GradleProject.class)
+                       .filter(gp -> gp.getPlugins().stream()
+                               .anyMatch(p -> p.getFullyQualifiedClassName().startsWith("org.jetbrains.kotlin.gradle.plugin.")))
+                       .isPresent() ||
+               sourceFile.getMarkers().findFirst(MavenResolutionResult.class)
+                       .filter(mrr -> mrr.getPom().getPlugins().stream()
+                               .anyMatch(p -> "org.jetbrains.kotlin".equals(p.getGroupId()) && "kotlin-maven-plugin".equals(p.getArtifactId())))
+                       .isPresent();
     }
 
     static int[] parseVersion(String version) {

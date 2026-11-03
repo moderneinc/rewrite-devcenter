@@ -20,16 +20,24 @@ import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.Arguments;
 import org.junit.jupiter.params.provider.MethodSource;
+import org.openrewrite.gradle.marker.GradleDependencyConfiguration;
+import org.openrewrite.gradle.marker.GradlePluginDescriptor;
+import org.openrewrite.gradle.marker.GradleProject;
+import org.openrewrite.maven.tree.Dependency;
+import org.openrewrite.maven.tree.GroupArtifactVersion;
+import org.openrewrite.maven.tree.ResolvedDependency;
+import org.openrewrite.maven.tree.ResolvedGroupArtifactVersion;
 import org.openrewrite.test.RewriteTest;
 import org.openrewrite.test.SourceSpecs;
 
 import java.util.List;
+import java.util.Map;
 import java.util.stream.Stream;
 
 import static io.moderne.devcenter.KotlinVersionUpgrade.Measure.*;
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.openrewrite.gradle.Assertions.buildGradleKts;
 import static org.openrewrite.maven.Assertions.pomXml;
-import static org.openrewrite.test.SourceSpecs.text;
 
 class KotlinVersionUpgradeTest implements RewriteTest {
 
@@ -73,15 +81,23 @@ class KotlinVersionUpgradeTest implements RewriteTest {
                         <version>%s</version>
                     </dependency>
                 </dependencies>
+                <build>
+                    <plugins>
+                        <plugin>
+                            <groupId>org.jetbrains.kotlin</groupId>
+                            <artifactId>kotlin-maven-plugin</artifactId>
+                            <version>%<s</version>
+                        </plugin>
+                    </plugins>
+                </build>
               </project>
               """.formatted(currentVersion)
-          ),
-          kotlinSource()
+          )
         );
     }
 
     @Test
-    void skipsRepositoryWithoutKotlinSources() {
+    void skipsMavenProjectWithoutKotlinPlugin() {
         // A Java project resolves kotlin-stdlib through libraries like OkHttp 4, but has no Kotlin to upgrade
         rewriteRun(
           spec -> spec
@@ -104,14 +120,51 @@ class KotlinVersionUpgradeTest implements RewriteTest {
                 </dependencies>
               </project>
               """
-          ),
-          text("class A", spec -> spec.path("src/main/java/A.java")),
-          text("plugins { java }", spec -> spec.path("build.gradle.kts"))
+          )
         );
     }
 
-    private static SourceSpecs kotlinSource() {
-        return text("class A", spec -> spec.path("src/main/kotlin/A.kt"));
+    @Test
+    void detectsKotlinVersionOfGradleProjectWithKotlinPlugin() {
+        var recipe = new KotlinVersionUpgrade("2.1", null);
+        rewriteRun(
+          spec -> spec
+            .recipe(recipe)
+            .dataTable(UpgradesAndMigrations.Row.class, rows ->
+              assertThat(rows).containsExactly(
+                new UpgradesAndMigrations.Row("Move to Kotlin 2.1", recipe.ordinal(Kotlin18Plus), Kotlin18Plus.getName(), "1.9.24")
+              )),
+          buildGradleKtsWith(new GradlePluginDescriptor("org.jetbrains.kotlin.gradle.plugin.KotlinPluginWrapper", "org.jetbrains.kotlin.jvm"))
+        );
+    }
+
+    @Test
+    void skipsGradleProjectWithoutKotlinPlugin() {
+        rewriteRun(
+          spec -> spec
+            .recipe(new KotlinVersionUpgrade("2.1", null))
+            .afterRecipe(run -> assertThat(run.<UpgradesAndMigrations.Row>getDataTableRows(
+              UpgradesAndMigrations.class.getName(), UpgradesAndMigrations.GROUP)).isEmpty()),
+          buildGradleKtsWith(new GradlePluginDescriptor("org.gradle.api.plugins.JavaPlugin", "java"))
+        );
+    }
+
+    private static SourceSpecs buildGradleKtsWith(GradlePluginDescriptor plugin) {
+        ResolvedDependency kotlinStdlib = ResolvedDependency.builder()
+          .gav(new ResolvedGroupArtifactVersion(null, "org.jetbrains.kotlin", "kotlin-stdlib", "1.9.24", null))
+          .requested(Dependency.builder().gav(new GroupArtifactVersion("org.jetbrains.kotlin", "kotlin-stdlib", "1.9.24")).build())
+          .dependencies(List.of())
+          .build();
+        GradleProject project = GradleProject.builder()
+          .plugins(List.of(plugin))
+          .nameToConfiguration(Map.of("runtimeClasspath", GradleDependencyConfiguration.builder()
+            .name("runtimeClasspath")
+            .extendsFrom(List.of())
+            .requested(List.of())
+            .directResolved(List.of(kotlinStdlib))
+            .build()))
+          .build();
+        return buildGradleKts("", spec -> spec.markers(project));
     }
 
     private static Stream<Arguments> versionAndMeasures() {
