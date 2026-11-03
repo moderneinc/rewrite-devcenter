@@ -35,9 +35,10 @@ import static java.util.stream.Collectors.toList;
 @EqualsAndHashCode(callSuper = false)
 public class CSharpVersionUpgrade extends UpgradeMigrationCard {
 
-    // Matches modern TFMs: net5.0, net6.0, net7.0, net8.0, net9.0
+    // Matches modern TFMs: net5.0, net6.0, net7.0, net8.0, net9.0, including
+    // OS-specific ones like net8.0-windows or net6.0-windows10.0.19041.0
     private static final Pattern MODERN_TFM_PATTERN =
-            Pattern.compile("^net(\\d+)\\.\\d+$");
+            Pattern.compile("^net(\\d+)\\.\\d+(-.+)?$");
 
     // Matches .NET Core TFMs: netcoreapp2.1, netcoreapp3.1
     private static final Pattern CORE_TFM_PATTERN =
