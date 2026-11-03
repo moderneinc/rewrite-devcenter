@@ -18,7 +18,6 @@ package io.moderne.devcenter;
 import io.moderne.devcenter.table.SecurityIssues;
 import org.junit.jupiter.api.Test;
 import org.openrewrite.DocumentExample;
-import org.openrewrite.config.Environment;
 import org.openrewrite.test.RecipeSpec;
 import org.openrewrite.test.RewriteTest;
 
@@ -29,12 +28,8 @@ class ReportAsSecurityIssuesTest implements RewriteTest {
 
     @Override
     public void defaults(RecipeSpec spec) {
-        spec.recipe(Environment.builder()
-          .scanRuntimeClasspath("org.openrewrite")
-          .scanYamlResources()
-          .build()
-          // In src/main/resources/META-INF/rewrite/devcenter-starter.yml
-          .activateRecipes("io.moderne.devcenter.SecurityStarter"));
+        // In src/main/resources/META-INF/rewrite/devcenter-starter.yml
+        spec.recipeFromResources("io.moderne.devcenter.SecurityStarter");
     }
 
     @DocumentExample
