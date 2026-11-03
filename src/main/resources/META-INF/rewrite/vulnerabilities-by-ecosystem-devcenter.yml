@@ -72,7 +72,6 @@ recipeList:
       measure: RiskScore
       cardName: Java vulnerabilities
 
-  # Each ecosystem's check must run before its cards, which read its report
   - org.openrewrite.nodejs.security.DependencyVulnerabilityCheck:
       maximumUpgradeDelta: none
       transitiveFixStrategy: report
