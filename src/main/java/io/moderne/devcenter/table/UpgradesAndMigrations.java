@@ -104,6 +104,13 @@ public class UpgradesAndMigrations extends DataTable<UpgradesAndMigrations.Row> 
         return best == null ? Integer.MAX_VALUE : best.getOrdinal();
     }
 
+    /**
+     * Drops the best row recorded so far for {@code card}, so that {@link #flushBestRow} writes nothing for it.
+     */
+    public void discardBestRow(ExecutionContext ctx, String card) {
+        getBestRows(ctx).remove(card);
+    }
+
     public void flushBestRow(ExecutionContext ctx, String card) {
         Row best = getBestRows(ctx).remove(card);
         if (best != null) {

@@ -16,10 +16,12 @@
 package io.moderne.devcenter;
 
 import io.moderne.devcenter.table.UpgradesAndMigrations;
+import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.Arguments;
 import org.junit.jupiter.params.provider.MethodSource;
 import org.openrewrite.test.RewriteTest;
+import org.openrewrite.test.SourceSpecs;
 
 import java.util.List;
 import java.util.stream.Stream;
@@ -27,6 +29,7 @@ import java.util.stream.Stream;
 import static io.moderne.devcenter.KotlinVersionUpgrade.Measure.*;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.openrewrite.maven.Assertions.pomXml;
+import static org.openrewrite.test.SourceSpecs.text;
 
 class KotlinVersionUpgradeTest implements RewriteTest {
 
@@ -72,8 +75,43 @@ class KotlinVersionUpgradeTest implements RewriteTest {
                 </dependencies>
               </project>
               """.formatted(currentVersion)
-          )
+          ),
+          kotlinSource()
         );
+    }
+
+    @Test
+    void skipsRepositoryWithoutKotlinSources() {
+        // A Java project resolves kotlin-stdlib through libraries like OkHttp 4, but has no Kotlin to upgrade
+        rewriteRun(
+          spec -> spec
+            .recipe(new KotlinVersionUpgrade("2.1", null))
+            .afterRecipe(run -> assertThat(run.<UpgradesAndMigrations.Row>getDataTableRows(
+              UpgradesAndMigrations.class.getName(), UpgradesAndMigrations.GROUP)).isEmpty()),
+          //language=xml
+          pomXml(
+            """
+              <project>
+                <groupId>com.example</groupId>
+                <artifactId>example</artifactId>
+                <version>1.0-SNAPSHOT</version>
+                <dependencies>
+                    <dependency>
+                        <groupId>org.jetbrains.kotlin</groupId>
+                        <artifactId>kotlin-stdlib</artifactId>
+                        <version>1.9.24</version>
+                    </dependency>
+                </dependencies>
+              </project>
+              """
+          ),
+          text("class A", spec -> spec.path("src/main/java/A.java")),
+          text("plugins { java }", spec -> spec.path("build.gradle.kts"))
+        );
+    }
+
+    private static SourceSpecs kotlinSource() {
+        return text("class A", spec -> spec.path("src/main/kotlin/A.kt"));
     }
 
     private static Stream<Arguments> versionAndMeasures() {
