@@ -18,67 +18,60 @@ package io.moderne.devcenter;
 import io.moderne.devcenter.internal.VersionParts;
 import io.moderne.devcenter.table.UpgradesAndMigrations;
 import org.jspecify.annotations.Nullable;
-import org.openrewrite.semver.Semver;
 import org.openrewrite.semver.VersionComparator;
 
-import static java.util.Objects.requireNonNull;
-
+/**
+ * Measures how far a version is behind a target by comparing their major, minor and patch numbers. Qualifiers
+ * don't move a version past the number in front of them, so {@code 3.5.0-SNAPSHOT} is as far behind {@code 4.1.0}
+ * as {@code 3.5.0} is, and a pre-release of the target itself, such as {@code 4.1.0-RC1}, is a patch behind it.
+ */
 public class SemverRowBuilder {
     private final String cardName;
-    private long major;
-    private long minor;
-    private long patch;
-
-    private final VersionComparator majorComparator;
-    private final VersionComparator minorComparator;
-    private final VersionComparator patchComparator;
+    private final long[] target = new long[3];
 
     public SemverRowBuilder(String cardName, String version) {
         this.cardName = cardName;
-        parseTargetVersion(version);
-        this.majorComparator = comparator(0 + "-" + (major - 1) + ".999");
-        this.minorComparator = comparator(major + "-" + major + "." + (minor - 1) + ".999");
-        this.patchComparator = comparator((major + "." + minor + ".0") + "-" + (major + "." + minor + "." + (patch - 1)));
-    }
-
-    private static VersionComparator comparator(String selector) {
-        return requireNonNull(Semver.validate(selector, null).getValue());
-    }
-
-    private void parseTargetVersion(String version) {
-        @Nullable Long[] numericParts = VersionParts.numeric(version);
-        for (int i = 0; i < numericParts.length; i++) {
-            Long part = numericParts[i];
-            if (part == null) {
-                return;
-            }
-            switch (i) {
-                case 0:
-                    this.major = part.intValue();
-                    break;
-                case 1:
-                    this.minor = part.intValue();
-                    break;
-                case 2:
-                    this.patch = part.intValue();
-                    return;
-                default:
-                    return;
-            }
-        }
+        numbers(version, target);
     }
 
     public UpgradesAndMigrations.Row getRow(String v) {
-        if (majorComparator.isValid(null, v)) {
-            return new UpgradesAndMigrations.Row(cardName, SemverMeasure.Major.ordinal(), SemverMeasure.Major.toString(), v);
-        }
-        if (minorComparator.isValid(null, v)) {
-            return new UpgradesAndMigrations.Row(cardName, SemverMeasure.Minor.ordinal(), SemverMeasure.Minor.toString(), v);
-        }
-        if (patchComparator.isValid(null, v)) {
-            return new UpgradesAndMigrations.Row(cardName, SemverMeasure.Patch.ordinal(), SemverMeasure.Patch.toString(), v);
-        }
+        SemverMeasure measure = measure(v);
+        return new UpgradesAndMigrations.Row(cardName, measure.ordinal(), measure.toString(), v);
+    }
 
-        return new UpgradesAndMigrations.Row(cardName, SemverMeasure.Completed.ordinal(), SemverMeasure.Completed.toString(), v);
+    private SemverMeasure measure(String v) {
+        long[] actual = new long[3];
+        if (!numbers(v, actual)) {
+            // Nothing to compare, such as an unresolved property
+            return SemverMeasure.Completed;
+        }
+        SemverMeasure[] behind = {SemverMeasure.Major, SemverMeasure.Minor, SemverMeasure.Patch};
+        for (int i = 0; i < actual.length; i++) {
+            if (actual[i] < target[i]) {
+                return behind[i];
+            }
+            if (actual[i] > target[i]) {
+                return SemverMeasure.Completed;
+            }
+        }
+        return VersionComparator.PRE_RELEASE_ENDING.matcher(v).find() ? SemverMeasure.Patch : SemverMeasure.Completed;
+    }
+
+    /**
+     * Fills {@code numbers} with the major, minor and patch numbers at the start of {@code version}, leaving those
+     * it doesn't have at zero.
+     *
+     * @return false when {@code version} doesn't start with a number.
+     */
+    private static boolean numbers(String version, long[] numbers) {
+        @Nullable Long[] parts = VersionParts.numeric(version);
+        for (int i = 0; i < numbers.length && i < parts.length; i++) {
+            Long part = parts[i];
+            if (part == null) {
+                break;
+            }
+            numbers[i] = part;
+        }
+        return parts.length > 0 && parts[0] != null;
     }
 }
