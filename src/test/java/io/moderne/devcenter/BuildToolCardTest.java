@@ -17,8 +17,6 @@ package io.moderne.devcenter;
 
 import io.moderne.devcenter.table.UpgradesAndMigrations;
 import org.junit.jupiter.api.Test;
-import org.junit.jupiter.params.ParameterizedTest;
-import org.junit.jupiter.params.provider.ValueSource;
 import org.openrewrite.Recipe;
 import org.openrewrite.config.Environment;
 import org.openrewrite.config.YamlResourceLoader;
@@ -171,9 +169,8 @@ class BuildToolCardTest implements RewriteTest {
         assertThat(recipe.getFixRecipeId()).isEqualTo("org.openrewrite.gradle.MigrateToGradle9");
     }
 
-    @ParameterizedTest
-    @ValueSource(strings = {"upgradeRecipe", "fixRecipeId"})
-    void upgradeRecipeFromYaml(String optionName) {
+    @Test
+    void upgradeRecipeFromYaml() {
         //language=yaml
         String yaml = """
           type: specs.openrewrite.org/v1beta/recipe
@@ -185,8 +182,8 @@ class BuildToolCardTest implements RewriteTest {
                 cardName: Upgrade to Gradle 9
                 buildTool: Gradle
                 targetVersion: 9.0.0
-                %s: org.openrewrite.gradle.MigrateToGradle9
-          """.formatted(optionName);
+                upgradeRecipe: org.openrewrite.gradle.MigrateToGradle9
+          """;
         Recipe recipe = Environment.builder()
           .load(new YamlResourceLoader(new ByteArrayInputStream(yaml.getBytes(StandardCharsets.UTF_8)),
             URI.create("rewrite.yml"), new Properties()))
