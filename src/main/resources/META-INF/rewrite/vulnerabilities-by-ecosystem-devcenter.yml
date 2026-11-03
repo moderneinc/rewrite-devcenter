@@ -64,40 +64,40 @@ recipeList:
   # Java cards scan Maven and Gradle dependencies themselves
   - io.moderne.devcenter.DependencyVulnerabilityCheck:
       measure: Severity
-      cardName: Java vulnerabilities by Severity
+      cardName: Java vulnerabilities
   - io.moderne.devcenter.DependencyVulnerabilityCheck:
       measure: UpgradeDelta
-      cardName: Java vulnerabilities by UpgradeDelta
+      cardName: Java vulnerabilities
   - io.moderne.devcenter.DependencyVulnerabilityCheck:
       measure: RiskScore
-      cardName: Java vulnerabilities by RiskScore
+      cardName: Java vulnerabilities
 
   # Each ecosystem's check must run before its cards, which read its report
   - org.openrewrite.nodejs.security.DependencyVulnerabilityCheck:
       maximumUpgradeDelta: none
       transitiveFixStrategy: report
-  - io.moderne.devcenter.EcosystemVulnerabilityCheck:
+  - io.moderne.devcenter.PackageVulnerabilityCheck:
       ecosystem: Npm
       measure: Severity
-  - io.moderne.devcenter.EcosystemVulnerabilityCheck:
+  - io.moderne.devcenter.PackageVulnerabilityCheck:
       ecosystem: Npm
       measure: UpgradeDelta
 
   - org.openrewrite.python.dependencies.DependencyVulnerabilityCheck:
       maximumUpgradeDelta: none
-  - io.moderne.devcenter.EcosystemVulnerabilityCheck:
+  - io.moderne.devcenter.PackageVulnerabilityCheck:
       ecosystem: PyPI
       measure: Severity
-  - io.moderne.devcenter.EcosystemVulnerabilityCheck:
+  - io.moderne.devcenter.PackageVulnerabilityCheck:
       ecosystem: PyPI
       measure: UpgradeDelta
 
   # The NuGet check has no report-only mode, so the run also computes NuGet upgrades
   - org.openrewrite.csharp.dependencies.DependencyVulnerabilityCheck
-  - io.moderne.devcenter.EcosystemVulnerabilityCheck:
+  - io.moderne.devcenter.PackageVulnerabilityCheck:
       ecosystem: NuGet
       measure: Severity
-  - io.moderne.devcenter.EcosystemVulnerabilityCheck:
+  - io.moderne.devcenter.PackageVulnerabilityCheck:
       ecosystem: NuGet
       measure: UpgradeDelta
 
