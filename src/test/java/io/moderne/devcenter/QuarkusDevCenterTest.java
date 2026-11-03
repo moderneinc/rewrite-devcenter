@@ -17,8 +17,6 @@ package io.moderne.devcenter;
 
 import io.moderne.devcenter.table.UpgradesAndMigrations;
 import org.junit.jupiter.api.Test;
-import org.openrewrite.Recipe;
-import org.openrewrite.config.Environment;
 import org.openrewrite.test.RewriteTest;
 
 import static org.assertj.core.api.Assertions.assertThat;
@@ -26,23 +24,12 @@ import static org.openrewrite.maven.Assertions.pomXml;
 
 class QuarkusDevCenterTest implements RewriteTest {
 
-    private static Recipe quarkusVersionCard() {
-        Recipe devCenter = Environment.builder()
-          .scanRuntimeClasspath("io.moderne.devcenter")
-          .build()
-          .activateRecipes("io.moderne.devcenter.QuarkusDevCenter");
-        return devCenter.getRecipeList().stream()
-          .filter(r -> r instanceof LibraryUpgrade && "Move to Quarkus 4.0".equals(((LibraryUpgrade) r).getCardName()))
-          .findFirst()
-          .orElseThrow();
-    }
-
     @Test
     void measuresTheQuarkusPlatformVersion() {
         // quarkus-core 3.3.1 brings io.quarkus:quarkus-fs-util 0.0.9, which has a version line of its own
         rewriteRun(
           spec -> spec
-            .recipe(quarkusVersionCard())
+            .recipeFromResources("io.moderne.devcenter.QuarkusDevCenter")
             .dataTable(UpgradesAndMigrations.Row.class, rows -> assertThat(rows).containsExactly(
               new UpgradesAndMigrations.Row("Move to Quarkus 4.0", SemverMeasure.Major.ordinal(), SemverMeasure.Major.toString(), "3.3.1")
             )),
