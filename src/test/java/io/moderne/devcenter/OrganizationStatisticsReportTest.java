@@ -34,14 +34,13 @@ import static org.openrewrite.java.Assertions.java;
 
 class OrganizationStatisticsReportTest implements RewriteTest {
 
-    private final Recipe report = Environment.builder()
-      .scanRuntimeClasspath("org.openrewrite")
-      .scanYamlResources()
-      .build()
-      .activateRecipes("io.moderne.devcenter.OrganizationStatisticsReport");
-
     @Test
     void isNotADevCenter() {
+        Recipe report = Environment.builder()
+          .scanRuntimeClasspath("org.openrewrite")
+          .scanYamlResources()
+          .build()
+          .activateRecipes("io.moderne.devcenter.OrganizationStatisticsReport");
         assertThat(DevCenter.isDevCenter(report.getDescriptor())).isFalse();
     }
 
@@ -58,7 +57,7 @@ class OrganizationStatisticsReportTest implements RewriteTest {
         var committers = new ArrayList<DistinctCommitters.Row>();
         rewriteRun(
           spec -> spec
-            .recipe(report)
+            .recipeFromResources("io.moderne.devcenter.OrganizationStatisticsReport")
             .dataTable(OrganizationStatistics.Row.class, lineCounts::addAll)
             .dataTable(DistinctCommitters.Row.class, committers::addAll),
           java(
