@@ -67,7 +67,9 @@ class NodeVersionUpgradeTest implements RewriteTest {
           Arguments.of(26, "^14.17.0 || >=16.0.0", 14, Node14Plus),
           Arguments.of(26, ">=18 <21", 18, Node18Plus),
           Arguments.of(26, ">= 22.x", 22, Node22Plus),
-          Arguments.of(26, "20.19.6", 20, Node20Plus)
+          Arguments.of(26, "20.19.6", 20, Node20Plus),
+          // An alternative with no lower bound doesn't hide the others
+          Arguments.of(26, "^22.2.0 || ^24 || <=26.2", 22, Node22Plus)
         );
     }
 

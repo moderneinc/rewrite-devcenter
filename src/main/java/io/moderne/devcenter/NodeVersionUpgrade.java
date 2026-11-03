@@ -100,16 +100,21 @@ public class NodeVersionUpgrade extends UpgradeMigrationCard {
     }
 
     /**
-     * @return the major version of the lowest Node.js release the constraint admits, across all of its {@code ||}
-     * alternatives, or -1 when it isn't a range or has no lower bound, like {@code *} or {@code <=16}.
+     * @return the major version of the lowest Node.js release the constraint admits, across those of its {@code ||}
+     * alternatives that have a lower bound, or -1 when none has one, like {@code *} or {@code <=16}.
      */
     static int parseMajorVersion(String nodeConstraint) {
-        String lowerBound = PackageDependencies.npmLowerBound(nodeConstraint.trim());
-        if (lowerBound == null) {
-            return -1;
+        int lowest = -1;
+        for (String alternative : nodeConstraint.split("\\|\\|")) {
+            String lowerBound = PackageDependencies.npmLowerBound(alternative.trim());
+            if (lowerBound != null) {
+                @Nullable Long[] parts = VersionParts.numeric(lowerBound);
+                if (parts.length > 0 && parts[0] != null && (lowest < 0 || parts[0] < lowest)) {
+                    lowest = parts[0].intValue();
+                }
+            }
         }
-        @Nullable Long[] parts = VersionParts.numeric(lowerBound);
-        return parts.length == 0 || parts[0] == null ? -1 : parts[0].intValue();
+        return lowest;
     }
 
     @Override
