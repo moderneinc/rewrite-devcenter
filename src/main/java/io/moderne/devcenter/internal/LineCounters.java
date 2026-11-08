@@ -86,14 +86,23 @@ public final class LineCounters {
     }
 
     static boolean supports(Class<?> type) {
-        return SUPPORTED.contains(type.getName());
+        return SUPPORTED.contains(sourceTypeName(type));
+    }
+
+    private static String sourceTypeName(Class<?> type) {
+        for (Class<?> current = type; current != null; current = current.getSuperclass()) {
+            if (SUPPORTED.contains(current.getName())) {
+                return current.getName();
+            }
+        }
+        return type.getName();
     }
 
     /**
      * @return the number of lines, or 0 for a source file that isn't {@link #supports(SourceFile) supported}.
      */
     public static long count(SourceFile sourceFile) {
-        switch (sourceFile.getClass().getName()) {
+        switch (sourceTypeName(sourceFile.getClass())) {
             case "org.openrewrite.java.tree.J$CompilationUnit":
                 return JavaLineCounter.count((J.CompilationUnit) sourceFile);
             case "org.openrewrite.kotlin.tree.K$CompilationUnit":

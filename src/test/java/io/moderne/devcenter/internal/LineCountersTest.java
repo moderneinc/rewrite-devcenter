@@ -19,6 +19,7 @@ import io.github.classgraph.ClassGraph;
 import io.github.classgraph.ClassInfo;
 import io.github.classgraph.ScanResult;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.io.TempDir;
 import org.openrewrite.Parser;
 import org.openrewrite.SourceFile;
 import org.openrewrite.binary.Binary;
@@ -54,9 +55,15 @@ import org.openrewrite.xml.tree.Xml;
 import org.openrewrite.yaml.YamlParser;
 import org.openrewrite.yaml.tree.Yaml;
 
+import java.net.URL;
+import java.net.URLClassLoader;
+import java.nio.file.Files;
+import java.nio.file.Path;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
+
+import javax.tools.ToolProvider;
 
 import static io.moderne.devcenter.internal.LineCountAssertions.assertCountMatchesSource;
 import static org.assertj.core.api.Assertions.assertThat;
@@ -75,6 +82,23 @@ class LineCountersTest {
               .toList();
             assertThat(uncounted).isEmpty();
         }
+    }
+
+    @Test
+    void supportsLazySubclassesWithoutLoadingLanguageModules(@TempDir Path temp) throws Exception {
+        // Isolated stand-ins let this test model a definalized V3 tree without depending on the CLI.
+        Path base = temp.resolve("org/openrewrite/text/PlainText.java");
+        Files.createDirectories(base.getParent());
+        Files.writeString(base, "package org.openrewrite.text; public class PlainText {}");
+        Path proxy = temp.resolve("LazyText.java");
+        Files.writeString(proxy, "public class LazyText extends org.openrewrite.text.PlainText {}");
+        assertThat(ToolProvider.getSystemJavaCompiler().run(null, null, null,
+          "-d", temp.toString(), base.toString(), proxy.toString())).isZero();
+        try (URLClassLoader loader = new URLClassLoader(new URL[] {temp.toUri().toURL()}, null)) {
+            assertThat(LineCounters.supports(loader.loadClass("org.openrewrite.text.PlainText"))).isTrue();
+            assertThat(LineCounters.supports(loader.loadClass("LazyText"))).isTrue();
+        }
+        assertThat(LineCounters.supports(Object.class)).isFalse();
     }
 
     @Test
