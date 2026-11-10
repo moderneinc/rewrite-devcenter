@@ -165,8 +165,8 @@ class BuildToolCardTest implements RewriteTest {
 
     @Test
     void argFixRecipe() {
-        var recipe = new BuildToolCard("Upgrade to Gradle 9", "Gradle", "9.0.0", "org.openrewrite.gradle.MigrateToGradle9");
-        assertThat(recipe.getFixRecipeId()).isEqualTo("org.openrewrite.gradle.MigrateToGradle9");
+        var recipe = new BuildToolCard("Upgrade to Gradle 9", "Gradle", "9.0.0", "org.openrewrite.gradle.migrate.MigrateToGradle9");
+        assertThat(recipe.getFixRecipeId()).isEqualTo("org.openrewrite.gradle.migrate.MigrateToGradle9");
     }
 
     @Test
@@ -182,7 +182,7 @@ class BuildToolCardTest implements RewriteTest {
                 cardName: Upgrade to Gradle 9
                 buildTool: Gradle
                 targetVersion: 9.0.0
-                upgradeRecipe: org.openrewrite.gradle.MigrateToGradle9
+                upgradeRecipe: org.openrewrite.gradle.migrate.MigrateToGradle9
           """;
         Recipe recipe = Environment.builder()
           .load(new YamlResourceLoader(new ByteArrayInputStream(yaml.getBytes(StandardCharsets.UTF_8)),
@@ -192,6 +192,6 @@ class BuildToolCardTest implements RewriteTest {
         assertThat(new DevCenter(recipe).getUpgradesAndMigrations())
           .singleElement()
           .extracting(DevCenter.Card::getFixRecipeId)
-          .isEqualTo("org.openrewrite.gradle.MigrateToGradle9");
+          .isEqualTo("org.openrewrite.gradle.migrate.MigrateToGradle9");
     }
 }

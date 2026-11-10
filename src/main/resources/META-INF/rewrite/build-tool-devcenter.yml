@@ -23,7 +23,7 @@ description: |-
 
   **Upgrade to Gradle 9**<br/>
   The Gradle version each repository builds with, compared to 9.0.0.<br/><img src="data:image/svg+xml;base64,PHN2ZyB4bWxucz0naHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmcnIHdpZHRoPScyODAnIGhlaWdodD0nOCc+PHJlY3QgeD0nMCcgd2lkdGg9JzY4JyBoZWlnaHQ9JzgnIHJ4PScyJyBmaWxsPScjRkY2RjYxJy8+PHJlY3QgeD0nNzAnIHdpZHRoPSc2OScgaGVpZ2h0PSc4JyByeD0nMicgZmlsbD0nI0ZGOUI0OCcvPjxyZWN0IHg9JzE0MScgd2lkdGg9JzY5JyBoZWlnaHQ9JzgnIHJ4PScyJyBmaWxsPScjRkZDMDQ1Jy8+PHJlY3QgeD0nMjEyJyB3aWR0aD0nNjgnIGhlaWdodD0nOCcgcng9JzInIGZpbGw9JyMzMEYyODQnLz48L3N2Zz4=" alt="Major to Completed" /><br/>
-  `Major` → `Minor` → `Patch` → `Completed` · fix with [`MigrateToGradle9`](https://codegenomeproject.org/recipes/org.openrewrite.gradle.MigrateToGradle9)
+  `Major` → `Minor` → `Patch` → `Completed` · fix with [`MigrateToGradle9`](https://codegenomeproject.org/recipes/org.openrewrite.gradle.migrate.MigrateToGradle9)
 
   **Upgrade to Maven 4**<br/>
   The Maven version each repository builds with, compared to 4.0.0.<br/><img src="data:image/svg+xml;base64,PHN2ZyB4bWxucz0naHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmcnIHdpZHRoPScyODAnIGhlaWdodD0nOCc+PHJlY3QgeD0nMCcgd2lkdGg9JzY4JyBoZWlnaHQ9JzgnIHJ4PScyJyBmaWxsPScjRkY2RjYxJy8+PHJlY3QgeD0nNzAnIHdpZHRoPSc2OScgaGVpZ2h0PSc4JyByeD0nMicgZmlsbD0nI0ZGOUI0OCcvPjxyZWN0IHg9JzE0MScgd2lkdGg9JzY5JyBoZWlnaHQ9JzgnIHJ4PScyJyBmaWxsPScjRkZDMDQ1Jy8+PHJlY3QgeD0nMjEyJyB3aWR0aD0nNjgnIGhlaWdodD0nOCcgcng9JzInIGZpbGw9JyMzMEYyODQnLz48L3N2Zz4=" alt="Major to Completed" /><br/>
@@ -41,7 +41,7 @@ recipeList:
       cardName: Upgrade to Gradle 9
       buildTool: Gradle
       targetVersion: 9.0.0
-      upgradeRecipe: org.openrewrite.gradle.MigrateToGradle9
+      upgradeRecipe: org.openrewrite.gradle.migrate.MigrateToGradle9
   - io.moderne.devcenter.BuildToolCard:
       cardName: Upgrade to Maven 4
       buildTool: Maven
