@@ -45,7 +45,7 @@ public class BuildToolCard extends UpgradeMigrationCard {
 
     @Option(displayName = "Upgrade recipe",
             description = "The recipe to use to upgrade the build tool.",
-            example = "org.openrewrite.gradle.MigrateToGradle9",
+            example = "org.openrewrite.gradle.migrate.MigrateToGradle9",
             required = false)
     @Nullable
     String upgradeRecipe;
