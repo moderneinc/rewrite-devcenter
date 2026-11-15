@@ -37,9 +37,7 @@ import org.openrewrite.marker.SearchResult;
 
 import java.util.List;
 
-import static io.moderne.devcenter.internal.LineCountAssertions.assertCountMatchesSource;
-import static io.moderne.devcenter.internal.LineCountAssertions.assertMarkersNotCounted;
-import static io.moderne.devcenter.internal.LineCountAssertions.assertParsedCountsMatchSource;
+import static io.moderne.devcenter.internal.LineCountAssertions.*;
 import static org.openrewrite.Tree.randomId;
 
 class JavaLineCounterTest {

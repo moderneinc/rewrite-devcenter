@@ -224,9 +224,7 @@ class BucketedMetricCardTest implements RewriteTest {
             tuple("HIGH", 2));
     }
 
-    /**
-     * Test-only data table used to exercise {@link BucketedMetricCard}.
-     */
+    /// Test-only data table used to exercise [BucketedMetricCard].
     public static class LcomTable extends DataTable<LcomTable.Row> {
         public LcomTable(Recipe recipe) {
             super(recipe, "Lack of cohesion", "Per-class LCOM4 values.");
@@ -239,9 +237,7 @@ class BucketedMetricCardTest implements RewriteTest {
         }
     }
 
-    /**
-     * Test-only recipe that pushes a fixed series of doubles into {@link LcomTable}.
-     */
+    /// Test-only recipe that pushes a fixed series of doubles into [LcomTable].
     @EqualsAndHashCode(callSuper = false)
     @Value
     public static class EmitLcomValues extends Recipe {

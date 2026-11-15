@@ -27,9 +27,7 @@ import org.openrewrite.marker.SearchResult;
 
 import java.util.Optional;
 
-import static io.moderne.devcenter.internal.LineCountAssertions.assertCountMatchesSource;
-import static io.moderne.devcenter.internal.LineCountAssertions.assertParsedCountsMatchSource;
-import static io.moderne.devcenter.internal.LineCountAssertions.sanitizedPrint;
+import static io.moderne.devcenter.internal.LineCountAssertions.*;
 import static org.assertj.core.api.Assertions.assertThat;
 
 class GroovyLineCounterTest {

@@ -172,7 +172,7 @@ class BuildToolCardTest implements RewriteTest {
     @Test
     void upgradeRecipeFromYaml() {
         //language=yaml
-        String yaml = """
+        var yaml = """
           type: specs.openrewrite.org/v1beta/recipe
           name: io.moderne.devcenter.GradleDevCenter
           displayName: Gradle DevCenter

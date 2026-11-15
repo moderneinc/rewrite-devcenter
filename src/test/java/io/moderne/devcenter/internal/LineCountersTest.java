@@ -62,7 +62,6 @@ import java.nio.file.Path;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
-
 import javax.tools.ToolProvider;
 
 import static io.moderne.devcenter.internal.LineCountAssertions.assertCountMatchesSource;
