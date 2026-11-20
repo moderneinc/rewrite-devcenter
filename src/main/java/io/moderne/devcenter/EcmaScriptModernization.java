@@ -41,7 +41,7 @@ public class EcmaScriptModernization extends UpgradeMigrationCard {
 
     @Option(displayName = "Upgrade recipe",
             description = "The recipe to use to upgrade.",
-            example = "org.openrewrite.javascript.migrate.es6.ModernizeToES6",
+            example = "io.moderne.javascript.migrate.es6.ModernizeToES6",
             required = false)
     @Nullable
     String upgradeRecipe;
