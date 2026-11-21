@@ -103,7 +103,7 @@ class KotlinVersionUpgradeTest implements RewriteTest {
           spec -> spec
             .recipe(new KotlinVersionUpgrade("2.1", null))
             .afterRecipe(run -> assertThat(run.<UpgradesAndMigrations.Row>getDataTableRows(
-              UpgradesAndMigrations.class.getName(), UpgradesAndMigrations.GROUP)).isEmpty()),
+              UpgradesAndMigrations.class, UpgradesAndMigrations.GROUP)).isEmpty()),
           //language=xml
           pomXml(
             """
@@ -144,7 +144,7 @@ class KotlinVersionUpgradeTest implements RewriteTest {
           spec -> spec
             .recipe(new KotlinVersionUpgrade("2.1", null))
             .afterRecipe(run -> assertThat(run.<UpgradesAndMigrations.Row>getDataTableRows(
-              UpgradesAndMigrations.class.getName(), UpgradesAndMigrations.GROUP)).isEmpty()),
+              UpgradesAndMigrations.class, UpgradesAndMigrations.GROUP)).isEmpty()),
           buildGradleKtsWith(new GradlePluginDescriptor("org.gradle.api.plugins.JavaPlugin", "java"))
         );
     }

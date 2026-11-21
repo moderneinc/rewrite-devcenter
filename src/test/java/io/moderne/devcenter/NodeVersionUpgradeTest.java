@@ -118,7 +118,7 @@ class NodeVersionUpgradeTest implements RewriteTest {
           spec -> spec
             .recipe(new NodeVersionUpgrade(26, null))
             .afterRecipe(run -> assertThat(run.<UpgradesAndMigrations.Row>getDataTableRows(
-              UpgradesAndMigrations.class.getName(), UpgradesAndMigrations.GROUP)).isEmpty()),
+              UpgradesAndMigrations.class, UpgradesAndMigrations.GROUP)).isEmpty()),
           java(
             "class Test {}",
             spec -> spec.markers(nodeMarker(nodeConstraint))
