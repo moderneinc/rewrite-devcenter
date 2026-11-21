@@ -180,7 +180,7 @@ class BucketedMetricCardTest implements RewriteTest {
           spec -> spec
             .recipeFromYaml(pipelineYaml("AVERAGE", "[]"), CARD_RECIPE_NAME)
             .afterRecipe(run -> assertThat(run.<UpgradesAndMigrations.Row>getDataTableRows(
-              "io.moderne.devcenter.table.UpgradesAndMigrations",
+              UpgradesAndMigrations.class,
               "io.moderne.devcenter.upgradesAndMigrations"))
               .isEmpty()),
           //language=java
