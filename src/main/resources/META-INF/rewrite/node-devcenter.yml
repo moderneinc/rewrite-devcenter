@@ -28,7 +28,7 @@ description: |-
 
   **Move to ECMAScript 6**<br/>
   The share of JavaScript and TypeScript variable declarations that still use `var`.<br/><img src="data:image/svg+xml;base64,PHN2ZyB4bWxucz0naHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmcnIHdpZHRoPScyODAnIGhlaWdodD0nOCc+PHJlY3QgeD0nMCcgd2lkdGg9JzY4JyBoZWlnaHQ9JzgnIHJ4PScyJyBmaWxsPScjRkY2RjYxJy8+PHJlY3QgeD0nNzAnIHdpZHRoPSc2OScgaGVpZ2h0PSc4JyByeD0nMicgZmlsbD0nI0ZGOUI0OCcvPjxyZWN0IHg9JzE0MScgd2lkdGg9JzY5JyBoZWlnaHQ9JzgnIHJ4PScyJyBmaWxsPScjRkZDMDQ1Jy8+PHJlY3QgeD0nMjEyJyB3aWR0aD0nNjgnIGhlaWdodD0nOCcgcng9JzInIGZpbGw9JyMzMEYyODQnLz48L3N2Zz4=" alt="Mostly var to Completed" /><br/>
-  `Mostly var` → `Partly var` → `Little var` → `Completed` · fix with [`ModernizeToES6`](https://codegenomeproject.org/recipes/org.openrewrite.javascript.migrate.es6.ModernizeToES6)
+  `Mostly var` → `Partly var` → `Little var` → `Completed` · fix with [`ModernizeToES6`](https://codegenomeproject.org/recipes/io.moderne.javascript.migrate.es6.ModernizeToES6)
 
   The DevCenter also counts lines of code per repository and committers active in the last 90 days. See the [DevCenter documentation](https://docs.moderne.io/administrator-documentation/moderne-platform/how-to-guides/recipe-based-devcenter/) to customize.
 recipeList:
@@ -36,6 +36,6 @@ recipeList:
       majorVersion: 26
       upgradeRecipe: org.openrewrite.node.migrate.upgrade-node-26
   - io.moderne.devcenter.EcmaScriptModernization:
-      upgradeRecipe: org.openrewrite.javascript.migrate.es6.ModernizeToES6
+      upgradeRecipe: io.moderne.javascript.migrate.es6.ModernizeToES6
   - io.moderne.devcenter.FindOrganizationStatistics
   - io.moderne.devcenter.FindActiveCommitters
