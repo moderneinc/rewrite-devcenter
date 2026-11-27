@@ -73,6 +73,10 @@ dependencies {
     testImplementation("de.siegmar:fastcsv:3.+")
     testImplementation("io.github.classgraph:classgraph:4.+")
     testRuntimeOnly("junit:junit:4.+")
+    // Provide the Sonar rule recipes that sonar-devcenter.yml refers to by name
+    testRuntimeOnly("org.openrewrite.recipe:rewrite-static-analysis:${rewriteVersion}")
+    testRuntimeOnly("org.openrewrite.recipe:rewrite-testing-frameworks:${rewriteVersion}")
+    testRuntimeOnly("org.openrewrite.recipe:rewrite-migrate-java:${rewriteVersion}")
 }
 
 tasks.withType<Test> {

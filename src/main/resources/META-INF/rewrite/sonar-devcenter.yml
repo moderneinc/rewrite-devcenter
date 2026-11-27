@@ -1,0 +1,109 @@
+#
+# Copyright 2026 the original author or authors.
+# <p>
+# Licensed under the Moderne Source Available License (the "License");
+# you may not use this file except in compliance with the License.
+# You may obtain a copy of the License at
+# <p>
+# https://docs.moderne.io/licensing/moderne-source-available-license
+# <p>
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an "AS IS" BASIS,
+# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+# See the License for the specific language governing permissions and
+# limitations under the License.
+#
+
+---
+type: specs.openrewrite.org/v1beta/recipe
+name: io.moderne.devcenter.SonarDevCenter
+displayName: Sonar DevCenter
+description: |-
+  A DevCenter that counts the Sonar issues the Sonar rule recipes of rewrite-static-analysis,
+  rewrite-testing-frameworks and rewrite-migrate-java find and fix, by Sonar severity.
+
+  **Sonar issues by severity**<br/>
+  Issue occurrences per Sonar severity, counted across all repositories.<br/><img src="data:image/svg+xml;base64,PHN2ZyB4bWxucz0naHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmcnIHdpZHRoPScyODAnIGhlaWdodD0nOCc+PHJlY3QgeD0nMCcgd2lkdGg9JzU0JyBoZWlnaHQ9JzgnIHJ4PScyJyBmaWxsPScjRkY2RjYxJy8+PHJlY3QgeD0nNTYnIHdpZHRoPSc1NScgaGVpZ2h0PSc4JyByeD0nMicgZmlsbD0nI0ZGOEY1MicvPjxyZWN0IHg9JzExMycgd2lkdGg9JzU0JyBoZWlnaHQ9JzgnIHJ4PScyJyBmaWxsPScjRkZBODNEJy8+PHJlY3QgeD0nMTY5JyB3aWR0aD0nNTUnIGhlaWdodD0nOCcgcng9JzInIGZpbGw9JyNGRkQzNEQnLz48cmVjdCB4PScyMjYnIHdpZHRoPSc1NCcgaGVpZ2h0PSc4JyByeD0nMicgZmlsbD0nIzhkOTlmZicvPjwvc3ZnPg==" alt="5 severities" /><br/>
+  `Sonar blocker issues` · `Sonar critical issues` · `Sonar major issues` · `Sonar minor issues` · `Sonar info issues` · fix with [`FixSonarIssues`](https://codegenomeproject.org/recipes/io.moderne.devcenter.FixSonarIssues)
+
+  A few recipes cover Sonar rules of more than one severity, such as `HiddenField` (blocker and major). The
+  severities run from blocker to info, so such an issue is counted once, under the highest severity it has.
+  The fix applies every Sonar rule at once. To fix one severity at a time, run that severity's recipe instead.
+
+  The DevCenter also counts lines of code per repository and committers active in the last 90 days. A DevCenter
+  holds one security card, so this one is a DevCenter of its own, separate from the starter DevCenter and its OWASP
+  top ten card. See the [DevCenter documentation](https://docs.moderne.io/administrator-documentation/moderne-platform/how-to-guides/recipe-based-devcenter/) to customize.
+recipeList:
+  - io.moderne.devcenter.SonarIssues
+  - io.moderne.devcenter.FindOrganizationStatistics
+  - io.moderne.devcenter.FindActiveCommitters
+---
+type: specs.openrewrite.org/v1beta/recipe
+name: io.moderne.devcenter.SonarIssues
+displayName: Sonar issues by severity
+description: >-
+  Issue occurrences per Sonar severity, counted across all repositories. Each severity collects the Sonar rule
+  recipes of rewrite-static-analysis, rewrite-testing-frameworks and rewrite-migrate-java for that severity. A
+  recipe that covers Sonar rules of more than one severity is counted under the highest of them, which runs first.
+recipeList:
+  # Changes made by recipes above this one in the recipe list are reported as occurrences
+  # in the Security DevCenter card, one measure per recipe, in this order.
+  - io.moderne.devcenter.SonarBlocker
+  - io.moderne.devcenter.SonarCritical
+  - io.moderne.devcenter.SonarMajor
+  - io.moderne.devcenter.SonarMinor
+  - io.moderne.devcenter.SonarInfo
+  - io.moderne.devcenter.ReportAsSecurityIssues:
+      fixRecipe: io.moderne.devcenter.FixSonarIssues
+---
+type: specs.openrewrite.org/v1beta/recipe
+name: io.moderne.devcenter.SonarBlocker
+displayName: Sonar blocker issues
+description: Sonar rules of blocker severity.
+recipeList:
+  - org.openrewrite.staticanalysis.sonar.Blocker
+  - org.openrewrite.java.testing.sonar.Blocker
+  - org.openrewrite.java.migrate.sonar.Blocker
+---
+type: specs.openrewrite.org/v1beta/recipe
+name: io.moderne.devcenter.SonarCritical
+displayName: Sonar critical issues
+description: Sonar rules of critical severity.
+recipeList:
+  - org.openrewrite.staticanalysis.sonar.Critical
+  - org.openrewrite.java.testing.sonar.Critical
+---
+type: specs.openrewrite.org/v1beta/recipe
+name: io.moderne.devcenter.SonarMajor
+displayName: Sonar major issues
+description: Sonar rules of major severity.
+recipeList:
+  - org.openrewrite.staticanalysis.sonar.Major
+  - org.openrewrite.java.testing.sonar.Major
+  - org.openrewrite.java.migrate.sonar.Major
+---
+type: specs.openrewrite.org/v1beta/recipe
+name: io.moderne.devcenter.SonarMinor
+displayName: Sonar minor issues
+description: Sonar rules of minor severity.
+recipeList:
+  - org.openrewrite.staticanalysis.sonar.Minor
+  - org.openrewrite.java.testing.sonar.Minor
+---
+type: specs.openrewrite.org/v1beta/recipe
+name: io.moderne.devcenter.SonarInfo
+displayName: Sonar info issues
+description: Sonar rules of info severity.
+recipeList:
+  - org.openrewrite.java.testing.sonar.Info
+---
+type: specs.openrewrite.org/v1beta/recipe
+name: io.moderne.devcenter.FixSonarIssues
+displayName: Fix Sonar issues
+description: >-
+  Fixes the issues of every Sonar rule recipe in rewrite-static-analysis, rewrite-testing-frameworks and
+  rewrite-migrate-java. This is the fix the Sonar issues by severity card offers.
+recipeList:
+  - org.openrewrite.staticanalysis.sonar.SonarRules
+  - org.openrewrite.java.testing.sonar.SonarRules
+  - org.openrewrite.java.migrate.sonar.SonarRules
